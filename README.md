@@ -62,5 +62,11 @@ Le architetture si sono evolute sempre di più verso architettura N-tier perchè
 - Three-Tier
 
 ### Cos’è J2EE?
+E' un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java e ampiamente utilizzata nella programmazione Web.
+
+Esistono diversi software open source, che vengono spesso usati anche in ambiente di produzione:
+- GlassFish: è l'implementazione di riferimento, mantenuta da Oracle.
+- WildFly: precedentemente noto come JBoss
+- Apache TomEE: del quale esiste una versione avente supporto commerciale chiamata Tomitribe
 
 ### Come funzionano i modelli a contenimento?
