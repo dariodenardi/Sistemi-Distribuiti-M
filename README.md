@@ -68,26 +68,28 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 
 ## 02-EJB_basics
 
-## Che cos’è EJB? Che caratteristiche offre? Quali sono i principi di design di EJB? Che benefici offre EJB?
+### Che cos’è EJB? Che caratteristiche offre? Quali sono i principi di design di EJB? Che benefici offre EJB?
 
-## Che problemi ha avuto EJB 2.X? Quale è la sua architettura? Quali contratti esistono?
+### Che problemi ha avuto EJB 2.X?
 
-## Che funzionalità offre l’EJB container? Di cosa si occupa?
+### Quale è la sua architettura? Quali contratti esistono?
 
-## Quali sono le tipologie di componenti Bean?
+### Che funzionalità offre l’EJB container? Di cosa si occupa?
 
-## Cos’è un Session Bean? Quando va usato? Che tipi di Session Bean esistono?
+### Quali sono le tipologie di componenti Bean?
 
-## Cos’è un Entity Bean? Come si usano? Come può essere gestita la persistenza?
+### Cos’è un Session Bean? Quando va usato? Che tipi di Session Bean esistono?
 
-## Cosa sono e come funzionano i Message Driven Bean?
+### Cos’è un Entity Bean? Come si usano? Come può essere gestita la persistenza?
 
-## Spiegare le interfacce EJBHome ed EJBObject
+### Cosa sono e come funzionano i Message Driven Bean?
 
-## Come agisce un cliente in EJB 2.X?
+### Spiegare le interfacce EJBHome ed EJBObject
 
-## Come avviene l’invocazione remota in EJB 2.X? Quali sono gli oggetti in gioco?
+### Come agisce un cliente in EJB 2.X?
 
-## Come funziona l’uso locale di EJB?
+### Come avviene l’invocazione remota in EJB 2.X? Quali sono gli oggetti in gioco?
 
-## Come avviene il deployment di una applicazione EJB?
+### Come funziona l’uso locale di EJB?
+
+### Come avviene il deployment di una applicazione EJB?
