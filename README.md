@@ -9,7 +9,7 @@ E' un "pezzo" di software che viene scritto dallo sviluppatore ed ha le seguenti
 
 Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con JavaFX: textBox, label, comboBox etc. Quando si clicca su un bottone non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
 
-- **componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina. Una sorta di applicazione "monolitica"
+- **componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina
 - **componente nel distribuito**: un concetto più ampio rispetto a quello del concentrato. Il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. E' possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto appartenente ad un'applicazione monolitica.
 
 ### Che differenza c'è tra un componente ed un oggetto?
@@ -31,12 +31,7 @@ Quando faccio deployment occorre decidere dove fare eseguire il componente e qua
 Come lo faccio? Ci sono diversi approcci:
 - **Manuale**: l’utente determina ogni singolo oggetto/componente quale è il nodo appropriato
 - **File Script**: si devono eseguire alcuni file di script racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze
-- **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere
-
-Una volta agganciato un pezzo di software ad una risorsa, questa decisione può essere:
-- **Statica**: quando viene presa questa decisione non si può più cambiare run-time
-- **Dinamica**: decisione presa solo quando si ha bisogno della risorsa
-- **Mista**: partire con una decisione statica e rivalutarla a run-time
+- **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite il file di deployment XML e annotazioni.
 
 ### Che tipi di modelli possiamo utilizzare?
 Ogni problema presenta una soluzione diversa. Per capire meglio come risolverlo è importante capire il funzionamento dei modelli.
@@ -70,3 +65,29 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 - Apache TomEE: del quale esiste una versione avente supporto commerciale chiamata Tomitribe
 
 ### Come funzionano i modelli a contenimento?
+
+## 02-EJB_basics
+
+## Che cos’è EJB? Che caratteristiche offre? Quali sono i principi di design di EJB? Che benefici offre EJB?
+
+## Che problemi ha avuto EJB 2.X? Quale è la sua architettura? Quali contratti esistono?
+
+## Che funzionalità offre l’EJB container? Di cosa si occupa?
+
+## Quali sono le tipologie di componenti Bean?
+
+## Cos’è un Session Bean? Quando va usato? Che tipi di Session Bean esistono?
+
+## Cos’è un Entity Bean? Come si usano? Come può essere gestita la persistenza?
+
+## Cosa sono e come funzionano i Message Driven Bean?
+
+## Spiegare le interfacce EJBHome ed EJBObject
+
+## Come agisce un cliente in EJB 2.X?
+
+## Come avviene l’invocazione remota in EJB 2.X? Quali sono gli oggetti in gioco?
+
+## Come funziona l’uso locale di EJB?
+
+## Come avviene il deployment di una applicazione EJB?
