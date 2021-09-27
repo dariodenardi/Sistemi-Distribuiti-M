@@ -14,13 +14,23 @@ Esempi di componenti sono quelli che si usano per creare le interfacce grafiche 
 
 ### Che differenza c'è tra un componente ed un oggetto?
 **Uguale all'oggetto**:
-- Mantiene dettagli di come è implementato: stato, metodi ed espone solo alcuni dei suoi dettagli tramite l'interfaccia
+- Mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia
 
 **Diverso dall'oggetto**:
-- Il componente viene eseguito all'interno di un containercontainer/engine/middleware altrimenti non verrebbe eseguita la funzione di callback. Se eseguissi il codice di un componente invocando una JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è sopra al tasto?
+- Il componente viene eseguito all'interno di un container/engine/middleware altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è sopra al tasto? Nessuno quindi il codice non potrebbe funzionare
 - Ha ***grana grossa***: il componente è di dimensioni più grandi di un oggetto perchè il costo di overhead tra un'interazione e l'altra è maggiore. Ipotizziamo che due componenti A e B interagiscano tra di loro. A per comunicare con B deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead.
 
 Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc)
+
+### Che tipi di modelli possiamo utilizzare?
+Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante capire il funzionamento dei modelli.
+I modelli che possono essere usati sono:
+- statici/dinamici
+- preventivi/reattivi
+
+E' meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: "dipende". Ogni problema ha una storia diversa da un altro.
+
+E' bene ricordare che **non** esistono modelli precisi perchè nei sistemi distribuiti ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc. Quindi, non esiste una formula precisa da applicare ma solo linee guida da seguire.
 
 ### A cosa siamo interessati nei sistemi distribuiti?
 Siamo interessati alle performance e ad eventuali colli di bottiglia. Per poterli evitare è necessario osservare le performance dell'applicazione e solo in seguito si capisce che cosa andare a modificare.
@@ -32,16 +42,6 @@ Come lo faccio? Ci sono diversi approcci:
 - **Manuale**: l’utente determina ogni singolo oggetto/componente quale è il nodo appropriato
 - **File Script**: si devono eseguire alcuni file di script racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze
 - **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite il file di deployment XML e annotazioni.
-
-### Che tipi di modelli possiamo utilizzare?
-Ogni problema presenta una soluzione diversa. Per capire meglio come risolverlo è importante capire il funzionamento dei modelli.
-I modelli che possono essere usati sono:
-- statici/dinamici
-- preventivi/reattivi
-
-E' meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: "dipende". Ogni problema ha una storia diversa da un altro.
-
-E' bene ricordare che **non** esistono modelli precisi perchè nei sistemi distribuiti ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc
 
 ### Quali sono le sfide dell’enterprise computing?
 - Portabilità
