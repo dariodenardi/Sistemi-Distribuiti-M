@@ -46,7 +46,7 @@ I modelli che possono essere usati sono:
 
 E' meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: "dipende". Ogni problema ha una storia diversa da un altro.
 
-Tuttavia, è bene ricordare che **non** esistono modelli precisi perchè nei sistemi distribuiti ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc
+E' bene ricordare che **non** esistono modelli precisi perchè nei sistemi distribuiti ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc
 
 ### Quali sono le sfide dell’enterprise computing?
 - Portabilità
