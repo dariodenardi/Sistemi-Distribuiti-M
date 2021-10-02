@@ -78,23 +78,42 @@ JEE: edizione di Java standardizzata per supportare il modello componente contai
 ## 02-EJB_basics
 
 ### Che cos’è EJB?
+E' una tecnologia a componenti server-side che consente di creare applicazioni di tipo enterprise.
 
-E' una tecnologia a componenti server-side che consente di creare applicazioni di tipo enterprise
+Attualmente, non è in completamente in disuso ma si inserisce in un contesto in cui c'è ne sono moltre altre.
 
-E' una tecnologia ancora usata ma si inserisce in un contesto in cui ci sono moltre altre
+### Che caratteristiche offre?
+multi-tier, transazionali, portabili, scalabili, sicure, ...
 
-### Che caratteristiche offre? Quali sono i principi di design di EJB? Che benefici offre EJB?
+### Quali sono i principi di design di EJB?
+- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (loosely coupled). Ad esempio, se abbiamo due componenti A e B, A deve chiamare un metodo di B non molte volte. Questo perchè nel distribuito abbiamo un costo di overhead piuttosto alto. Dall'altra parte, i componenti devono essere portabili quindi bisogna stare attenti a come scrivere il software
+- Il comportamento dei componenti EJB è definito tramite interfacce. Aspetto assolutamente non nuovo. Basta pensare agli oggetti.
+- Lo sviluppatore **non** deve pensare a come gestione le risorse. Ci pensa tutto il container
+- Le applicazioni EJB sono N-tier
 
+### Che benefici offre EJB?
+- Benefici del modello a componenti lato server
+- Separazione fra logica di business e codice di sistema
+- Framework di supporto per componenti portabili
+- Supporto a facile configurazione a deployment-time
+
+- Necessità di un tier con EJB per sfruttare funzionalità di middleware offerte dal container
+Gestione risorse, gestione life-cycle delle istanze, controllo concorrenza e threading
+Persistenza, transazioni e gestione della sicurezza
+Scalabilità, affidabilità, disponibilità
 
 ### Che problemi ha avuto EJB 2.X?
-
+- E' un container "pesante". Attualmente le tecnologie si sono spostate verso altre soluzioni
+- Modello di programmazione non tanto simile a quello che si usa per sviluppare oggetti normali
+- Difficoltà di testing(?) In che senso? EJB 2.x o proprio di EJB in generale?
 
 ### Quale è la sua architettura?
 - **Logica di business**: scritta dallo sviluppatore
 - **Runtime**: avrò sul nodo che ospita EJB Server non solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati:
     - **Oggetto EJB Home**: implementa l’interfaccia EJB Home. In terminologia J2EE si dice che il cliente implementa la Home Interface. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova…);
     - **Oggetto EJB Object**: implementa l’interfaccia EJB Object. In terminologia J2EE si dice che il cliente implementa la Remote Interface. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando invoco un metodo chiamo un EJB Object che invoca poi il Java Bean;
-    - **Macchina server**: non è pura perché mi serve un container per far girare la mia applicazione
+
+E' bene ricordare che la macchina server non è "pura" perché mi serve installarci anche iun container per far girare la mia applicazione
 
 Pensiamo di sviluppare una Web App riguardante la banca dove un utente può solo prelevare e depositare soldi:
 - Sviluppatore: creo solo la classe che chiamiamo Account. Non mi interessa niente riguardo le istanze, allocazione/deallocazione e thread. Scrivo il codice come se avessi solo un cliente come ci viene detto dalla specifica. A tutto questo ci pensa tutto il container;
@@ -106,14 +125,14 @@ Pensiamo di sviluppare una Web App riguardante la banca dove un utente può solo
 
 ### Quali contratti esistono?
 Esistono due tipi di contratto:
-- **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da
+- **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da:
     - Home interface:
     - Object interface:
     - Identità dell'oggetto? per arrivare alla home interface è necessario un servizio di nomi che mi consente di recuperare la home interface
 - **Component contract**: contratto tra componente e container. Il contratto serve a gestire:
     - Abilita le invocazioni dei metodi dai clienti
     - Implementa le interfacce Home e Object per ridurre il carico di lavoro da parte dello sviluppatore
-    - Gestisce la persistenza (solo in EJB 2.x da EJB 3.x la gestione cambia)
+    - Gestisce la persistenza (solo in EJB 2.x, da EJB 3.x la gestione cambia)
     - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc.
     - Implementa il meccanismo delle callback. Ci sono alcuni Bean che vengono attivati quando si riceve un determinato messaggio
 
@@ -121,6 +140,16 @@ E' trasparente passare da EJBHome a EJBLocalHome? No, perchè non c'è la Remote
 
 ### Che funzionalità offre l’EJB container? Di cosa si occupa?
 Le funzionalità che offre sono molteplici:
+- Persistenza
+- Transazionalità
+- Gestione lifecycle componenti
+- Connection pooling
+- Threading
+- Sicurezza
+
+- Offre servizi di sistema
+- Componenti EJB accedono risorse esterne (database, sistemi legacy, ...)
+- La gestione delle risorse è compito del container, con obiettivi di massima efficienza
 
 ### Quali sono le tipologie di componenti Bean?
 I Bean possono essere classificati in due categorie
@@ -133,12 +162,23 @@ I Bean possono essere classificati in due categorie
     - **Message Driven Bean**:
 
 ### Cos’è un Session Bean? Quando va usato? Che tipi di Session Bean esistono?
-E' un componente che consente di effettuare calcoli computazionali. 
+- E' un componente che consente di effettuare calcoli computazionali.
+- Una istanza per cliente
+- Short-lived: vita del bean pari alla vita cliente
+- Transient
+- Non sopravvive a crash del server
+- Può avere proprietà transazionali
 
 ### Cos’è un Entity Bean? Come si usano? Come può essere gestita la persistenza?
-
+- Rappresenta dati di business
+- Istanza condivisa fra clienti multipli
+- Long-lived: vita del bean pari a quella dei dati nel database
+- Persistente
+- Sopravvive a crash del server
+- Sempre transazionale
 
 ### Cosa sono e come funzionano i Message Driven Bean?
+- Svolgono il ruolo di consumatori di messaggi asincroni
 
 ### Spiegare le interfacce EJBHome ed EJBObject
 
@@ -151,3 +191,88 @@ E' un componente che consente di effettuare calcoli computazionali.
 ### Come funziona l’uso locale di EJB?
 
 ### Come avviene il deployment di una applicazione EJB?
+
+IIOP protocollo comunicazione mondo corba
+visione RMI del mondo CORBA
+Suo standard legato al mondo CORBA
+
+Problematiche:
+costo unmarchaling/ + una chiamata gestione connessione (RMI bastato su IIOP)
+
+Compile time?
+si, interfaccia
+
+Runtime?
+Stub, skeleton
+
+limite di RMI:
+skeleton ha un'idea di ottimizzazione. Se è locale evito di comunicare remotamente
+
+Standard no ma le implementazioni avevano già delle ottimizzazioni
+
+## 03-Annotation
+
+### Cosa sono le annotazioni? Esempi di annotazioni? Come sono strutturate?
+
+Sono metadati con cui decoro i metodi, le classi, le interfacce etc. Non modificano il codice che lo sviluppatore scrive ma aggiungono solo informazioni che possono essere utili:
+- Al compilatore
+- Alla Javadoc
+- A runtime.
+
+Le annotazioni che sono state già viste sicuramente in altri corsi sono le seguenti:
+- **@Overrided**: serve a livello di compilazione. Se non mettessi questa annotazione, il codice verrebbe generato lo stesso però devo stare attento a scrivere lo stesso nome del metodo sia nella classe padre che in quella figlia
+- **@Deprecated**: serve a livello di documentazione per indicare che quel metodo è in disuso
+- **@SuppressWarnings**: serve a livello di compilazione. Se la compilazione presenta dei warning questi vengono trascurati e non vengono mostrati all’utente.
+
+Le annotazioni sono strutturate nel seguente modo: ci può essere solo il nome dell'annotazione o in caso ci fossero dei membri vengono scritti come un insiemi di coppie nome=valore. Se il membro è solo uno, il nome si può omettere.
+
+Con *membro* si intende il "parametro di ingresso" dell'annotazione.
+
+### Perchè si usano le annotazioni?
+
+Le annotazioni consentono di arricchire lo spazio concettuale del linguaggio. Consente di fare programmazione dichiarativa oltre che a quella imperativa perchè consente di associare delle informazioni in modo dichiarativo al codice non andando a modificare il comportamento dei metodi, delle classi etc. Ad esempio, quello che viene specificato con il file di deployment si può fare benissimo tramite le annotazioni.
+
+### Quali categorie di annotazioni esistono?
+
+- **Marker annotation**: non hanno membri. Ad esempio: @Override
+- **Single-value annotation**: hanno un solo membro. Ad esempio: @SuppressWarnings("unchecked")
+- **Full annotation**: l'annotazione è formata da più di un membro
+- **Custom annotation**: i programmatori possono crearsi le proprie annotazioni
+
+### Che limiti hanno le annotazioni personalizzate?
+
+- **Non** si possono avere relazioni di estensione (*extends*) fra tipi di annotazioni
+- I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati
+- Una annotation **non** può lanciare eccezioni ovvero non può avere una *throws clause*
+- **Non** sono permessi *self-reference*. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationA
+- **Non** sono permessi *circular-reference*. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationB e quest'ultimo di AnnotationA
+
+### Cosa sono le meta-annotazioni? Quali sono?
+
+Sono annotazioni che si specificano sui tipi personalizzati di annotazioni. Le meta-annotazioni sono:
+
+- **@Target**: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc.)
+- **@Documented**: specifica che le annotazioni di tale tipo faranno parte della Javadoc
+- **@Inherited**: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata
+- **@Retention**: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni
+
+### Che valori possono avere le politiche di retention?
+
+- **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se confrontassi la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, potremmo vedere che è la stessa
+- **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time
+- **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. E' utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime
+
+## 04-
+
+Sistema di nomi: RMI Registry (RMI), DNS, Port Mapper (RPC)
+
+Nome logico, numero di programma, numero di protocollo -> porta
+
+Discovery: es. bluetooth protocollo di discovery. mando dei broadcast ma non so se gli altri dispositivi hanno il bluetooth
+
+Directory: LDAP, es. accesso ai laboratori di UNIBO
+
+```
+@Target ( {ElementType.METHOD,ElementType.PACKAGE} )
+public @interface ExampleAnnotation { ... }
+```
