@@ -1,6 +1,6 @@
 # Sistemi Distribuiti M - 2021/2022
 
-## 01-Modelli
+## 01.Modelli
 
 ###  (domanda provocatoria) Che cosa fa un laureato magistrale in ingegneria informatica in azienda oggi?
 Comanda 😎
@@ -75,7 +75,7 @@ JEE: edizione di Java standardizzata per supportare il modello componente contai
 
 ---
 
-## 02-EJB_basics
+## 02.EJB 2.x
 
 ### Che cos’è EJB?
 E' una tecnologia a componenti server-side che consente di creare applicazioni di tipo enterprise.
@@ -210,7 +210,7 @@ skeleton ha un'idea di ottimizzazione. Se è locale evito di comunicare remotame
 
 Standard no ma le implementazioni avevano già delle ottimizzazioni
 
-## 03-Annotation
+## 03.Annotazioni
 
 ### Cosa sono le annotazioni? Esempi di annotazioni? Come sono strutturate?
 
