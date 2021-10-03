@@ -70,6 +70,7 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 JEE: edizione di Java standardizzata per supportare il modello componente container pesante che fa le operazioni di supporto. 
 
 ### Come funzionano i modelli a contenimento?
+Le chiamate cliente verso i metodi EJB sono intercettate dal container prima che questo le “deleghi” ai componenti EJB veri e propri
 
 ![zeus](./zeus.jpg)
 
@@ -77,57 +78,46 @@ JEE: edizione di Java standardizzata per supportare il modello componente contai
 
 ## 02.EJB 2.x
 
-### Che cos’è EJB?
-E' una tecnologia a componenti server-side che consente di creare applicazioni di tipo enterprise.
+### Che cos’è EJB? Che caratteristiche offre? Che benefici offre EJB?
 
-Attualmente, non è in completamente in disuso ma si inserisce in un contesto in cui c'è ne sono moltre altre.
+E' una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
 
-### Che caratteristiche offre?
-multi-tier, transazionali, portabili, scalabili, sicure, ...
+Consente di programmare tramite l'uso di componenti e di conseguenza porta tutti quei benefici che derivano da essi, si possono sfruttare tutti i servizi di sistema messi a disposizione dal container e lo si configura semplicemente grazie a un file .xml, detto *file descriptor*, in modo da non modificare nessuna riga di codice.
+
+Attualmente, questa tecnologia non è completamente in disuso ma si inserisce in un contesto in cui c'è ne sono moltre altre.
 
 ### Quali sono i principi di design di EJB?
-- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (loosely coupled). Ad esempio, se abbiamo due componenti A e B, A deve chiamare un metodo di B non molte volte. Questo perchè nel distribuito abbiamo un costo di overhead piuttosto alto. Dall'altra parte, i componenti devono essere portabili quindi bisogna stare attenti a come scrivere il software
-- Il comportamento dei componenti EJB è definito tramite interfacce. Aspetto assolutamente non nuovo. Basta pensare agli oggetti.
+
+- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (*loosely coupled*). Ad esempio, se abbiamo due componenti A e B, A deve chiamare un metodo di B non molte volte. Questo perchè nel distribuito abbiamo un costo di *overhead* piuttosto alto. Dall'altra parte, i componenti devono essere portabili quindi bisogna stare attenti a come scrivere il software
+- Il comportamento dei componenti EJB è definito tramite interfacce. Aspetto assolutamente non nuovo perchè basta pensare agli oggetti
 - Lo sviluppatore **non** deve pensare a come gestione le risorse. Ci pensa tutto il container
 - Le applicazioni EJB sono N-tier
 
-### Che benefici offre EJB?
-- Benefici del modello a componenti lato server
-- Separazione fra logica di business e codice di sistema
-- Framework di supporto per componenti portabili
-- Supporto a facile configurazione a deployment-time
+### Che problemi ha EJB 2.X?
 
-- Necessità di un tier con EJB per sfruttare funzionalità di middleware offerte dal container
-Gestione risorse, gestione life-cycle delle istanze, controllo concorrenza e threading
-Persistenza, transazioni e gestione della sicurezza
-Scalabilità, affidabilità, disponibilità
-
-### Che problemi ha avuto EJB 2.X?
 - E' un container "pesante". Attualmente le tecnologie si sono spostate verso altre soluzioni
 - Modello di programmazione non tanto simile a quello che si usa per sviluppare oggetti normali
 - Difficoltà di testing(?) In che senso? EJB 2.x o proprio di EJB in generale?
 
 ### Quale è la sua architettura?
-- **Logica di business**: scritta dallo sviluppatore
-- **Runtime**: avrò sul nodo che ospita EJB Server non solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati:
-    - **Oggetto EJB Home**: implementa l’interfaccia EJB Home. In terminologia J2EE si dice che il cliente implementa la Home Interface. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova…);
-    - **Oggetto EJB Object**: implementa l’interfaccia EJB Object. In terminologia J2EE si dice che il cliente implementa la Remote Interface. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando invoco un metodo chiamo un EJB Object che invoca poi il Java Bean;
+Sul'EJB Container non avrò solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati:
+- **Oggetto EJB Home**: implementa l’interfaccia EJBHome. In terminologia J2EE si dice che il cliente implementa la Home Interface. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc.);
+- **Oggetto EJB Object**: implementa l’interfaccia EJBObject. In terminologia J2EE si dice che il cliente implementa la Remote Interface. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando invoco un metodo chiamo un EJBObject che invoca poi a sua volta il Java Bean
 
-E' bene ricordare che la macchina server non è "pura" perché mi serve installarci anche iun container per far girare la mia applicazione
+E' bene ricordare che la macchina server non è "pura" perché mi serve installarci sopra anche un container per far girare la mia applicazione.
 
-Pensiamo di sviluppare una Web App riguardante la banca dove un utente può solo prelevare e depositare soldi:
-- Sviluppatore: creo solo la classe che chiamiamo Account. Non mi interessa niente riguardo le istanze, allocazione/deallocazione e thread. Scrivo il codice come se avessi solo un cliente come ci viene detto dalla specifica. A tutto questo ci pensa tutto il container;
-- In EJB 2.x ad ogni classe creata, viene automaticamente generata una classe EJB Home e EJB Object perché così dice la specifica (contratto cliente);
-- Cliente: C1, C2 e C3 richiedono il prelievo. Da specifica per conoscere EJB Home è importante che sia disponibile nel sistema dei nomi;
-- C1 fa richiesta di prelievo e invoca su EJB Home create/find. Arriva a EJB Home (estensione di rmi.remote) che crea un oggetto O1 ed è l’istanza logica/concettuale dedicata per C1. EJB Home restituisce al cliente il riferimento di EJB Object;
-- L’invocazione del metodo prelievo verrà fatta su EJB Object che a sua volta potrà invocare l’oggetto O1;
-- C3 fa una richiesta. EJB Home (non c’è scritto da specifica se EJB Home è uno solo o di più) potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 (non c’è scritto da specifica).
+Pensiamo di sviluppare un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
+- **Sviluppatore**: creo solo una classe che chiamiamo Account. Non mi interessa niente riguardo le istanze, allocazione/deallocazione e thread. Scrivo il codice come se avessi solo un cliente. A tutto il resto ci pensa tutto il container. In EJB 2.x ad ogni classe creata, viene automaticamente generata una classe EJBHome e EJBObject perché così che è il contratto del cliente;
+- **Cliente**: ipotizziamo di avere tre clienti: C1, C2 e C3 che richiedono tutti un prelievo. Per conoscere EJBHome è importante che sia disponibile nel sistema dei nomi;
+    - C1 fa richiesta di prelievo e invoca su EJBHome create/find. Arriva a EJBHome (estensione di rmi.remote) che crea un oggetto O1 ed è l’istanza logica/concettuale dedicata per C1. EJBHome restituisce al cliente il riferimento di EJB Object;
+    - L’invocazione del metodo prelievo verrà fatta su EJBObject che a sua volta potrà invocare l’oggetto O1;
+    - C3 fa una richiesta. EJB Home (non c’è scritto da specifica se EJB Home è uno solo o di più) potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 (non c’è scritto da specifica).
 
 ### Quali contratti esistono?
 Esistono due tipi di contratto:
-- **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da:
-    - Home interface:
-    - Object interface:
+- **Client view contract**: contratto tra cliente e container. Un contratto *client view* è costituito da:
+    - Home interface: vera e propria factory
+    - Object interface: con i metodi di business
     - Identità dell'oggetto? per arrivare alla home interface è necessario un servizio di nomi che mi consente di recuperare la home interface
 - **Component contract**: contratto tra componente e container. Il contratto serve a gestire:
     - Abilita le invocazioni dei metodi dai clienti
@@ -136,10 +126,16 @@ Esistono due tipi di contratto:
     - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc.
     - Implementa il meccanismo delle callback. Ci sono alcuni Bean che vengono attivati quando si riceve un determinato messaggio
 
-E' trasparente passare da EJBHome a EJBLocalHome? No, perchè non c'è la RemoteException
+### Di cosa si occupa l'EJB container?
 
-### Che funzionalità offre l’EJB container? Di cosa si occupa?
-Le funzionalità che offre sono molteplici:
+- Genera automaticamente le classi concrete delle interfaccia EJBHome e EJBObject
+- Effettua il binding dell’oggetto Home presso il
+servizio di naming però sono i clienti a fare la lookup di componenti (oggetti home) usando JNDI
+- Crea e gestisce un pool di istanze dei componenti
+- Effettua il caching dei componenti acceduti di recente
+- Gestisce il pool di connessioni JDBC verso database
+
+EJB container si occupa di:
 - Persistenza
 - Transazionalità
 - Gestione lifecycle componenti
@@ -147,50 +143,117 @@ Le funzionalità che offre sono molteplici:
 - Threading
 - Sicurezza
 
-- Offre servizi di sistema
-- Componenti EJB accedono risorse esterne (database, sistemi legacy, ...)
-- La gestione delle risorse è compito del container, con obiettivi di massima efficienza
-
 ### Quali sono le tipologie di componenti Bean?
 I Bean possono essere classificati in due categorie
 - **Sincroni**: l'utente si blocca e aspetta la risposta da parte del server. Esistono due tipi di Bean:
     - **Session Bean**: a sua volta possiamo avere due tipi di Session Bean:
-        - **Stateless**: il componente è privo di stato. Ad esempio, quando un'azione deve essere idempotente
-        - **Statefull**: il componente è con stato. Ad esempio, quando si aggiungono i prodotti in un carrello di e-commerce
-    - **Entity Bean**:
+        - **Stateful**: con stato
+        - **Stateless**: senza stato
+    - **Entity Bean**: a sua volta possiamo avere due tipi di Entity Bean:
+        - **Container Managed Persistence (CMP)**
+        - **Bean Managed Persistence (BMP)**
 - **Asincroni**: l'utente non si blocca e non aspetta la risposta. Esiste un tipo di componente che fa parte di questa categoria:
     - **Message Driven Bean**:
 
 ### Cos’è un Session Bean? Quando va usato? Che tipi di Session Bean esistono?
-- E' un componente che consente di effettuare calcoli computazionali.
-- Una istanza per cliente
-- Short-lived: vita del bean pari alla vita cliente
+
+Un Session Bean ha le seguenti caratteristiche:
+- Rappresenta un processo di business
+- Ogni cliente ha un'istanza
+- Short-lived: la vita del bean è pari alla vita cliente o al massimo alla durata della sessione
 - Transient
 - Non sopravvive a crash del server
 - Può avere proprietà transazionali
+- Implementa l’interfaccia javax.ejb.SessionBean
+
+Questo componente viene usato quando bisogna effettuare calcoli computazionali
+
+I Session Bean che esistono sono di due tipi:
+- **Stateless**: il componente è privo di stato. Ad esempio, quando un'azione deve essere idempotente
+- **Statefull**: il componente è con stato. Ad esempio, quando si aggiungono i prodotti in un carrello di e-commerce
 
 ### Cos’è un Entity Bean? Come si usano? Come può essere gestita la persistenza?
+
+Un Entity Bean ha le seguenti caratteristiche:
 - Rappresenta dati di business
-- Istanza condivisa fra clienti multipli
-- Long-lived: vita del bean pari a quella dei dati nel database
+- L'stanza è condivisa fra clienti diversi
+- Long-lived: la vita del bean è pari a quella dei dati nel database
 - Persistente
 - Sopravvive a crash del server
 - Sempre transazionale
+- implementa l’interfaccia javax.ejb.EntityBean
+
+❑ Forniscono una vista ad oggetti dei dati mantenuti in un database perché?
+➢ Tempo di vita non connesso alla durata delle interazioni con i clienti
+➢ Nella maggior parte dei casi, componenti sincronizzati con i relativi database relazionali
+
+Gli Entity Bean che esistono sono di due tipi:
+- **Container Managed Persistence (CMP)**: persistenza gestita completamente dal container. Requisiti di persistenza specificati interamente nel descrittore di deployment
+- **Bean Managed Persistence (BMP)**: è responsabilità dello sviluppatore la gestione della persistenza
 
 ### Cosa sono e come funzionano i Message Driven Bean?
 - Svolgono il ruolo di consumatori di messaggi asincroni
 
-### Spiegare le interfacce EJBHome ed EJBObject
+### Che cosa sono le interfacce EJBHome ed EJBObject?
 
+- **Interfaccia EJBHome**:
+
+❑ Dichiara i metodi per la creazione, il ritrovamento e
+la distruzione di bean
+➢ Svolge il ruolo di interfaccia factory
+❑ Implementata dal container
+➢ L’implementazione è l’oggetto EJBHome, che viene
+sviluppato in modo automatico (strumenti di supporto) ❑ Il cliente ottiene il riferimento all’oggetto stub
+dell’oggetto EJBHome tramite JNDI ❑ Può essere remota e/o locale
+
+- **Interfaccia EJBObject**:
+
+❑ Dichiara i metodi della logica applicativa (metodi di business)
+❑ Implementata dal container ➢ Oggetto EJB
+❑ Il cliente ottiene il riferimento all’oggetto stub di EJBObject attraverso i metodi create() o find() dell’interfaccia EJB Home
+❑ Può essere remota o locale
 
 ### Come agisce un cliente in EJB 2.X?
 
+Per interagire con un componente EJB il cliente deve:
+- Ottenere l’oggetto EJBHome (in realtà un oggetto stub per l’oggetto EJBHome) via JNDI perchè la comunicazione tra client e server avviene tramite RMI
+    - Creare l'oggetto InitialContext in modo da poter cercare sul servizio di nomi
+    - Effettuare la lookup
+    - Effettuare il narrowing
+- Dall’oggetto EJBHome, si invoca la create in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà si ottiene un oggetto stub per l’oggetto EJBObject per lo stesso motivo di prima
+- Invocare i metodi di business tramite l’oggetto EJB
+- Effettuare il clean up finale
 
 ### Come avviene l’invocazione remota in EJB 2.X? Quali sono gli oggetti in gioco?
 
-### Come funziona l’uso locale di EJB?
+❑ Gli oggetti che cooperano ovviamente eseguono in JVM differenti in molti casi
+➢ Gli oggetti lato cliente invocano metodi di oggetti lato server
+❑ Necessariamente ci sono (gli usuali) meccanismi per
+➢ Condividere la signature dei metodi dal cliente al servitore
+➢ Fare il marshalling dei parametri da cliente a servitore
+➢ Fare l’unmarsalling dei parametri ricevuti lato server
+➢ Fare il marshalling dei valori di ritorno dal servitore al cliente
+➢ Fare l’unmarshalling dei risultati ricevuti lato cliente
 
-### Come avviene il deployment di una applicazione EJB?
+❑ Chiamante (cliente)
+1. Invocaunmetododell’oggettoremoto
+❑ Lo stub dell’oggetto remoto
+1. “Intercetta”l’invocazionedimetodo
+2. Effettuailmarshallingdeiparametri
+3. Effettualachiamataveraepropriaall’oggettoremoto
+❑ Oggetto remoto
+1. Ricevel’invocazionetramiteilsuoskeleton
+2. Effettual’unmarshallingdeiparametri
+3. Eseguel’invocazionelocalmente
+4. Effettuailmarshallingdeirisultatieliinviaalcliente
+❑ Lo stub dell’oggetto remoto
+1. Riceveirisultati,effettuaunmarshallingelirestituiscealcliente
+
+❑ RMI è utilizzato per la comunicazione fra cliente e server EJB
+➢ Prima di EJB 2.0 (J2EE 1.3), RMI su IIOP doveva essere usato anche se cliente e server eseguivano sulla stessa JVM, con conseguente overhead non necessario
+➢ Oggi alcuni vendor forniscono prodotti J2EE in cui la comunicazione viene ottimizzata se cliente e servitore EJB sono sulla stessa JVM
+❑ Le operazioni RMI sono costose (vi ricordate perché?)
+➢ Ragione per cui “local interface” è stata introdotta a partire da EJB2.0
 
 IIOP protocollo comunicazione mondo corba
 visione RMI del mondo CORBA
@@ -209,6 +272,40 @@ limite di RMI:
 skeleton ha un'idea di ottimizzazione. Se è locale evito di comunicare remotamente
 
 Standard no ma le implementazioni avevano già delle ottimizzazioni
+
+### Come funziona l’uso locale di EJB?
+
+E' importante ricordare di implementare le interfacce EJBLocalHome e EJBLocalObject.
+
+❑ Interfacce locali, da usarsi quando il cliente esegue nella stessa JVM del componente EJB di interesse (e del suo container)
+❑ Nessun overhead dovuto alla comunicazione RMI su IIOP
+❑ Possibilità introdotta a partire da EJB2.0 (J2EE1.3)
+❑ Ovviamente, in tal caso i metodi non devono produrre
+RemoteException
+❑ Possibilità di chiamata
+Perché altrimenti come avverrebbe la chiamata? Con quali costi?
+            per riferimento (“call by reference”)
+❑ Possibilità utilizzata tipicamente per rendere più efficiente il funzionamento di session bean che svolgono il ruolo di clienti locali verso i loro entity bean
+
+E' bene ricordare anche che non è trasparente passare da EJBHome a EJBLocalHome perchè l'interfaccia locale non ha la RemoteException
+
+### Come avviene il deployment di una applicazione EJB?
+
+Per effettuare il deployment di un'applicazione EJB sonno necessari i seguenti file:
+- ***.EAR (Enterprise ARchive)**: è tutta l'applicazione EJB che si troverà lato server. Al suo interno abbiamo:
+    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc. ). E' facoltativo perchè non è detto che lo vogliamo inserire
+    - **EJB-JAR (*.jar)**: modulo EJB. Per ogni componente EJB, il file ejb-jar deve contenere almeno i seguenti file:
+        - **Classe bean**: classe scritta dallo sviluppatore
+        - **Interfaccia EJBHome**
+        - **Interfaccia EJBObject**
+        - **application.xml**: descrittore di deployment. La visibilità è "locale" perchè si limita all'interno del modulo
+
+        Per effettuare il deployment di una applicazione EJB, è sempre necessario creare un file *.EAR anche se l’applicazione prevede un solo file EJB-JAR e nessun modulo Web. Tuttavia, alcuni container permettono il deployment diretto del solo modulo EJB-JAR senza dover creare il file *.EAR.
+
+    - **application.xml**: descrittore di deployment. La visibilità è "globale" paragonato a quello che si trova all'interno di ogni modulo.
+- ***.JAR**: cliente EJB
+
+---
 
 ## 03.Annotazioni
 
@@ -231,6 +328,8 @@ Con *membro* si intende il "parametro di ingresso" dell'annotazione.
 ### Perchè si usano le annotazioni?
 
 Le annotazioni consentono di arricchire lo spazio concettuale del linguaggio. Consente di fare programmazione dichiarativa oltre che a quella imperativa perchè consente di associare delle informazioni in modo dichiarativo al codice non andando a modificare il comportamento dei metodi, delle classi etc. Ad esempio, quello che viene specificato con il file di deployment si può fare benissimo tramite le annotazioni.
+
+Certamente viene aggiunta una "parola" al codice però la logica di business non cambia
 
 ### Quali categorie di annotazioni esistono?
 
@@ -262,7 +361,16 @@ Sono annotazioni che si specificano sui tipi personalizzati di annotazioni. Le m
 - **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time
 - **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. E' utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime
 
-## 04-
+## 04.Sistemi di Nomi
+
+Cos’è un servizio di naming? Cos’è e cosa fa JNDI?
+Cos’è un protocollo di discovery? Fornire un esempio
+Cosa sono le directory? Come sono fatte? Fornire un esempio
+Quali sono i concetti fondamentali in JNDI?
+Cos’è un provider JNDI? Cos’è l’interfaccia Context e che metodi ha? Esempi di sotto-
+interfacce di Context?
+Esempio di uso di JNDI? Come si possono memorizzare i dati in JNDI?
+Configurazione di JNDI?
 
 Sistema di nomi: RMI Registry (RMI), DNS, Port Mapper (RPC)
 
