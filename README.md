@@ -72,8 +72,6 @@ JEE: edizione di Java standardizzata per supportare il modello componente contai
 ### Come funzionano i modelli a contenimento?
 Le chiamate cliente verso i metodi EJB sono intercettate dal container prima che questo le “deleghi” ai componenti EJB veri e propri
 
-![zeus](./zeus.jpg)
-
 ---
 
 ## 02.EJB 2.x
@@ -88,7 +86,7 @@ E' stata una delle prime tecnologie a componenti e al giorno d'oggi, sebbene c'�
 
 ### Quali sono i principi di design di EJB?
 
-- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (*loosely coupled*). Ad esempio, se abbiamo due componenti A e B, A deve chiamare un metodo di B non molte volte. Questo perchè nel distribuito abbiamo un costo di *overhead* piuttosto alto. Dall'altra parte, i componenti devono essere portabili quindi bisogna stare attenti a come scrivere il software;
+- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (*loosely coupled*). Ad esempio, se abbiamo due componenti A e B, A deve chiamare un metodo di B non molte volte. Questo perchè nel distribuito abbiamo un costo di *overhead* piuttosto alto. Dall'altra parte, i componenti devono essere portabili quindi bisogna stare attenti a come scrivere il software altrimenti diventa difficile ricostruire le sue dipendenze quando si decide di usare quel codice in un altro progetto;
 - Il comportamento dei componenti EJB è definito tramite interfacce. Aspetto assolutamente non nuovo perchè basta pensare agli oggetti;
 - Lo sviluppatore **non** deve pensare a come gestione le risorse. Ci pensa tutto il container;
 - Le applicazioni EJB sono N-tier.
@@ -100,6 +98,9 @@ E' stata una delle prime tecnologie a componenti e al giorno d'oggi, sebbene c'�
 - Difficoltà di testing(?) In che senso? EJB 2.x o proprio di EJB in generale?.
 
 ### Quale è la sua architettura?
+
+![ejb2_architettura](./img/ebj2_architettura.png)
+
 Sul'EJB Container non avrò solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati:
 - **Oggetto EJB Home**: implementa l’interfaccia EJBHome. In terminologia J2EE si dice che il cliente implementa la Home Interface. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc.);
 - **Oggetto EJB Object**: implementa l’interfaccia EJBObject. In terminologia J2EE si dice che il cliente implementa la Remote Interface. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando invoco un metodo chiamo un EJBObject che invoca poi a sua volta il Java Bean
@@ -109,9 +110,9 @@ E' bene ricordare che la macchina server non è "pura" perché mi serve installa
 Pensiamo di sviluppare un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
 - **Sviluppatore**: creo solo una classe che chiamiamo Account. Al suo interno ci sono i metodi preleva e deposita. Non mi interessa niente riguardo le istanze, allocazione/deallocazione e thread. Scrivo il codice come se avessi solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, dobbiamo anche creare due interfacce EJBHome e EJBObject perché così che è il contratto del cliente;
 - **Cliente**: ipotizziamo di avere tre clienti: C1, C2 e C3 che richiedono tutti un prelievo. Per conoscere EJBHome è importante che sia disponibile nel sistema dei nomi:
-    - C1 fa richiesta di prelievo e invoca su EJBHome create/find. Arriva a EJBHome (estensione di rmi.remote) che crea un oggetto O1 ed è l’istanza logica dedicata per C1. EJBHome restituisce al cliente il riferimento di EJB Object;
+    - C1 fa richiesta di prelievo e invoca su EJBHome create()/find(). Arriva a EJBHome (estensione di rmi.remote) che crea un oggetto O1 ed è l’istanza logica dedicata per C1. EJBHome restituisce al cliente il riferimento di EJB Object (riferimento allo stub);
     - L’invocazione del metodo prelievo verrà fatta su EJBObject che a sua volta potrà invocare l’oggetto O1;
-    - C3 fa una richiesta. EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 (non c’è scritto da specifica).
+    - C3 fa una richiesta. EJBHome potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1. Non è detto che debba essere lo stesso.
 
 ### Quali contratti esistono?
 Esistono due tipi di contratto:
