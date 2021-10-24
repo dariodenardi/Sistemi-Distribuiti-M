@@ -390,9 +390,9 @@ Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti fi
 
 La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emersi durante l'uso di questa tecnologia:
 
-- Il modello di programmazione non sempre naturale: oltre alla logica di business bisogna anche implementare due interfacce. L'obiettivo è quello di scrivere in modo molto più simile un componente a come si fa con gli oggetti. Inoltre, bisogna ricordare di configurare il file descriptor che è un file diverso rispetto a quello in cui si scrive il codice della classe;
-- La lookup dei componenti è sempre basata su JNDI;
-- Difficoltà di uso corretto degli Entity Bean: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented.
+- **Il modello di programmazione non sempre naturale**: oltre alla logica di business bisogna anche implementare due interfacce. L'obiettivo è quello di scrivere in modo molto più simile un componente a come si fa con gli oggetti. Inoltre, bisogna ricordare di configurare il file descriptor che è un file diverso rispetto a quello in cui si scrive il codice della classe;
+- **La lookup dei componenti è sempre basata su JNDI**;
+- **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. E' vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
 
 Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nei prossimi due capitoli, si parlerà di annotazioni e di sistema di nomi.
 
