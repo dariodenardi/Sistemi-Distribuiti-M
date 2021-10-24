@@ -4,13 +4,17 @@ Corso tenuto dal _Prof. Foschini_
 
 ## 01.Modelli
 
-Il termine sistema distribuito, in informatica, indica genericamente un insieme di calcolatori interconnessi tra loro da una rete informatica per l'espletamento di una certa funzionalità e in cui le comunicazioni interne avvengono tramite lo scambio di opportuni messaggi.
+Nella vita professione, è molto difficile che si scriva un software da zero per diversi motivi:
+- Un'azienda/cliente sta già usando delle tecnologie e non vuole cambiarla;
+- Interoperare fra diversi ambienti (anche _legacy_);
+- Il tempo di sviluppo è molto limitato e ci sono vincoli nella consegna dell'applicazione finale.
+
+Per questo motivo è fondamentale usare un approccio basato su componenti e il trand attuale si sposta verso questo tipo di soluzione.
 
 ### Componente
 
+Un componente è un _pezzo di software_ che viene scritto dallo sviluppatore ed ha le seguenti caratteristiche:
 
-
-E' un _pezzo di software_ che viene scritto dallo sviluppatore ed ha le seguenti caratteristiche:
 - Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia;
 - Viene eseguito all'interno di un _container_/_engine_/_middleware_.
 
@@ -20,6 +24,8 @@ Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a
 
 - **Componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina;
 - **Componente nel distribuito**: un concetto più ampio rispetto a quello del concentrato. Il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. E' possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto come se appartenesse ad un'applicazione "monolitica".
+
+Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
 
 #### Differenza tra un componente ed un oggetto
 
@@ -34,6 +40,7 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
 
 Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante capire il funzionamento dei modelli.
 I modelli che possono essere usati sono ad esempio:
+
 - **Statici/dinamici**: sicuramente un sistema dinamico consente di adeguarsi a fronte di variazioni mentre un sistema statico no;
 - **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi. Se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
 
@@ -46,27 +53,31 @@ Nei sistemi distribuiti si è interessati alle performance e ad eventuali colli 
 Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _deployment_ (dispiegamento). Ad esempio, installare tutte le librerie necessarie che servono all'applicazione, copiare i file che devono essere locali all’applicazione, distribuire i componenti su uno o più nodi e mettere davanti un bilanciatore di carico etc.
 Quando faccio _deployment_ occorre decidere dove fare eseguire il componente e quali risorse ha bisogno per funzionare correttamente. Ad esempio, quando devo fare una Web App, ho un file che descrive queste scelte.
 
-Come lo faccio? Ci sono diversi approcci:
+Come si fa il deployment? Ci sono diversi approcci:
 - **Manuale**: l’utente determina ogni singolo oggetto/componente su quale è il nodo più appropriato;
 - **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze;
 - **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite il _file di deployment_ e annotazioni.
 
-### Sfide dell’enterprise computing
-
-- Portabilità;
-- Interoperabilità fra diversi ambienti (anche _legacy_);
-- Supporto e gestione runtime: scalabilità, efficienza, tolleranza ai guasti, resilienza, affidabilità, qualità, etc;
-- Time-to-market: sviluppare componenti nel minor tempo possibile;
-- Integrazione.
-
 ### Architetture applicazioni Enterprise
 
 Le architetture si sono evolute sempre di più verso architettura N-tier perchè l'obiettivo è quello di separare logicamente le funzionalità in modo da ridurre la complessità degli strati:
-- **Single-Tier**: c'è un singolo calcolatore a cui sono connessi i clienti
-    - **Vantaggi**: nessun aggiornamento dei clienti, una sola copia dei dati che si trova nel server;
+- **Single-Tier**: c'è un singolo super calcolatore a cui sono connessi i clienti perchè quest'ultimi non hanno abbastanza risorse per fare elaborazione. I clienti (o meglio terminali) inviano solo le richieste al mainfraime. E' la soluzione adottata negli anni '50.
+    ![single tier](./img/img5.png)
+    - **Vantaggi**: nessuna gestione client-side e consistenza dei dati perchè tutti i dati sono solo sul calcolatore;
     - **Svantaggi**: no scalabilità.
-- **Two-Tier**:
-- **Three-Tier**:
+
+- **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw. La logica di presentazione, di business e di processamento del modello dei dati si trova nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
+![single tier](./img/img6.png)
+    - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier);
+    - **Svantaggi**: sono molteplici
+        - difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
+        - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti;
+        - il modello dei dati è tightly-coupled per ogni cliente: se cambia DB Schema?
+
+- **Three-Tier**: ci sono diversi modelli:
+    - Three Tier (basato su RPC)
+    - Three Tier (basato su Remote Object)
+    - Three Tier (Web Server)
 
 ### J2EE
 
@@ -78,9 +89,11 @@ Esistono diversi _software open source_, che vengono spesso usati anche in ambie
 
 ### Modelli a contenimento
 
-Le chiamate clienti verso i metodi EJB sono intercettate dal container prima che questo le “deleghi” ai componenti EJB veri e propri.
+Sono modelli che si basano sull'uso di un _container/engine/middleware_ (parte azzurra) che forniscono “automaticamente” molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
 
 ![container](./img/img4.png)
+
+Le chiamate dei clienti sono intercettate dal _container/engine/middleware_ prima che questo le “deleghi” ai componenti veri e propri.
 
 ---
 
