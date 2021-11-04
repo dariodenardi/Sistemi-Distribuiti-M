@@ -680,8 +680,69 @@ Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle pr
 
 ## 05.EJB3
 
+## 05.EJB3
+
+### Tipologie di componenti
+
+In EJB 3.X i componenti sono di tipo session bean e message driven bean. Gli Entity Bean sono stati rimossi per i motivi specificati nel capitolo precedente.
+
+### Interfacce in EJB 3.X
+
+Grazie all'uso delle annotazioni è possibile riscrivere le interfacce in modo POJI (Plain Old Java Interface) cioè l'interfaccia viene riscritta in un modo piu' simile a quello di come viene scritta a come si scrive un'interfaccia "normale".
+
+Le annotazioni che si usano sono: @Remote, @Local, @WebService
+
+Possono essere specificate a livello di classe o di interfaccia
+
+Per quanto riguarda il message driven bean, deve implementare lo stesso l'interfaccia jms.MessageListener e usare l'annotazione @MessageDriven.
+
+### Interoperabilità tra EJB 3.X e EJB 2.X
+
+Ovviamente il codice deve essere riutilizzabile per non perdere tutto quello che è stato prodotto nelle versioni precedenti.
+
+Le nuove applicazioni possono essere clienti di vecchi bean e vecchi clienti possono accedere ai nuovi componenti EJB 3.X:
+
+
+
+I vecchi bean sono conformi a EJB 2.x e possono utilizzare i nuovi componenti:
+
+### Dependency Injection
+
+Le risorse di un bean sono "iniettate" quando l'istanza del bean viene effettivamente costruita.
+
+Anche la dependency injection viene realizzata tramite annotaion:
+
+- @Resource: utilizzata per indicare factory di connessioni, topic/queque, EJBContext, UserTransaction
+
+- @EJB: utilizzata per indicare interfacce che sono EJB o per integrare interfacce EJBHome di versioni precedenti
+
+- @PersistenceContext @PersistenceUnit
+
+Le risorse vengono iniettate a seconda di dove viene specificata l'annotazione.
+
+A tempo di compilazione: la risorsa viene istanziata quando viene creata l'istanza, minor tempo ma si occupa piu' spazio in memoria.
+A tempo di caricamento, la risorsa viene iniettata quando l'utente fa la richiesta di ottenere l'istanza logica dedicata. Ovviamente bisogna aspettare che si risolvano le dipendenze e ci vuole piu' tempo.
+
+Il container è responsabile per gestire la dependency injection e per completare il binding vero la risorsa JNDI appropriata.
+
+L'annotazione @Resource serve a dichiarare un riferimento a una risorsa
+
+I servizi di sistema che sono messi a disposizione dell'EJB come visto nel capitolo di EJB 2.X sono molteplici. Di seguito vengono spiegati ad uno ad uno.
+
+### Pooling e concorrenza
+
+### Transazionalità
+
+### Gestione delle connessioni a risorse
+
+### Persistenza
+
+### Messaggistica
+
+### Sicurezza
+
 Perchè sono importanti componenti asincroni?
-Svolgono operazioni molto onerose in modo asincrono. La VM è asincrona perchè ci vuole tempo.
+Svolgono operazioni molto onerose in modo asincrono. Ad esempio, richiedere la VM è asincrona perchè ci vuole tempo.
 
 Perchè non ci piace l'intercettore?
 Cambiare stati, spargere il codice su più metodi e diventa difficile controllare il codice. perchè mettere il codice di un bean dentro all'intercettore?
