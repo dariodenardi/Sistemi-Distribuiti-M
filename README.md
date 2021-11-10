@@ -988,3 +988,45 @@ MappedSuperclass: integrare con codice non scritto da noi
 
 
 ### Come funziona il concurrency control in Hibernate? Ed il version checking?
+
+## 09.Spring
+
+Spring è un framework leggero per la costruzione di applicazioni Java SE e Java EE.
+
+È ancora molto usato al giorno d'oggi perchè ha delle proprietà uniche:
+
+- Spring come framework modulare: possibilità di utilizzare anche solo alcune parti. Il modulo base si occupa sostanzialmente della sola Inversion of Control
+ 
+➢ Anche possibilità di introdurre Spring incrementalmente in progetti 
+esistenti e di imparare ad utilizzare la tecnologia “pezzo per pezzo”
+❑ Tecnologia di integrazione di soluzioni esistenti
+❑ Facilità di testing
+
+### Aspect Oriented Programming (AOP)
+
+Esistono alcune attività che, per la loro natura di trasversalità applicativa non sono facilmente isolabili in moduli distinti. Ad esempio, logging, gestione della sicurezza, ecc. La gestione di questi aspetti, pur non rappresentando il core della logica applicativa, è presente (ripetuta) in più oggetti del modello.
+
+Di conseguenza, ci sono problemi dovuti alla mancanza di separazione del 
+codice, manutenibilità, ecc.
+
+Per far fronte a queste problematiche nasce l’Aspect Oriented Programming (AOP), un paradigma complementare a OOP in grado di descrivere aspetti e comportamenti trasversali all’applicazione, separandoli dal dominio applicativo.
+
+Di seguito vengono presentati i concetti rilevanti.
+
+### Join Point
+
+Rappresenta un punto preciso nell’esecuzione del programma, come l’invocazione di un metodo o il verificarsi di un eccezione.
+
+### Advice
+
+Descrive l’operazione da compiere ad un determinato Join Point. Un advice, a differenza di un metodo che deve essere invocato esplicitamente, viene eseguito automaticamente ogni volta che ad un determinato evento (Join Point) si verifica una particolare condizione (Pointcut). Esistono diversi tipi di Advice.
+
+### Pointcut
+
+Descrive le regole con cui associare l’esecuzione di un Advice ad un determinato Join Point. Sostanzialmente attraverso un predicato viene specificato che al verificarsi di un determinato Join Point (es: esecuzione del metodo foo()) sia applicato un determinato Advice (es: Before).
+
+Un tipico pointcut è l’insieme di tutte le invocazioni di metodo in una 
+classe determinata
+
+### Inversion of Control
+
