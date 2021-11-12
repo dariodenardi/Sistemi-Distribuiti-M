@@ -120,7 +120,7 @@ EJB è stata una delle prime tecnologie a componenti e al giorno d'oggi, sebbene
 I principi che sono alla base di questa tecnologia sono i seguenti:
 
 - Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (_loosely coupled_). Ad esempio, se si hanno due componenti A e B, A deve chiamare un metodo di B non molte volte. Questo perchè nel distribuito si paga un costo di _overhead_ piuttosto alto. Dall'altra parte, i componenti devono essere portabili da un'applicazione altra, quindi bisogna stare attenti a come si scrive il software altrimenti diventa difficile ricostruire le sue dipendenze quando si decide di usare quel codice in un altro progetto;
-- Il comportamento dei componenti EJB è definito tramite interfacce. Questo concetto non è assolutamente nuovo perchè basti pensare alla normale programmazione ad oggetti;
+- Il comportamento dei componenti EJB è definito tramite interfacce. Questo concetto non è assolutamente nuovo perchè basti pensare alla normale programmazione con gli oggetti;
 - Lo sviluppatore **non** deve pensare a come gestire le risorse. Ci pensa tutto il container;
 - Le applicazioni EJB sono N-tier.
 
@@ -177,7 +177,7 @@ Un Entity Bean ha le seguenti caratteristiche:
 - L'stanza è condivisa fra clienti diversi: bisogna immaginare le istanze come una sorta di cache ad oggetti;
 - Long-lived: la vita del Bean è pari a quella dei dati nel database;
 - Persistente;
-- Fault-tollerant: il componente sopravvive a crash del server, quindi, se i campi sono cambiati, si può effettuare lo stesso l'allineamento con il db;
+- Fault-tollerant: il componente sopravvive a crash del server, quindi, se i campi che si trovano all'interno del componente sono cambiati, si può effettuare lo stesso l'allineamento con il db;
 - Sempre transazionale;
 - implementa l’interfaccia _javax.ejb.EntityBean_.
 
