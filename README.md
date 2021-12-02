@@ -1009,46 +1009,107 @@ MappedSuperclass: integrare con codice non scritto da noi
 - **TABLE_PER_CLASS**: ogni tabella ha colonne per ogni proprietà comprese quelle ereditatte dalle superclassi. Non c'è bisogno del discriminator e non è uno schema normalizzato
 - **JOINED**: ogni tabella ha le colonne con valore con le sole proprietà definite nella classe specifica ma lo schema è normalizzato (schema non ridondante). Se bisogna normalizzare i dati non c'è ridondanza ma dobbiamo effettuare le join. Se la gerarchia è estesa il costo diventa molto alto.
 
-## 09.Spring
+Molteplicità delle relazioni: 1-1 N-1 N-M
 
-Spring è un framework leggero per la costruzione di applicazioni Java SE e Java EE.
+### ORM Direzionalià delle relazioni.
 
-È ancora molto usato al giorno d'oggi perchè ha delle proprietà uniche:
+Le relazion i possono essere mono o bidirezionali possiamo avere relazioni tra le varie entità un uno o in più sensi. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono passsare da un’entità all’altra.  Inoltre si possono utilizzzare per navigare tra le varie entità e capire Quali relazioni cancellare.
 
-- Spring come framework modulare: possibilità di utilizzare anche solo alcune parti. Il modulo base si occupa sostanzialmente della sola Inversion of Control
- 
-➢ Anche possibilità di introdurre Spring incrementalmente in progetti 
-esistenti e di imparare ad utilizzare la tecnologia “pezzo per pezzo”
-❑ Tecnologia di integrazione di soluzioni esistenti
-❑ Facilità di testing
+### Gestione a runtime di Entity
 
-### Aspect Oriented Programming (AOP)
+Cosa vaviene a runitme e come il container riesce a gestire tutte le info per la gestione della ersistenza. A livvelo di container abbiamo un Entity Manager che si occupa della persistenza. All’interno di tale contesto è come se entity vivessero con il loro cilo di vita. Il constesto di persistenza è quindi il luogo dove esistono tutte le istanze di entity. L’entity manager può essere utilizzato demandando completamente la gestione al container o gestendolo a livello applicativo. Come per le transazioni.
 
-Esistono alcune attività che, per la loro natura di trasversalità applicativa non sono facilmente isolabili in moduli distinti. Ad esempio, logging, gestione della sicurezza, ecc. La gestione di questi aspetti, pur non rappresentando il core della logica applicativa, è presente (ripetuta) in più oggetti del modello.
+### Container managed entity manager
 
-Di conseguenza, ci sono problemi dovuti alla mancanza di separazione del 
-codice, manutenibilità, ecc.
+Tutto è interallaciato con la gestione delle transazioni, il conttesto è automaticamnete propagato dal container ai servizi applicativi. Oltre ad essere nello stesso container devono essere nello stesso contesto di persistenza quindi con l’annotazione @PErsistenceContext viene passtao Entity MAnger. In questo senso l’entity manager è container managed poiché è direttamnete passato. In vece se il contesto di persistenza non propagato ai servizi applicativi l’entity manager non è passato e questo contesto è utilizzato quando l’applicazione necessita di più contesti di persistena contemporaneamente.
 
-Per far fronte a queste problematiche nasce l’Aspect Oriented Programming (AOP), un paradigma complementare a OOP in grado di descrivere aspetti e comportamenti trasversali all’applicazione, separandoli dal dominio applicativo.
+Le enitiy vivvono all’interno di contesti di persistenza ciascuna di esse può avere 4 diversi stati. New/transient Entity sono instanze non associate, MAnaged sono associate Detached sono mo,mentaneamnete non asssociate a un contesto, Removed sono istanze er cui è stato avviato il processo di eliminazione dal datastore.
 
-Di seguito vengono presentati i concetti rilevanti.
+### Ciclo di Vita
 
-### Join Point
+![single tier](./img/img25.png)
 
-Rappresenta un punto preciso nell’esecuzione del programma, come l’invocazione di un metodo o il verificarsi di un eccezione.
+La refresh nello stato managed serve quando abbiamo necessita di aggiornarne lo stato. Soprattutto in caso di transazioni non ACID esempio nel caso della mandatory.
 
-### Advice
+Le nuove istanze diventano gestitee con l’invocazione del metodo persist dell’entity manager, oppuere il metodo persist viene chiamato da un’entity correlata e a cascata sono persistiti anche gli oggetti in rrelazione con quello su cui stiamo agendo. I dati sono memorizzati nel DB quando le transazioni associati alla perist sono state completate.
 
-Descrive l’operazione da compiere ad un determinato Join Point. Un advice, a differenza di un metodo che deve essere invocato esplicitamente, viene eseguito automaticamente ogni volta che ad un determinato evento (Join Point) si verifica una particolare condizione (Pointcut). Esistono diversi tipi di Advice.
+Per propagare le perisst usiamo le annotazioni one to many e le mandiamo a molti. Le istanze di entity possono essere rimosse e quando invochiamo la remove fallisce solo in caso che sia detached viene isgnorata se lo stato è new entity e se è gia stata rimossa.
 
-### Pointcut
+Per sincronizzarsi con il DB bisogna effetuare il commit della transazione a quel punto viene salvata nel db. Se abbiamo cascading attivata o comunque relazioni bisdirezionali la commit crea una reazione a catena. Ossiamo forzare la commit con l’operazione di flush.
 
-Descrive le regole con cui associare l’esecuzione di un Advice ad un determinato Join Point. Sostanzialmente attraverso un predicato viene specificato che al verificarsi di un determinato Join Point (es: esecuzione del metodo foo()) sia applicato un determinato Advice (es: Before).
+Creazione di query che devono essere conformi allla specifica java peristence e la specifica consete la definizione di query all’interno della logia di business. Tutto ciò è scritto con un liguaggio SQL like di JAVA.
 
-Un tipico pointcut è l’insieme di tutte le invocazioni di metodo in una 
-classe determinata
+Questo serve per costruire query dinamiche popolabili con i valori che le variabili assumono. Le query statiche invece vengono create con l’annotazione name o query.
 
-### Inversion of Control
+I parametri con nome sonom parametri di query preceduti da : sono legati al valore dal metodo javax.persistence.Query.setParameter()
+
+### Unità di Persistenza
+
+Insieme di tutte le classi gestite dall’entity manager in un’applicazione. Rappresenta l’insieme di dati che sono significativi e sui quali vogliamo agire per una certa applicazione e che sono contenuti in un unico data store. L’entità di persistenza è un concetto legato al deployment e dato un datastore sappiamo quali sono tutti i componenti su cui lavorare per arrivare a quello store. Nel caso del contesto di persitenza ragioniamo in termini di transazioni da effettuare e nel senso degli oggeti che devono essere persistiti,  non in termini di deployment delle classi,. Queste due cose sono ortogonali. 
+
+Per le unità di persistenza possiamo definire un data source e poi tutti i vari componenti coinvolti- JTA data source specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container. 
+
+Controllare il caricamento dei dati:
+
+il caricamento è lazy o eager. In caso di caricamento lazy le entità sono caricate solo nel momento in cui andiamo a usarle.  Se invece utilizziamo il caricamento eager l’entità viene caricata quando è caricata l’entità padre. In generale usiamo eager per realtà ristrette e lazy in tutti gli altri casi in alcune applicazioni non ci interessa portarci dietro tutte le relazioni in cascata. Utile se usiamo sotto-parti e utilizziamo il resto dello stato solo in alcuni casi per le entità in relazione. 
+
+JPA definisce una specifica e un linguaggio di Query che ha l’obiettivo di essere indipendenti dal data store. Che vuole essere indipendente dal data store che siano relazionali o meno.  PORTABILITA’ e INDIPENDENZA.
+
+Le annotazioni iniettano nel container degli schemi per le relazioni tra entità. Possiamo definire query che lavorano su un contesto di persistenza definito da tutte queste annotazioni. 
+
+Entity manager svolge funzionalità svolge un’attività di controllo dei data object e di data transfer verso il data store. Gestisce il ciclo di vita degli oggetti con la sincronizzazione tra contesto di persistenza e DB. 
+
+Il contesto di persistenza è uno stato che è gestito in modo transazionale e su questo vengono invocate localmente tutte le operazioni di persistenza ma il momento esatto in cui verranno fatte flush e commit non lo conosciamo poichè è tutto demandato al container. 
+
+Find e remove degli ordini sono anche esse effetuate con flush e commit in caso di remove o find di un entità già rimossa o non disponibile una entity gia rimossa restituisce i risultati non definiti.
+
+Merge nel caso in cui si voglia lavorare su entity detached che non sitrovano ancora nel contesto di persitenza tutte le modifiche fatte all’entity detached vengono applicate con la merge facendo diventare l’istanza manage. 
+
+Listener di Entity, invocati dal provider della persistenza con metodo di call back si occupano diaggiurnare gli stati e di relazionarsi con il DB. Il listener serve per effettuare controlli quando si cambia lo stato. Quindi è un controllo uteriore per controllare che sia possibile effettuare la persist e cambiare lo stato. L’obiettivo è quello di effettuare controlli e aggiornamenti prima o dopo le operazioni che riguardano la persistenza dei dati. 
+
+Il contesto ersistenza è una sorta di cache del databease che mantiene lo stato.
+
+Singolo entity manager utile per la gestione semplifica le transazioni e il contesto di prsistenza.
+
+Molte enity e molti db con una relazione un entity un db.
+
+Entity manager multipli veros lo stesso db per gestire tabelle diverse dello stesso db e avere diversi contesti di peristenza per gestirli in modo diverso e separare i contesti e le diverse transazioni collegate. 
+
+La propagazione del contesto di persistenza è possibile e può essere fatto su più transazioni. Quando lo stato viene persistito con la commit verso il database stacchiamo l’oggetto dal contesto di persistenza che entra nello stato di detached. Questo può portare a stati non significativi. 
+
+Quando lavoriamo con le entity dobbiamo verificare che le entity siano ancora collegate e attive.
+
+### Hibernate
+
+Ha l’obiettivo di realizzare la persistenza di oggetti POJO. Passando dal mondo object oriented al mondo relazionale. Facilita la gestione di oggetti persistenza. La gestione del cahing è ancora più esplicita, di jpa, ha un supporto alla scrittura di query. 
+
+SessionFactory consente di creare oggetti Session e mantenere le risorse necessarie per cache di primo e secondo livello. L session di hibernate è un contesto di persistenza che viene gestito dall’inizio alla fine dalle transazioni. Va a gestire anche il ciclo di vita degli oggetti persistenti e operaa da factori per gli oggetti transaction. Gli oggetti peristenti sono oggetti per cui vogliamo mantenere uno stato persistente e devono essere inseriti in un contesto di persitenza con una session che operae lavora come una cache. Quado si chiude una sessione gli oggetti diventano detached e possono essere usati sapendo che non c’è iù un collegamento con il db. Gli oggetti transient o detached hanno istanze non legate alla session. Modificando gli oggetti no modificihiamo il db ciò avvine solo con la perist o la merge. Le transazioi sono oggetti single therad che servono a specificare unità atomiche di lavoro astraendo dai dettagli delle librerie e dei framework che usiamo. Unsa session può essere usata più transaction.
+
+Abbiamo 3 possibili stati, transient non appartiene al contesto di persistenza persistent appartiene al  contesto di persistenza detached è un istanza che non è al momento nel contestio di persistenza poiché è stat scollegata.
+
+Stato transient non è mai associato a un contesto di persistenza e quetso accacde quando definiamo un’istanza fuori da una sessione. Nello stato persistent l’stanza è associata a una sessione e il suo stato corrisponde a una riga del db. Detached quando un’istanza che corrisponde a uno stato di persistenza viene staccata, questo però non vuol dire che sia aggiornata.
+
+Le transizioni di stato al momento della delete di un oggetto quell’oggetto diventa transient.
+
+### Il caching in hibernate
+
+In genrale migliora la performance dei sistemi che consente un miglioramento delle prestazioni accedendo al database solo se lo stato necessario non è presente in cache. In caso in cui tutti gli oggetti siano nella sessione faccio tutte le operazioni posticipando l’accesso  al db solo per la flush e non per le varie parti della tnsazione. Ovviamente essendo delle cache quindi una trnsazione può avere necessità di svuotare l cache se sappiamo che quancuno esternamente sta modificando il db e quindi dobbiamo ripopolare i valori per riallinearlial db.
+
+Esistono due livelli di cache uno associata alal sessione  e una associata alla session factory ovvero legata alla getsion edel supporto al cahing. Le cache di primo livello hanno i confini della transazioni e sono legati alla sessione ci consnete di fare meno uery sul db quindi ci sono solo statement inziiali e finali senza stati intermedi. Le cache di secondo livello mantendgono informazioni utilizzabili da diverse transazioni.
+
+Per l’invalidazione della cache usiamo una strategia ottimistica poiché si assume che la maggiorarte delle transazioni verso il db non siano in conflitto con le altre. Se ciò è vero riusciamo ad avere un throughput molto alto. Le modifiche da fare in caso di collisioni sono possibili con un versioning dei dati che consente di cìfare dei check e controllare i dati. 
+
+Il version checking non sono sempre automatici però abbiamo una proprietà @Version che viene salvata e mantiene la versione dell’entità. Lanciando un’eccezione se gli stati di sono diversi ci rendiamo conto se ci sono stati conflitti. In caso di conflitti effettueremo refresh e update. 
+
+### Hibernate Fetching dei dati
+
+Per fare fetching (caricare dati dal db alla memoria) possiamo usare varie stretegie che si possono indicare a priori nel file di mapping o successivamente nelle query con override. Le modalità di fetching sono Default, Join Select. La seconda select avviene solo quando accediamo i dati. Simile a eager o lazy
+
+Ricerche di tipo associativo il programmatore definisce i Criterion, con una interafccia che li relaizza e definendo il criterio di interesse. Si va quindi a costruire i criteri riempiendoli con elementi che rendono la ricerca associativa in modo trasparente cercando nel dtabase tuple che facciano match il programmatore in questo modo non deve conoscere il linguaggio sql e può effettuare ricerche in modo trasparente attraverso il framwork stesso.
+
+Nelle ultime versioni di JPA c’è la possibilità di versioning.
+
+Su hibernate la cache di secondo livello serve per la trasversalità tra diverse applicazioni.
 
 ## 07.JMS
 
@@ -1084,8 +1145,11 @@ JMS dà alcune garanzie nella consegna dei messaggi vi sono possibili gradi diff
 ### Transazionalità
 
 Produzione transazionale, il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno. Nel consumo transazionale, invece,  il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale, fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un reository persistente.
-Lo scope della transazionalità si può applicare sull’interazione tra consumatore del sistema MOM e il sistema MOM stesso, oppure tra produttore dei messaggi e MOM, nei casi inc cui si vogia un transazionalità forte si può applicare su tutto il percorso da produttore a consumatore. La terza opzione è molto complessa e non viene garantita da molti mom. Inoltre il sistema di messaggistica può essere distribuito e questo può rendere complicata la transazionalità. 
-Lo scope della transazionalità è di due tipi: scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging questo è lo scope supportato da JMS, e scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi, questo non è supportato da JMS. 
+
+Lo scope della transazionalità si può applicare sull’interazione tra consumatore del sistema MOM e il sistema MOM stesso, oppure tra produttore dei messaggi e MOM, nei casi inc cui si vogia un transazionalità forte si può applicare su tutto il percorso da produttore a consumatore. La terza opzione è molto complessa e non viene garantita da molti mom. Inoltre il sistema di messaggistica può essere distribuito e questo può rendere complicata la transazionalità.
+
+Lo scope della transazionalità è di due tipi: scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging questo è lo scope supportato da JMS, e scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi, questo non è supportato da JMS.
+
 Ovviamente sistema di messaging può essere distribuito a sua volta Sistemi di enterprise messaging possono realizzare una infrastruttura in cui i messaggi sono scambiati fra server nel distribuito quindi questo complica la transazionalità.
 
 ### Sicurezza
@@ -1198,6 +1262,7 @@ I selettori sono filtri la cui logica di filtraggio è specificabile con stringe
 ### JMS e MDB
 
 I MDB vengono istanziati e prelevati da un poll di istanze quando il messaggio viene ricevuto, vi è un JMS provider che invia i messaggi a istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti, a questo punto il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback tipicamente, a questo punto vi è un applicazione con un EJB client legato all’applicazione che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un session bean con dietro entity bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS. 
+
 L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
 
 ![single tier](./img/img22.png)
@@ -1214,6 +1279,7 @@ Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integra
 ### Service Oriented Architecture SOA
 
 Un SOA mette a disposizione servizi a grana grossa completi e autonomi, interfacce astratte ben fatte che definiscono contratti tra Consumer e Provider, scambio di messaggi che compongono le operazioni invocabili sui servizi di input e output, registri dei servizi con naming e trading, possibilità di comporre i servizi in processi di business, ovvero molti servizi messi insieme seguendo le linee guide SOA, tutto questo ha  l’obiettivo di ottenere  accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte.
+
 Azure espone api con interfacce rest.
 
 ### WEB SERVICES
@@ -1239,6 +1305,7 @@ Questa soluzione ha alte latenze al momento delle batch, ci possono essere fault
 La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione, non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus. Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e con le applicazioni che hanno un adapter a un formato comune e una central automation engine un motore che consuma i messaggi guarda dentro i messaggi e facendo routing intelligente tra le applicazioni e mandandolo dove deve arrivare, inoltre vi sono tutti i servizi di sistema, tra cui persistenza e transazioni. L’altra architettura di riferimento è quella a bus, l’automation engine risiede con l’applicazione non abbiamo il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto. 
 
 I pro dell’architettura a stella sono la facilità di gestione (centralizzata) il principale contro è che l’hub è punto critico di centralizzazione, inoltre ha ridotta scalabilità. I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
+
 Enterprise Service bus è la realizzazione della seconda architettura, l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso. 
 
 ### Orchestrazione ESB concetti chiavi
@@ -1261,7 +1328,49 @@ JBI supporta 4 possibili pattern di scambio messaggi:
 - In-Only per interazione/trasferimenti one-way, spesso molte integrazioni sono soddisfabili con questo pattern, prevede una conferma che tutto sia andato a buon fine
 - Robust In-Only per possibilità di segnalare fault a livello applicativo, simile a un handshake a tre vie con la conferma che le cose siano andate bene nelle due parti semantica per gli errori o danni 
 - In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
-- In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa). 
+- In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
+
+## 09.Spring
+
+Spring è un framework leggero per la costruzione di applicazioni Java SE e Java EE.
+
+È ancora molto usato al giorno d'oggi perchè ha delle proprietà uniche:
+
+- Spring come framework modulare: possibilità di utilizzare anche solo alcune parti. Il modulo base si occupa sostanzialmente della sola Inversion of Control
+ 
+➢ Anche possibilità di introdurre Spring incrementalmente in progetti 
+esistenti e di imparare ad utilizzare la tecnologia “pezzo per pezzo”
+❑ Tecnologia di integrazione di soluzioni esistenti
+❑ Facilità di testing
+
+### Aspect Oriented Programming (AOP)
+
+Esistono alcune attività che, per la loro natura di trasversalità applicativa non sono facilmente isolabili in moduli distinti. Ad esempio, logging, gestione della sicurezza, ecc. La gestione di questi aspetti, pur non rappresentando il core della logica applicativa, è presente (ripetuta) in più oggetti del modello.
+
+Di conseguenza, ci sono problemi dovuti alla mancanza di separazione del 
+codice, manutenibilità, ecc.
+
+Per far fronte a queste problematiche nasce l’Aspect Oriented Programming (AOP), un paradigma complementare a OOP in grado di descrivere aspetti e comportamenti trasversali all’applicazione, separandoli dal dominio applicativo.
+
+Di seguito vengono presentati i concetti rilevanti.
+
+### Join Point
+
+Rappresenta un punto preciso nell’esecuzione del programma, come l’invocazione di un metodo o il verificarsi di un eccezione.
+
+### Advice
+
+Descrive l’operazione da compiere ad un determinato Join Point. Un advice, a differenza di un metodo che deve essere invocato esplicitamente, viene eseguito automaticamente ogni volta che ad un determinato evento (Join Point) si verifica una particolare condizione (Pointcut). Esistono diversi tipi di Advice.
+
+### Pointcut
+
+Descrive le regole con cui associare l’esecuzione di un Advice ad un determinato Join Point. Sostanzialmente attraverso un predicato viene specificato che al verificarsi di un determinato Join Point (es: esecuzione del metodo foo()) sia applicato un determinato Advice (es: Before).
+
+Un tipico pointcut è l’insieme di tutte le invocazioni di metodo in una 
+classe determinata
+
+### Inversion of Control
+
 
 ## 11. Big Data
 
