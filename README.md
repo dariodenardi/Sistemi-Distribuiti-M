@@ -1330,6 +1330,123 @@ JBI supporta 4 possibili pattern di scambio messaggi:
 - In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
 - In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
 
+### 08.CORBA
+
+Corba offre una soluzione per il distributed object computing che definisce un modello a container per oggetti distribuiti, aggiungendo componenti e funzioni. Questo ha portato a una ridefinizione dello standard nel Corba Component Model CCM.
+
+Distributed object compunting (DOC middleware) utilizza sempre un pattern broker con un servizio un proxy che facilita la comunicazione tra il client e il servizio, inoltre non definisce solo API locali ma anche i protocolli da utilizzare in mezzo per facilitare la comunicazione delle due entità, si fa carico anche della parte di comunicazione. Perché il service access point offerto a livello applicativo prescinde dal linguaggio di programmazione. In Corba la cosa è molto simile grazie all’utilizzo di un IDL che non dipende da nessun linguaggio o piattaforma in termini di interfacce applicative, poi per ogni singolo linguaggio possiamo andare a definire un pattern broker che definirà il protocollo che segue le specifiche dello standard Corba. Quindi Corba facilita di integrazione, non solo tra mondi object oriented ma anche tra mondi che non lo sono, rendendoli a oggetti nella loro interfaccia con il mondo esterno.
+
+Obiettivo corba è lavorare per dispositivi molto leggeri e con poche risorse quindi GIOP è messo a disposizione per comunicare a byte. Corba è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo Corba. 
+
+Corba automatizza una serie di funzionalità e servizi di sistema, tra cui Object location, connection e memory management, parameter marshaling e demarshalling, request demultiplexing, error handling e fault tolerance, Object/server activation, concurrency e synchronization. 
+
+L’object adapter è un antenato del container. Tutto è molto integrato con i vari linguaggi in Corba.
+
+Uno dei problemi aperti di Corba è il fatto che non c’è nulla per la gestione dell’impacchettamento e del deployment del software, tutto questo deve essere fatto a mano, quindi una volta fatta l’interfaccia poi bisogna a mano mettere insieme tutti i vari pacchetti. Questo causa molti problemi per le infrastrutture perché dobbiamo lavorare in modo diverso ogni volta e non ci sono tool automatici, nella specifica Corba non ci sono strumenti per gestire tutti componenti e metterli nel punto giusto.
+
+Tra gli esempi delle limitazioni di Corba Requisiti non-trivial di Distributed Runtime Environment (DRE): collaborazione e coordinamento di oggetti e servizi multipli su diverse piattaforme. CORBA 2.x ha limiti come la mancanza di standard per: server/node configuration, object/service configuration, application assembly, object/service deployment. Le principali conseguenze sono la scarsa adattabilità e manutenibilità, una crescita time-to-market e costi integrazione. Per applicazioni anche di poco più complesse che richiedono l’utilizzo di alcuni oggetti e di servizi Corba bisogna scrivere strumenti per il continuos integration e deployment. 
+
+Per andare oltre a questi limiti è stato proposto il Corba Component Model per far si, che sia possibile creare dei component server che possano ospitare container e componenti, ovvero un’interfaccia home e una parte di componente che permette l’esecuzione. 
+
+I container definiscono operazioni che abilitano i component executor ad accedere a servizi comuni di middleware & politiche runtime associate, e i servizi di supporto e la composizione di servizi a grana grossa. 
+
+![single tier](./img/img26.png)
+
+Quindi agli strumenti classici si affiancano dei nuovi strumenti ovvero un Component IDL compiler che aggiunge la parte di executor e la realizzazione dei container e facilita attraverso i xml component descriptor il deployment del software ovvero l’assembly e il packaging dei vari componenti. Il Component Packaging mette insieme metadati di implementation e configuration in assembly pronti per deployment, mentre gli strumenti per component deployment automatizzano il deployment di component assembly verso component server
+
+![single tier](./img/img27.png)
+
+Prima si definiscono i componenti che possono richiedere l’utilizzo di vari oggetti, poi possiamo assemblarli insieme e farli diventare componenti a grana grossa e sua volta assemblare componenti a grana grossa, e infine abbiamo strumenti per facilitare l’assembly, e per facilitarne il deployment e verso i component servant (anche nel distribuito). Con questi strumenti si può andare a gestire il deployment attraverso un deloyment plan, di codice che si trova nel Component Repository su una rete di nodi distribuiti. La gestione è molto completa e ben pensata per ambienti distribuiti che coinvolgono molti nodi e ambienti molto larghi.
+
+Le tecnologie Corba sono datate, Corba ha avuto grande successo negli anni 80 e 90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi Corba non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i web services, quindi per motivi commerciali.  
+
+Le principali standardizzazioni sono le seguenti
+
+![single tier](./img/img28.png)
+
+Rispetto ad altri framework le principali caratteristiche: 
+
+CORBA
+
+Enterprise Java Beans (EJB):
+- Componenti CORBA creati e gestiti da interfaccia home 
+- I componenti Eseguono in container che gestiscono trasparentemente servizi di sistema 
+- Ospitati da Application Component Server generici 
+- MA possono essere realizzati in diversi linguaggi di implementazione . 
+
+Microsoft Component Object Model (COM): 
+- Possono avere diverse interfacce input e output per ogni componente 
+- Sia operazioni point-topoint sync/async che eventi publish/subscribe 
+- Capacità di component navigation e introspection 
+- MA supporto più efficace e flessibile proprietà di distribuzione e QoS, meno multi-linguaggio e non lavora solo su microsoft
+
+Come Microsoft .NET Framework: 
+- Possono essere realizzati in diversi linguaggi programmazione 
+- Possono essere packaged per facilitare distribuzione 
+- MA possono eseguire su piattaforme multiple (non solo Microsoft Windows) e supportano il multi-linguaggio 
+
+![single tier](./img/img29.png)
+
+Rate Generator: Invia eventi Pulse periodici ai consumatori, per info sul veicolo.
+
+Positioning Sensor (GPS): Riceve eventi di Refresh dai pubs, rinfresca le coordinate cached disponibili via MyLocation facet, notifica subs via eventi Ready events.
+
+Display Device (NavDisplay) : Riceve eventi Refresh da pubs, legge coordinate correnti via GPSLocation receptacle, aggiorna il display.
+
+Le freccette sono (verdi e rosa) servono per scambio di eventi e quindi gestione di scambio a eventi tipicamente sincrona non bloccante, sono detti facet, ovvero rappresentano le comunicazioni sincrone non bloccanti. Il cerchio giallo rappresenta un’interfaccia con cui lavorare, la mezzaluna rappresenta il fatto che il componente si aspetti di interagire con un altro componente che esponga la stessa tipologia di servizio/dato. Il navigator si aspetta da una parte di ricevere eventi dall’altra si aspetta ti poter interagire con il Gps andando a richiedere la location, queste sono comunicazioni tra componenti a eventi.  Il cerchio bianco invece dà la possibilità di configurare il componente.
+
+Il Corba Component Model è molto largo e completo, rispetto al mondo Corba 2 consente di aggiungere una parte sull’integrazione di componenti, la parte per il packaging, fino ad arrivare all’assemblaggio dei vari componenti e infine facilitarne il deployment anche su reti di nodi distribuiti, vi è poi la parte di esecuzione in questi ambienti distribuiti. 
+
+Il componente è l’unità di composizione, di utilizzo e implementazione, è l’unità base di software utilizzabile in parti diverse.  Per utilizzare il componente è possibile, grazie la mondo a oggetti, ereditare da un altro componente e supportare diverse interfacce preesistenti. Il componente offre una facet e questa dà modo di attivare o disattivare il RateGen con il metodo di start() e stop() , vi è poi l’interfaccia rate_control() per controllare il Rate.
+
+![single tier](./img/img30.png)
+
+Definizione delle porte che sono i punti di contatto tra i vari componenti. In particolare vi sono le Facet che sono rappresentate dai cerchi gialli che offrono interfacce e quindi metodi offerti da quelle interfacce, vi sono Receptacle che chiamano Facet di altri, soddisfando la necessità di combinare più Facet, poi ci sono Sorgenti e Sink per eventi in entrata e in uscita e infine vi sono attributi per la configurazione dell’oggetto. La maggiore innovazione è la Facet che consente di mettere insieme molte cose avendo sia comunicazioni sincrone bloccanti che a scambio di messaggi e a eventi. Vi sono poi una Component Reference e una Component Home per creare nuovi componenti. 
+
+![single tier](./img/img31.png)
+
+Il Corba Component Model si occupa di gestire il ciclo di vita dei componenti, tale gestione è integrata e standardizzata nel supporto. Possiamo definire diverse Home per definire diverse strategie di management. Grazie all’interfaccia Home possiamo definire varie strategie e applicare diversi tipi di strategie per il lifecycle management dei componenti, questa interfaccia Home è un metatype che ha riferimenti a interfacce e oggetti e va a gestire una famiglia di componenti attraverso quel tipo di lifecycle management, ogni istanza di un oggetto è gestita da una sola istanza di Home, l’operazione base che si trova sempre nella Home è quella per la creazione dell’oggetto ovvero create(), il tutto in IDL 3 può essere riassunto con questa chiamata. Inoltre, tale interfaccia Home può ospitare operazioni addizionali user-defined.
+
+I diversi componenti possono avere la necessita di collaborare fra loro, per questo ciascun componente offre viste diverse. Con Corba 2 era difficile fare una gestione avanzata del componente e la parte relativa di gestione dinamica, con il Corba Component Model, il tutto è strutturato in un modello ben fatto, anche grazie alle Facet, che sono chiamate “top of the lego”, che significa che le funzionalità che offre al mondo esterno e la gestione di eventi stanno sopra e sotto “bottom of the lego” si trova ciò che ci si aspetta per legarsi al mondo sottostante, ovvero i Receptable e i Sink. Le Facet sono le interfacce delle operazioni che i componenti offrono. Dal punto di vista logico, sono i servizi che il componente offre e il tutto da modo di avere internamente componenti che realizzano diverse possibili interfacce. Le Facet definiscono interfacce con operazioni offerte che sono specificate tramite keyword provides() e rappresentano logicamente il componente stesso, non è un’entità separata contenuta nel componente. Le Facet hanno riferimenti a oggetti indipendenti ottenuti tramite operazione provide_*() da una Factory e possono essere usati per implementare Extension Interface pattern. In IDL 2 il tutto deve essere fatto ragionando solo sui componenti di base. 
+
+Per quanto riguarda la definizione dei Receptable attraverso l’uso della keyword uses() viene definito il Receptable che si aspetta una Facet, si può connettere il componente con un altro componente, grazie alle parole chiave uses. Le connessioni sono effettuate staticamente durante la fase di deployment o dinamicamente gestite dai container che supportano interazione con clienti o altri componenti via callback. Inoltre, CCM supporta connection establishment a runtime.
+
+Per quanto riguarda lo scambio di messaggi CCM mette a disposizione lo scambio di eventi e le interazioni sincrone non bloccanti con l’idea di definire dei collegamenti per consentire lo scambio di eventi, può essere basato su tipi statici oppure basato su EventType.  Lo standard prevede una interazione di tipo push, perché in Corba il servizio di scambio di eventi può usare sia push che pull, ma per i componenti vi sono solo interazioni push. Per questo all’interno dei componenti sono presenti delle configurazioni che emettono Tick con l’unica differenza che la parola chiave publishes prevede molti consumatori ed emit prevede un solo consumatore. 
+
+Per connettersi al Sink di eventi può essere realizzata una comunicazione diretta o una comunicazione con intermediari. Si possono usare event-service del mondo Corba, oppure IDS standard per la distribuzione di eventi, con qualità e vincoli real-time anche in senso stretto. Dal punto di vista del componente questo emette sempre con interazioni push verso l’altro componente o verso la coda di eventi, questo facilita le cose soprattutto se l’altro componente non ha la pull.
+
+Il Sink Refresh, definito con la parola consumes, riceve i tick.  Si possono avere connessioni named a cui inviare eventi solo di specifiche tipologie.  Event sink multipli dello stesso tipo possono essere subscriber della stessa sorgente, non vi è distinzione fra emitter & publisher, rende possibile connessi a sorgenti via object reference ottenuta tramite operazione get_consumer_*() su factory.
+
+Componenti hanno bisogno di essere “aggregati” per formare applicazioni complete, vi sono però alcuni problemi: i componenti possono avere porte multiple con diversi nomi e tipi, diventa dispendioso scrivere manualmente il codice necessario per collegare un insieme di componenti per una applicazione specifica. Per cui in CCM è stata implementata tale soluzione: vi sono interfacce per l’introspezione che consentono la scoperta dinamica delle capacità dei componenti, e generiche operazioni sulle porte per connettere componenti tramite strumenti esterni di deployment e configuration, questo rappresenta la capacità di mettere insieme i lego.
+
+Capacità di navigation e introspection realizzate da CCMObject, che offre le seguenti interfacce: interfaccia Navigation per facet, interfaccia Receptacles per receptacle e interfaccia Events per porte per eventi Navigation da modo dal riferimento base di un componente a ogni sua facet via operazioni facet-specific automaticamente generate e supportate di richiedere tali facet. Con il metodo provide si può restringere la visibilità (narrowing) all’interfaccia che ci interessa e restituirà poi il riferimento a cui si è interessati, ad es. Components::CCMObject::get_all_facets() & Components::CCMObject::provide(). Navigation opposta da ogni facet al riferimento base di un componente tramite CORBA::Object::_get_component().
+
+Uso delle interfacce di navigazione di un componente.
+
+Sin questo esempio si vuole andare a recuperare una certa facet e invocare un metodo di tale interfaccia. Si parte dall’ORB che è un servizio di nomi che dà la possibilità di recuperare i servizi di base come il servizio di naming (come RMI Registry). Una volta recuperato il servizio di nomi si possono andare ad invocare dei servizi di lookup, in particolare in questo caso si fa il lookup della ComponentHome registrata come MyHelloHome, attraverso il narrowing si può recuperare un oggetto tipato Home, su quell’oggetto si applica la create che crea il componente, a questo punto è interrogabile e può restituire una descrizione di tutte le facet offerte da quel compente, si può poi con il receptable effettuare l’introspezione, con il metodo provide possiamo chiedere il recupero del riferimento all’implementazione di quella interfaccia, una volta ottenuto si può fare il narrowing e a quel punto effettuare la chiamata a un metodo che ci interessa. Le interfacce in corba non vengono mantenute insieme alle implementazioni ma in un repository che si chiama Interface Repository. Quindi le informazioni dell’interfaccia non sono insieme agli altri dati questo genera overhead quando bisogna recuperare molte interfacce diverse.
+
+Riassumendo le principali caratteristiche di CCM per il supporto cliente si può dire che CCM definisce operazioni per life-cycle management (home), definisce che cosa un componente offre agli altri componenti, definisce che cosa un componente richiede da altri componenti, definisce quali modalità di collaborazione sono usate fra componenti. Le operazioni possono essere di tipo Point-to-point via operation invocation o Publish/subscribe via event notification, definisce quali attributi dei componenti sono configurabili.
+
+Implementazione dinamica dei componenti e supporto runtime
+
+Per rendere le implementazioni dei componenti più adattabili e flessibili, le proprietà dei componenti dovrebbero essere ri-configurabili. Questo presenta diversi problemi: le applicazioni non dovrebbero legarsi a una specifica configurazione troppo presto,  non ci sono  standard per specificare parametri configurabili per componenti in CORBA 2.x, vi è il bisogno di meccanismi standard per configurazione. La soluzione CCM è quella di configurare componenti con attributi di assembly/deployment, via home o nella fase di inizializzazione.
+
+Il supporto run-time dei componenti è possibile grazie al Component Server che facilita il deployment della configurazione delle applicazioni. Questo avviene perché Corba mette a punto astrazioni di alto livello per la gestione del Servant e una serie di tool che facilitano la configurazione attraverso tecniche di meta-programming con anche la possibilità di effettuare l’introspezione, ma anche grazie all’introduzione di una serie di parole chiave gestite dall’IDL compiler.  Questo supporto a runtime facilita la gestione del ciclo di vita di questi componenti.
+
+Il CCM attraverso questa definizione del container va ad estendere l’object adapter di base di Corba ( che si occupa della gestione del ciclo di vita degli oggetti), il container va oltre l’object adapter nella gestione del loro ciclo di vita, indirizzandosi verso l’obiettivo della facilitazione dell’uso delle risorse. Ci sono poi i naming services la gestione della sicurezza, delle transazioni eccetera. Questi servizi esistevano ma dovevano essere utilizzati solo con oggetti a grana fine quindi oggetti che facevano molto poco, invece con l’introduzione dei container abbiamo servizi di più alto livello che con file di configurazione e deployment, automatizzano molti servizi che prima erano programmatici. Inoltre, vi è una gestione a call back su cui si può lavorare per capire come funzionano le cose e prendere misure dove necessario. 
+
+Anche nel modello CCM si possono definire categorie di componenti a seconda del tipo di implementazione di container, vi sono i Service che sono componenti senza stato, per la rappresentazione di una sessione si può avere un componente Session con una stato di tipo soft (stateful sessione bean), poi vi  sono Process  e Entity entrambi durable con la possibilità di essere invocati dall’esterno con chiavi o per riferimento.  Queste categorie ossono essere specificate dichiarativamente tramite il CIDL file oppure programmate imperativamente.
+
+![single tier](./img/img32.png)
+
+Il container offre interfacce verso l’interno e verso l’esterno, le interfacce verso l’esterno sono invocabili dai clienti, per interagire e configurare il container, quelle rivolte verso l’interno invece sono interfacce con il quale il container può offrire ai componenti possibilità di dialogo con il contesto del container stesso, e per le quali attraverso l’implementazione delle callback è possibile l’interazione con il container. 
+
+Ci sono diverse politiche di gestione, le strategie container managed cercano di disaccoppiare in modo forte la parte di gestione dalla parte di implementazione del container, il container si fa carico della gestione dei servizi di sistema, ciò avviene preparando metadati xml o direttive da dare al Component IDL Compiler che dichiara la gestione dei servizi di sistema come transazioni eventi eccetera.  In particolare, lato server ci sono degli excecutor che possono andare a realizzare la business logic, vi è una suddivisione tra Component del business model e Home che realizza la gestione e la creazione dei componenti con la possibilità di avere lifecycle diversi. Le Home Executor sono monolitiche mentre i Component Executor possono essere sia monolitici con tutte le porte implementate dalla stessa classe, oppure le porte sono suddivise tra le varie classi che lo implementano. Lo sviluppatore partendo da file definiti dell’IDL nel Component IDL di CCM genera una serie di scatole vuote pronte ad accogliere la logica applicativa. Il programmatore deve solo aggiungere la propria logica applicativa.
+
+Nel mondo Corba quando parliamo di tutte queste funzionalità siamo nel mondo delle interfacce, Corba predispone tutto per il linguaggio target per sollevarci dalla gestione di tutti i problemi legati alla gestione dei servizi di sistema, poi il programmatore si deve occupare di implementare le varie cose.  Ma tutto si riferisce a interfacce in prima battuta. Gli Executor vanno a eseguire nel container, il modello è un container pesante EJB con differenze, ma con un’idea di container pesante in cui i vari Executor vanno a interagire. Gli Executor dei componenti devono implementare un’interfaccia locale per callback lifecycle ad uso del container, vi sono SessionComponent per componenti transienti, ed EntityComponent per componenti persistenti. Gli Executor dei componenti possono interagire con container e componenti connessi via context interface. L’interazione avvien attraverso un contesto che viene esposto attraverso un container. 
+
+
+
 ## 09.Spring
 
 Spring è un framework leggero per la costruzione di applicazioni Java SE e Java EE.
