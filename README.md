@@ -2,6 +2,10 @@
 
 Corso tenuto dal _Prof. Foschini_
 
+Appunti scritti da Dario De Nardi, Sofia Montebugnoli, Enrico Valastro
+
+---
+
 ## 01.Modelli
 
 Nella vita professione, è molto difficile che si scriva un software da zero per diversi motivi:
@@ -27,56 +31,68 @@ Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a
 
 Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
 
-#### Differenza tra un componente ed un oggetto
+### Differenza tra un componente ed un oggetto
 
 A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto perchè sembrano molto simili tra di loro:
 
 - **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia;
 - **Diverso dall'oggetto**:
-    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la _funzione di callback_. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno quindi il codice non potrebbe funzionare;
+    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la _funzione di callback_. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare;
     - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti A e B interagiscano tra di loro. A per comunicare con B deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc).
 
 ### Modelli
 
-Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante capire il funzionamento dei modelli.
-I modelli che possono essere usati sono ad esempio:
+Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante studiare i modelli. Quelli che possono essere usati sono ad esempio:
 
-- **Statici/dinamici**: sicuramente un sistema dinamico consente di adeguarsi a fronte di variazioni mentre un sistema statico no;
+- **Statici/dinamici**: l’uso di modelli statici non permette di adeguare il sistema a fronte di variazioni, i modelli dinamici invece permettono di fare evolvere il sistema a fronte di variazioni ma hanno costi più elevati;
 - **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi. Se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
 
 E' meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
 
 ### Deployment
 
-Nei sistemi distribuiti si è interessati alle performance e ad eventuali colli di bottiglia. Per poterli evitare è necessario osservare le performance dell'applicazione e solo in seguito si capisce che cosa andare a modificare. Ad esempio, aprire troppe connessioni con un DB può introdurre un potenziale _bottleneck_.
+Nei sistemi distribuiti si è interessati alle performance e ad eventuali colli di bottiglia. Per poterli evitare è necessario osservare le performance dell'applicazione solo dopo averla scritta e messa in esecuzione. In questo modo si capisce che cosa andare a modificare.
 
-Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _deployment_ (dispiegamento). Ad esempio, installare tutte le librerie necessarie che servono all'applicazione, copiare i file che devono essere locali all’applicazione, distribuire i componenti su uno o più nodi e mettere davanti un bilanciatore di carico etc.
-Quando faccio _deployment_ occorre decidere dove fare eseguire il componente e quali risorse ha bisogno per funzionare correttamente. Ad esempio, quando devo fare una Web App, ho un file che descrive queste scelte.
+Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _deployment_ (dispiegamento). Quando si fa questa operazione, occorre decidere dove far eseguire il componente e di quali risorse ha bisogno per funzionare correttamente. Ad esempio, installare tutte le librerie necessarie, copiare i file che devono essere locali, distribuire i componenti su uno o più nodi, mettere davanti un bilanciatore di carico etc.
 
 Ci sono diversi approcci per effettuare il deployment:
+
 - **Manuale**: l’utente determina ogni singolo oggetto/componente su quale è il nodo più appropriato;
 - **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze;
 - **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite il _file di deployment_ e annotazioni.
 
-### Architetture applicazioni Enterprise
+### Modello di allocazione
 
-Le architetture si sono evolute sempre di più verso architetture N-tier perchè l'obiettivo è quello di separare logicamente le funzionalità in modo da ridurre la complessità degli strati:
+Le entità di un’applicazione possono essere statiche, dinamiche o miste. I possibili approcci per l’allocazione sono:
 
-- **Single-Tier**: c'è un singolo super calcolatore a cui sono connessi i clienti perchè quest'ultimi non hanno abbastanza risorse per fare elaborazione. I clienti (o meglio terminali) inviano solo le richieste al mainfraime. E' la soluzione adottata negli anni '50.
+- **Approccio implicito**: l’utente prevede il mappaggio per ogni risorsa da creare prima dell’esecuzione. Questo approccio ha un costo elevato, in quanto l’utente prima dell’esecuzione deve prevedere un mappaggio per ogni risorsa, anche se questa non sarà utilizzata;
+- **Approccio esplicito**: il sistema si occupa del mappaggio delle risorse dell’applicazione (anche al deployment). Questo approccio ha un costo limitato in quanto il sistema si occupa del mappaggio delle risorse statiche e dinamiche su bisogno (by need);
+- **Approccio misto**: il sistema adotta una politica di default applicata sia inizialmente per le risorse statiche sia dinamicamente per l’allocazione delle nuove risorse e la migrazione di quelle già esistenti, eventuali indicazioni dell’utente sono tenute in conto per migliorare le prestazioni. Il costo di questo approccio è variabile, bilanciabile e adattabile: il sistema adotta una politica per ogni risorsa, o statica o dinamica decisioni statiche possono essere ottimizzate prima del runtime; decisioni dinamiche possono essere a costo diverso, a seconda del carico del sistema.
+
+### Architetture applicazioni Enterprise (1)
+
+Le architetture si sono evolute sempre di più verso architetture a più livelli perchè l'obiettivo è quello di separare logicamente le funzionalità in modo da ridurre la complessità degli strati:
+
+- **Single-Tier**: c'è un singolo super calcolatore a cui sono connessi i clienti perchè quest'ultimi non hanno abbastanza risorse per fare elaborazione. I clienti (o meglio terminali) inviano solo le richieste al mainfraime il quale le elabora e restituisce al cliente la risposta. È la soluzione adottata negli anni '50.
     ![single tier](./img/img5.png)
-    - **Vantaggi**: nessuna gestione client-side e consistenza dei dati perchè tutti i dati sono solo sul calcolatore;
+    - **Vantaggi**:
+        - Nessuna gestione client-side;
+        - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore;
     - **Svantaggi**: no scalabilità.
 
 - **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw. La logica di presentazione, di business e di processamento del modello dei dati si trova tutta nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
 ![single tier](./img/img6.png)
     - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier);
-    - **Svantaggi**: sono molteplici:
-        - difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
+    - **Svantaggi**:
+        - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
+        - Gli aggiornamenti devono essere distribuiti a tutti i client, ciò comporta problematiche per quanto riguarda il mantenimento del sistema;
         - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti i dati;
         - Connessione al DB per ogni cliente e questo ha un forte impatto perchè i DB relazionali non sono scalabili.
 
+        Peraltro, il modello dei dati è tightly-coupled per ogni cliente, se cambia il database schema bisogna aggiornare tutti i client. 
+
 - **Three-Tier**: ci sono diversi modelli:
-    - Three Tier (basato su RPC): logica di business e modello dati separati dalla logica di presentazione
+    - Three Tier (basato su RPC): logica di business e modello dati separati dalla logica di presentazione. Architetture di questo tipo sono realizzate con dei “thin client” che ospitano solamente la logica di presentazione, per quanto riguarda le logiche di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il “middle tier”, si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
     ![single tier](./img/img8.png)
         - **Vantaggi**: logica di business modificabile in modo più flessibile;
         - **Svantaggi**:
@@ -87,8 +103,26 @@ Le architetture si sono evolute sempre di più verso architetture N-tier perchè
         - **Svantaggi**:
     - Three Tier (Web Server): si ha un browser per il livello presentazione mentre la logica di business e modello dei dati gestiti sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
     ![single tier](./img/img7.png)
-        - **Vantaggi**: cliente disponibile ovunque
+        - **Vantaggi**:
+            - cliente disponibile ovunque
+            - Nessun problema di aggiornamento del software sul client.
         - **Svantaggi**:
+            - Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza ecc…) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
+
+Attualmente il trend vede una transazione verso un mondo multi tier che disaccoppia sempre di più i livelli. Tuttavia, restano ancora delle problematiche aperte, come visto in precedenza il middle tier rimane comunque molto complesso in quanto la parte di logica dell’applicazione non è ancora nettamente separata dalla parte di logica di tutti i servizi di sistema non funzionali, questo implica che essi vengano duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
+
+### Modelli a contenimento
+
+Sono modelli che si basano sull'uso di un _container/engine/middleware_ che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
+
+![container](./img/img4.png)
+
+L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscano direttamente con il componente di interesse ma che passino attraverso il _container/engine/middleware_ che in qualche modo standardizza e facilità le operazioni di interazione. Il container al suo interno ospiterà il componente.
+
+Il container può essere implementato in due modi:
+
+- **Soluzioni proprietarie**: usano il modello componente-container in cui i componenti gestiscono la parte di business logic e il container fornisce i servizi di sistema. Questo viene fatto in modo proprietario fornendo delle API (API proprietarie legate alla singola implementazione) per richiedere le funzionalità di sistema. Tra gli esempi più notevoli ci sono Tuxedo e .NET;
+- **Soluzioni basate su standar aperti**: usano il modello componente-container come nel caso precedente ma forniscono i servizi di sistema in maniera ben definita in accordo a standard industriali tramite delle API standard. L’esempio più notevole è JEE o J2EE (Java Enterprise Edition) che definisci questi standard, li implementa e abilita quindi questa interazione tra il componente (sviluppato in Java) e un container che realizza queste API standard.
 
 ### J2EE
 
@@ -98,20 +132,40 @@ Esistono diversi _software open source_, che vengono spesso usati anche in ambie
 - **GlassFish**: è l'implementazione di riferimento mantenuta da Oracle;
 - **WildFly**: precedentemente noto come JBoss.
 
-### Modelli a contenimento
+L’utilizzo di JEE come application server evita il “lock-in” e quindi chi fa uso di queste tecnologie utilizzando solo API standard e non API proprietarie, può portare i componenti da un’implementazione del container Java ad un’altra. Inoltre, le applicazioni conformi allo standard JEE sono altamente portabili.
+JEE offre un enorme ecosistema di implementazione e servizi di sistema conformi allo standard, lo standard ben definito permette a tale ecosistema di essere in continua crescita.
 
-Sono modelli che si basano sull'uso di un _container/engine/middleware_ (parte azzurra) che forniscono "automaticamente" molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
+### Architetture applicazioni Enterprise (2)
 
-![container](./img/img4.png)
+Applicazioni N-tier:
 
-Le chiamate dei clienti sono intercettate dal _container/engine/middleware_ prima che questo le "deleghi" ai componenti veri e propri.
+![single tier](./img/img10.png)
 
----
+I client possono essere un browser, un applet (che comunica tramite RMI o tramite HTML), applicazioni desktop (che usano RMI) o altri “devices” che usano essi stessi il framework J2EE in una logica di interazione B2B.
+Per quanto riguarda il middle-tier esso viene spacchettato in due parti:
+- **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e delle Servlet;
+- **Server-side business logic**: realizza il container e la logica applicativa, cioè i componenti EJB.
+Infine, a destra in figura l’insieme del mondo esterno con cui si intende interagire.
 
 ## 02.EJB 2.x
 
 E' una tecnologia a componenti lato _server-side_ che consente di creare applicazioni distribuite che siano multi-tier, 
 transazionali, portabili, scalabili, sicure, etc.
+
+![container](./img/img11.png)
+
+tutto questo grazie all’utilizzo di Java è portabile su architetture diverse.
+Il modello componente container può essere di diversi tipi:
+    • Applet il cui deployment viene fatto all’interno di una JVM SE 
+    • Web Container
+    • EJB Container
+Nella figura sovrastante in viola sono rappresentati i vari container, in verde i componenti che vivono all’interno di quel container, in azzurro vengono rappresentate le parti di supporto, cioè il “run-time environment”, in giallo tutte le API standardizzate per gestire per esempio la parte di “naming e discovery”, per gestire la parte di transazionalità, di messaggistica, di accesso ai database e così via e infine le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
+
+Modello 4-tier e applicazioni J2EE:
+In questo modello abbiamo un client che comunica tramite HTML con una parte di presentazione web basata su JSP e Servlet, EJB e il database con le connessioni al database.
+
+Modello 3-tier e applicazioni J2EE:
+In questo modello il client parla tramite HTML con il server web che comunica direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database. Nelle applicazioni di tipo enterprise B2B le interazioni vanno tramite messaggi JMS o basate su XML.
 
 EJB è stata una delle prime tecnologie a componenti e al giorno d'oggi, sebbene c'è ne siano molte altre, non è da considerarsi completamente in disuso.
 
@@ -524,7 +578,7 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
     public @interface ExampleAnnotation { ... }
     ```
 
-#### Politiche di retention
+### Politiche di retention
 
 - **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se confrontassi la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, potremmo vedere che è la stessa;
 - **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time
@@ -646,17 +700,17 @@ La specifica JNDI non impone ai naming service provider la semantica dell’oper
 - Riferimento
 - Attributi
 
-#### Serializzazione
+### Serializzazione
 
 La semantica serialized data la si usa per salvare tutto il contenuto dell’oggetto. Quando si effettua l'operazione di lookup si recupera il contenuto dell’oggetto per copia.
 
 Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database, file, stampante etc.
 
-#### Riferimento
+### Riferimento
 
 In altri casi quello che viene salvato è solo il riferimento ad un oggetto. Quando il cliente fa la lookup viene restituito il riferimento a quella risorsa. Spesso, questo è l’unico comportamento supportabile dal sistema di nomi.
 
-#### Attributi
+### Attributi
 
 Non tutti i linguaggi di programmazione conoscono il concetto di oggetto. Per questo motivo, utilizzare la semantica per attributi consente eliminare il mismatch tra linguaggi differenti perchè il programma userebbe una collezione di attributi.
 
@@ -955,40 +1009,6 @@ MappedSuperclass: integrare con codice non scritto da noi
 - **TABLE_PER_CLASS**: ogni tabella ha colonne per ogni proprietà comprese quelle ereditatte dalle superclassi. Non c'è bisogno del discriminator e non è uno schema normalizzato
 - **JOINED**: ogni tabella ha le colonne con valore con le sole proprietà definite nella classe specifica ma lo schema è normalizzato (schema non ridondante). Se bisogna normalizzare i dati non c'è ridondanza ma dobbiamo effettuare le join. Se la gerarchia è estesa il costo diventa molto alto.
 
-### Cos’è e di che tipi può essere l’EntityManager?
-
-
-
-### Qual è il ciclo di vita di una entity? Approfondire persist, remove, ecc
-
-
-
-### Come si possono creare le query?
-
-
-
-### Cos’è una unità di persistenza e come si differenzia dal contesto di persistenza?
-
-
-
-### Come può essere gestito il loading?
-
-
-
-### Esempi delle operazioni + esempi di listener
-
-
-
-### Cos’è Hibernate? Quali sono i principali oggetti di questo framework? Quale può essere lo stato degli oggetti persistenti?
-
-
-
-### Come funziona il caching in Hibernate? Che tipo di cache esistono?
-
-
-
-### Come funziona il concurrency control in Hibernate? Ed il version checking?
-
 ## 09.Spring
 
 Spring è un framework leggero per la costruzione di applicazioni Java SE e Java EE.
@@ -1030,3 +1050,223 @@ classe determinata
 
 ### Inversion of Control
 
+## 07.JMS
+
+Introduzione alla messaggistica. L’importanza dei sistemi di messaging èdovuto alla comunicazione disaccoppiata (o loosely coupled), asincrona (=sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce le funzionalità di base necessarie, per questo si parla di Message Oriented Middleware (MOM), Messaging system, Messaging server, Messaging provider, JMS provider. 
+
+I vantaggi del MOM sono l’indipendenza rispetto al dove stiamo lavorando e rispetto alla locazione di rete. In particolare, non c’è più l’assunzione che il cliente conosca la locazione del servitore.  Nel modello client server il client conosce la locazione del servitore questo non avviene nei MOM, il sistema di messaggistica si occupa di smistare i messaggi verso il destinatario, ciò consente il completo disaccoppiamento. Il disaccoppiamento avviene nello spazio ovvero non bisogna più conoscere la locazione del destinatario e nel tempo ovvero non devono essere online entrambe le entità contemporaneamente.   
+
+I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono : la scalabilità ovvero la capacità di gestire un numero elevato di clienti senza cambiamenti nella logica applicativa senza cambiamenti nell’architettura, senza (grosso) degrado nello throughput di sistema, infatti si tendono a incrementare le capacità hardware del sistema di messaging se si desidera una maggiore scalabilità complessiva, e la robustezza i consumatori, i produttori e la rete possono avere un fault senza problemi per il sistema di messaging. Da la possibilità di scalare le entità nel modo giusto nel caso dei MOM riusciamo a lavorare in modo non più monolitico ma a microservizi, divindedolo in varie funzionalità, quindi il servizio di messaggistica ci supporta la scalabilità con il disaccoppiamento. A sua volta il MOM deve essere robusto e scalabile.  Con la robustezza può garantire la transazionalità delle comunicazioni. Quindi grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.  
+
+Tra gli esempi del sistema di messaging abbiamo le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto nelle architetture distribuite e cloud a tutti i livelli, dai livelli più bassi fino al livello applicativo. 
+
+Chiamiamo le entità produttore consumatore e MOM, si possono avere due modelli di messaging: point to point e publish subscribe. Le principali caratteristiche sono: affidabilità, operazioni con logica transazionale, ovvero trattano lo scambio di messaggi come transazione con la possibilità eventuale di persistere i messaggi, Il messaging può essere distribuito, si possono implementare politiche di sicurezza, i MOM poi possono supportare altre funzionalità: come la qualità dei canali, transazioni sicure, auditing, load balacing.
+
+### Modello point to point 
+
+La comunicazione è un collegamento tra sole due entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore, questo serve per far parlare dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il mom si comporta come proxy che mantiene i messaggi. Un messaggio è consumato da un singolo ricevente, ci possono essere produttori multipli, ovviamente, la “destinazione" di un messaggio è una coda con nome (named queue). Le code sono FIFO (per lo stesso livello di priorità), i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi. 
+
+In un caso mobile se ipotizziamo la disconnessione deidestinatari dovremmo avere persistenza dei messaggi.
+
+![single tier](./img/img12.png)
+
+### Modello publish subscriber
+
+Il modello publish subscriber è un modello 1-N il messaggio viene consumato n volte. Il consumatore deve dire al MOM che è interessato a quella comunicazione. Il modello publish subscriber è tipicamente utilizzato in tutte le bacheche. Un messaggio è consumato da riceventi multipli, la “destinazione" di un messagggio è un argomento con nome (named topic), i produttori pubblicano su un topic, mentre i consumatori si “abbonano” a un topic.  Sono possibili diverse configurazioni del MOM per cui possiamo ipotizzare che non ci sia persistenza e quindi i messaggi che sono stati inviati quando un consumatore non era presente sono stati persi.
+
+![single tier](./img/img13.png)
+
+### Affidabilità nello scambio di messaggi
+
+Più la semantica di affidabilità è stringente più il throughput del sistema di abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa. 
+JMS dà alcune garanzie nella consegna dei messaggi vi sono possibili gradi differenti di affidabilità, che possono essere specificate dal produttore.
+
+### Transazionalità
+
+Produzione transazionale, il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno. Nel consumo transazionale, invece,  il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale, fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un reository persistente.
+Lo scope della transazionalità si può applicare sull’interazione tra consumatore del sistema MOM e il sistema MOM stesso, oppure tra produttore dei messaggi e MOM, nei casi inc cui si vogia un transazionalità forte si può applicare su tutto il percorso da produttore a consumatore. La terza opzione è molto complessa e non viene garantita da molti mom. Inoltre il sistema di messaggistica può essere distribuito e questo può rendere complicata la transazionalità. 
+Lo scope della transazionalità è di due tipi: scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging questo è lo scope supportato da JMS, e scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi, questo non è supportato da JMS. 
+Ovviamente sistema di messaging può essere distribuito a sua volta Sistemi di enterprise messaging possono realizzare una infrastruttura in cui i messaggi sono scambiati fra server nel distribuito quindi questo complica la transazionalità.
+
+### Sicurezza
+
+Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e integrità. L’autenticazione consente l’utilizzo di certificati, la confidenzialità è garantita da encription dei messaggi (payload), l’integrità con l’utilizzo digest dei messaggi. La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging. Con JMS non offriamo un servizio diretto di sicurezza ma esistono api che con sono di implementare con varie politiche. JMS consente unicamente di definire il servizio.
+
+### JMS
+
+JMS è un insieme di interfacce Java (e associata definizione di semantica) che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico, JMS fornisce il supporto alla produzione, distribuzione e consegna di messaggi, alle diverse semantiche per message delivery, ovvero Sincrona/asincrona (bloccante/non-bloccante), con proprietà transazionali, il supporto sia a modello Point-to-Point (reliable queue) che Publish/Subscribe con selettori di messaggio lato ricevente, e  cinque tipologie di messaggi possibili.  JMS è un supporto che fornisce interfacce generiche non è la specifica le varie semantiche possono essere implementate.
+
+JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è "solo" fortemente integrato. Gli obiettivi sono di avere dei JMS provider generiche che dietro le quinte lavorano con sistemi di messaggistica preesistenti, con consistenza con le API dei sistemi di messaging esistenti, indipendenza dal vendor del sistema di messaging, copertura della maggior parte delle funzionalità comuni nei sistemi di messaging e infine la promozione della tecnologia Java per sistemi messaging.
+
+Architettura: Clienti JMS e non-JMS, Messaggi, Provider JMS (sistema di messaging dipendenti dal specifico vendor), gli oggetti sono amministrati tramite JNDI per recuerare Destination e ConnectionFactory
+
+### Tipi di comunicazioni
+
+Nella comunicazione point-to-Point i messaggi in una queue possono essere persistenti o non persistenti. Nella comunicazione Pub/Sub, i messaggi non durevoli sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo, se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza. I messaggi durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
+
+### Formato del messaggio 
+
+JMS definisce formati di messaggi e payload possibili. I messaggi sono  una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno, JMS fornisce quindi solo un modello astratto e unificato per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce, i sicngoli vendor personalizzano i formati e questi sono fortemente dipendenti da essi, i vari vendor spesso non riescono a comunicare, vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
+
+Header utilizzato per l’identificazione del messaggio e il suo routing, include la destination e la modalità di consegna (persistente, non persistente), timestamp, priorità, campo ReplyTo che serve al ricevente per risondere. JMS aggiunge gradi di libertà strutturati per aggiungere nuove feature che sono le proprietà dei messaggi  (coppie nome/valore) personalizzate dai vendor tali proprietà possono essere: campi application-specific, campi dipendenti da e specifici di un particolare sistema di messaging, campi opzionali Elenco delle proprietà: JMSDestination, JMSDeliveryMode (persistente o no), JMSMessageID, JMSTimeStamp, JMSRedelivered, JMSExpiration, JMSPriority, JMSCorrelationID, JMSReplyTo (destinazione fornita dal produttore, dove inviare la risposta), JMSType (tipo del corpo del messaggio). L’idea di dividere l’header dalla propiretà è dovuta la fatto che i Mom possono scegliere di guardare o meno alle proprietà e può farlo senza aprire il payload. 
+
+Il payload ovviamente, il contenuto del messaggio, supporta diversi tipi di contenuto, ogni tipo definito da una interfaccia: StreamMessage, MapMessage, TextMessage, ObjectMessage, BytesMessage Ad esempio: StreamMessage contiene valori primitivi e supporta lettura sequenziale, MapMessage contiene coppie nome/valore e supporta lettura sequenziale o by name, BytesMessage contiene byte “non interpretati” e viene utilizzato di solito per fare match con formati preesistenti.  Queste sono interfacce locali per interrogare i payload. 
+
+L’interfaccia destination rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi) le interfacce figlie per Queue e Topic.. astrazione di una destinazione punto punto o pub sub. Per aggangiarsi al sistema MOM.
+
+![single tier](./img/img14.png)
+
+L’interfaccia ConnectionFactory implementata dalla classe factory per creare una connessione provider-specific verso il server JMS, è simile al gestore di driver (java.sql.DriverManager) in JDBC. Le interfacce figlie per QueueConnectionFactory e TopicConnectionFactory.
+
+![single tier](./img/img15.png)
+
+Interfaccia connection factory è un’astrazione che rappresenta un singolo canale di comunicazione verso il provider JMS. La connessione viene creata da un oggetto ConnectionFactory, la connessione dovrebbe essere chiusa quando si è terminato di utilizzare la risorsa.
+
+![single tier](./img/img16.png)
+
+L’interfaccia Session è creata da un oggetto Connection. Una volta connessi al JMS provider attraverso una Connection, tutte le operazioni si svolgono nel contesto di una Session attiva, ogni sessione è singlethreaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni realizzano un contesto "limitato" con "proprietà transazionali"
+
+![single tier](./img/img17.png)
+
+Le interfacce Message Consumer e Message Producer. Per inviare un messaggio verso una Destination, il cliente deve richiedere esplicitamente all’oggetto Session di creare un oggetto MessageProducer Analogamente per l’interfaccia MessageConsumer i clienti che vogliono ricevere messaggi creano un oggetto MessageConsumer (collegato ad un oggetto Destination) attraverso Session. Vi sono due modalità di ricezione dei messaggi: blocking, nonblocking
+
+![single tier](./img/img18.png)
+
+Modalità blocking: solito metodo receive() bloccante. Modalità non blocking: il cliente registra un oggetto MessageListener, quando un messaggio è disponibile, il provider JMS richiama il metodo onMessage() di MessageListener (callback).
+
+![single tier](./img/img19.png)
+
+In questa slide dall’alto verso il basso abbiamo tutte le astrazioni per le due parti 1-1 e 1-N ci sono diverse tipologie di messaggi dovuti alle diverse persistenze
+
+![single tier](./img/img20.png)
+
+Diagramma di flusso con tutte le operazioni necessarie ad abilitare le comunicazione.
+
+![single tier](./img/img21.png)
+
+### Affidabilità dei messaggi
+
+JMS offre diversi livelli di affidabilità dei messaggi. Il livello più alto si ottiene quando abbiamo la persistenza dei messaggi, fattibile con la subscription durevole a un certo topic o con la ricezione da queue avendo la persistenza del messaggio spedito o ricevuto se il ricevente si è assentato per un certo tempo con l’utilizzo di transazioni.
+
+Nell’affidabilità di base(Basic reliability) vi è l’utilizzo di messaggi ACK, l’utilizzo di messaggi peristenti, la possibilità di definire dei time to live, la configurazione dei livelli di priorità e l possibilità di consentire l’expiration dei messaggi.
+
+Nell’affidabilità avanzata (advanced reliability) possiamo avere abbonamenti durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end to end ma solo tra consumatore e provider e/o tra provider e produttore.
+
+### ACK
+
+Alla ricezione di un messaggio si possono effettuare varie operazioni, prima di tutto vi è il processamento, dopo di che, se necessario vi è lo scambio di ack con varie modalità associate a ciascuna sessione. Se ci sono sessioni con transazionalità, vi è un ack automatico al commitment, poi per la proprietà del tutto o niente in caso di rollback vi è il rinvio di tutti i messaggi. In sessioni senza transazionalità il numero di ack scambiati dipende dall’attributo specificato in createSession().
+
+I vari tipi di ack dipendono da chi stimola l’ack:
+- Auto acknowledgment ack generato automaticamente dai metodi MessageConsumer.receive() o MessageListener.onMessage() se la return ha successo e inviato dal supporto.
+- Client acknowledgment il cliente a livello applicativo si fa carico di inviare l’ack con la chiamata al metodo acknowledgement(), questo è cumulativo quindi conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ack a quello corrente.
+- Lazy acknowledgment viene inviato saltuariamente senza limiti nel numero di messaggi, sempre in modo cumulativo. Questo tipo di ack è inviato dal supporto ovvero da JMS stesso.
+
+Tutti i tipi di messaggi ack hanno la possibilità di essere duplicati e quindi ritrasmessi.  Nel caso di auto_ack vi sono  differenze tra caso con persistent e non persistent. Nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi) possiamo avere duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running si rende conto che l’ack precedente non è stato inviato e lo rimanda a l consumer. Questo grazie allo storage persistente. In caso di client_ack ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di lazy_ack abbiamo duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ack e presa dal supporto a piacere. In generale è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
+
+In produzione posso avere una semantica bloccante per la send() che risulta in generale essere più semplice della receive(). Il client manda il messaggio il server lo persiste e manda l’ack solo dopo questa operazione, a questo punto la publish ritorna, tutto è molto più sincronizzato. L’ack è bloccante per la send() localmente al produttore. Anche in questo caso vi è la ritrasmissione dei messaggi.
+
+Nell’invio dei messaggi vi sono due diversi modi di gestire la persistenza che si differenziano per la modalità di consegna. La modalità persistent richiede la persistenza quindi il provider ha la responsabilità di non perdere il messaggio e questo grazie allo storage è possibile. Il non persistent non dà garanzie rispetto al fault ma non ha problemi relativi al collo di bottiglia generato dallo storage quindi è possibile sostenere un high rate nell’invio con migliori performance.
+
+Vi è un trade-off tra il numero di ack che possiamo inviare l’overhead che introduciamo e il livello generale di affidabilità che vogliamo raggiungere. Quanto bisogna coinvolgere la parte applicativa nella gestione degli ack, coinvolgere molto il client nella gestione degli ack può aiutare a diminuire l’overhead legato al gfatto di non inviare più un ack per ogni messaggio dall’altra parte però il livello applicativo che si prende in carico l’invio dei messaggi deve essere ben fatto e con maggiore cura. L’API permette quidi di gestire diversamente l’invio dei messaggi.  
+
+### Priorità
+
+Attributo che fa parte dell’header del messaggio (JMSPriority), a livello di API, quindi è una parte funzionale che tutti devono trattare, sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
+
+La priorità e impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il TimeToLive, la priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4, per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo setPriority() e il TTl si imposta con setTimeToLive() dell’interfaccia MessageProducer.
+
+La configurazione dei livelli di affidabilità è spesso determinata da scelte di default o prese alla creazione di Destination. Per la basic reliability:
+- Persistenza scelta a livello di singolo messaggio, ad es. interfaccia MessageProducer 
+- Controllo degli ACK  scelta a livello di sessione, interfaccia Session 
+- Livelli di priorità scelti a livello di singolo messaggio, ad es. interfaccia MessageProducer 
+- Expiration time scelto a livello di singolo messaggio, ad es. interfaccia MessageProducer Advanced Reliability 
+- Sottoscrizione durevole scelto a livello di sessione, interfaccia Session 
+- Transazionalità scelto a livello di sessione, interfaccia Session
+
+### Durable Subscription
+
+Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi bhobisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi il provider JMs mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene expiration. All’interno di una singola  applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
+
+### Gestione delle transazioni di JMS
+
+Lo scope delle transazioni in JMS è solo fra clienti e sistema di messaging, non fra produttori e consumatori. Quindi un gruppo di messaggi all’interno di una singola transazione è consegnato come un’unica unità lato produttore e un gruppo di messaggi in una transazione è ricevuto come un’unica unità lato consumatore.  Le Transazioni possono essere gestite localmente e sono controllate dall’oggetto Session. La transazione inizia implicitamente quando l’oggetto di sessione è creato e termina all’invocazione di Session.commit() o Session.abort(). La sessione è transazionale se si specifica il flag appropriato all’atto della creazione. Ad esempio: QueueConnection.createQueueSession(true, …). Eventualmente le transazioni possono essere anche essere gestite in modo distribuito, in tal caso devono essere coordinate da un transactional manager esterno, ovvero Java Transactions API (JTA). Le applicazioni possono controllare la transazione attraverso metodi JTA, tuttavia l’utilizzo di Session.commit() e Session.rollback() è non consentito. In questo modo,c con l’utilizzo di JTA, le operazioni di messaging possono essere combinate con transazioni salvate su DB in una singola transazione complessiva.
+
+### Selettori di messaggi
+
+I selettori sono filtri la cui logica di filtraggio è specificabile con stringe SQL like (SQL92) che possono lavorare sui messaggi in arrivo per estrarne solo alcuni. Lato receiver, le applicazioni JMS possono utilizzare selettori per scegliere i soli messaggi che sono potenzialmente di loro interesse, non possono riferire il contenuto dei messaggi, ma solo proprietà e header, non possono leggere il payload. I selettori consentono una gestione più semplice e rimuovono overhead dal provider e dal supporto. Il fatto che non sia content base è dovuto al fatto della retrocompatibilità con i precedenti MOM. 
+
+### JMS e MDB
+
+I MDB vengono istanziati e prelevati da un poll di istanze quando il messaggio viene ricevuto, vi è un JMS provider che invia i messaggi a istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti, a questo punto il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback tipicamente, a questo punto vi è un applicazione con un EJB client legato all’applicazione che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un session bean con dietro entity bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS. 
+L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
+
+![single tier](./img/img22.png)
+
+### ENTERPRISE SERVICE BUS
+
+Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare per la possibilità di mettere insieme  parti di questi sistemi che sono legacy preesitsenti e parti nuove sviluppate di recente. In qeusta direzione dsi sono sviluppati gli ESB infrastrutture molto large con principi di integrazione che sono condivisi. L’idea è di avere disaccopiamento forte e quindi MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, solo quando vi sono riposte complete.  Mettiamo insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Middleware che disaccoppia molto la comunicazione. Modello asincrono e pubsub con in mezzo un intermediario ovvero l’enterprise service bus che offre molte più funzionalità di un mom, ma comunque garantisce lo scambio di messaggi che porta a un’elevata asincronicità e conseguente disaccoppiamento. Le principali caratteristiche sono:
+- Disaccoppiamento  
+- Gestione dei “topic”  
+- Controllo degli accessi  
+- Struttura messaggi  
+- QoS configurabile
+
+### Service Oriented Architecture SOA
+
+Un SOA mette a disposizione servizi a grana grossa completi e autonomi, interfacce astratte ben fatte che definiscono contratti tra Consumer e Provider, scambio di messaggi che compongono le operazioni invocabili sui servizi di input e output, registri dei servizi con naming e trading, possibilità di comporre i servizi in processi di business, ovvero molti servizi messi insieme seguendo le linee guide SOA, tutto questo ha  l’obiettivo di ottenere  accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte.
+Azure espone api con interfacce rest.
+
+### WEB SERVICES
+
+Infrastrutture che soddisfano le caratteristiche SOA per l’interazione tra applicazioni basata sul concetto di “servizio”, che utilizzano interfacce web, in particolare operano sulla porta 80. Tali Web services sfruttano essenzialmente tre tecnologie, o API al mondo esterno: WSDL è un file contenente la descrizione del web service, descrizione scritta in xml che contiene le funzionalità offerte da quel servizio, SOAP è la descrizione di un protocollo per lo scambio di messaggi si cambiano “buste soap” che contengono file xml (indipendenti dal linguaggio) con diversi contenuti che vengono scambiati, le buste soap possono essere trasmesse con http per garantire massima interoperabilità. UDDI è un servizio di trading che consente la discovery dei servizi, restituisce un file WSDL che contiene la descrizione di quel servizio cosa si aspetta in termini di input e output e come collegarsi con quel servizio.
+
+La differenza tra un web service un servizio di distributed object computing è la standardizzazione e come implementiamo i vari servizi, nel caso dei web service non c’è dipendenza dall’implementazione.
+
+WSDL è suddiviso in due parti, chiara separazione fra livello astratto (interfaccia) che contiene la definizione di operazioni di servizio come ingresso e uscita di documenti e struttura messaggi, e livello concreto che implementa l’interfaccia presenta una serie di endpoint con indirizzo di rete e protocollo per definire i servizi (binding – per ogni interfaccia), tipico di tutte le soluzioni SOA.
+
+Nell’architettura SOA non ci importa la tecnologia utilizzata si possono esporre più modi di comunicazione.
+
+![single tier](./img/img23.png)
+
+L’integrazione è un grosso problema, solo 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura “casuale” che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
+
+L’Enterprise Application Integration si occupa dell’integrazione di queste applicazioni, costruendo intorno a queste applicazioni degli strumenti che le integrano.
+
+Enterprise Application Integration permette di sfruttare con operazioni extract transform and load. Si passa quindi per processi batch tra un app e un’altra trasmettiamo i dati con ftp li trasformiamo i dati in un formato utile per la seconda app e le passiamo con ftp e batch. Questo è il funzionamneto di molti servizi bancari. 
+
+Questa soluzione ha alte latenze al momento delle batch, ci possono essere fault al momento delle trasnform, questa è una soluzione con diversi problemi ESB vuole andare oltre rispetto a questa soluzione cercando di automatizzare al più possibile il processo di trasmissione e trasformazione, renedendolo il più possibile pulito.
+
+La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione, non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus. Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e con le applicazioni che hanno un adapter a un formato comune e una central automation engine un motore che consuma i messaggi guarda dentro i messaggi e facendo routing intelligente tra le applicazioni e mandandolo dove deve arrivare, inoltre vi sono tutti i servizi di sistema, tra cui persistenza e transazioni. L’altra architettura di riferimento è quella a bus, l’automation engine risiede con l’applicazione non abbiamo il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto. 
+
+I pro dell’architettura a stella sono la facilità di gestione (centralizzata) il principale contro è che l’hub è punto critico di centralizzazione, inoltre ha ridotta scalabilità. I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
+Enterprise Service bus è la realizzazione della seconda architettura, l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso. 
+
+### Orchestrazione ESB concetti chiavi
+
+Qui l’orchestrazione avviene per le interazioni tra i servizi a grana grossa e per il routing intelligente. Asptteto di descrizione astratta del servizio e realizzazione concreta dei diversi binding, l’ESB risolve entrambi i problemi. Consente di utilizzare tanti e diversi protocolli per scambiare l’informazione, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta del WSDL, descriverò con un biding concreto le interazioni con il mondo esterno con la parte concreta del WSDL, e ESB fa da orchestratore nel mezzo risparmiando al programmatore di fare l’integrazione poiché il supporto lo fa già. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti e nei vari servizi come auditing e logging. 
+
+ESB è un architettura altamente distribuita con integrazione basata su standard, mette a disposizione servizi di orchestration, mantiene l’autonomia delle singole applicazioni, consente un real-time throughput,  mette in atto servizi di auditing e logging, consente l’adozione incrementale. Nell’invocazione dei servizi, invece rende i servizi completamente disaccoppiati, utilizza pattern “find-bind-invoke” è gestito automaticamente dall’infrastruttura, il progettista deve solo definire l’itinerario logico che i messaggi devono seguire, mentre i servizi si “limitano” a inviare e ricevere messaggi.
+
+Nel mondo Java a supporto di tutto questo abbiamo JBI, java business integration. In JBI ci sono servizi interni e esterni, i servizi esterni non riescono a parlare direttamente con l’orchestratore per questi servizi ci sono dei biding componenent che fungono da proxy verso i servizi esterni tra orchestratore e servizi esterni, sono degli adatatori per passare dal protocollo A al B . Poi vi sono i servizi interni e con questi abbiamo la possibilità di utilizzare il Normalized Message Router che si occupa dell’interazione tra componenti, nel routing delle informazioni. Sopra abbiamo la parte di servizi offerta dal framework tra cui l’orchestrazione dei servizi stessi offerta da BPEL che orchestra i servizi a grana grossa, con diagrammi di flusso che gestiscono le integrazioni. Sono offerti anche servizi grafici al programmatore per l’integrazione più facile dei servizi.  
+
+La comunicazione tra componenti all’interno del bus NON è diretta. NMR che agisce da mediatore fra i vari componenti, ha il compito di fare routing dei messaggi tra 2 o più componenti, è distribuito e quindi consente di disaccoppiare Service Consumer da Service Provider garantendo un basso accoppiamento tra i componenti JBI, i messaggi sono scambiati in formato XML per cui la comunicazione è "technology-neutral" tra endpoint. Normalized Message scambiati sono definiti in formato indipendente e neutrale da qualsiasi specifica applicazione, tecnologia o protocollo di comunicazione, le  trasformazioni di formato sono trasformazioni XSLT.
+
+Scambio di messaggi funzionamento:
+
+![single tier](./img/img24.png)
+
+Per rispondere a ciascuna richiesta JBI è in grado di capire quale sia il provider migliore per il componente B a quel punto B accetta il messaggio e continua l’interazione, da notare come A non conosca B si è solo registrato a JBI.  Componenti SOA e modello a scambio di messaggi basato su interposizione:  Elevato grado di disaccoppiamento tra componenti con la possibilità di operare su messaggi (trasformazioni) in modo trasparente.
+
+JBI supporta 4 possibili pattern di scambio messaggi: 
+- In-Only per interazione/trasferimenti one-way, spesso molte integrazioni sono soddisfabili con questo pattern, prevede una conferma che tutto sia andato a buon fine
+- Robust In-Only per possibilità di segnalare fault a livello applicativo, simile a un handshake a tre vie con la conferma che le cose siano andate bene nelle due parti semantica per gli errori o danni 
+- In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
+- In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa). 
+
+## 11. Big Data
+
+real time: rispettare vincolo temporale. Per processare il dato ho un periodo di tempo che può essere molto lungo.
+interactive: interazione con l'utente durante l'analisi
+batch:
+
+variability: stressare l'aspetto di varietà del dato
