@@ -51,23 +51,15 @@ E' meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o re
 
 ### Deployment
 
-Nei sistemi distribuiti si è interessati alle performance e ad eventuali colli di bottiglia. Per poterli evitare è necessario osservare le performance dell'applicazione solo dopo averla scritta e messa in esecuzione. In questo modo si capisce che cosa andare a modificare.
+Nei sistemi distribuiti si è interessati ad eventuali colli di bottiglia, come si comporta l'applicazione quando arrivano molte richieste etc. È importante, quindi, osservare le performance e per far ciò bisogna mettere in esecuzione l'applicazione. In questo modo si capisce che cosa andare a modificare.
 
-Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _deployment_ (dispiegamento). Quando si fa questa operazione, occorre decidere dove far eseguire il componente e di quali risorse ha bisogno per funzionare correttamente. Ad esempio, installare tutte le librerie necessarie, copiare i file che devono essere locali, distribuire i componenti su uno o più nodi, mettere davanti un bilanciatore di carico etc.
+Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _deployment_. Quando si fa questa operazione, occorre decidere dove far eseguire il componente e di quali risorse ha bisogno per funzionare correttamente. Ad esempio, installare tutte le librerie necessarie, copiare i file che devono essere locali, distribuire i componenti su uno o più nodi, mettere davanti un bilanciatore di carico etc.
 
 Ci sono diversi approcci per effettuare il deployment:
 
 - **Manuale**: l’utente determina ogni singolo oggetto/componente su quale è il nodo più appropriato;
 - **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze;
 - **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite il _file di deployment_ e annotazioni.
-
-### Modello di allocazione
-
-Le entità di un’applicazione possono essere statiche, dinamiche o miste. I possibili approcci per l’allocazione sono:
-
-- **Approccio implicito**: l’utente prevede il mappaggio per ogni risorsa da creare prima dell’esecuzione. Questo approccio ha un costo elevato, in quanto l’utente prima dell’esecuzione deve prevedere un mappaggio per ogni risorsa, anche se questa non sarà utilizzata;
-- **Approccio esplicito**: il sistema si occupa del mappaggio delle risorse dell’applicazione (anche al deployment). Questo approccio ha un costo limitato in quanto il sistema si occupa del mappaggio delle risorse statiche e dinamiche su bisogno (by need);
-- **Approccio misto**: il sistema adotta una politica di default applicata sia inizialmente per le risorse statiche sia dinamicamente per l’allocazione delle nuove risorse e la migrazione di quelle già esistenti, eventuali indicazioni dell’utente sono tenute in conto per migliorare le prestazioni. Il costo di questo approccio è variabile, bilanciabile e adattabile: il sistema adotta una politica per ogni risorsa, o statica o dinamica decisioni statiche possono essere ottimizzate prima del runtime; decisioni dinamiche possono essere a costo diverso, a seconda del carico del sistema.
 
 ### Architetture applicazioni Enterprise (1)
 
@@ -80,7 +72,7 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
         - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore;
     - **Svantaggi**: no scalabilità.
 
-- **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw. La logica di presentazione, di business e di processamento del modello dei dati si trova tutta nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
+- **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw (dati _grezzi_ cioè i dati come vengono presi dal DB così vengono inviati). La logica di presentazione, di business e di processamento del modello dei dati si trova tutta nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
 ![single tier](./img/img6.png)
     - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier);
     - **Svantaggi**:
@@ -88,26 +80,22 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
         - Gli aggiornamenti devono essere distribuiti a tutti i client, ciò comporta problematiche per quanto riguarda il mantenimento del sistema;
         - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti i dati;
         - Connessione al DB per ogni cliente e questo ha un forte impatto perchè i DB relazionali non sono scalabili.
-
-        Peraltro, il modello dei dati è tightly-coupled per ogni cliente, se cambia il database schema bisogna aggiornare tutti i client. 
-
 - **Three-Tier**: ci sono diversi modelli:
-    - Three Tier (basato su RPC): logica di business e modello dati separati dalla logica di presentazione. Architetture di questo tipo sono realizzate con dei “thin client” che ospitano solamente la logica di presentazione, per quanto riguarda le logiche di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il “middle tier”, si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
+    - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solamente la logica di presentazione. Per quanto riguarda le logiche di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier, si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
     ![single tier](./img/img8.png)
         - **Vantaggi**: logica di business modificabile in modo più flessibile;
         - **Svantaggi**:
-            - Accoppiamento stretto fra clienti e middle-tier server perchè basato su RPC.
-    - Three Tier (basato su Remote Object):
+            - Accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server.
+    - **Three Tier (basato su Remote Object)**:
     ![single tier](./img/img9.png)
-        - **Vantaggi**: meno strettamente accoppiato del modello di RPC
+        - **Vantaggi**: meno accoppiato del modello RPC.
         - **Svantaggi**:
-    - Three Tier (Web Server): si ha un browser per il livello presentazione mentre la logica di business e modello dei dati gestiti sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
+    - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business e modello dei dati gestiti sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
     ![single tier](./img/img7.png)
         - **Vantaggi**:
-            - cliente disponibile ovunque
+            - cliente disponibile ovunque;
             - Nessun problema di aggiornamento del software sul client.
-        - **Svantaggi**:
-            - Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza ecc…) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
+        - **Svantaggi**: Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
 
 Attualmente il trend vede una transazione verso un mondo multi tier che disaccoppia sempre di più i livelli. Tuttavia, restano ancora delle problematiche aperte, come visto in precedenza il middle tier rimane comunque molto complesso in quanto la parte di logica dell’applicazione non è ancora nettamente separata dalla parte di logica di tutti i servizi di sistema non funzionali, questo implica che essi vengano duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
 
@@ -121,31 +109,27 @@ L’idea che sta dietro al modello a contenimento è quella in cui i client non 
 
 Il container può essere implementato in due modi:
 
-- **Soluzioni proprietarie**: usano il modello componente-container in cui i componenti gestiscono la parte di business logic e il container fornisce i servizi di sistema. Questo viene fatto in modo proprietario fornendo delle API (API proprietarie legate alla singola implementazione) per richiedere le funzionalità di sistema. Tra gli esempi più notevoli ci sono Tuxedo e .NET;
-- **Soluzioni basate su standar aperti**: usano il modello componente-container come nel caso precedente ma forniscono i servizi di sistema in maniera ben definita in accordo a standard industriali tramite delle API standard. L’esempio più notevole è JEE o J2EE (Java Enterprise Edition) che definisci questi standard, li implementa e abilita quindi questa interazione tra il componente (sviluppato in Java) e un container che realizza queste API standard.
+- **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Tra gli esempi più notevoli ci sono Tuxedo e .NET;
+- **Soluzioni basate su standar aperti**: a differenza del caso precedente, i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. L’esempio più notevole è JEE o J2EE (Java Enterprise Edition) che definisce questi standard, li implementa e abilita quindi questa interazione tra il componente (sviluppato in Java) e un container che realizza queste API standard.
 
 ### J2EE
 
-E' un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java e ampiamente utilizzata nella programmazione Web. Viene scritta solo la specifica non l’implementazione, diversi produttori di software hanno fatto diverse implementazioni; purché siano JEE compliant basta che rispettino la specifica. Alcune implementazioni si limitano alla specifica altre aggiungono funzionalità.
+E' un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java. Viene scritta solo la specifica non l’implementazione, diversi produttori di software hanno fatto diverse implementazioni; purché siano JEE compliant basta che rispettino la specifica. Alcune implementazioni si limitano alla specifica altre aggiungono funzionalità.
 
 Esistono diversi _software open source_, che vengono spesso usati anche in ambiente di produzione come:
+
 - **GlassFish**: è l'implementazione di riferimento mantenuta da Oracle;
 - **WildFly**: precedentemente noto come JBoss.
 
-L’utilizzo di JEE come application server evita il “lock-in” e quindi chi fa uso di queste tecnologie utilizzando solo API standard e non API proprietarie, può portare i componenti da un’implementazione del container Java ad un’altra. Inoltre, le applicazioni conformi allo standard JEE sono altamente portabili.
-JEE offre un enorme ecosistema di implementazione e servizi di sistema conformi allo standard, lo standard ben definito permette a tale ecosistema di essere in continua crescita.
-
 ### Architetture applicazioni Enterprise (2)
 
-Applicazioni N-tier:
+Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo tipo di architetture:
+
+- **N-tier**: il middle-tier esso viene spacchettato in due parti:
+    - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e/o delle Servlet;
+    - **Server-side business logic**: realizza il container e la logica applicativa, cioè i componenti EJB.
 
 ![single tier](./img/img10.png)
-
-I client possono essere un browser, un applet (che comunica tramite RMI o tramite HTML), applicazioni desktop (che usano RMI) o altri “devices” che usano essi stessi il framework J2EE in una logica di interazione B2B.
-Per quanto riguarda il middle-tier esso viene spacchettato in due parti:
-- **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e delle Servlet;
-- **Server-side business logic**: realizza il container e la logica applicativa, cioè i componenti EJB.
-Infine, a destra in figura l’insieme del mondo esterno con cui si intende interagire.
 
 ## 02.EJB 2.x
 
@@ -156,9 +140,9 @@ transazionali, portabili, scalabili, sicure, etc.
 
 tutto questo grazie all’utilizzo di Java è portabile su architetture diverse.
 Il modello componente container può essere di diversi tipi:
-    • Applet il cui deployment viene fatto all’interno di una JVM SE 
-    • Web Container
-    • EJB Container
+- Applet il cui deployment viene fatto all’interno di una JVM SE 
+- Web Container
+- EJB Container
 Nella figura sovrastante in viola sono rappresentati i vari container, in verde i componenti che vivono all’interno di quel container, in azzurro vengono rappresentate le parti di supporto, cioè il “run-time environment”, in giallo tutte le API standardizzate per gestire per esempio la parte di “naming e discovery”, per gestire la parte di transazionalità, di messaggistica, di accesso ai database e così via e infine le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
 Modello 4-tier e applicazioni J2EE:
