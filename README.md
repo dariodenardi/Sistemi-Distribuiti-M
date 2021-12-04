@@ -2,13 +2,14 @@
 
 Corso tenuto dal _Prof. Foschini_
 
-Appunti scritti da Dario De Nardi, Sofia Montebugnoli, Enrico Valastro
+Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
 
 ---
 
 ## 01.Modelli
 
 Nella vita professione, è molto difficile che si scriva un software da zero per diversi motivi:
+
 - Un'azienda/cliente sta già usando determinate tecnologie e non vuole cambiarle;
 - Si vuole interoperare fra diversi ambienti (anche _legacy_);
 - Il tempo di sviluppo è molto limitato e ci sono vincoli nella consegna dell'applicazione finale.
@@ -27,7 +28,7 @@ Esempi di componenti sono quelli che si usano per creare le interfacce grafiche 
 Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a quello del concentrato:
 
 - **Componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina;
-- **Componente nel distribuito**: un concetto più ampio rispetto a quello del concentrato. Il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. E' possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto come se appartenesse ad un'applicazione "monolitica".
+- **Componente nel distribuito**: il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. E' possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto come se appartenesse ad un'applicazione "monolitica".
 
 Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
 
@@ -77,27 +78,26 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
     - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier);
     - **Svantaggi**:
         - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
-        - Gli aggiornamenti devono essere distribuiti a tutti i client, ciò comporta problematiche per quanto riguarda il mantenimento del sistema;
         - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti i dati;
         - Connessione al DB per ogni cliente e questo ha un forte impatto perchè i DB relazionali non sono scalabili.
+
 - **Three-Tier**: ci sono diversi modelli:
     - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solamente la logica di presentazione. Per quanto riguarda le logiche di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier, si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
     ![single tier](./img/img8.png)
         - **Vantaggi**: logica di business modificabile in modo più flessibile;
-        - **Svantaggi**:
-            - Accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server.
+        - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server;
     - **Three Tier (basato su Remote Object)**:
     ![single tier](./img/img9.png)
         - **Vantaggi**: meno accoppiato del modello RPC.
-        - **Svantaggi**:
-    - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business e modello dei dati gestiti sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
+        - **Svantaggi**: gli stessi di quello basato su RPC
+    - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
     ![single tier](./img/img7.png)
         - **Vantaggi**:
-            - cliente disponibile ovunque;
-            - Nessun problema di aggiornamento del software sul client.
+            - Cliente disponibile ovunque;
+            - Nessun problema di aggiornamento del software sul client;
         - **Svantaggi**: Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
 
-Attualmente il trend vede una transazione verso un mondo multi tier che disaccoppia sempre di più i livelli. Tuttavia, restano ancora delle problematiche aperte, come visto in precedenza il middle tier rimane comunque molto complesso in quanto la parte di logica dell’applicazione non è ancora nettamente separata dalla parte di logica di tutti i servizi di sistema non funzionali, questo implica che essi vengano duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
+Attualmente il trend vede una transazione verso un mondo multi tier che disaccoppia sempre di più i livelli. Come visto in precedenza il middle tier rimane molto complesso in quanto la parte di logica dell’applicazione non è ancora nettamente separata dalla parte di logica di tutti i servizi di sistema non funzionali, questo implica che essi vengano duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
 
 ### Modelli a contenimento
 
@@ -105,7 +105,7 @@ Sono modelli che si basano sull'uso di un _container/engine/middleware_ che forn
 
 ![container](./img/img4.png)
 
-L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscano direttamente con il componente di interesse ma che passino attraverso il _container/engine/middleware_ che in qualche modo standardizza e facilità le operazioni di interazione. Il container al suo interno ospiterà il componente.
+L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscano direttamente con il componente di interesse ma che passino prima attraverso il _container/engine/middleware_ che in qualche modo standardizza e facilità le operazioni di sistema. Il container al suo interno ospiterà il componente.
 
 Il container può essere implementato in due modi:
 
@@ -125,11 +125,13 @@ Esistono diversi _software open source_, che vengono spesso usati anche in ambie
 
 Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo tipo di architetture:
 
-- **N-tier**: il middle-tier esso viene spacchettato in due parti:
+- **N-tier**: il middle-tier viene spacchettato in due parti:
     - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e/o delle Servlet;
-    - **Server-side business logic**: realizza il container e la logica applicativa, cioè i componenti EJB.
+    - **Server-side business logic**: si occupa della logica applicativa, cioè al suo interno ci sono i componenti.
 
 ![single tier](./img/img10.png)
+
+Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verrà approfondita.
 
 ## 02.EJB 2.x
 
