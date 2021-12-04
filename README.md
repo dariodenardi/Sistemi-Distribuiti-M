@@ -180,6 +180,8 @@ servizio di naming;
 
 ### Tipologie di componenti Bean
 
+![ejb2_architettura](./img/img33.png)
+
 I componenti possono essere classificati in due categorie:
 
 - **Sincroni**: l'utente si blocca e aspetta la risposta da parte del _server_. Si classificano ulteriormente in:
@@ -526,7 +528,7 @@ public void calculateInterest(float amount, float rate) { ... }
 
 Questa annotazione fa parte della categoria delle annotazioni personalizzate e presenta tre membri. Se non fosse stato specificato il membro _severity_ il suo valore sarebbe stato IMPORTANT.
 
-#### Limiti delle annotazioni personalizzate
+### Limiti delle annotazioni personalizzate
 
 - **Non** si possono avere relazioni di estensione (_extends_) fra tipi di annotazioni;
 - I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati;
@@ -602,7 +604,7 @@ E' una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizza
 
 Ad esempio, LDAP consente di accedere ai laboratori di UNIBO, X500.
 
-#### Directory vs DB
+### Directory vs DB
 
 A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta è no:
 - Gli schemi nelle Directory sono prefissati mentre nei DB si devono creare con la progettazione concettuale e logica;
