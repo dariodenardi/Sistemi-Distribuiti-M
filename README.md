@@ -11,7 +11,7 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
 Nella vita professione, è molto difficile che si scriva un software da zero per diversi motivi:
 
 - Un'azienda/cliente sta già usando determinate tecnologie e non vuole cambiarle;
-- Si vuole interoperare fra diversi ambienti (anche _legacy_);
+- Si vuole interoperare fra diversi ambienti (anche legacy);
 - Il tempo di sviluppo è molto limitato e ci sono vincoli nella consegna dell'applicazione finale.
 
 Per questo motivo è fondamentale usare un approccio basato su componenti e il trand attuale si sposta verso questo tipo di soluzione.
@@ -23,12 +23,12 @@ Un componente è un _pezzo di software_ che viene scritto dallo sviluppatore ed 
 - Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia;
 - Viene eseguito all'interno di un ambiente di esecuzione detto _container_/_engine_/_middleware_.
 
-Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con **JavaFX**: _textBox_, _label_, _comboBox_ etc. Quando si clicca su un bottone non si verifica se effettivamente il _mouse_ è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
+Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con **JavaFX**: textBox, label, comboBox etc. Quando si clicca su un bottone non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
 
 Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a quello del concentrato:
 
 - **Componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina;
-- **Componente nel distribuito**: il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. E' possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto come se appartenesse ad un'applicazione "monolitica".
+- **Componente nel distribuito**: il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. È possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto come se appartenesse ad un'applicazione _monolitica_.
 
 Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
 
@@ -38,8 +38,8 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
 
 - **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia;
 - **Diverso dall'oggetto**:
-    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la _funzione di callback_. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare;
-    - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti A e B interagiscano tra di loro. A per comunicare con B deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc).
+    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare;
+    - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc).
 
 ### Modelli
 
@@ -48,7 +48,7 @@ Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli 
 - **Statici/dinamici**: l’uso di modelli statici non permette di adeguare il sistema a fronte di variazioni, i modelli dinamici invece permettono di fare evolvere il sistema a fronte di variazioni ma hanno costi più elevati;
 - **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi. Se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
 
-E' meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
+È meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
 
 ### Deployment
 
@@ -114,9 +114,9 @@ Il container può essere implementato in due modi:
 
 ### J2EE
 
-E' un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java. Viene scritta solo la specifica non l’implementazione, diversi produttori di software hanno fatto diverse implementazioni; purché siano JEE compliant basta che rispettino la specifica. Alcune implementazioni si limitano alla specifica altre aggiungono funzionalità.
+È un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java. Viene scritta solo la specifica non l’implementazione, diversi produttori di software hanno fatto diverse implementazioni; purché siano JEE compliant basta che rispettino la specifica. Alcune implementazioni si limitano alla specifica altre aggiungono funzionalità.
 
-Esistono diversi _software open source_, che vengono spesso usati anche in ambiente di produzione come:
+Esistono diversi software open source, che vengono spesso usati anche in ambiente di produzione come:
 
 - **GlassFish**: è l'implementazione di riferimento mantenuta da Oracle;
 - **WildFly**: precedentemente noto come JBoss.
@@ -135,7 +135,7 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verr
 
 ## 02.EJB 2.x
 
-E' una tecnologia a componenti lato _server-side_ che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
+È una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
 
 ### Scenari applicativi
 
@@ -151,7 +151,7 @@ Le architetture possibili sono:
 
 ![container](./img/img11.png)
 
-Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: in viola sono rappresentati i vari container, in verde i componenti che vivono all’interno di quel container, in azzurro vengono rappresentate le parti di supporto, cioè il _run-time environment_, in giallo tutte le API standardizzate per gestire per esempio la parte di _naming e discovery_, per gestire la parte di transazionalità, di messaggistica, di accesso ai database e così via e infine le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
+Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: in viola sono rappresentati i vari container, in verde i componenti che vivono all’interno di quel container, in azzurro vengono rappresentate le parti di supporto, cioè il _run-time environment_, in giallo tutte le API standardizzate per gestire per esempio la parte di naming e discovery, per gestire la parte di transazionalità, di messaggistica, di accesso ai database e così via e infine le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
 Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, offrendo un framework di supporto per componenti portabili, facilitando la configurazione a deployment-time, non sempre essi si prestano ad essere la soluzione migliore. Gli EJB sono interessanti dal punto di vista tecnologico quando il sistema che si progetta ha dei requisiti che sono di tipo enterprise, cioè è un sistema che deve necessariamente scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile. In altre situazioni, per esempio, quando si ha che fare con delle semplici applicazioni low-cost o delle pagine Web dinamiche l’utilizzo degli EJB è esagerato.
 
@@ -181,9 +181,9 @@ Ad esempio, si consideri un'applicazione riguardante una banca dove un utente pu
 
 - **Sviluppatore**: crea solo una classe che chiama _Account_. Al suo interno ci sono i metodi _prelievo()_ e _deposito()_. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, bisogna anche creare due interfacce: EJBHome e EJBObject. Dato che il cliente deve comunicare con l'EJB Home e non sa dove si trova, c'è bisogno di un sistema di nomi che recuperi la sua _posizione_;
 - **Cliente**: si ipotizzi di avere tre clienti: C1, C2 e C3 che richiedono tutti di eseguire il metodo _prelievo()_:
-    - C1, prima di fare richiesta di prelievo ma la richiesta arriva a EJBHome il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJBHome restituisce al cliente il riferimento di EJB Object;
-    - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatta su EJBObject che a sua volta potrà invocare il metodo dell’oggetto O1;
-    - C3 fa una richiesta. EJBHome potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1. Non è detto che debba essere lo stesso.
+    - Quando C1 fa richiesta, essa passa prima da EJBHome il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJBHome restituisce al cliente il riferimento di EJB Object;
+    - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatta su EJB Object che a sua volta potrà invocare il metodo dell’oggetto O1;
+    - C3 fa una richiesta. EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1. Non è detto che debba essere lo stesso.
 
 ### Contratti
 
@@ -204,9 +204,8 @@ Esistono due tipi di contratto:
 
 Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la logica di business mentre il container si occupa di:
 
-- Generare automaticamente le classi concrete delle interfaccia EJBHome e EJBObject perchè lo sviluppatore deve creare solo queste interfacce;
-- Effettuare il binding dell’oggetto Home presso il
-servizio di naming;
+- Generare automaticamente le classi concrete delle interfaccia EJBHome e EJBObject perchè lo sviluppatore deve creare **solo** interfacce;
+- Effettuare il binding dell’oggetto Home presso il servizio di naming;
 - Persistenza;
 - Transazionalità;
 - Gestione lifecycle componenti;
@@ -218,7 +217,7 @@ servizio di naming;
 
 I componenti possono essere classificati in due categorie:
 
-- **Sincroni**: l'utente si blocca e aspetta la risposta da parte del _server_. Si classificano ulteriormente in:
+- **Sincroni**: l'utente si blocca e aspetta la risposta da parte del server. Si classificano ulteriormente in:
     - **Session Bean**: a sua volta esistono due tipi di Session Bean:
         - **Stateful**;
         - **Stateless**;
@@ -299,7 +298,7 @@ Si supponga di avere un produttore di software A (vendor A) specializzato nella 
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale. Il cliente non sa dove si trova l'oggetto EJB Home (quando verrà implementato in modo automatico dal container) per cui ha bisogno di un servizio di nomi per conoscere la sua _posizione_. Dato che le comunicazioni, avvengono tramite RMI, ottiene il riferimento allo stub di EJB Home;
+- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale. Il cliente non sa dove si trova l'oggetto EJB Home, quando verrà implementato in modo automatico dal container, per cui ha bisogno di un servizio di nomi per conoscere la sua _posizione_. Dato che le comunicazioni, avvengono tramite RMI, ottiene il riferimento allo stub di EJB Home;
 - **Interfaccia EJBObject**: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
 Il cliente ottiene il riferimento allo stub di EJB Object attraverso i metodi _create()_ o _find()_ dell’interfaccia EJB Home.
 
@@ -395,13 +394,13 @@ public interface InterestLocal extends EJBLocalObject {
 }
 ```
 
-E' bene ricordare che non è trasparente passare da EJBHome a EJBLocalHome perchè l'interfaccia locale non ha la _RemoteException_.
+È bene ricordare che non è trasparente passare da EJBHome a EJBLocalHome perchè l'interfaccia locale non ha la _RemoteException_.
 
 ### Cliente
 
 Per interagire con un componente EJB il cliente deve:
 
-- Ottenere l’oggetto EJBHome (in realtà un oggetto _stub_) via JNDI che è il servizio di nomi Java standard perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
+- Ottenere l’oggetto EJBHome (in realtà un oggetto stub) via JNDI che è il servizio di nomi Java standard perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
     - Creare l'oggetto InitialContext. Questo oggetto serve per poter cercare sul servizio di nomi;
     - Effettuare la lookup sul servizio di nomi;
     - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile;
@@ -444,26 +443,26 @@ public class InterestClient {
 Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti file:
 
 - ***.EAR (Enterprise ARchive)**: è tutta l'applicazione EJB che si trova lato server. Al suo interno ci sono i seguenti file:
-    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc. ). E' facoltativo perchè non è detto che lo si debba inserire;
-    - **EJB-JAR (*.jar)**: modulo EJB al cui interno è possibile inserire uno o più componenti. In un .EAR ci possono essere uno o più moduli. Il file ejb-jar deve contenere almeno i seguenti file:
+    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc. ). È facoltativo perchè non è detto che lo si debba inserire;
+    - **EJB-JAR (*.jar)**: modulo EJB al cui interno è possibile inserire uno o più componenti. In un .EAR ci possono esserci uno o più moduli (dipende da come si organizza il progetto, se provvengono da altri progetti etc). Il file ejb-jar deve contenere almeno i seguenti file:
 
-        - **Classe bean**: classe scritta dallo sviluppatore;
+        - **Classe Bean**: classe scritta dallo sviluppatore;
         - **Interfaccia EJBHome**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta;
         - **Interfaccia EJBObject**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta;
-        - **application.xml**: descrittore di deployment. La visibilità è "locale" perchè si limita solo all'interno del modulo.
+        - **application.xml**: descrittore di deployment. La visibilità è _locale_ perchè si limita solo all'interno del modulo.
 
-        Per effettuare il deployment di una applicazione EJB, è sempre necessario creare un file *.EAR anche se l’applicazione prevede un solo file EJB-JAR e nessun modulo Web. Tuttavia, alcuni container permettono il deployment diretto del solo modulo EJB-JAR senza dover creare il file *.EAR.
+        Per effettuare il deployment di una applicazione EJB, è sempre necessario creare un file *.EAR anche se l’applicazione prevede un solo modulo EJB-JAR e nessun modulo Web. Tuttavia, alcuni container permettono il deployment diretto del solo modulo EJB-JAR senza dover creare il file *.EAR.
 
-    - **application.xml**: descrittore di deployment. La visibilità è "globale" paragonato a quello che si trova all'interno di ogni modulo.
+    - **application.xml**: descrittore di deployment. La visibilità è _globale_ paragonato a quello che si trova all'interno di ogni modulo.
 - ***.JAR**: cliente EJB. Questo archivio consiste di tutte le classi necessarie per il corretto funzionamento del programma cliente.
 
 ### Problemi riscontrati
 
-La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emersi durante l'uso di questa tecnologia:
+La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emersi durante l'uso di questa versione:
 
 - **Il modello di programmazione non sempre naturale**: oltre alla logica di business bisogna anche implementare due interfacce. L'obiettivo è quello di scrivere in modo molto più simile un componente a come si fa con gli oggetti. Inoltre, bisogna ricordare di configurare il file descriptor che è un file diverso rispetto a quello in cui si scrive il codice della classe;
-- **La lookup dei componenti è sempre basata su JNDI**;
-- **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. E' vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
+- **La lookup dei componenti è sempre basata su JNDI**: bisogna sempre cercare il componente prima di poterlo usare;
+- **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. È vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
 
 Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nei prossimi due capitoli, si parlerà di annotazioni e di sistema di nomi.
 
@@ -597,7 +596,7 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 - **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se confrontassi la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, potremmo vedere che è la stessa;
 - **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time
-- **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. E' utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
+- **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. È utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
 
 ### Perchè usarle
 
@@ -620,14 +619,14 @@ Esempi di sistemi di nomi:
 
 ### Sistemi di Discovery
 
-E' una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le "unità" che sono presenti nella rete.
+È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le "unità" che sono presenti nella rete.
 Questo servizio gestisce una piccola quantità di nomi e il numero di scritture è molto alto.
 
 Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
 ### Sistemi di Directory
 
-E' una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizzate una serie di attributi (simili ai record di un DB). Gli attributi devono essere accessibili efficientemente in lettura e devono scalare molto bene su numeri grandi.
+È una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizzate una serie di attributi (simili ai record di un DB). Gli attributi devono essere accessibili efficientemente in lettura e devono scalare molto bene su numeri grandi.
 
 Ad esempio, LDAP consente di accedere ai laboratori di UNIBO, X500.
 
@@ -649,7 +648,7 @@ In questo modo si può cambiare servizio di nomi senza preoccuparsi del codice c
 
 Context è l'interfaccia che contiene metodi per aggiungere, cancellare, cercare, ridenominare oggetti. Invece, l'implementazione di Context è InitialContext. I metodi che si trovano nell'interfaccia sono i seguenti:
 
-- **bind**: Consente di associare ad un nome logico un oggetto. E' importante che il nome non deve essere associato già ad alcun oggetto
+- **bind**: Consente di associare ad un nome logico un oggetto. È importante che il nome non deve essere associato già ad alcun oggetto
     ```
     void bind(String stringName, Object object)
     ```
