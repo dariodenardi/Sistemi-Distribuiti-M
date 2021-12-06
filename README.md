@@ -175,23 +175,23 @@ L'immagine di seguito riportata, fa riferimento ad un'architettura three-tier: c
 Sul'EJB Container non si troveranno solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati:
 
 - **Oggetto EJB Home**: implementa l’interfaccia EJBHome. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc);
-- **Oggetto EJB Object**: implementa l’interfaccia EJBObject. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJBObject che invoca poi a sua volta il metodo del componente scritto dal programmatore.
+- **Oggetto EJB Object**: implementa l’interfaccia EJBObject. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il metodo del componente scritto dal programmatore.
 
 Ad esempio, si consideri un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
 
-- **Sviluppatore**: crea solo una classe che chiama _Account_. Al suo interno ci sono i metodi _prelievo()_ e _deposito()_. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, bisogna anche creare due interfacce: EJBHome e EJBObject. Dato che il cliente deve comunicare con l'EJB Home e non sa dove si trova, c'è bisogno di un sistema di nomi che recuperi la sua _posizione_;
-- **Cliente**: si ipotizzi di avere tre clienti: C1, C2 e C3 che richiedono tutti di eseguire il metodo _prelievo()_:
-    - Quando C1 fa richiesta, essa passa prima da EJBHome il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJBHome restituisce al cliente il riferimento di EJB Object;
+- **Sviluppatore**: crea solo una classe che chiama _Account_. Al suo interno ci sono i metodi _prelievo()_ e _deposito()_. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, bisogna anche creare due interfacce: EJBHome e EJBObject;
+- **Cliente**: si ipotizzi di avere tre clienti: C1 e C2 che richiedono tutti di eseguire il metodo _prelievo()_:
+    - Quando C1 fa richiesta, essa passa prima da EJB Home il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJB Home restituisce al cliente il riferimento di EJB Object;
     - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatta su EJB Object che a sua volta potrà invocare il metodo dell’oggetto O1;
-    - C3 fa una richiesta. EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1. Non è detto che debba essere lo stesso.
+    - C2 fa una richiesta. EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 se l'interazione tra C1 è terminata ma **non** è detto che debba essere lo stesso.
 
 ### Contratti
 
 Esistono due tipi di contratto:
 
 - **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da:
-    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente;
-    - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore;
+    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente. con Home Interface si intende la EJB Home. È il nome tecnico usato nella documentazione J2EE;
+    - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore. Con Object Interface si intende la EJB Object. È il nome tecnico usato nella documentazione J2EE;
     - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi che si occupa del recupero dell'interfaccia EJB Home;
 - **Component contract**: contratto tra componente e container. Il contratto serve a:
     - Abilitare le invocazioni dei metodi dei clienti;
@@ -199,6 +199,10 @@ Esistono due tipi di contratto:
     - Gestisce la persistenza (solo in EJB 2.x, da EJB 3.x la gestione è diversa);
     - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc;
     - Implementa il meccanismo delle callback. Ci sono i Message Driven Bean, il cui funzionamento è asincrono, che vengono attivati quando si riceve un determinato messaggio.
+
+### JNDI
+
+I Clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home. Serve, quindi, un servizio di nomi che svolge appunto questo compito. Le operazioni di creazione e ritrovamento di componenti EJB sono standardizzate. Infatti, in Java viene usata la libreria standard JNDI che consente di collegarsi a un qualunque servizio di nomi.
 
 ### EJB container
 
@@ -278,7 +282,7 @@ Agli estremi della catena di interazione vi sono, ovviamente, da un lato i clien
 
 ### Deployment
 
-Il deployment descriptor fornisce istruzioni al Container su come gestire e controllare il comportamento di componenti J2EE, essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Il fatto che il deployment descriptor segua una specifica dichiarativa permette una forte portabilità del codice. Queste decisioni vengono scritte in un file .XML.
+Il deployment descriptor fornisce istruzioni al Container su come gestire e controllare il comportamento di componenti J2EE, essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Il fatto che il deployment descriptor segua una specifica dichiarativa permette una forte portabilità del codice. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
 
 ### Ciclo di sviluppo
 
@@ -298,7 +302,7 @@ Si supponga di avere un produttore di software A (vendor A) specializzato nella 
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale. Il cliente non sa dove si trova l'oggetto EJB Home, quando verrà implementato in modo automatico dal container, per cui ha bisogno di un servizio di nomi per conoscere la sua _posizione_. Dato che le comunicazioni, avvengono tramite RMI, ottiene il riferimento allo stub di EJB Home;
+- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale;
 - **Interfaccia EJBObject**: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
 Il cliente ottiene il riferimento allo stub di EJB Object attraverso i metodi _create()_ o _find()_ dell’interfaccia EJB Home.
 
@@ -336,7 +340,7 @@ public interface Interest extends EJBObject {
 
 Ovviamente gli oggetti che cooperano, in questo caso, si trovano su JVM differenti. Dal lato cliente, vengono invocati i metodi di oggetti che si trovano lato server e necessariamente ci deve essere un meccanismo di comunicazione tra cliente e server.
 
-RMI è utilizzato per la comunicazione fra cliente e server EJB. Le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione RMI.
+RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione RMI.
 
 ![rmi_iiop](./img/img2.png)
 
@@ -400,7 +404,7 @@ public interface InterestLocal extends EJBLocalObject {
 
 Per interagire con un componente EJB il cliente deve:
 
-- Ottenere l’oggetto EJBHome (in realtà un oggetto stub) via JNDI che è il servizio di nomi Java standard perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
+- Ottenere l’oggetto EJBHome (in realtà un oggetto stub) via JNDI perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
     - Creare l'oggetto InitialContext. Questo oggetto serve per poter cercare sul servizio di nomi;
     - Effettuare la lookup sul servizio di nomi;
     - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile;
@@ -461,7 +465,7 @@ Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti fi
 La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emersi durante l'uso di questa versione:
 
 - **Il modello di programmazione non sempre naturale**: oltre alla logica di business bisogna anche implementare due interfacce. L'obiettivo è quello di scrivere in modo molto più simile un componente a come si fa con gli oggetti. Inoltre, bisogna ricordare di configurare il file descriptor che è un file diverso rispetto a quello in cui si scrive il codice della classe;
-- **La lookup dei componenti è sempre basata su JNDI**: bisogna sempre cercare il componente prima di poterlo usare;
+- **La lookup dei componenti è sempre basata su JNDI**: bisogna scrivere codice per cercare il componente prima di poterlo usare. Se non si facesse questa operazione sarebbe più facile la scrittura di codice;
 - **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. È vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
 
 Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nei prossimi due capitoli, si parlerà di annotazioni e di sistema di nomi.
