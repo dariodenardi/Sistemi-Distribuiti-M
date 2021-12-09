@@ -146,7 +146,7 @@ I componenti EJB possono essere utilizzati in diverse architetture.
 Le architetture possibili sono:
 
 - **Modello 2-tier**: il cliente stand-alone, scritto in Java, interagisce direttamente con il database o con un componente EJB;
-- **Modello 3-tier**: il client comunica tramite HTML con il server web che comunica a sua volta direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database. Nelle applicazioni di tipo enterprise B2B le interazioni vanno tramite messaggi JMS o basate su XML;
+- **Modello 3-tier**: il client comunica tramite HTML con il server web che comunica a sua volta direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database;
 - **Modello 4-tier**: il client comunica tramite HTML con una parte di presentazione web basata su JSP e Servlet, con il componente EJB e il database con le connessioni al database.
 
 ![container](./img/img11.png)
@@ -202,7 +202,7 @@ Esistono due tipi di contratto:
 
 ### JNDI
 
-I Clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home. Serve, quindi, un servizio di nomi che svolge appunto questo compito. Le operazioni di creazione e ritrovamento di componenti EJB sono standardizzate. Infatti, in Java viene usata la libreria standard JNDI che consente di collegarsi a un qualunque servizio di nomi.
+I Clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home. Serve, quindi, un servizio di nomi che svolge appunto questo compito. Ogni sistema di nomi può avere delle API diverse per effettuare le operazioni. Per questo motivo, le operazioni sono state standardizzate: in Java viene usata la libreria JNDI che consente di collegarsi a un qualunque servizio di nomi con API standardizzate.
 
 ### EJB container
 
@@ -1465,16 +1465,17 @@ Nel mondo Corba quando parliamo di tutte queste funzionalità siamo nel mondo de
 
 ## 09.Spring
 
-Spring è un framework leggero per la costruzione di applicazioni Java SE e Java EE.
+Soluzione a container leggero utile per applicazioni Java Standard Edition, sia per POJO sia per evoluzioni dell’EE java. Ha avuto un forte impatto con idee rivoluzionarie che hanno portato ad evolvere anche EJB.
 
-È ancora molto usato al giorno d'oggi perchè ha delle proprietà uniche:
+Caratteristiche principali: invertion of control, dependency injection, iniezioni di dipendenza nei componenti con Invertion of control, supporto alla persistenza, integrazione di una parte di presentazione o web tier, supporto all’aspect oriented programming in modo pervasivo. Programmazione orientata agli aspetti ovvero una serie di funzionalità che sono ortogonali rispetto al core della logica di business, tale tecnologia vuole mantenere la logica di business pura senza doverla allacciare ad aspetti esterni, quindi separare, il tutto è gestito esternamente, ogni funzionalità è un aspetto che viene integrata nella logica di business.
 
-- Spring come framework modulare: possibilità di utilizzare anche solo alcune parti. Il modulo base si occupa sostanzialmente della sola Inversion of Control
- 
-➢ Anche possibilità di introdurre Spring incrementalmente in progetti 
-esistenti e di imparare ad utilizzare la tecnologia “pezzo per pezzo”
-❑ Tecnologia di integrazione di soluzioni esistenti
-❑ Facilità di testing
+La Dependency injection è utilizzata per facilitare i binding tra component. Esiste una factory globale che si può utilizzare per ritrovare e gestire le relazioni, cercando di parcelizzare meno il sistema della gestione rispetto a EJB. Integrazione con il web framework MVC. Web flow a grana fine.
+
+Spring non è solo un altro framework, rappresenta un approccio piuttosto unico, che ha fortemente influenzato i container successivi, verso tecnologie a microcontainer. Le principali proprietà originali sono:   la modularità,  architettura a layer, possibilità di utilizzare anche solo alcune parti (i container)  in isolamento, si può introdurre Spring incrementalmente in progetti esistenti e di imparare ad utilizzare la tecnologia “pezzo per pezzo”, supporta  importanti aree non coperte da altri framework diffusi, come il management degli oggetti di business, una tecnologia di integrazione di soluzioni esistenti, maggiore facilità di testing, e infin un progetto e una community attivi.
+
+Le motivazioni per cui scegliere spring sono diverse. Spring consente l’integrazione e la cooperazione fra componenti (secondo il semplice modello JavaBean) via dependency Injection, pone molta importanza al disaccoppiamento, mette a disposizione Test-Driven Development (TDD), ovvero la possibilità di effettuare testing delle classi (POJO) senza essere legati al framework, ha un uso semplificato di tecnologie diffuse e di successo utilizzando astrazioni che isolano il codice applicativo, con eliminazione di codice ridondante, e gestione di comuni condizioni di errore (caso delle unchecked exception), lascia una parziale visibilità quindi non vi è totale trasparenza. La progettazione avviene per interfacce, con ottimo isolamento delle funzionalità dai dettagli implementativi, inoltre integra la programmazione dichiarativa via AOP che consente una facile configurazione degli aspetti, come ad esempio il supporto alle transazioni.
+
+Spring non è una soluzione “all-or-nothing”, ma pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e O/RM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
 
 ### Aspect Oriented Programming (AOP)
 
