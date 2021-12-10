@@ -1480,34 +1480,688 @@ Le motivazioni per cui scegliere spring sono diverse. Spring consente l’integr
 
 Spring non è una soluzione “all-or-nothing”, ma pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e O/RM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
 
-### Aspect Oriented Programming (AOP)
+![single tier](./img/img39.png)
 
-Esistono alcune attività che, per la loro natura di trasversalità applicativa non sono facilmente isolabili in moduli distinti. Ad esempio, logging, gestione della sicurezza, ecc. La gestione di questi aspetti, pur non rappresentando il core della logica applicativa, è presente (ripetuta) in più oggetti del modello.
+Il core è un container leggero basato sull’inversion of control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE  si occupa della gestione di tutti i servizi enterpise. Web Tier contiene tutti i framework web che possono essere integrati con il core. Dao e Orm sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il core, Dao e Orm.
 
-Di conseguenza, ci sono problemi dovuti alla mancanza di separazione del 
-codice, manutenibilità, ecc.
+![single tier](./img/img40.png)
 
-Per far fronte a queste problematiche nasce l’Aspect Oriented Programming (AOP), un paradigma complementare a OOP in grado di descrivere aspetti e comportamenti trasversali all’applicazione, separandoli dal dominio applicativo.
+Nel dettaglio dell’architettura a livelli. Dal basso abbiamo il core, la parte di accesso all’oggetto che astrae l’accesso alle varie entità, puoi vi è il mapping tra oggetti e modello relazionale, a questo livello vi sono parti di business logic, parte di gestione delle transazioni, dichiarativa, che è applicabile ai POJO, al di sopra di questo tutte le parti che vanno nel senso del web tier e supporto a framework evoluti. Al livello più alto troviamo ponti verso mondi esterni, per l’integrazione con strumenti molto diffusi e tutta la parte di binding con il domain model applicativo e tutte le parti per la gestione delle risorse esterne, ad esempio dei file e per la gestione dell’interazione attraverso controller.
 
-Di seguito vengono presentati i concetti rilevanti.
+Possiamo sempre pensare di specializzare il framework e utilizzare le parti che ci servono, quindi possiamo creare diversi scenari Spring in base alle nostre esigenze.
 
-### Join Point
+Il Core Package è una parte fondamentale del framework. Consiste in un container leggero che si occupa di Inversion of Control o Dependency Injection. L’elemento fondamentale è BeanFactory, che fornisce una implementazione estesa del pattern factory ed elimina la necessità di gestione di singleton a livello di programmazione, permettendo di disaccoppiare configurazione e dipendenze dalla logica applicativa.
 
-Rappresenta un punto preciso nell’esecuzione del programma, come l’invocazione di un metodo o il verificarsi di un eccezione.
+DAO Package, livello di astrazione che non rende più necessario boilerplate code per connessioni JDBC, eliminando parsing di codici di errore database-specific. La gestione delle transazioni avviene sia da codice che in modo dichiarativo, non solo per classi che implementano interfacce speciali, ma la possibilità è aperta a tutti i POJO.
 
-### Advice
+ORM Package è il livello di integrazione per il mapping da mondo relazionale a mondo a oggetti, con soluzioni diffuse per ORM, come JPA, JDO, Hibernate, iBatis. Le varie soluzioni ORM possono essere usate in combinazione con le altre funzionalità di Spring, come la gestione dichiarativa delle transazioni, tutte queste possono essere combinate con le altre funzionalità Spring, come tecnologia di integrazione.
 
-Descrive l’operazione da compiere ad un determinato Join Point. Un advice, a differenza di un metodo che deve essere invocato esplicitamente, viene eseguito automaticamente ogni volta che ad un determinato evento (Join Point) si verifica una particolare condizione (Pointcut). Esistono diversi tipi di Advice.
+MVC Package, implementazione di Model-View-Controller (MVC) per applicazioni Web, con buona separazione e indipendenza fra codice del modello di dominio e form Web ovvero la parte di presentazione e la logica applicativa a livello di control.
 
-### Pointcut
+AOP Package implementazione di aspect-oriented programming conforme allo standard AOP Alliance. Permette di definire, ad esempio, degli intercettori di metodo e pointcut per la logica disaccoppiamento degli aspetti in modo pulito, inoltre dà la possibilità di utilizzare metadati a livello sorgente per incorporare informazioni aggiuntive di comportamento all’interno del codice.
 
-Descrive le regole con cui associare l’esecuzione di un Advice ad un determinato Join Point. Sostanzialmente attraverso un predicato viene specificato che al verificarsi di un determinato Join Point (es: esecuzione del metodo foo()) sia applicato un determinato Advice (es: Before).
+### Aspect Oriented Programming AOP
 
-Un tipico pointcut è l’insieme di tutte le invocazioni di metodo in una 
-classe determinata
+Aspect Oriented programming (AOP) è un approccio di design e una tecnica per semplificare la gestione di aspetti trasversali e non strettamente legati alla logica di business con l’applicazione di cross-cutting concern, per problematiche trasversali alla logica applicativa. Degli esempi di cross-cutting concern sono il logging, il locking, la gestione degli eventi, la gestione delle transazioni, sicurezza e auditing. AOP introduce anche nuovi strumenti che facilitano la gestione di questi aspetti tra cui: Joinpoint, Advice, Pointcut e Aspect, Weaving e Target, Introduction. L’idea di base è quella di intercettare le chiamate da remoto.
 
-### Inversion of Control
+Joinpoint è un punto ben definito all’interno del codice applicativo, anche determinabile a runtime, dove può essere inserita logica addizionale, alcuni esempi di joinpoint sono: l’Invocazione di metodi, l’Inizializzazione di classi, l’inizializzazione di oggetti, ovvero la creazione di istanze.
 
+Advice è una parte di codice che aggiunge logica addizionale al programma, deve essere aggiunto ed eseguito ad un determinato joinpoint. I diversi tipi di Advice sono: i before advice che eseguono prima del joinpoint, after advice eseguono dopo il joinpoint, around advice eseguono attorno (around) al joinpoint.
+
+Pointcut è un Insieme di joinpoint che vengono verificati per definire quando eseguire un advice, il pointcut è l’insieme di tutte le invocazioni di quel metodo in una determinata classe, i pointcut possono essere messi in relazione tra di loro per decidere quando eseguirli insieme al collegato advice, con controllo fine e flessibile su come applicare advice al codice applicativo. La differenza tra pointcut e jointpoit è la seguente: il pointcut è l’insieme di tutte le invocazioni di metodo in una determinata classe mentre l’invocazione di un metodo è un tipico joinpoint. I pointcut possono essere composti in relazioni anche complesse per vincolare il momento di esecuzione dell’advice corrispondente.
+
+Aspect definisce quando e come gestire la logica per quell’aspetto, Aspect è la combinazione di advice e pointcut.
+
+Weaving è il processo dell’effettivo inserimento di aspect dentro il codice applicativo nel punto appropriato (la traduzione di weaving è cucire il codice nel punto appropriato), ci sono due possibilità per effettuare il weaving a tempo di compilazione, o a runtime ritardiamo il più possibile l’inserimento dell’aspetto.
+
+Target è un oggetto il cui flusso di esecuzione viene modificato da qualche processo AOP attraverso il weaving, in alcuni casi viene anche indicato come oggetto con advice (advised object).
+
+Nell’AOP statico il processo di weaving viene realizzato a tempo di compilazione, come passo ulteriore del processo di sviluppo, durante la build dell’applicazione, vengono aggiunti opportunamente in alcuni punti gli advice, in questo caso il weaving incide sul codice dell’applicazione che viene eseguito e sul suo footprint, può avvenire in diversi modi anche andando a modificare i BYTECODE. Ad esempio, in un programma Java, si può avere weaving attraverso la modifica del bytecode di una applicazione, senza la modifica del codice sorgente, intervenendo direttamente sul bytecode stesso, i file bytecode possono essere modificati prima della messa in esecuzione questo richiede che durante la compilazione ci sia questo passaggio di modifica.
+
+Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime, vi è la possibilità di cambiare weaving senza bisogno di ricompilazione. Bisogna intercettare il punto in cui cambiare il weaving e inserire gli advice, con un continuo monitoraggio e iniezione durante l’esecuzione, questo rappresenta uno svantaggio perché causa un overhead durante l’esecuzione.
+
+Spring realizza AOP sulla base dell’utilizzo di proxy, infatti se si desidera creare una classe advised, occorre utilizzare la classe ProxyFactory per creare un proxy per un’istanza di quella classe, fornendo a ProxyFactory tutti gli aspect con cui si desidera informare il proxy.
+
+La Dependency Injection è l’applicazione più nota e di maggiore successo del principio di Inversion of Control e l’Hollywood Principle, che si traduce in “Don't call me, I'll call you”. L’idea è che il container leggero si occupi di risolvere (injection) le dipendenze dei componenti attraverso l’opportuna configurazione dell’implementazione dell’oggetto (push), per questo fu chiamato dependency injection, questa idea è opposta ai pattern più classici di istanziazione di componenti o service locator, dove è il componente che deve determinare l’implementazione della risorsa desiderata (pull), questo consente di mantenere il più possibile l’implementazione leggera.
+
+Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le annotazioni per aggiungere tutte le informazioni utili che servono a esprimere tutte le dipendenze tra i vari compoennti, con il vantaggio della flessibilità con l’eliminazione del codice di lookup nella logica di business, in caso di cambio delle risorse esterne non vi è la necessità di cambiare il codice, la possibilità e facilità di testing con nessun bisogno di dipendere da risorse esterne o da container in fase di testing, vi è la possibilità di abilitare testing automatico, ed un’elevata manutenibilità del codice che permette riutilizzo in diversi ambienti applicativi cambiando semplicemente i file di configurazione (o in generale le specifiche di dependency injection) e non il codice, dividendo nettamente la parte di programma da quella di configurazione.
+
+Dependency injection possono essere effettuate a livello di costruttore, in cui le dipendenze sono fornite attraverso i costruttori dei componenti.
+
+```
+public class ConstructorInjection { 
+    private Dependency dep; 
+    public ConstructorInjection(Dependency dep) { this.dep = dep; } 
+}
+```
+
+Dependency injection è possibile anche a livello di metodi “setter” in cui le dipendenze sono fornite attraverso i metodi di configurazione (metodi setter in stile JavaBean) dei componenti. Questa modalità è più frequentemente utilizzata nella comunità degli sviluppatori.
+
+```
+public class SetterInjection { 
+    private Dependency dep; 
+    public void setMyDependency(Dependency dep) { this.dep = dep; } 
+}
+```
+
+L’oggetto BeanFactory è responsabile della gestione dei bean che usano Spring e delle loro dipendenze. Ogni applicazione interagisce con la dependency injection di Spring (IoC container) tramite l’interfaccia BeanFactory, che viene realizzata da un oggetto BeanFactory che viene creato dall’applicazione, tipicamente nella forma di XmlBeanFactory, questo oggetto BeanFactory una volta creato legge un file di configurazione XML e si occupa di fare l’injection, detto anche wiring della configurazione. XmlBeanFactory è estensione di DefaultListableBeanFactory per leggere definizioni di Bean da un documento XML. La xml BeanFactory legge la configurazione da un file e attraverso il metodo getBean() è possibile specificare il nome del Bean e crearlo, le informazioni sono invece contenute tutte nel file XML.
+
+```
+public class XmlConfigWithBeanFactory { 
+    public static void main(String[] args) { 
+        XmlBeanFactory factory = new XmlBeanFactory(new FileSystemResource("beans.xml")); 
+        SomeBeanInterface b = (SomeBeanInterface) factory.getBean(“nameOftheBean”); 
+    } 
+}
+```
+
+File di configurazione:
+
+```
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<bean id="renderer" class="StandardOutMessageRenderer">
+<property name="messageProvider">
+<ref local="provider"/>
+</property>
+</bean>
+<bean id="provider" class="HelloWorldMessageProvider"/> 
+</beans>
+```
+
+Oppure a livello di costruttore:
+
+```
+<beans>
+<bean id="provider" class="ConfigurableMessageProvider">
+<constructor-arg>
+<value> Questo è il messaggio configurabile</value>
+</constructor-arg>
+</bean>
+</beans>
+```
+
+Uso della dependency injection:
+
+```
+public class ConfigurableMessageProvider implements MessageProvider { 
+private String message; // usa dependency injection per config. del messaggio public ConfigurableMessageProvider(String message) { this.message = message; } 
+public String getMessage() { return message; } 
+}
+```
+
+Spring supporta diversi tipi di parametri iniettabili con cui fare injection:
+
+- Valori semplici;
+- Bean all’interno della stessa factory (stesso file di configurazione XML);
+- Bean anche in diverse factory;
+- Collezioni (collection);
+- Proprietà definite esternamente.
+
+Tutti questi tipi possono essere usati sia per injection sui costruttori che sui metodi setter:
+
+Injection di valori semplici esempio:
+
+```
+<beans>
+<bean id="injectSimple" class="InjectSimple">
+<property name="name"> <value>John Smith</value>
+</property>
+<property name="age"> <value>35</value>
+</property>
+<property name="height"> <value>1.78</value>
+</property>
+</bean> </beans>
+```
+
+L’Injection di Bean della stessa Factory è usata quando è necessario fare injection di un bean all’interno di un altro target bean.  Uso del tag in o del target bean. Controllo lasco sul tipo del bean “iniettato” rispetto a quanto definito nel target, se il tipo definito nel target è un’interfaccia, il bean injected deve essere un’implementazione di tale interfaccia, se il tipo definito nel target è una classe, il bean injected deve essere della stessa classe o di una sottoclasse.
+
+Il ritrovamento dei Bean avviene attraverso il naming dei componenti Spring, ogni bean deve avere un nome unico all’interno della BeanFactory che lo contiene, la procedura di risoluzione dei nomi avviene seguendo le seguenti regole: se un tag ha un attributo di nome id, il valore di questo attributo viene usato come nome, se non c’è attributo id, Spring cerca un attributo di nome name, se non è definito né id né name, Spring usa il nome della classe del Bean come suo nome. Spring è un buon esempio di tecnologia a container leggeri perché facilita molto la gestione delle dipendenze con Dependency Injection.
+
+```
+public class HelloWorld { 
+public static void main(String[] args) { System.out.println("Hello World!"); } 
+}
+```
+
+Un programma come questo si porta dietro alcuni problemi, se vi è la necessità di cambiare il codice (e di ricompilare) per imporre una modifica del messaggio, dobbiamo modificare e ricompilare, il codice non è estensibile o modificabile. Per risolvere dobbiamo effettuare alcune operazioni quali il disaccoppiamento dell’implementazione della logica del Message Provider rispetto al resto del codice tramite creazione di una classe separata.
+
+```
+public class HelloWorldMessageProvider { 
+public String getMessage() { return "Hello World!"; } 
+}
+```
+
+Poi il disaccoppiamento dell’implementazione della logica di Message Rendering dal resto del codice. La logica di Message Rendering è data all’oggetto HelloWorldMessageProvider questa la andiamo ad esternalizzare, questo è ciò che si intende con Dependency Injection.  Avendo una classe StandardOutMessageRender che ha come campo il messaggio e ha un metodo render() che consente di andare emettere un messaggio di errore se non è stato configurato correttamente il MessageProvider o altrimenti invocare il metodo getMessage() che permette di andare a stampare il messaggio di HelloWorld ,quindi rendiamo indipendente il renderer dal Message Provider. La dependency è realizzata attraverso il metodo setter.
+
+```
+public class StandardOutMessageRenderer { 
+private HelloWorldMessageProvider messageProvider = null; 
+public void render() { 
+if (messageProvider == null) { 
+throw new RuntimeException("You must set the property messageProvider of class:“ + StandardOutMessageRenderer.class. getName()); 
+}
+System.out.println(messageProvider.getMessage()); 
+} // dependency injection tramite metodo setter public void setMessageProvider(HelloWorldMessageProvider provider) { this.messageProvider = provider; } public HelloWorldMessageProvider getMessageProvider() { return this.messageProvider; } 
+}
+```
+
+```
+public class HelloWorldDecoupled { 
+public static void main(String[] args) { 
+StandardOutMessageRenderer mr = new StandardOutMessageRenderer(); 
+HelloWorldMessageProvider mp = new HelloWorldMessageProvider(); 
+mr.setMessageProvider(mp); mr.render(); 
+} 
+}
+```
+
+Ma ci sono ancora dei problemi aperti in particolare le Implementazioni specifiche di MessageRenderer e di MessageProvider sono hard-coded nella logica applicativa, per rendere il tutto ancora più disaccoppiato possiamo usare interfacce.
+
+```
+public interface MessageProvider { public String getMessage(); } 
+```
+
+```
+public class HelloWorldMessageProvider implements MessageProvider { 
+public String getMessage() { return "Hello World!"; } 
+}
+```
+
+```
+public interface MessageRenderer { 
+public void render(); 
+public void setMessageProvider(MessageProvider provider); 
+public MessageProvider getMessageProvider(); 
+}
+```
+
+```
+ublic class StandardOutMessageRenderer implements MessageRenderer { 
+// MessageProvider è una interfaccia Java ora 
+private MessageProvider messageProvider = null; 
+public void render() { 
+if (messageProvider == null) {
+throw new RuntimeException( "You must set the property messageProvider of class:“ + StandardOutMessageRenderer.class. getName()); 
+} 
+System.out.println(messageProvider.getMessage()); 
+}
+public void setMessageProvider(MessageProvider provider) { 
+this.messageProvider = provider; 
+} 
+public MessageProvider getMessageProvider() { return this.messageProvider; } 
+}
+```
+
+Scompare la dipendenza dalla classe, anche se dietro le quinte si dovrà andare a creare le opportune classi, ora però non vi è più dipendenza da quelle classi. Rimane la responsabilità del launcher di effettuare la _dependency injection_.
+
+HelloWorld con Disaccoppiamento: Interfacce
+
+```
+public class HelloWorldDecoupled { 
+public static void main(String[] args) { 
+MessageRenderer mr = new StandardOutMessageRenderer(); 
+MessageProvider mp = new HelloWorldMessageProvider(); 
+mr.setMessageProvider(mp); 
+mr.render(); 
+} 
+}
+```
+
+Ora è possibile modificare la logica di message rendering senza alcun impatto sulla logica di message provider. Allo stesso modo, è possibile cambiare la logica di message provider senza bisogno di modificare la logica di message rendering.
+
+Vi sono ancora dei problemi ovvero l’uso di differenti implementazioni delle interfacce MessageRenderer o MessageProvider necessita comunque di una modifica (limitata) del codice della logica di business (launcher). Per risolvere bisogna creare una semplice classe factory che legga i nomi delle classi desiderate per le implementazioni delle interfacce da un file (property file) e le istanzi a runtime, facendo le veci dell’applicazione.
+
+```
+public class MessageSupportFactory { 
+private static MessageSupportFactory instance = null; 
+private Properties props = null; 
+private MessageRenderer renderer = null; 
+private MessageProvider provider = null; 
+private MessageSupportFactory() { 
+props = new Properties(); 
+try { 
+props.load(new FileInputStream("msf.properties")); // ottiene i nomi delle classi per le interfacce 
+String rendererClass = props.getProperty("renderer.class"); 
+String providerClass = props.getProperty("provider.class"); 
+renderer = (MessageRenderer) Class.forName(rendererClass). newInstance(); 
+provider = (MessageProvider) Class.forName(providerClass). newInstance(); 
+} 
+catch (Exception ex) { ex.printStackTrace(); 
+} 
+}
+```
+
+File di proprietà:
+
+```
+# msf.properties
+
+renderer.class=StandardOutMessageRenderer provider.class=HelloWorldMessageProvider
+```
+
+Ora le implementazioni di message provider e message renderer possono essere modificate tramite semplice modifica del file di proprietà, non ha più dipendenze dagli oggetti. Questa soluzione necessita di scrivere molto “glue code” per mettere insieme l’applicazione, bisogna scrivere una classe MessageSupportFactory, inoltre, l ’istanza di MessageProvider deve essere ancora iniettata manualmente nell’implementazione di MessageRenderer.
+
+HelloWord usando Spring
+
+```
+public class HelloWorldSpring { 
+public static void main(String[] args) throws Exception { 
+// ottiene il riferimento a bean factory 
+BeanFactory factory = getBeanFactory(); 
+MessageRenderer mr = (MessageRenderer) factory. getBean("renderer"); 
+MessageProvider mp = (MessageProvider) factory. getBean("provider"); 
+mr.setMessageProvider(mp); mr.render(); 
+}
+
+// Possibilità di scrivere il proprio metodo getBeanFactory() a partire da Spring 
+DefaultListableBeanFactoryclass private static BeanFactory getBeanFactory() throws Exception { 
+DefaultListableBeanFactory factory = new DefaultListableBeanFactory(); 
+// creare un proprio lettore delle definizioni 
+PropertiesBeanDefinitionReader rdr = new PropertiesBeanDefinitionReader(factory); 
+// caricare le opzioni di configurazione 
+Properties props = new Properties(); 
+props.load(new FileInputStream("beans.properties")); 
+rdr.registerBeanDefinitions(props); return factory; 
+} 
+}
+```
+
+I vantaggi raggiunti con questa soluzione sono l’eliminazione di glue code (MessageSupportFactory), una migliore gestione degli errori e meccanismo di configurazione completamente disaccoppiato, sparisce la dipendenza dalla classe, helloworld non dipende più dalle classi. Rimangono dei problemi, infatti, il codice di startup deve avere conoscenza delle dipendenze di MessageRenderer, deve ottenerle e deve passarle a MessageRenderer. In questo caso Spring agirebbe come non più di una classe factory sofisticata, rimarrebbe al programmatore il compito di fornire il proprio metodo getBeanFactory() usando le API di basso livello del framework Spring.
+
+Esempio dependency Injection Spring
+
+La svolta è lavorare nel file di configurazione, dichiarando il riferimento a un altro Bean che ci serve, così si chiede a Spring di assegnare il HelloWorldMessageProvider come Provider del Renderer, si realizza così la dipendenza tra le due, semplicemente dichiarando il tutto nel file xml di configurazione. Finalmente, si utilizza la Dependency Injection (DI) del framework Spring.
+
+File di configurazione:
+
+```
+#Message renderer 
+renderer.class=StandardOutMessageRenderer 
+# Chiede a Spring di assegnare l’effettivo provider alla 
+# proprietà MessageProvider del bean Message renderer 
+renderer.messageProvider(ref)=provider #Message provider provider.class=HelloWorldMessageProvider
+```
+
+```
+public class HelloWorldSpringWithDI { 
+public static void main(String[] args) throws Exception { 
+BeanFactory factory = getBeanFactory(); 
+MessageRenderer mr = (MessageRenderer) factory. getBean("renderer"); 
+// Nota che non è più necessaria nessuna injection manuale 
+// del message provider al message renderer 
+mr.render(); 
+} 
+private static BeanFactory getBeanFactory() throws Exception { 
+DefaultListableBeanFactory factory = new DefaultListableBeanFactory(); PropertiesBeanDefinitionReader rdr = new PropertiesBeanDefinitionReader(factory); 
+Properties props = new Properties(); 
+props.load(new FileInputStream("beans.properties")); 
+rdr.registerBeanDefinitions(props); 
+return factory; 
+} 
+}
+```
+
+l metodo main() deve semplicemente ottenere il Bean MessageRenderer e richiamare render(), non deve ottenere prima il MessageProvider e configurare la proprietà MessageProvider del bean MessageRenderer. Il “wiring” è realizzato automaticamente dalla Dependency Injection di Spring, non serve nessuna modifica alle classi da collegare insieme, queste classi NON fanno alcun riferimento a Spring e quindi il programmatore non deve conoscere queste cose. Nessun bisogno di implementare interfacce del framework Spring. Nessun bisogno di estendere classi del framework Spring. Classi come POJO puri che possono essere sottoposte a testing senza alcuna dipendenza da Spring.
+
+Più usualmente, dipendenze dei bean sono specificate tramite un file XML.
+
+```
+<beans>
+<bean id="renderer"
+class="StandardOutMessageRenderer">
+<property name="messageProvider">
+<ref local="provider"/>
+</property>
+</bean>
+<bean id="provider"
+class="HelloWorldMessageProvider"/>
+</beans>
+```
+
+Riferimento al Provider in cui riportiamo la classe.Codice rielaborato dopo l’aggiunta dei riferimenti nell’xml
+
+```
+public class HelloWorldSpringWithDIXMLFile { 
+public static void main(String[] args) throws Exception { 
+BeanFactory factory = getBeanFactory(); 
+MessageRenderer mr = (MessageRenderer) factory.getBean("renderer");
+mr.render(); 
+} 
+private static BeanFactory getBeanFactory() throws Exception { 
+BeanFactory factory = new XmlBeanFactory(new FileSystemResource("beans.xml")); 
+return factory; 
+} 
+}
+```
+
+La factory viene creata attraverso il fileXML.
+
+Dependency Injection in Spring con costruttore
+
+Uso di un costruttore per MessageProvider
+
+```
+<beans>
+<bean id="renderer" class="StandardOutMessageRenderer">
+<property name="messageProvider">
+<ref local="provider"/>
+</property>
+</bean>
+<bean id="provider" class="ConfigurableMessageProvider">
+<constructor-arg>
+<value>Questo è il messaggio configurabile</value>
+</constructor-arg>
+</bean>
+</beans>
+```
+
+A livello di codice il ConfigurableMessageProvider esporrà un campo nel costruttore che consentirà di modificare il messaggio, il renderer continuerà a usare il provider. Il ConfigurableMessageProvider sarà una delle possibili implementazioni del MessageProvider, a differenza della precedente ha la stringa configurabile e non embedded.
+
+```
+public class ConfigurableMessageProvider implements MessageProvider { 
+private String message; 
+public ConfigurableMessageProvider(String message) { this.message = message; } 
+public String getMessage() { return message; } 
+}
+```
+
+HelloWorld con Spring focus on AOP
+
+Aggiunta di logica per rispettare i principi di Aspect Oriented Programming. Ipotizziamo di avere il MessageWriter che scrive “Hello World!” e avremmo bisogno di un around advice per inserire prima e dopo “ World”, “Hello” e “!, mentre con il  joinpoint avremo l’invocazione del metodo writeMessage() dovendo intervenire prima e dopo l’invocazione di questo metodo
+
+```
+public class MessageWriter implements IMessageWriter{ public void writeMessage() { System.out.print("World"); } } 
+```
+
+Gli advice Spring sono scritti in Java (nessun linguaggio AOPspecific). Pointcut tipicamente specificati in file XML di configurazione. Spring supporta solo joinpoint a livello di metodo (ad esempio, impossibile associare advice alla modifica di un campo di un oggetto). Con l’idea di definire come decorator queste parti cdi codice, dal punto di vista dell’esecuzione questi lavorano come intercettori che consentono di cambiare il codice.
+
+```
+public class MessageDecorator implements MethodInterceptor { 
+public Object invoke(MethodInvocation invocation) throws Throwable { 
+System.out.print("Hello "); 
+Object retVal = invocation.proceed(); 
+System.out.println("!"); 
+return retVal; 
+} 
+}
+```
+
+I pointcut lavorano come intercettori e consentono se adeguatamente settati di cambiare la logica applicativa. Uso della classe ProxyFactory per creare il proxy dell’oggetto target, anche modalità più di base, tramite uso di possibilità predeterminate e file XML, senza istanziare uno specifico proxy per AOP.
+
+```
+public static void main(String[] args) { 
+MessageWriter target = new MessageWriter(); 
+ProxyFactory pf = new ProxyFactory(); 
+// aggiunge advice alla coda della catena dell’advice pf.addAdvice(new //MessageDecorator()); 
+// configura l’oggetto dato come target 
+pf.setTarget(target); 
+// crea un nuovo proxy in accordo con le configurazioni 
+// della factory MessageWriter 
+proxy = (MessageWriter) pf.getProxy(); 
+proxy.writeMessage(); 
+// Come farei invece a supportare lo stesso comportamento // con chiamata diretta al //metodo dell’oggetto target?...
+}
+}
+```
+
+Guarda caso, anche in Spring possiamo definire intercettori, ma questa volta in modo molto diverso e meno trasparente rispetto a un modello a container pesante, sfruttando i concetti di AOP e gli oggetti con proxy. Intercettore Spring può eseguire immediatamente prima o dopo l’invocazione della richiesta corrispondente. Implementa l’interfaccia MethodInterceptor o estende HandlerInterceptorAdaptor
+
+Interceptor
+
+```
+public class MyService { 
+public void doSomething() { 
+for (int i = 1; i < 10000; i++) { System.out.println("i=" + i); } 
+} 
+} 
+```
+
+```
+public class ServiceMethodInterceptor implements MethodInterceptor { 
+public Object invoke(MethodInvocation methodInvocation) throws Throwable { 
+long startTime = System.currentTimeMillis(); 
+Object result = methodInvocation.proceed(); 
+long duration = System.currentTimeMillis() - startTime;
+Method method = methodInvocation.getMethod(); 
+String methodName = method.getDeclaringClass().getName() + "." + method.getName(); System.out.println("Method '" + methodName + "' took " + duration + " milliseconds to run"); return null; 
+} 
+} 
+```
+
+Nel file di configurazione si definiscono i componenti, l’intercettore e quali sono i vari target e nei vari target si definiscono gli intercettori da utilizzare.
+
+```
+<beans>
+<bean id="myService" class="com.test.MyService"> </bean>
+<bean id="interceptor" class="com.test.ServiceMethodInterceptor">
+</bean>
+<bean id="interceptedService"
+class="org.springframework.aop.framework.ProxyFactoryBean">
+<property name="target">
+<ref bean="myService"/> </property>
+<property name="interceptorNames">
+<list> <value>interceptor</value> </list> </property>
+</bean> </beans>
+```
+
+Ripasso Transazioni verso DB Sistemi Informativi:
+
+Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability). Isolation richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni. Consistency è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
+
+Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti in questo caso riduciamo il tempo di risposta, con interleaving di circa la metà. La concorrenza però va gestita, se le varie transazioni interferiscono tra di loro possiamo avere problemi in lettura e in scrittura.
+
+- Tra i problemi di lettura troviamo Lost Update: due persone entrano sulla stessa riga e con la perdita di stato, per esempio entrambe comprano l’ultimo biglietto rimasto.
+- Nel caso della dirtyread, qualora si voglia acquistare un biglietto per una certa data questa data è cambiata nel frattempo. 
+- Unrepeatable read, letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
+- Phantom row nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero. 
+
+### Lost Update
+
+Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (“entrambe vedono l’ultimo biglietto disponibile”).
+
+### Dirty read
+
+In questo caso il problema è che una transazione legge un dato “che non c’è”: quanto svolto da T2 si basa su un valore di X “intermedio”, e quindi non stabile (“la data definitiva non è il 15/07/10”). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse
+
+![single tier](./img/img41.png)
+
+### Unrepeatble read
+
+Ora il problema è che una transazione legge due volte un dato e trova valori diversi (“il prezzo nel frattempo è aumentato”):
+
+![single tier](./img/img42.png)
+
+Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di “analisi”. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
+
+### Phantom row
+
+Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un “phantom”, in quanto T1 “non la vede”.
+
+![single tier](./img/img43.png)
+
+Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce 4 livelli di isolamento, che sono Serializable, repeatable read, read committed, uncommitted read.
+
+### Transazionalità verso DB
+
+Con scarsa sorpresa in Spring chiamiamo transazione locale, una transazione specifica per una singola risorsa transazionale, ad esempio unica risorsa JDBC, mentre chiamiamo transazione globale, una transazione gestita dal container, questa può includere risorse transazionali multiple e distribuite. Il programmatore può specificare in modo dichiarativo che un metodo di bean deve avere proprietà transazionali. Anche l’implementazione delle transazioni è basata su AOP, infatti avviene l’intercettazione di chiamate a metodi per la gestione transazioni. Nessuna necessità di modificare la logica di business, né al cambio della transazionalità desiderata né al cambio del provider di transazionalità.
+
+Livelli di isolamento, da letture sporche a letture pulite
+- ISOLATION_DEFAULT 
+- ISOLATION_READ_UNCOMMITTED, possono accadere letture “sporche” (dirty read), non ripetibili e fantasma (phantom read)
+- ISOLATION_READ_COMMITTED, letture sporche rese impossibili, possibilità di accadimento di letture non ripetibili e fantasma 
+- ISOLATION_REPEATABLE_READ, possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili 
+- ISOLATION_SERIALIZABLE, tutte le possibilità “spiacevoli” sopra per la lettura sono rese impossibili.
+
+Phantom read avviene quando, nel corso di una transazione, vengono eseguite due query identiche e i risultati restituiti dalla seconda query sono differenti da quelli per la prima. Causa: “lock di range” non acquisiti (solo acquisizione di read lock) in fase di SELECT. Arriva una riga fantasma.
+
+```
+Transaction 1 /* Query 1 */ 
+SELECT * 
+FROM users 
+
+WHERE age BETWEEN 10 AND 30;
+ /* più tardi, dopo l’esecuzione di Query 2 */ 
+SELECT * 
+FROM users 
+WHERE age BETWEEN 10 AND 30; 
+Transaction 2 /* Query 2 */ 
+INSERT INTO users VALUES ( 3, 'Bob', 27 ); 
+COMMIT;
+```
+
+Non-repeatable read accade quando i lock in lettura non vengono rispettati, i dati vengono rilasciati prima della fine della transazione totale. In soluzioni di controllo della concorrenza basate su lock, letture non-repeatable possono avvenire quando i lock in lettura non sono acquisiti durante una SELECT. In soluzioni di controllo della concorrenza multiversion, letture non-repeatable possono avvenire quando si rilassa il vincolo che una transazione con conflitto di commit debba effettuare rollback.
+
+```
+Transaction 1
+ /* Query 1 */
+ SELECT * 
+
+ FROM users 
+WHERE id = 1; 
+/* Dopo Query 2 e suo commit parziale */ 
+SELECT * 
+FROM users 
+WHERE id = 1; 
+Transaction 2 /* Query 2 */ 
+UPDATE users 
+SET age = 21 
+WHERE id = 1; 
+COMMIT; 
+/* ad es. per read-committed isolation: read lock rilasciati prima della fine della transazione totale */ COMMIT; 
+/* fine della transazione totale, anche write lock rilasciati */
+```
+
+Dirty read  avviene quando una transazione legge dati che sono stati modificati da un’altra transazione non ancora committed. Letture dirty sono simili a letture non-repeatable, ma la seconda transazione non necessita di commit per la prima query per restituire un risultato diverso.
+
+```
+Transaction 1 
+/* Query 1 */ 
+SELECT * 
+FROM users 
+WHERE id = 1; 
+/* Dopo Query 2 */
+ SELECT * 
+FROM users 
+WHERE id = 1; 
+Transaction 2 
+/* Query 2 */
+ UPDATE users 
+SET age = 21 
+WHERE id = 1;
+ /* Nessun commit immediato, solo alla fine della transazione */ 
+COMMIT;
+```
+
+Propagazione delle transazioni in spring
+- PROPAGATION_REQUIRED supporto alla propagazione della transazione di partenza; crea una nuova transazione se non era transazionale il contesto di partenza,
+- PROPAGATION_SUPPORTS Supporto alla propagazione della transazione di partenza, esegue non transazionalmente se la partenza non era transazionale ,
+- PROPAGATION_MANDATORY  Supporto alla propagazione della transazione di partenza; lancia un’eccezione se la partenza non era transazionale, 
+- PROPAGATION_REQUIRES_NEW Crea una nuova transazione, sospendendo quella di partenza, se esistente PROPAGATION_NOT_SUPPORTED 
+- PROPAGATION_NEVER 
+- PROPAGATION_NESTED
+
+Questi vincoli sono modificabili in modo atomico senza cambiamenti in altre parti.
+
+Alla base dell’architettura Spring c’è l’idea di Inversion of Control (prima che in EJB3.0) e di container leggeri per factory  per l’istanziazione, il ritrovamento e la gestione delle relazioni fra oggetti Factory supportano due modalità di oggetto:  Singleton (default) unica istanza condivisa dell’oggetto con nome specificato, ideale per oggetti stateless, questo riduce la proliferazione di istanze nel codice applicativo, oppure prototype  ogni operazione di ritrovamento di un oggetto produrrà la creazione di una nuova istanza,
+
+questo è utile per far avere ad ogni invocante una istanza distinta, aggiunge un nuovo livello di indirettezza. Un Bean Spring può essere anche un FactoryBean (implementazione dell’interfaccia corrispondente), questo aggiunge un livello di indirettezza e viene solitamente usato per creare oggetti con proxy utilizzando ad es. AOP (concettualmente simile a interception in EJB, ma di più semplice utilizzo).
+
+La possibilità di semplice Dependency Injection tramite costruttori o metodi semplifica il testing delle applicazioni Spring, per esempio è semplice scrivere un test JUnit che crea l’oggetto Spring e configura le sue proprietà a fini di testing. Il container IoC non è invasivo: molti oggetti di business non dipendono dalle API di invocazione del container, queste possono essere portabili verso altre implementazioni di container (PicoContainer, HiveMind, …) ed è facile “introdurre” vecchi POJO in ambiente Spring.  Le factory Spring sono leggere, esistono anche implementazioni all’interno di singole applet o come applicazioni Swing standalone. Un antro importante aspetto, secondario ma comunque rilevante è la possibilità di avere di avere unchecked runtime exception.
+
+### Autowiring
+
+Spring può occuparsi automaticamente di risolvere dipendenze tramite introspezione delle classi bean, in questo modo il programmatore non si deve preoccupare di specificare esplicitamente le proprietà del bean o gli argomenti del costruttore nel xml file. Le proprietà del bean sono “autowired” attraverso matching basato su nome o su tipo, autowire=“name” (configurazione di default). L’autowiring può essere effettuato anche su sui nomi delle proprietà (metodi di nome set() del bean), autowire=“type”. Infine può essere applicato anche ai tipi di proprietà del bean (set(ArgumentType arg)) autowire=”constructor”, il match viene fatto sui tipi degli argomenti del costruttore. Anche in EJB esiste la stessa risoluzione delle dipendenze attraverso JNDI.
+
+### Dependency checking
+
+Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenze non risolte quando abbiamo già fatto il deployment di un bean all’interno di un container Spring, è utile per tutte le proprietà che non hanno valori configurati all’interno della definizione del bean, per i quali anche l’autowiring non ha prodotto alcun setting. Questa è una caratteristica utile quando ci si vuole assicurare che tutte le proprietà (o tutte le proprietà di un determinato tipo) siano state configurate su un bean. Vi sono diverse modalità possibili e configurabili: 
+- none, nessun check;
+- simple, dependency checking effettuato solo per tipi primitivi e collection;
+- object, dependency checking effettuato solo per altri bean associati all’interno della stessa factory (collaborator);
+- all, dependency checking effettuato per collaborator, tipi primitivi e collection.
+
+### ApplicationContext
+
+In realtà, per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’uso della semplice interfaccia BeanFactory, l’ApplicationContext è l’estensione dell’interfaccia BeanFactory, questo oltre a fornire tutte le funzionalità base, integra la gestione delle transazioni e di AOP, ad esempio non supportate dalla BeanFactory di base.  ApplicationContext si utilizza in modalità più “tradizionale” e framework-oriented. Le funzionalità aggiuntive dell’ApplicationContext non sono supportante di base dal BeanFactory perché in un’ottica di container leggeri questo appesantirebbe tale interfaccia, tra le funzionalità aggiuntive di ApplicationContext vi sono:
+
+- Interfacce per la gestione del ciclo di vita;
+- Propagazione di eventi a bean che implementano l’interfaccia ApplicationListener;
+- Accesso a risorse come URL e file;
+
+La gestione del ciclo di vita di un ApplicationContext si basa sull’implementazione di interfacce standardizzate; quindi, è possibile avere un metodo che consente di aggiungere l’ApplicationContext e collegarlo alla gestione del ciclo di vita. Ad esempio: presa l’interfaccia ApplicationContextAware un bean che implementa questa interfaccia avrà il suo metodo di interfaccia setApplicationContext() automaticamente invocato alla creazione del bean stesso, riceverà così un riferimento al contesto su cui poter effettuare invocazioni nel seguito
+
+```
+public class Publisher implements ApplicationContextAware {
+ private ApplicationContext ctx; 
+// Questo metodo sarà automaticamente invocato da IoC container 
+public void setApplicationContext( ApplicationContext applicationContext) throws BeansException { 
+this.ctx = applicationContext; 
+}
+```
+
+La gestione degli eventi in ApplicationContext è realizzata tramite la classe ApplicationEvent e l’interfaccia ApplicationListener. Se un bean implementa l’interfaccia ApplicationListener di cui si è fatto il deployment in un ApplicationContext ac1, quel bean viene notificato ogni volta che un ApplicationEvent viene pubblicato in ac1, essenzialmente, si tratta del design pattern Observer. Tre tipologie di eventi built-in oltre a quelli applicativi che si possono definire: ContextRefreshEvent, che consente l’inizializzazione o refresh di ApplicationContext,  ContextClosedEvent per la  chiusura di un ApplicationContext,  RequestHandleEvent evento specifico per il Web, significa che una richiesta HTTP è stata appena servita.
+
+Ad esempio, qui si mostra la configurazione in ApplicationContext.xml del comportamento “ad ogni ricezione di un email da un indirizzo in black list, invia un email di notifica a spam@list.org” black@list.org white@list.org john@doe.org Facilita attraverso il pattern observer la gestione degli eventi. L’aggiunta di queste funzionalità riporta su un container pesante Spring non più leggero.
+
+```
+<bean id="emailer" class="example.EmailBean">
+<property name="blackList">
+<list>
+<value>black@list.org</value>
+<value>white@list.org</value>
+<value>john@doe.org</value>
+</list>
+</property> </bean>
+<bean id="blackListListener"
+class="example.BlackListNotifier">
+<property name="notificationAddress"
+value="spam@list.org"/>
+</bean>
+```
+
+Classe bean che pubblica eventi tramite l’oggetto ApplicationContext:
+
+```
+public class EmailBean implements ApplicationContextAware { 
+private List blackList; 
+public void setBlackList(List blackList) { 
+this.blackList = blackList; 
+} 
+public void setApplicationContext(ApplicationContext ctx) { 
+this.ctx = ctx; 
+} 
+public void sendEmail(String address, String text) { 
+if (blackList.contains(address)) {
+ 		BlackListEvent evt = new BlackListEvent(address, text); 
+ctx.publishEvent(evt); return; 
+} 
+} 
+}
+```
+
+Classe Notifier, che riceve le notifiche degli eventi generati.
+
+```
+public class BlackListNotifier implement ApplicationListener { 
+private String notificationAddress; 
+public void setNotificationAddress(String notificationAddress) { 
+this.notificationAddress = notificationAddress; 
+} 
+public void onApplicationEvent(ApplicationEvent evt) { 
+if (evt instanceof BlackListEvent) { 
+// invio dell’email di notifica all’indirizzo appropriato 
+} 
+} 
+}
+```
+
+Spring Boot è una tecnologia di recente successo per accelerare lo sviluppo di nuove applicazioni Spring Sostanzialmente supporto a configurazione e integrazione con DevOps. Principali package di Spring Boot, anche con integrazione parte Web.
+
+### Pattern MVC
+
+![single tier](./img/img44.png)
 
 ## 11. Big Data
 
