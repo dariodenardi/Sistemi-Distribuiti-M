@@ -160,7 +160,7 @@ Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo 
     - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e/o delle Servlet.
     - **Server-side business logic**: si occupa della logica applicativa, cioè al suo interno ci sono i componenti.
 
-![Multi Tier-Light](./img/img10.png#gh-light-mode-only)
+![Multi Tier-Light](./img/img10-light.png#gh-light-mode-only)
 ![Multi Tier-Dark](./img/img10-dark.png#gh-dark-mode-only)
 
 Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verrà approfondita.
