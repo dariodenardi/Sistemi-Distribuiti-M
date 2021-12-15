@@ -1,12 +1,43 @@
+<div align="center">
+
 # Sistemi Distribuiti M - 2021/2022
 
 Corso tenuto dal _Prof. Foschini_
 
 Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
 
----
+[![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark&Light%20Mode-1f425f.svg)](https://github.com/dariodenardi)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+</div>
 
-## 01.Modelli
+<!-- INDICE -->
+<details open="open">
+  <summary><h2 style="display: inline-block">Indice</h2></summary>
+  <ol>
+    <li>
+      <a href="#modelli">Modelli</a>
+      <ul>
+        <li><a href="#componente">Componente</a></li>
+        <li><a href="#">Differenza tra un componente ed un oggetto</a></li>
+        <li><a href="#">Modelli</a></li>
+        <li><a href="#">Deployment</a></li>
+        <li><a href="#">Architetture applicazioni Enterprise (1)</a></li>
+        <li><a href="#">Modelli a contenimento</a></li>
+        <li><a href="#">J2EE</a></li>
+        <li><a href="#">Architetture applicazioni Enterprise (2)</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">EJB 2.X</a>
+      <ul>
+        <li><a href="#">Scenari applicativi</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Annotazioni</a></li>
+  </ol>
+</details>
+
+## Modelli
 
 Nella vita professione, è molto difficile che si scriva un software da zero per diversi motivi:
 
@@ -23,11 +54,11 @@ Un componente è un _pezzo di software_ che viene scritto dallo sviluppatore ed 
 - Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia;
 - Viene eseguito all'interno di un ambiente di esecuzione detto _container_/_engine_/_middleware_.
 
-Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con **JavaFX**: textBox, label, comboBox etc. Quando si clicca su un bottone non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
+Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con JavaFX: textBox, label, comboBox etc. Quando si clicca su un bottone non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
 
 Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a quello del concentrato:
 
-- **Componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina;
+- **Componente nel concentrato**: un componente che fa parte di un'applicazione che viene messa in esecuzione su una **sola** macchina.
 - **Componente nel distribuito**: il componente non è vincolato a trovarsi su una sola macchina proprio per la definizione intrinseca di sistema distribuito. È possibile spostarlo in qualsiasi momento da un nodo ad un altro. Per questo motivo il componente nel concentrato viene visto come se appartenesse ad un'applicazione _monolitica_.
 
 Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
@@ -36,16 +67,16 @@ Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i compone
 
 A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto perchè sembrano molto simili tra di loro:
 
-- **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia;
+- **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia.
 - **Diverso dall'oggetto**:
-    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare;
+    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
     - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc).
 
 ### Modelli
 
 Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante studiare i modelli. Quelli che possono essere usati sono ad esempio:
 
-- **Statici/dinamici**: l’uso di modelli statici non permette di adeguare il sistema a fronte di variazioni, i modelli dinamici invece permettono di fare evolvere il sistema a fronte di variazioni ma hanno costi più elevati;
+- **Statici/dinamici**: l’uso di modelli statici non permette di adeguare il sistema a fronte di variazioni, i modelli dinamici invece permettono di fare evolvere il sistema a fronte di variazioni ma hanno costi più elevati.
 - **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi. Se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
 
 È meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
@@ -58,9 +89,9 @@ Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _
 
 Ci sono diversi approcci per effettuare il deployment:
 
-- **Manuale**: l’utente determina ogni singolo oggetto/componente su quale è il nodo più appropriato;
-- **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze;
-- **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite il _file di deployment_ e annotazioni.
+- **Manuale**: l’utente determina ogni singolo oggetto/componente su quale è il nodo più appropriato.
+- **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze.
+- **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite un file .XML e annotazioni.
 
 ### Architetture applicazioni Enterprise (1)
 
@@ -70,12 +101,12 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
     ![single tier](./img/img5.png)
     - **Vantaggi**:
         - Nessuna gestione client-side;
-        - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore;
+        - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore.
     - **Svantaggi**: no scalabilità.
 
 - **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw (dati _grezzi_ cioè i dati come vengono presi dal DB così vengono inviati). La logica di presentazione, di business e di processamento del modello dei dati si trova tutta nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
 ![single tier](./img/img6.png)
-    - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier);
+    - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier).
     - **Svantaggi**:
         - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
         - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti i dati;
@@ -84,17 +115,17 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 - **Three-Tier**: ci sono diversi modelli:
     - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solamente la logica di presentazione. Per quanto riguarda le logiche di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier, si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
     ![single tier](./img/img8.png)
-        - **Vantaggi**: logica di business modificabile in modo più flessibile;
-        - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server;
+        - **Vantaggi**: logica di business modificabile in modo più flessibile.
+        - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server.
     - **Three Tier (basato su Remote Object)**:
     ![single tier](./img/img9.png)
         - **Vantaggi**: meno accoppiato del modello RPC.
-        - **Svantaggi**: gli stessi di quello basato su RPC
+        - **Svantaggi**: gli stessi di quello basato su RPC.
     - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
     ![single tier](./img/img7.png)
         - **Vantaggi**:
             - Cliente disponibile ovunque;
-            - Nessun problema di aggiornamento del software sul client;
+            - Nessun problema di aggiornamento del software sul client.
         - **Svantaggi**: Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
 
 Attualmente il trend vede una transazione verso un mondo multi tier che disaccoppia sempre di più i livelli. Come visto in precedenza il middle tier rimane molto complesso in quanto la parte di logica dell’applicazione non è ancora nettamente separata dalla parte di logica di tutti i servizi di sistema non funzionali, questo implica che essi vengano duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
@@ -109,7 +140,7 @@ L’idea che sta dietro al modello a contenimento è quella in cui i client non 
 
 Il container può essere implementato in due modi:
 
-- **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Tra gli esempi più notevoli ci sono Tuxedo e .NET;
+- **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Tra gli esempi più notevoli ci sono Tuxedo e .NET.
 - **Soluzioni basate su standar aperti**: a differenza del caso precedente, i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. L’esempio più notevole è JEE o J2EE (Java Enterprise Edition) che definisce questi standard, li implementa e abilita quindi questa interazione tra il componente (sviluppato in Java) e un container che realizza queste API standard.
 
 ### J2EE
@@ -126,10 +157,11 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo tipo di architetture:
 
 - **N-tier**: il middle-tier viene spacchettato in due parti:
-    - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e/o delle Servlet;
+    - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e/o delle Servlet.
     - **Server-side business logic**: si occupa della logica applicativa, cioè al suo interno ci sono i componenti.
 
-![single tier](./img/img10.png)
+![Multi Tier-Light](./img/img10.png#gh-light-mode-only)
+![Multi Tier-Dark](./img/img10-dark.png#gh-dark-mode-only)
 
 Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verrà approfondita.
 
