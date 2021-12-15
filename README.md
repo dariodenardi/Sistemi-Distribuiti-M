@@ -18,13 +18,13 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
       <a href="#modelli">Modelli</a>
       <ul>
         <li><a href="#componente">Componente</a></li>
-        <li><a href="#">Differenza tra un componente ed un oggetto</a></li>
-        <li><a href="#">Modelli</a></li>
-        <li><a href="#">Deployment</a></li>
-        <li><a href="#">Architetture applicazioni Enterprise (1)</a></li>
-        <li><a href="#">Modelli a contenimento</a></li>
-        <li><a href="#">J2EE</a></li>
-        <li><a href="#">Architetture applicazioni Enterprise (2)</a></li>
+        <li><a href="#differenza-tra-un-componente-ed-un-oggetto">Differenza tra un componente ed un oggetto</a></li>
+        <li><a href="#modelli-1">Modelli</a></li>
+        <li><a href="#deployment">Deployment</a></li>
+        <li><a href="#architetture-applicazioni-enterprise-1">Architetture applicazioni Enterprise (1)</a></li>
+        <li><a href="#modelli-a-contenimento">Modelli a contenimento</a></li>
+        <li><a href="#j2ee">J2EE</a></li>
+        <li><a href="#architetture-applicazioni-enterprise-2">Architetture applicazioni Enterprise (2)</a></li>
       </ul>
     </li>
     <li>
@@ -98,14 +98,16 @@ Ci sono diversi approcci per effettuare il deployment:
 Le architetture si sono evolute sempre di più verso architetture a più livelli perchè l'obiettivo è quello di separare logicamente le funzionalità in modo da ridurre la complessità degli strati:
 
 - **Single-Tier**: c'è un singolo super calcolatore a cui sono connessi i clienti perchè quest'ultimi non hanno abbastanza risorse per fare elaborazione. I clienti (o meglio terminali) inviano solo le richieste al mainfraime il quale le elabora e restituisce al cliente la risposta. È la soluzione adottata negli anni '50.
-    ![single tier](./img/img5.png)
+![Single Tier-Light](./img/img5-light.png#gh-light-mode-only)
+![Single Tier-Dark](./img/img5-dark.png#gh-dark-mode-only)
     - **Vantaggi**:
         - Nessuna gestione client-side;
         - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore.
     - **Svantaggi**: no scalabilità.
 
 - **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw (dati _grezzi_ cioè i dati come vengono presi dal DB così vengono inviati). La logica di presentazione, di business e di processamento del modello dei dati si trova tutta nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
-![single tier](./img/img6.png)
+![Two Tier-Light](./img/img6-light.png#gh-light-mode-only)
+![Two Tier-Dark](./img/img6-dark.png#gh-dark-mode-only)
     - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier).
     - **Svantaggi**:
         - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
@@ -114,15 +116,18 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 
 - **Three-Tier**: ci sono diversi modelli:
     - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solamente la logica di presentazione. Per quanto riguarda le logiche di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier, si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
-    ![single tier](./img/img8.png)
+    ![Three Tier RPC-Light](./img/img8-light.png#gh-light-mode-only)
+    ![Three Tier RPC-Dark](./img/img8-dark.png#gh-dark-mode-only)
         - **Vantaggi**: logica di business modificabile in modo più flessibile.
         - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server.
     - **Three Tier (basato su Remote Object)**:
-    ![single tier](./img/img9.png)
+    ![Three Tier RMI-Light](./img/img9-light.png#gh-light-mode-only)
+    ![Three Tier RMI-Dark](./img/img9-dark.png#gh-dark-mode-only)
         - **Vantaggi**: meno accoppiato del modello RPC.
         - **Svantaggi**: gli stessi di quello basato su RPC.
     - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
-    ![single tier](./img/img7.png)
+    ![Three Tier WEB-Light](./img/img7-light.png#gh-light-mode-only)
+    ![Three Tier WEB-Dark](./img/img7-dark.png#gh-dark-mode-only)
         - **Vantaggi**:
             - Cliente disponibile ovunque;
             - Nessun problema di aggiornamento del software sul client.
@@ -134,7 +139,8 @@ Attualmente il trend vede una transazione verso un mondo multi tier che disaccop
 
 Sono modelli che si basano sull'uso di un _container/engine/middleware_ che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
 
-![container](./img/img4.png)
+![Container-Light](./img/img4-light.png#gh-light-mode-only)
+![Container-Dark](./img/img4-dark.png#gh-dark-mode-only)
 
 L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscano direttamente con il componente di interesse ma che passino prima attraverso il _container/engine/middleware_ che in qualche modo standardizza e facilità le operazioni di sistema. Il container al suo interno ospiterà il componente.
 
