@@ -80,8 +80,8 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
 
 Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante studiare i modelli. Quelli che possono essere usati sono ad esempio:
 
-- **Statici/dinamici**: l’uso di modelli statici non permette di adeguare il sistema a fronte di variazioni, i modelli dinamici invece permettono di fare evolvere il sistema a fronte di variazioni ma hanno costi più elevati.
-- **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi. Se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
+- **Statici/dinamici**: l’uso di modelli statici non permette di adeguare il sistema a fronte di variazioni. I modelli dinamici invece permettono di fare evolvere il sistema a fronte di variazioni ma hanno costi più elevati.
+- **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi: se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
 
 È meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
 
@@ -195,7 +195,8 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verr
 
 I componenti EJB possono essere utilizzati in diverse architetture.
 
-![container](./img/img34.png)
+![Multi Tier EJB (1)-Light](./img/img34-light.png#gh-light-mode-only)
+![Multi Tier EJB (1)-Dark](./img/img34-dark.png#gh-dark-mode-only)
 
 Le architetture possibili sono:
 
@@ -203,7 +204,8 @@ Le architetture possibili sono:
 - **Modello 3-tier**: il client comunica tramite HTML con il server web che comunica a sua volta direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database;
 - **Modello 4-tier**: il client comunica tramite HTML con una parte di presentazione web basata su JSP e Servlet, con il componente EJB e il database con le connessioni al database.
 
-![container](./img/img11.png)
+![Multi Tier EJB (2)-Light](./img/img11-light.png#gh-light-mode-only)
+![Multi Tier EJB (2)-Dark](./img/img11-dark.png#gh-dark-mode-only)
 
 Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: in viola sono rappresentati i vari container, in verde i componenti che vivono all’interno di quel container, in azzurro vengono rappresentate le parti di supporto, cioè il _run-time environment_, in giallo tutte le API standardizzate per gestire per esempio la parte di naming e discovery, per gestire la parte di transazionalità, di messaggistica, di accesso ai database e così via e infine le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
@@ -222,7 +224,8 @@ I principi di progettazione che sono alla base di questa tecnologia sono i segue
 
 L'immagine di seguito riportata, fa riferimento ad un'architettura three-tier: c'è un cliente, un server e un database.
 
-![ejb2_architettura](./img/img1.png)
+![Architettura EJB2-Light](./img/img1-light.png#gh-light-mode-only)
+![Architetttura EJB2-Dark](./img/img1-dark.png#gh-dark-mode-only)
 
 È bene ricordare che la macchina server non è _pura_ perché è necessario installarci sopra anche un container per far girare l'applicazione costituita da componenti.
 
@@ -285,7 +288,8 @@ I componenti possono essere classificati in due categorie:
 - **Asincroni**: l'utente non si blocca e non aspetta la risposta. Esiste un solo tipo di componente che fa parte di questa categoria:
     - **Message Driven Bean**.
 
-![ejb2_architettura](./img/img33.png)
+![Componenti EJB2-Light](./img/img33-light.png#gh-light-mode-only)
+![Componenti EJB2-Dark](./img/img33-dark.png#gh-dark-mode-only)
 
 ### Session Bean
 
@@ -329,7 +333,8 @@ Questo Bean verrà approfondito in un capitolo a parte.
 
 L’immagine seguente mostra come interagiscono i client con i Bean e come i Bean stessi interagiscono tra loro.
 
-![ejb2_architettura](./img/img35.png)
+![Interazioni tra Bean-Light](./img/img35-light.png#gh-light-mode-only)
+![Interazioni tra Bean-Dark](./img/img35-dark.png#gh-dark-mode-only)
 
 L’immagine mette in evidenza l’interazione con e tra componenti senza considerare gli aspetti legati al container come, per esempio, la presenza dell'interfaccia EJB Home e dell'interfaccia EJB Object.
 Agli estremi della catena di interazione vi sono, ovviamente, da un lato i client Java e dall’altro il database, in mezzo si pongono i componenti che danno vita all’applicazione. Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione e la logica applicativa senza stato, se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
