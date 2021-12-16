@@ -796,7 +796,8 @@ Esempi di sistemi di nomi:
 È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le _unità_ che sono presenti nella rete.
 Questo servizio gestisce una piccola quantità di nomi e il numero di scritture nella tabella è molto alto proprio perchè la ricerca avviene in broadcast.
 
-![rmi_iiop](./img/img46.png)
+![Servizio di Discovery-Light](./img/img46-light.png#gh-light-mode-only)
+![Servizio di Discovery-Dark](./img/img46-dark.png#gh-dark-mode-only)
 
 Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
