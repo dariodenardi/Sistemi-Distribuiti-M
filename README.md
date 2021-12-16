@@ -998,25 +998,64 @@ Come specificare proprietà di ambiente:
 - **Proprietà di sistema**: una proprietà di sistema è una coppia attributo/valore che la Java runtime definisce/usa per descrivere utenti, ambiente di sistema e JVM. Per modificare/aggiungere queste proprietà si usa la linea di comando.
 - **Parametri di applet**: le applet ormai sono in disuso.
 
-Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle proprietà sono concatenati in una lista separata da virgole; per alcune proprietà viene preso solo primo valore assegnato.
+Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle proprietà sono concatenati in una lista separata da virgole. Se sono presenti più valori per una proprietà ma ci deve essere solo un valore, viene preso solo primo della lista.
 
 <a href="#indice">Torna all'indice</a>
 
-## 05.EJB3
+## EJB 3.X
+
+A seguito dei problemi elencati nel capitolo EJB 2.X, è stata rilasciata una nuova versione di questa tecnologia.
 
 ### Tipologie di componenti
 
-In EJB 3.X i componenti sono di tipo Session Bean e Message Driven Bean. Gli Entity Bean non sono piu' gestiti dal container per i motivi specificati nel capitolo precedente ma per gestire la persistenza si usa lo standard JPA.
+In EJB 3.X i componenti sono solo di tipo Session Bean e Message Driven Bean. Gli Entity Bean non sono più gestiti dal container e per gestire la persistenza si usa lo standard JPA. Ciò verrà approfondito nel `Capitolo 6`.
 
 Per specificare che tipo di componente si vuole usare, si aggiungono al codice le annotazioni @Stateless, @Stateful e @MessageDriven che devono essere specificate all'interno della classe.
 
+### Session Bean
+
+Grazie all'uso delle annotazioni è possibile riscrivere le interfacce in modo POJI (Plain Old Java Interface) cioè l'interfaccia viene riscritta in un modo più simile a quello di come viene scritta un'interfaccia _normale_.
+
 ```
 
-// EJB 3.0 Stateless Session Bean: Interfaccia di business
-// (solo logica applicativa)
+@Remote
 public interface Payroll {
     public void setTaxDeductions(int empId, int deductions);
 }
+
+```
+
+Le annotazioni che si usano sono: @Remote, @Local, @WebService. Come suggeriscono i nomi, @Remote viene usata quando il Session Bean è remoto mentre @Local indica che il Session Bean è locale. I Web Service verranno accennati nel `Capitolo 7`.
+
+Si possono specificare a livello di classe o di interfaccia. Nell'esempio di sopra, viene inserita a livello di interfaccia mentre di seguito la stessa interfaccia viene scritta senza annotazione perchè verrà specificata nella classe che lo sviluppatore andrà a scrivere:
+
+```
+
+public interface Payroll {
+    public void setTaxDeductions(int empId, int deductions);
+}
+
+```
+
+Invece, di seguito è riportato come un pezzo di codice che mostra come venivano scritte le interfacce in EJB 2.X:
+
+```
+// interfaccia locale di EJBHome
+public interface PayrollHome extends javax.ejb.EJBLocalHome {
+    public Payroll create() throws CreateException;
+}
+
+// interfaccia locale di EJBObject
+public interface Payroll extends javax.ejb.EJBLocalObject {
+    public void setTaxDeductions(int empId, int deductions);
+}
+```
+
+Si può notare la differenza di scrittura di codice nelle due versioni.
+
+Anche la classe che deve scrivere lo sviluppatore con la logica di Business con l'uso delle annotazioni è diventata molto più semplice:
+
+```
 
 @Stateless
 public class PayrollBean implements Payroll {
@@ -1051,48 +1090,16 @@ public class PayrollBean implements javax.ejb.SessionBean {
 }
 ```
 
-Per definire il comportamento del Session Bean, lo si deve inserire a livello di file descryptor mentre in EJB 3.X basta usare un'annotazione.
+Per definire che tipo di componente si sta usando lo si deve inserire a livello di file descryptor mentre in EJB 3.X basta usare un'annotazione.
 
-### Interfacce in EJB 3.X
+### Message Driven Bean
 
-Grazie all'uso delle annotazioni è possibile riscrivere le interfacce in modo POJI (Plain Old Java Interface) cioè l'interfaccia viene riscritta in un modo piu' simile a quello di come viene scritta un'interfaccia "normale".
-
-```
-
-@Remote
-public interface Payroll {
-    public void setTaxDeductions(int empId, int deductions);
-}
+Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'interfaccia jms.MessageListener e usare l'annotazione @MessageDriven come in EJB 2.X:
 
 ```
 
-Le annotazioni che si usano sono: @Remote, @Local, @WebService. Come suggeriscono i nomi, @Remote viene usata quando il Session Bean è remoto mentre @Local indica che il Session Bean è locale.
-
-Invece, @WebService serve per indicare un 
-
-Si possono specificare a livello di classe o di interfaccia. Nell'esempio di sopra, viene inserita a livello di interfaccia.
-
-Di seguito è riportato come un pezzo di codice che mostra come venivano scritte le interfacce in EJB 2.X:
-
-```
-// interfaccia locale di EJBHome
-public interface PayrollHome extends javax.ejb.EJBLocalHome {
-    public Payroll create() throws CreateException;
-}
-
-// interfaccia locale di EJBObject
-public interface Payroll extends javax.ejb.EJBLocalObject {
-    public void setTaxDeductions(int empId, int deductions);
-}
-```
-
-Si può notare la differenza di scrittura di codice nelle due versioni.
-
-Per quanto riguarda il message driven bean, si deve implementare lo stesso l'interfaccia jms.MessageListener e usare l'annotazione @MessageDriven come in EJB 2.X:
-
-```
-
-@MessageDriven public class PayrollMDB implements javax.jms.MessageListener {
+@MessageDriven
+public class PayrollMDB implements javax.jms.MessageListener {
     public void onMessage(Message msg) {
         ...
     }
@@ -1102,55 +1109,88 @@ Per quanto riguarda il message driven bean, si deve implementare lo stesso l'int
 
 ### Dependency Injection
 
-Le risorse di un bean sono "iniettate" quando l'istanza del bean viene effettivamente costruita. In questo modo lo sviluppatore non ha più visibilità delle API JNDI.
+Le risorse di un bean sono _iniettate_ dal container. In questo modo lo sviluppatore non ha più visibilità delle API JNDI.
 
-Di seguito è riportato un pezzo di codice di EJB3.X:
+Di seguito è riportato un pezzo di codice di EJB 3.X:
 
 ```
 
-// Vista cliente in EJB3.0
-@EJB ShoppingCart myCart;
+@EJB
+ShoppingCart myCart;
 
 ...
+
 Collection widgets = myCart.startToShop(“widgets”);
+
 ...
 
 ```
 
-Qui è come bisognava ottenere una risorsa in EJB 2.X:
+Qui è riportato come bisognava ottenere una risorsa in EJB 2.X:
 
 ```
 
 Context initialContext = new InitialContext();
 ShoppingCartHome myCartHome = (ShoppingCartHome)
-initialContext.lookup(“java:comp/env/ejb/cart”);
+initialContext.lookup("java:comp/env/ejb/cart");
 ShoppingCart myCart= myCartHome.create();
-//Utilizzo del bean
-Collection widgets = myCart.startToShop(“widgets”)
+// utilizzo del bean
+Collection widgets = myCart.startToShop("widgets")
+
 ...
+
 // necessario anche il codice per gestire esplicitamente
 // l’eccezione javax.ejb.CreateException
 
 ```
 
-La dependency injection viene realizzata tramite annotazioni:
+La dependency injection viene realizzata sempre tramite annotazioni:
 
-- @Resource: utilizzata per indicare factory di connessioni, topic/queque, EJBContext, UserTransaction;
-- @EJB: utilizzata per indicare interfacce che sono EJB o per integrare interfacce EJBHome di versioni precedenti;
-- @PersistenceContext, @PersistenceUnit: utilizzate per EntityManager (si veda capitolo successivo).
+- **@EJB**: utilizzata per indicare interfacce che sono EJB o per integrare interfacce EJBHome di versioni precedenti.
+- **@PersistenceContext, @PersistenceUnit**: utilizzate per l'EntityManager. Si veda `Capitolo 6`.
+- **@Resource:** utilizzata per qualsiasi altro riferimento come factory di connessioni, topic/queque, EJBContext, UserTransaction etc.
 
 L'annotazione @Resource può essere specificata a livello di classe,
 metodo o campo.
 
 @Resource ha i seguenti membri:
-- name: nome JNDI della risorsa
-- type: tipo (Java language type) per la risorsa
-- authenticationType: tipo di autenticazione da usarsi
-- shareable: possibilità di condividere la risorsa
-- mappedName: nome non portabile e implementation-specific a cui
-associare la risorsa description
 
-Nel caso di risorse multiple si usa l'annotazione @Resources:
+- **name**: nome JNDI della risorsa.
+- **type**: tipo (Java language type) della risorsa.
+- **authenticationType**: tipo di autenticazione da usarsi.
+- **shareable**: possibilità di condividere la risorsa.
+- **mappedName**: nome non portabile e implementation-specific a cui
+associare la risorsa description.
+
+Più precisamente, il container si occupa dell’injection della risorsa nel componente o a runtime o quando esso è inizializzato in base se l'annotazione viene specificata a livello di campo/metodo o di classe:
+
+- **Campo/metodo**: all’inizializzazione del componente:
+
+    ```
+        public class SomeClass {
+            @Resource
+            private javax.sql.DataSource myDB;
+        }
+
+    ```
+
+- **Classe**: a runtime, by need cioè solo quando si ha necessità di
+accedere alla risorsa iniettata:
+
+    ```
+        @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory")
+        public class SomeMessageBean { ... }
+
+    ```
+
+    In questo caso è obbligatorio utilizzare gli elementi name e type perchè altrimenti non si saprebbe a quale campo l'annotazione @Resource viene associata.
+
+I vantaggi e gli svantaggi di usare un modo rispetto altro sono:
+
+- **A tempo di all’inizializzazione**: la risorsa viene istanziata quando viene creata l'istanza, minor tempo ma si occupa più spazio in memoria.
+- **A tempo di caricamento**: la risorsa viene iniettata quando l'utente fa la richiesta di ottenere l'istanza logica dedicata. Ovviamente bisogna aspettare che si risolvano le dipendenze e ci vuole più tempo.
+
+Nel caso di risorse multiple si usa l'annotazione @Resources a livello classe:
 
 ```
 
@@ -1162,32 +1202,6 @@ public class SomeMessageBean { ... }
 
 ```
 
-Più precisamente, il container si occupa dell’injection della risorsa nel componente o a runtime o quando il componente è inizializzato, in dipendenza dal dependency injection relativa a campo/metodo o a classe:
-- Campo/metodo: all’inizializzazione del componente;
-
-    ```
-        public class SomeClass {
-            @Resource
-            private javax.sql.DataSource myDB;
-        }
-
-    ```
-
-- Classe: a runtime, by need, solo quando si ha necessità di
-accedere alla risorsa iniettata.
-
-    ```
-        @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory")
-        public class SomeMessageBean { ... }
-
-    ```
-
-    In questo caso è obbligatorio utilizzare gli elementi name e type perchè altrimenti non si saprebbe a quale campo l'annotazione @Resource viene associata.
-
-
-- A tempo di compilazione: la risorsa viene istanziata quando viene creata l'istanza, minor tempo ma si occupa piu' spazio in memoria.
-- A tempo di caricamento, la risorsa viene iniettata quando l'utente fa la richiesta di ottenere l'istanza logica dedicata. Ovviamente bisogna aspettare che si risolvano le dipendenze e ci vuole piu' tempo.
-
 ### Interoperabilità tra EJB 3.X e EJB 2.X
 
 Ovviamente il codice deve essere riutilizzabile per non perdere tutto quello che è stato prodotto nelle versioni precedenti.
@@ -1196,7 +1210,7 @@ Le nuove applicazioni EJB 3.X possono essere clienti di vecchi bean:
 
 ```
 
-// Vista cliente da EJB3.0 di un bean EJB2.1
+// Vista cliente da EJB 3.X di un bean EJB 2.X
 
 @EJB ShoppingCartHome cartHome;
 Cart cart = cartHome.create();
@@ -1211,7 +1225,7 @@ Anche i nuovi bean conformi a EJB 3.X possono essere utilizzati sulle vecchie ap
 
 ```
 
-// Vista cliente da EJB2.1 di un bean conforme a EJB3.0
+// Vista cliente da EJB 2.X di un bean conforme a EJB 3.X
 
 Context initialContext = new InitialContext();
 ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup(“java:comp/env/ejb/cart”);
@@ -1221,7 +1235,17 @@ cart.remove();
 
 ```
 
-Le interfacce EJBHome e EJBObject vengono automaticamente mappate sulla classe del bean di tipo EJB3.X.
+Le interfacce EJBHome e EJBObject vengono automaticamente mappate sulla classe del bean di tipo EJB 3.X.
+
+### Annotation vs Descrittori di Deployment
+
+sviluppatori preferiscono usare descrittori
+
+A partire da EJB3.0, i descrittori possono essere
+anche parziali e incompleti (_sparse descriptor_) cioè si possono specificare una parte tramite annotazioni e l'altra tramite file descriptor.
+
+Possono essere anche utilizzati per fare override di annotazioni.
+I descrittori sono prioritari sulle annotazioni
 
 ### Servizi di sistema
 
