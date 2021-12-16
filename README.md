@@ -6,12 +6,12 @@ Corso tenuto dal _Prof. Foschini_
 
 Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
 
-[![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark&Light%20Mode-1f425f.svg)](https://github.com/dariodenardi)
+[![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark&Light%20Mode-1f425f.svg)](https://github.com/settings/appearance)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 </div>
 
 <!-- INDICE -->
-<details open="open">
+<details href="indice" open="open">
   <summary><h2 style="display: inline-block">Indice</h2></summary>
   <ol>
     <li>
@@ -63,6 +63,8 @@ Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a
 
 Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Differenza tra un componente ed un oggetto
 
 A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto perchè sembrano molto simili tra di loro:
@@ -72,6 +74,8 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
     - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
     - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc).
 
+<a href="#indice">Torna all'indice</a>
+
 ### Modelli
 
 Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli è importante studiare i modelli. Quelli che possono essere usati sono ad esempio:
@@ -80,6 +84,8 @@ Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli 
 - **Preventivi/reattivi**: un sistema preventivo è più costoso di un sistema reattivo perchè non è detto che un evento si verifichi. Ad esempio, i sistemi operativi non utilizzano sistemi preventivi. Se avviene un deadlock tra processi lo si sblocca dall’esterno tramite linea di comando.
 
 È meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Deployment
 
@@ -92,6 +98,8 @@ Ci sono diversi approcci per effettuare il deployment:
 - **Manuale**: l’utente determina ogni singolo oggetto/componente su quale è il nodo più appropriato.
 - **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze.
 - **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite un file .XML e annotazioni.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Architetture applicazioni Enterprise (1)
 
@@ -135,6 +143,8 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 
 Attualmente il trend vede una transazione verso un mondo multi tier che disaccoppia sempre di più i livelli. Come visto in precedenza il middle tier rimane molto complesso in quanto la parte di logica dell’applicazione non è ancora nettamente separata dalla parte di logica di tutti i servizi di sistema non funzionali, questo implica che essi vengano duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Modelli a contenimento
 
 Sono modelli che si basano sull'uso di un _container/engine/middleware_ che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
@@ -149,6 +159,8 @@ Il container può essere implementato in due modi:
 - **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Tra gli esempi più notevoli ci sono Tuxedo e .NET.
 - **Soluzioni basate su standar aperti**: a differenza del caso precedente, i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. L’esempio più notevole è JEE o J2EE (Java Enterprise Edition) che definisce questi standard, li implementa e abilita quindi questa interazione tra il componente (sviluppato in Java) e un container che realizza queste API standard.
 
+<a href="#indice">Torna all'indice</a>
+
 ### J2EE
 
 È un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java. Viene scritta solo la specifica non l’implementazione, diversi produttori di software hanno fatto diverse implementazioni; purché siano JEE compliant basta che rispettino la specifica. Alcune implementazioni si limitano alla specifica altre aggiungono funzionalità.
@@ -157,6 +169,8 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 
 - **GlassFish**: è l'implementazione di riferimento mantenuta da Oracle;
 - **WildFly**: precedentemente noto come JBoss.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Architetture applicazioni Enterprise (2)
 
@@ -170,6 +184,8 @@ Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo 
 ![Multi Tier-Dark](./img/img10-dark.png#gh-dark-mode-only)
 
 Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verrà approfondita.
+
+<a href="#indice">Torna all'indice</a>
 
 ## 02.EJB 2.x
 
