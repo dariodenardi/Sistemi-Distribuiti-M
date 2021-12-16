@@ -28,13 +28,43 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
       </ul>
     </li>
     <li>
-      <a href="#">EJB 2.X</a>
+      <a href="#ejb-2x">EJB 2.X</a>
       <ul>
-        <li><a href="#">Scenari applicativi</a></li>
-        <li><a href="#">Principi di design</a></li>
+        <li><a href="#scenari-applicativi">Scenari applicativi</a></li>
+        <li><a href="#principi-di-design">Principi di design</a></li>
+        <li><a href="#architettura">Architettura</a></li>
+        <li><a href="#jndi">JNDI</a></li>
+        <li><a href="#contratti">Contratti</a></li>
+        <li><a href="#ejb-container">EJB container</a></li>
+        <li><a href="#tipologie-di-componenti-bean">Tipologie di componenti Bean</a></li>
+        <li><a href="#session-bean">Session Bean</a></li>
+        <li><a href="#entity-bean">Entity Bean</a></li>
+        <li><a href="#message-driven-bean">Message Driven Bean</a></li>
+        <li><a href="#interazioni-tra-bean">Interazioni tra Bean</a></li>
+        <li><a href="#deployment-1">Deployment</a></li>
+        <li><a href="#ciclo-di-sviluppo">Ciclo di sviluppo</a></li>
+        <li><a href="#interfacce-ejbhome-ed-ejbobject">Interfacce EJBHome ed EJBObject</a></li>
+        <li><a href="#invocazione-remota">Invocazione remota</a></li>
+        <li><a href="#invocazione-locale">Invocazione locale</a></li>
+        <li><a href="#cliente">Cliente</a></li>
+        <li><a href="#deployment-di-unapplicazione">Deployment di un'applicazione</a></li>
+        <li><a href="#problemi-riscontrati">Problemi riscontrati</a></li>
       </ul>
     </li>
-    <li><a href="#">Annotazioni</a></li>
+    <li>
+      <a href="#annotazioni">Annotazioni</a>
+      <ul>
+        <li><a href="#definizione">Definizione</a></li>
+        <li><a href="#sintassi">Sintassi</a></li>
+        <li><a href="#categorie-di-annotazioni">Categorie di annotazioni</a></li>
+        <li><a href="#annotazioni-personalizzate">Annotazioni personalizzate</a></li>
+        <li><a href="#limiti-delle-annotazioni-personalizzate">Limiti delle annotazioni personalizzate</a></li>
+        <li><a href="#meta-annotazioni">Meta-annotazioni</a></li>
+        <li><a href="#politiche-di-retention">Politiche di retention</a></li>
+        <li><a href="#perchè-usarle">Perchè usarle</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Servizio di nomi</a></li>
   </ol>
 </details>
 
@@ -188,7 +218,7 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verr
 
 <a href="#indice">Torna all'indice</a>
 
-## 02.EJB 2.x
+## EJB 2.x
 
 È una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
 
@@ -566,49 +596,53 @@ Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti fi
 
 La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emersi durante l'uso di questa versione:
 
-- **Il modello di programmazione non sempre naturale**: oltre alla logica di business bisogna anche implementare due interfacce. L'obiettivo è quello di scrivere in modo molto più simile un componente a come si fa con gli oggetti. Inoltre, bisogna ricordare di configurare il file descriptor che è un file diverso rispetto a quello in cui si scrive il codice della classe;
-- **La lookup dei componenti è sempre basata su JNDI**: bisogna scrivere codice per cercare il componente prima di poterlo usare. Se non si facesse questa operazione sarebbe più facile la scrittura di codice;
+- **Il modello di programmazione non sempre naturale**: oltre alla logica di business bisogna anche implementare due interfacce. L'obiettivo è quello di scrivere in modo molto più simile un componente a come si fa con gli oggetti. Inoltre, bisogna ricordare di configurare il file descriptor che è un file diverso rispetto a quello in cui si scrive il codice della classe.
+- **La lookup dei componenti è sempre basata su JNDI**: bisogna scrivere codice per cercare il componente prima di poterlo usare. Se non si facesse questa operazione sarebbe più facile la scrittura di codice.
 - **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. È vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
 
 Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nei prossimi due capitoli, si parlerà di annotazioni e di sistema di nomi.
 
 <a href="#indice">Torna all'indice</a>
 
-## 03.Annotazioni
+## Annotazioni
 
 Le annotazioni sono state già viste sicuramente in altri corsi anche se non si sapeva che si chiamassero in questo modo. Di seguito vengono riportati alcuni esempi:
-- **@Overrided**
+
+- **@Overrided**:
     ```
     @Override
     public String toString() {
         ...
     }
     ```
-- **@Deprecated**
+- **@Deprecated**:
     ```
     @Deprecated
     public class ExampleClass { ... }
     ```
-- **@SuppressWarnings**
+- **@SuppressWarnings**:
     ```
     @SuppressWarnings("unchecked")
     public void aMethod() { ... }
     ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Definizione
 
 Sono metadati con cui si decorano i metodi, le classi, le interfacce etc. Non modificano il comportamento del codice che lo sviluppatore scrive ma aggiungono solo informazioni che possono essere utili:
-- Al compilatore;
-- Alla _Javadoc_;
-- A _runtime_.
 
-### Esempi
+- Al compilatore.
+- Alla Javadoc.
+- A runtime.
 
 Riprendendo le annotazioni scritte all'inizio del capitolo:
 
-- **@Overrided**: serve al compilatore. Se non si mettesse questa annotazione, il codice verrebbe generato lo stesso però bisogna stare attenti a come si scrive il nome del metodo sia nella classe padre che in quella figlia perchè se si sbagliasse a scrivere il nome, il metodo non verrebbe sostituito ma aggiunto;
-- **@Deprecated**: serve a livello di documentazione per indicare che quel metodo, classe etc. è in disuso;
-- **@SuppressWarnings**: serve al compilatore. Se la compilazione presenta dei _warning_ questi vengono trascurati e non mostrati all’utente.
+- **@Overrided**: serve al compilatore. Se non si mettesse questa annotazione, il codice verrebbe generato lo stesso però bisogna stare attenti a come si scrive il nome del metodo sia nella classe padre che in quella figlia perchè se si sbagliasse a scrivere il nome, il metodo non verrebbe sostituito ma aggiunto.
+- **@Deprecated**: serve a livello di documentazione per indicare che quel metodo, classe etc. è in disuso.
+- **@SuppressWarnings**: serve al compilatore. Se la compilazione presenta dei warning questi vengono trascurati e non mostrati all’utente.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Sintassi
 
@@ -625,14 +659,18 @@ public String toString() {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Categorie di annotazioni
 
 Le annotazioni si possono classificare nel seguente modo:
 
-- **Marker annotation**: non hanno membri. Ad esempio: @Override;
-- **Single-value annotation**: hanno un solo membro. Ad esempio: @SuppressWarnings("unchecked");
-- **Full annotation**: l'annotazione è formata da più di un membro;
+- **Marker annotation**: non hanno membri. Ad esempio: @Override.
+- **Single-value annotation**: hanno un solo membro. Ad esempio: @SuppressWarnings("unchecked").
+- **Full annotation**: l'annotazione è formata da più di un membro.
 - **Custom annotation**: i programmatori possono crearsi le proprie annotazioni.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Annotazioni personalizzate
 
@@ -662,57 +700,67 @@ public void calculateInterest(float amount, float rate) { ... }
 
 Questa annotazione fa parte della categoria delle annotazioni personalizzate e presenta tre membri. Se non fosse stato specificato il membro _severity_ il suo valore sarebbe stato IMPORTANT.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Limiti delle annotazioni personalizzate
 
-- **Non** si possono avere relazioni di estensione (_extends_) fra tipi di annotazioni;
-- I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati;
-- Una annotation **non** può lanciare eccezioni ovvero non può avere una _throws clause_;
-- **Non** sono permessi _self-reference_. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationA;
+- **Non** si possono avere relazioni di estensione (_extends_) fra tipi di annotazioni.
+- I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati.
+- Una annotation **non** può lanciare eccezioni ovvero non può avere una _throws clause_.
+- **Non** sono permessi _self-reference_. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationA.
 - **Non** sono permessi _circular-reference_. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationB e quest'ultimo di AnnotationA.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Meta-annotazioni
 
 Sono annotazioni che si specificano sulle annotazioni che vengono create. Le meta-annotazioni sono:
 
-- **@Target**: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc.);
+- **@Target**: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc.):
 
     ```
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
     ```
 
-- **@Documented**: specifica che le annotazioni di tale tipo faranno parte della Javadoc;
+- **@Documented**: specifica che le annotazioni di tale tipo faranno parte della Javadoc:
 
     ```
     @Documented
     public @interface ExampleAnnotation { ... }
     ```
 
-- **@Inherited**: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata;
+- **@Inherited**: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata:
 
     ```
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
     ```
 
-- **@Retention**: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni.
+- **@Retention**: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni:
 
     ```
     @Inherited
     public @interface ExampleAnnotation { ... }
     ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Politiche di retention
 
-- **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se confrontassi la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, potremmo vedere che è la stessa;
-- **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time
+- **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se confrontassi la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, potremmo vedere che è la stessa.
+- **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time.
 - **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. È utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Perchè usarle
 
-Le annotazioni arricchiscono lo spazio concettuale di un linguaggio di programmazione. Consentono di fare programmazione dichiarativa oltre che a quella imperativa perchè permettono di associare delle informazioni in modo dichiarativo al codice non andando a modificare il comportamento dei metodi, delle classi etc. Ad esempio, quello che viene specificato nel di *file di deployment* si può fare benissimo tramite le annotazioni.
+Le annotazioni arricchiscono lo spazio concettuale di un linguaggio di programmazione. Consentono di fare programmazione dichiarativa oltre che a quella imperativa perchè permettono di associare delle informazioni in modo dichiarativo al codice non andando a modificare il comportamento dei metodi, delle classi etc. Ad esempio, quello che viene specificato nel di file di deployment si può fare benissimo tramite le annotazioni.
 
 In poche parole, si aggiunge una "parola" al codice della classe senza combiare la logica di business.
 
-## 04.Sistemi di Nomi
+<a href="#indice">Torna all'indice</a>
+
+## Sistemi di Nomi
 
 In ogni sistema distribuito di medie dimensioni si usa sistemi di nomi perchè non si vuole inserire nell'implementazione dove si trova una determinata risorsa.
 
