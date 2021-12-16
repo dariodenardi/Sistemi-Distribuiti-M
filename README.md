@@ -65,7 +65,7 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
       </ul>
     </li>
     <li>
-      <a href="#annotazioni">Servizio di nomi</a>
+      <a href="#sistemi-di-nomi">Servizio di nomi</a>
       <ul>
         <li><a href="#sistemi-di-discovery">Sistemi di Discovery</a></li>
         <li><a href="#sistemi-di-directory">Sistemi di Directory</a></li>
@@ -779,8 +779,6 @@ In poche parole, si aggiunge una _parola_ al codice della classe senza combiare 
 ## Sistemi di Nomi
 
 In ogni sistema distribuito di medie dimensioni si usa sistemi di nomi perchè non si vuole inserire nell'implementazione dove si trova una determinata risorsa.
-
-### Servizio di naming
 
 Un servizio di naming è un sistema che consente di associare ad un nome logico una risorsa (nome fisico, riferimento, oggetto).
 
