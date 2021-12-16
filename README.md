@@ -952,7 +952,7 @@ hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
 
 <a href="#indice">Torna all'indice</a>
 
-### Memorizzare i dati in JNDI
+### Memorizzare i dati in un servizio nomi
 
 La specifica JNDI non impone ai naming service provider la semantica dell’operazione di memorizzazione di un binding: questo dipende dal servizio di nomi specifico che si sta utilizzando. Per momorizzare le risorse un servizio di nomi può usare le seguenti semantiche:
 
