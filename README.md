@@ -234,18 +234,18 @@ L'immagine di seguito riportata, fa riferimento ad un'architettura three-tier: c
 
 È bene ricordare che la macchina server non è _pura_ perché è necessario installarci sopra anche un container per far girare l'applicazione costituita da componenti.
 
-Sul'EJB Container non si troveranno solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati:
+Sul'EJB Container non si troveranno solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati dal container:
 
-- **Oggetto EJB Home**: implementa l’interfaccia EJBHome. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc);
+- **Oggetto EJB Home**: implementa l’interfaccia EJBHome. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc).
 - **Oggetto EJB Object**: implementa l’interfaccia EJBObject. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il metodo del componente scritto dal programmatore.
 
 Ad esempio, si consideri un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
 
-- **Sviluppatore**: crea solo una classe che chiama _Account_. Al suo interno ci sono i metodi _prelievo()_ e _deposito()_. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, bisogna anche creare due interfacce: EJBHome e EJBObject;
+- **Sviluppatore**: crea solo una classe che chiama _Account_. Al suo interno ci sono i metodi _prelievo()_ e _deposito()_. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, bisogna anche creare due interfacce: EJBHome e EJBObject.
 - **Cliente**: si ipotizzi di avere tre clienti: C1 e C2 che richiedono tutti di eseguire il metodo _prelievo()_:
-    - Quando C1 fa richiesta, essa passa prima da EJB Home il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJB Home restituisce al cliente il riferimento di EJB Object;
-    - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatto su EJB Object che a sua volta potrà invocare il metodo dell’oggetto O1;
-    - C2 fa una richiesta. EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 se l'interazione tra C1 è terminata ma **non** è detto che debba essere lo stesso.
+    - Quando C1 fa richiesta, essa passa prima da EJB Home il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJB Home restituisce al cliente il riferimento di EJB Object.
+    - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatto su EJB Object che a sua volta potrà invocare il metodo dell’oggetto O1.
+    - C2 fa una richiesta. L'oggetto EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 se l'interazione tra C1 è terminata. Dipende dalla politica adottata dal container.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -260,15 +260,15 @@ I clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home.
 Esistono due tipi di contratto:
 
 - **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da:
-    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente. Con Home Interface si intende la EJB Home. È il nome tecnico usato nella documentazione J2EE;
-    - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore. Con Object Interface si intende la EJB Object. È il nome tecnico usato nella documentazione J2EE;
-    - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi che si occupa del recupero di EJB Home;
+    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente. Con Home Interface si intende la EJB Home, è il nome tecnico usato nella documentazione J2EE.
+    - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore. Con Object Interface si intende la EJB Object, è il nome tecnico usato nella documentazione J2EE.
+    - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi in modo da poter recuperare EJB Home.
 - **Component contract**: contratto tra componente e container. Il contratto serve a:
-    - Abilitare le invocazioni dei metodi dei clienti;
-    - Implementare le interfacce EJBHome e EJBObject per ridurre il carico di lavoro da parte dello sviluppatore;
-    - Gestisce la persistenza (solo in EJB 2.x, da EJB 3.x la gestione è diversa);
-    - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc;
-    - Implementa il meccanismo delle callback. Ci sono i Message Driven Bean, il cui funzionamento è asincrono, che vengono attivati solo quando si riceve un determinato messaggio.
+    - Abilitare le invocazioni dei metodi dei clienti.
+    - Implementare le interfacce EJBHome e EJBObject per ridurre il carico di lavoro da parte dello sviluppatore.
+    - Gestisce la persistenza (solo in EJB 2.x, da EJB 3.x la gestione è diversa).
+    - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc.
+    - Implementa il meccanismo delle callback: ci sono dei componenti asincroni chiamati Message Driven Bean che vengono attivati solo quando ricevono un determinato messaggio.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -276,13 +276,13 @@ Esistono due tipi di contratto:
 
 Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la logica di business mentre il container si occupa di:
 
-- Generare automaticamente le classi concrete delle interfaccia EJBHome e EJBObject perchè lo sviluppatore deve creare **solo** interfacce;
-- Effettuare il binding dell’oggetto Home presso il servizio di nomi;
-- Persistenza;
-- Transazionalità;
-- Gestione lifecycle componenti;
-- Connection pooling;
-- Threading;
+- Generare automaticamente le classi concrete delle interfaccia EJBHome e EJBObject scritte dallo sviluppatore che deve creare **solo** interfacce.
+- Effettuare il binding dell’oggetto Home presso il servizio di nomi.
+- Persistenza.
+- Transazionalità.
+- Gestione lifecycle componenti.
+- Connection pooling.
+- Threading.
 - Sicurezza.
 
 <a href="#indice">Torna all'indice</a>
@@ -310,17 +310,17 @@ I componenti possono essere classificati in due categorie:
 
 Un Session Bean ha le seguenti caratteristiche:
 
-- Viene usato quando bisogna effettuare calcoli computazionali;
-- Ogni cliente ha un'istanza logica dedicata: se un cliente fa due interazioni in due momenti diversi con il server, non è detto che abbia la stessa istanza fisica ma viene garantito, lo stesso, il corretto funzionamento;
-- Short-lived: la vita del Bean è pari alla vita del cliente o al massimo alla durata della sessione;
-- Transient;
-- No fault-tollerant: lo stato non sopravvive a crash da parte del server;
-- Può avere proprietà transazionali: dipende se il codice fa accesso a un database oppure no;
+- Viene usato quando bisogna effettuare calcoli computazionali.
+- Ogni cliente ha un'istanza logica dedicata: se un cliente fa due interazioni in due momenti diversi con il server, non è detto che abbia la stessa istanza fisica ma viene garantito, lo stesso, il corretto funzionamento.
+- Short-lived: la vita del Bean è pari alla vita del cliente o al massimo alla durata della sessione.
+- Transient.
+- No fault-tollerant: lo stato non sopravvive a crash da parte del server.
+- Può avere proprietà transazionali: dipende se il codice fa accesso a un database oppure no.
 - Implementa l’interfaccia _javax.ejb.SessionBean_.
 
 I Session Bean che esistono sono di due tipi:
 
-- **Stateless**: il componente è privo di stato. Ad esempio, quando un'azione deve essere idempotente;
+- **Stateless**: il componente è privo di stato. Ad esempio, quando un'azione deve essere idempotente.
 - **Statefull**: il componente è con stato. Ad esempio, quando si aggiungono i prodotti in un carrello di un sito e-commerce.
 
 <a href="#indice">Torna all'indice</a>
@@ -329,17 +329,17 @@ I Session Bean che esistono sono di due tipi:
 
 Un Entity Bean ha le seguenti caratteristiche:
 
-- Rappresenta dati che sono memorizzati in un DB;
-- L'stanza è condivisa fra clienti diversi: bisogna immaginare le istanze come una sorta di cache ad oggetti;
-- Long-lived: la vita del Bean è pari a quella dei dati nel database;
-- Persistente;
-- Fault-tollerant: il componente sopravvive a crash del server, quindi, se i campi che si trovano all'interno del componente sono cambiati, viene effettuato lo stesso l'allineamento con il DB;
-- Sempre transazionale;
+- Rappresenta dati che sono memorizzati in un DB.
+- L'stanza è condivisa fra clienti diversi: bisogna immaginare le istanze come una sorta di cache ad oggetti dove esiste solo una copia del dato.
+- Long-lived: la vita del Bean è pari a quella dei dati nel database.
+- Persistente.
+- Fault-tollerant: il componente sopravvive a crash del server, quindi, se i campi che si trovano all'interno del componente sono cambiati, viene effettuato lo stesso l'allineamento con il DB.
+- Sempre transazionale.
 - implementa l’interfaccia _javax.ejb.EntityBean_.
 
 Gli Entity Bean che esistono sono di due tipi:
 
-- **Container Managed Persistence (CMP)**: persistenza gestita completamente dal container. I requisiti di persistenza specificati interamente nel file di deployment;
+- **Container Managed Persistence (CMP)**: persistenza gestita completamente dal container. I requisiti di persistenza specificati interamente nel file di deployment.
 - **Bean Managed Persistence (BMP)**: è responsabilità dello sviluppatore la gestione della persistenza. Di conseguenza, il codice diventa molto più complesso.
 
 <a href="#indice">Torna all'indice</a>
@@ -358,7 +358,7 @@ L’immagine seguente mostra come interagiscono i client con i Bean e come i Bea
 ![Interazioni tra Bean-Dark](./img/img35-dark.png#gh-dark-mode-only)
 
 L’immagine mette in evidenza l’interazione con e tra componenti senza considerare gli aspetti legati al container come, per esempio, la presenza dell'interfaccia EJB Home e dell'interfaccia EJB Object.
-Agli estremi della catena di interazione vi sono, ovviamente, da un lato i client Java e dall’altro il database, in mezzo si pongono i componenti che danno vita all’applicazione. Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione e la logica applicativa senza stato, se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
+Agli estremi della catena di interazione vi sono, ovviamente, da un lato i client Java e dall’altro il database, in mezzo si pongono i componenti che danno vita all’applicazione. Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -370,7 +370,7 @@ Il deployment descriptor fornisce istruzioni al container su come gestire e cont
 
 ### Ciclo di sviluppo
 
-Il ciclo di sviluppo di un’applicazione enterprise parte dalla creazione dei Bean da parte del _Component Developer_ che si può occupare anche di scrivere il deployment descriptor (o lo farà un'altra figura professionale dedicata) che in maniera dichiarativa istruirà il container sui comportamenti da assumere rispetto a tutte quelle funzionalità viste in precedenza (sicurezza, concorrenza, scalabilità etc). Il _Component Developer_ rilascia, quindi, moduli EJB. I moduli, provveniente anche da applicazioni diverse, posso essere assemblati insieme in un’applicazione dall’_Application Assembler_ che rilascia un’applicazione EJB a cui il _Deployer_ aggiunge il deployment descriptor e poi effettua il deploy in un container EJB.
+Il ciclo di sviluppo di un’applicazione enterprise parte dalla creazione dei Bean da parte del _Component Developer_ che si può occupare anche di scrivere il deployment descriptor (o lo farà un'altra figura professionale dedicata) che in maniera dichiarativa istruirà il container sui comportamenti da assumere rispetto a tutte quelle funzionalità viste in precedenza (sicurezza, concorrenza, scalabilità etc). Il _Component Developer_ rilascia, quindi, moduli EJB. I moduli, provvenienti anche da applicazioni diverse, posso essere assemblati insieme dall’_Application Assembler_ che rilascia un’applicazione EJB a cui il _Deployer_ aggiunge il deployment descriptor e poi effettua il deploy in un container EJB.
 
 ![Ciclo di sviluppo-Light](./img/img36-light.png#gh-light-mode-only)
 ![Ciclo di sviluppo-Dark](./img/img36-dark.png#gh-dark-mode-only)
@@ -455,6 +455,8 @@ I passaggi sono i seguenti:
 
 In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protocollo di comunicazione del mondo CORBA.
 C'è una visione in RMI del mondo CORBA. Si paga, quindi un ulteriore overhead dovuto a CORBA.
+
+Idealmente si tiene aperta questa possibilità ma in realtà è tutto Java based.
 
 <a href="#indice">Torna all'indice</a>
 
