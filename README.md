@@ -200,14 +200,14 @@ I componenti EJB possono essere utilizzati in diverse architetture.
 
 Le architetture possibili sono:
 
-- **Modello 2-tier**: il cliente stand-alone, scritto in Java, interagisce direttamente con il database o con un componente EJB;
-- **Modello 3-tier**: il client comunica tramite HTML con il server web che comunica a sua volta direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database;
+- **Modello 2-tier**: il cliente stand-alone, scritto in Java, interagisce direttamente con il database o con un componente EJB.
+- **Modello 3-tier**: il client comunica tramite HTML con il server web che comunica a sua volta direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database.
 - **Modello 4-tier**: il client comunica tramite HTML con una parte di presentazione web basata su JSP e Servlet, con il componente EJB e il database con le connessioni al database.
 
 ![Multi Tier EJB (2)-Light](./img/img11-light.png#gh-light-mode-only)
 ![Multi Tier EJB (2)-Dark](./img/img11-dark.png#gh-dark-mode-only)
 
-Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: in viola sono rappresentati i vari container, in verde i componenti che vivono all’interno di quel container, in azzurro vengono rappresentate le parti di supporto, cioè il _run-time environment_, in giallo tutte le API standardizzate per gestire per esempio la parte di naming e discovery, per gestire la parte di transazionalità, di messaggistica, di accesso ai database e così via e infine le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
+Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming e discovery, per gestire la parte di transazionalità, di messaggistica, di accesso ai database etc. Infine, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
 Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, offrendo un framework di supporto per componenti portabili, facilitando la configurazione a deployment-time, non sempre essi si prestano ad essere la soluzione migliore. Gli EJB sono interessanti dal punto di vista tecnologico quando il sistema che si progetta ha dei requisiti che sono di tipo enterprise, cioè è un sistema che deve necessariamente scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile. In altre situazioni, per esempio, quando si ha che fare con delle semplici applicazioni low-cost o delle pagine Web dinamiche l’utilizzo degli EJB è esagerato.
 
@@ -404,7 +404,7 @@ Ovviamente gli oggetti che cooperano, in questo caso, si trovano su JVM differen
 
 RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione RMI.
 
-![rmi_iiop](./img/img2.png)
+![RMI IIOP](./img/img2.png)
 
 I passaggi sono i seguenti:
 
