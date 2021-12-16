@@ -31,6 +31,7 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
       <a href="#">EJB 2.X</a>
       <ul>
         <li><a href="#">Scenari applicativi</a></li>
+        <li><a href="#">Principi di design</a></li>
       </ul>
     </li>
     <li><a href="#">Annotazioni</a></li>
@@ -211,14 +212,18 @@ Più nel dettaglio, la figura precedente può essere rappresentata nel seguente 
 
 Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, offrendo un framework di supporto per componenti portabili, facilitando la configurazione a deployment-time, non sempre essi si prestano ad essere la soluzione migliore. Gli EJB sono interessanti dal punto di vista tecnologico quando il sistema che si progetta ha dei requisiti che sono di tipo enterprise, cioè è un sistema che deve necessariamente scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile. In altre situazioni, per esempio, quando si ha che fare con delle semplici applicazioni low-cost o delle pagine Web dinamiche l’utilizzo degli EJB è esagerato.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Principi di design
 
 I principi di progettazione che sono alla base di questa tecnologia sono i seguenti:
 
-- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (loosely coupled). Ad esempio, se si hanno due componenti `A` e `B`, `A` deve chiamare un metodo di `B` non molte volte. Questo perchè nel distribuito si paga un costo di overhead piuttosto alto. Dall'altra parte, i componenti devono essere portabili da un'applicazione altra, quindi bisogna stare attenti a come si scrive il software altrimenti diventa difficile ricostruire le sue dipendenze quando si decide di usare quel codice in un altro progetto;
-- Il comportamento dei componenti EJB è definito tramite interfacce. Questo concetto non è assolutamente nuovo perchè basti pensare alla normale programmazione con gli oggetti;
-- Lo sviluppatore **non** deve pensare a come gestire le risorse. Ci pensa tutto il container;
+- Le applicazioni EJB e i loro componenti devono essere debolmente accoppiati (loosely coupled). Ad esempio, se si hanno due componenti `A` e `B`, `A` deve chiamare un metodo di `B` non molte volte. Questo perchè nel distribuito si paga un costo di overhead piuttosto alto. Dall'altra parte, i componenti devono essere portabili da un'applicazione altra, quindi bisogna stare attenti a come si scrive il software altrimenti diventa difficile ricostruire le sue dipendenze quando si decide di usare quel codice in un altro progetto.
+- Il comportamento dei componenti EJB è definito tramite interfacce. Questo concetto non è assolutamente nuovo perchè basti pensare alla normale programmazione con gli oggetti.
+- Lo sviluppatore **non** deve pensare a come gestire le risorse. Ci pensa tutto il container.
 - Le applicazioni EJB sono N-tier.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Architettura
 
@@ -242,9 +247,13 @@ Ad esempio, si consideri un'applicazione riguardante una banca dove un utente pu
     - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatto su EJB Object che a sua volta potrà invocare il metodo dell’oggetto O1;
     - C2 fa una richiesta. EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 se l'interazione tra C1 è terminata ma **non** è detto che debba essere lo stesso.
 
+<a href="#indice">Torna all'indice</a>
+
 ### JNDI
 
 I clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home. Serve, quindi, un servizio di nomi che svolge appunto questo compito. Ogni sistema di nomi può avere delle API diverse per effettuare le operazioni. Per questo motivo, esse sono state standardizzate: in Java viene usata la libreria JNDI che consente di collegarsi a un qualunque servizio di nomi con API standardizzate in modo che se il servizio di nomi cambia, non si modifica il codice sorgente.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Contratti
 
@@ -261,6 +270,8 @@ Esistono due tipi di contratto:
     - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc;
     - Implementa il meccanismo delle callback. Ci sono i Message Driven Bean, il cui funzionamento è asincrono, che vengono attivati solo quando si riceve un determinato messaggio.
 
+<a href="#indice">Torna all'indice</a>
+
 ### EJB container
 
 Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la logica di business mentre il container si occupa di:
@@ -273,6 +284,8 @@ Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la
 - Connection pooling;
 - Threading;
 - Sicurezza.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Tipologie di componenti Bean
 
@@ -291,6 +304,8 @@ I componenti possono essere classificati in due categorie:
 ![Componenti EJB2-Light](./img/img33-light.png#gh-light-mode-only)
 ![Componenti EJB2-Dark](./img/img33-dark.png#gh-dark-mode-only)
 
+<a href="#indice">Torna all'indice</a>
+
 ### Session Bean
 
 Un Session Bean ha le seguenti caratteristiche:
@@ -307,6 +322,8 @@ I Session Bean che esistono sono di due tipi:
 
 - **Stateless**: il componente è privo di stato. Ad esempio, quando un'azione deve essere idempotente;
 - **Statefull**: il componente è con stato. Ad esempio, quando si aggiungono i prodotti in un carrello di un sito e-commerce.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Entity Bean
 
@@ -325,9 +342,13 @@ Gli Entity Bean che esistono sono di due tipi:
 - **Container Managed Persistence (CMP)**: persistenza gestita completamente dal container. I requisiti di persistenza specificati interamente nel file di deployment;
 - **Bean Managed Persistence (BMP)**: è responsabilità dello sviluppatore la gestione della persistenza. Di conseguenza, il codice diventa molto più complesso.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Message Driven Bean
 
 Questo Bean verrà approfondito in un capitolo a parte.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Interazioni tra Bean
 
@@ -339,9 +360,13 @@ L’immagine seguente mostra come interagiscono i client con i Bean e come i Bea
 L’immagine mette in evidenza l’interazione con e tra componenti senza considerare gli aspetti legati al container come, per esempio, la presenza dell'interfaccia EJB Home e dell'interfaccia EJB Object.
 Agli estremi della catena di interazione vi sono, ovviamente, da un lato i client Java e dall’altro il database, in mezzo si pongono i componenti che danno vita all’applicazione. Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione e la logica applicativa senza stato, se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Deployment
 
 Il deployment descriptor fornisce istruzioni al container su come gestire e controllare il comportamento di componenti J2EE, essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Ciclo di sviluppo
 
@@ -360,6 +385,8 @@ Si supponga di avere un produttore di software A (vendor A) specializzato nella 
 ![Applicazione 2-Light](./img/img38-light.png#gh-light-mode-only)
 ![Applicazione 2-Dark](./img/img38-dark.png#gh-dark-mode-only)
 
+<a href="#indice">Torna all'indice</a>
+
 ### Interfacce EJBHome ed EJBObject
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
@@ -369,6 +396,8 @@ Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve a
 Il cliente ottiene il riferimento di EJB Object attraverso i metodi _create()_ o _find()_ dell’interfaccia EJB Home.
 
 Le interfacce possono essere remote o locali a seconda se la comunicazione del cliente avviene in locale o in remoto.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Invocazione remota
 
@@ -427,6 +456,8 @@ I passaggi sono i seguenti:
 In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protocollo di comunicazione del mondo CORBA.
 C'è una visione in RMI del mondo CORBA. Si paga, quindi un ulteriore overhead dovuto a CORBA.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Invocazione locale
 
 Per prima cosa bisogna ricordarsi di implementare le interfacce EJBLocalHome e EJBLocalObject. Le interfacce locali, si usano quando il cliente esegue nella stessa JVM del componente EJB di interesse (e del suo container). Ad esempio, quando lo sviluppatore deve testare il codice. Non avrebbe senso pagare i costi di overhead sulla stessa macchina. In questo caso il passaggio dei parametri può avvenire tramite riferimento proprio perchè ci si trova sullo stesso nodo.
@@ -463,6 +494,8 @@ public interface InterestLocal extends EJBLocalObject {
 ```
 
 È bene ricordare che non è trasparente passare da EJBHome a EJBLocalHome perchè l'interfaccia locale non ha la _RemoteException_.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Cliente
 
@@ -507,6 +540,8 @@ public class InterestClient {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Deployment di un'applicazione
 
 Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti file:
@@ -525,6 +560,8 @@ Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti fi
     - **application.xml**: descrittore di deployment. La visibilità è _globale_ paragonato a quello che si trova all'interno di ogni modulo.
 - ***.JAR**: cliente EJB. Questo archivio consiste di tutte le classi necessarie per il corretto funzionamento del programma cliente.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Problemi riscontrati
 
 La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emersi durante l'uso di questa versione:
@@ -534,6 +571,8 @@ La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emer
 - **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. È vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
 
 Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nei prossimi due capitoli, si parlerà di annotazioni e di sistema di nomi.
+
+<a href="#indice">Torna all'indice</a>
 
 ## 03.Annotazioni
 
