@@ -806,7 +806,8 @@ Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
 È una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizzate una serie di attributi (simili ai record di un DB). Gli attributi devono essere accessibili efficientemente in lettura e scalare molto bene su numeri grandi.
 
-![rmi_iiop](./img/img45.png)
+![Servizio di Directory-Light](./img/img45-light.png#gh-light-mode-only)
+![Servizio di Directory-Dark](./img/img45-dark.png#gh-dark-mode-only)
 
 Ad esempio, il protocollo LDAP consente di accedere ai laboratori di UNIBO, X.500.
 
@@ -825,7 +826,8 @@ A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta �
 
 JNDI è un'interfaccia standard che consente di accedere in modo uniforme a servizi di naming già esistenti. Dunque, non è un servizio di nomi ma un'**interfaccia**!
 
-![rmi_iiop](./img/img3.png)
+![JNDI-Light](./img/img3-light.png#gh-light-mode-only)
+![JNDI-Dark](./img/img3-dark.png#gh-dark-mode-only)
 
 In questo modo si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client perchè basta solo modificare la parte in cui si specifica quale servizio di nomi si sta usando.
 
