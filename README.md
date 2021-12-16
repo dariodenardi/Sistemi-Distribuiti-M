@@ -41,8 +41,8 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
 
 Nella vita professione, è molto difficile che si scriva un software da zero per diversi motivi:
 
-- Un'azienda/cliente sta già usando determinate tecnologie e non vuole cambiarle;
-- Si vuole interoperare fra diversi ambienti (anche legacy);
+- Un'azienda/cliente sta già usando determinate tecnologie e non vuole cambiarle.
+- Si vuole interoperare fra diversi ambienti (anche legacy).
 - Il tempo di sviluppo è molto limitato e ci sono vincoli nella consegna dell'applicazione finale.
 
 Per questo motivo è fondamentale usare un approccio basato su componenti e il trand attuale si sposta verso questo tipo di soluzione.
@@ -51,7 +51,7 @@ Per questo motivo è fondamentale usare un approccio basato su componenti e il t
 
 Un componente è un _pezzo di software_ che viene scritto dallo sviluppatore ed ha le seguenti caratteristiche:
 
-- Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia;
+- Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia.
 - Viene eseguito all'interno di un ambiente di esecuzione detto _container_/_engine_/_middleware_.
 
 Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con JavaFX: textBox, label, comboBox etc. Quando si clicca su un bottone non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
@@ -109,7 +109,7 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 ![Single Tier-Light](./img/img5-light.png#gh-light-mode-only)
 ![Single Tier-Dark](./img/img5-dark.png#gh-dark-mode-only)
     - **Vantaggi**:
-        - Nessuna gestione client-side;
+        - Nessuna gestione client-side.
         - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore.
     - **Svantaggi**: no scalabilità.
 
@@ -118,8 +118,8 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 ![Two Tier-Dark](./img/img6-dark.png#gh-dark-mode-only)
     - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier).
     - **Svantaggi**:
-        - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente;
-        - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti i dati;
+        - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente.
+        - Raw data trasferiti verso il cliente (responsabile del loro processamento) e ciò produce overhead di rete perchè possono essere anche molti i dati.
         - Connessione al DB per ogni cliente e questo ha un forte impatto perchè i DB relazionali non sono scalabili.
 
 - **Three-Tier**: ci sono diversi modelli:
@@ -137,7 +137,7 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
     ![Three Tier WEB-Light](./img/img7-light.png#gh-light-mode-only)
     ![Three Tier WEB-Dark](./img/img7-dark.png#gh-dark-mode-only)
         - **Vantaggi**:
-            - Cliente disponibile ovunque;
+            - Cliente disponibile ovunque.
             - Nessun problema di aggiornamento del software sul client.
         - **Svantaggi**: Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
 
