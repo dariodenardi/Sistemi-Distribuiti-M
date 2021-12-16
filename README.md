@@ -479,7 +479,8 @@ Dal lato cliente, vengono invocati i metodi di oggetti che si trovano su nodi di
 
 RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione etc
 
-![RMI IIOP](./img/img2.png)
+![RMI IIOP-Light](./img/img2-light.png#gh-light-mode-only)
+![RMI IIOP-Dark](./img/img2-dark.png#gh-dark-mode-only)
 
 I passaggi sono i seguenti:
 
