@@ -218,7 +218,7 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verr
 
 <a href="#indice">Torna all'indice</a>
 
-## EJB 2.x
+## EJB 2.X
 
 È una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
 
@@ -577,7 +577,7 @@ public class InterestClient {
 Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti file:
 
 - ***.EAR (Enterprise ARchive)**: è tutta l'applicazione EJB che si trova lato server. Al suo interno ci sono i seguenti file:
-    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc. ). È facoltativo perchè non è detto che lo si debba inserire.
+    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc ). È facoltativo perchè non è detto che lo si debba inserire.
     - **EJB-JAR (*.jar)**: modulo EJB al cui interno è possibile inserire uno o più componenti. In un .EAR ci possono esserci uno o più moduli (dipende da come si organizza il progetto, se provvengono da altri progetti etc). Il file ejb-jar deve contenere almeno i seguenti file:
 
         - **Classe Bean**: classe scritta dallo sviluppatore.
@@ -639,7 +639,7 @@ Sono metadati con cui si decorano i metodi, le classi, le interfacce etc. Non mo
 Riprendendo le annotazioni scritte all'inizio del capitolo:
 
 - **@Overrided**: serve al compilatore. Se non si mettesse questa annotazione, il codice verrebbe generato lo stesso però bisogna stare attenti a come si scrive il nome del metodo sia nella classe padre che in quella figlia perchè se si sbagliasse a scrivere il nome, il metodo non verrebbe sostituito ma aggiunto.
-- **@Deprecated**: serve a livello di documentazione per indicare che quel metodo, classe etc. è in disuso.
+- **@Deprecated**: serve a livello di documentazione per indicare che quel metodo, classe etc è in disuso.
 - **@SuppressWarnings**: serve al compilatore. Se la compilazione presenta dei warning questi vengono trascurati e non mostrati all’utente.
 
 <a href="#indice">Torna all'indice</a>
@@ -707,8 +707,8 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 - **Non** si possono avere relazioni di estensione (_extends_) fra tipi di annotazioni.
 - I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati.
 - Una annotation **non** può lanciare eccezioni ovvero non può avere una _throws clause_.
-- **Non** sono permessi _self-reference_. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationA.
-- **Non** sono permessi _circular-reference_. Ad esempio: AnnotationA non può contenere un membro di tipo AnnotationB e quest'ultimo di AnnotationA.
+- **Non** sono permessi _self-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationA`.
+- **Non** sono permessi _circular-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationB` e quest'ultimo di AnnotationA.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -716,7 +716,7 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 
 Sono annotazioni che si specificano sulle annotazioni che vengono create. Le meta-annotazioni sono:
 
-- **@Target**: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc.):
+- **@Target**: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc):
 
     ```
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
@@ -756,7 +756,7 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 Le annotazioni arricchiscono lo spazio concettuale di un linguaggio di programmazione. Consentono di fare programmazione dichiarativa oltre che a quella imperativa perchè permettono di associare delle informazioni in modo dichiarativo al codice non andando a modificare il comportamento dei metodi, delle classi etc. Ad esempio, quello che viene specificato nel di file di deployment si può fare benissimo tramite le annotazioni.
 
-In poche parole, si aggiunge una "parola" al codice della classe senza combiare la logica di business.
+In poche parole, si aggiunge una _parola_ al codice della classe senza combiare la logica di business.
 
 <a href="#indice">Torna all'indice</a>
 
