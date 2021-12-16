@@ -708,7 +708,7 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 - I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati.
 - Una annotation **non** può lanciare eccezioni ovvero non può avere una _throws clause_.
 - **Non** sono permessi _self-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationA`.
-- **Non** sono permessi _circular-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationB` e quest'ultimo di AnnotationA.
+- **Non** sono permessi _circular-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationB` e quest'ultimo di `AnnotationA`.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -746,7 +746,7 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 ### Politiche di retention
 
-- **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se confrontassi la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, potremmo vedere che è la stessa.
+- **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se si confrontasse la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, si potrebbe vedere che è la stessa.
 - **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time.
 - **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. È utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
 
@@ -769,81 +769,152 @@ In ogni sistema distribuito di medie dimensioni si usa sistemi di nomi perchè n
 Un servizio di naming è un sistema che consente di associare ad un nome logico una risorsa (nome fisico, riferimento, oggetto).
 
 Esempi di sistemi di nomi:
-- DNS;
-- RMI Registry (RMI);
+
+- DNS.
+- RMI Registry (RMI).
 - Portmapper (RPC).
+
+<a href="#indice">Torna all'indice</a>
 
 ### Sistemi di Discovery
 
-È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le "unità" che sono presenti nella rete.
-Questo servizio gestisce una piccola quantità di nomi e il numero di scritture è molto alto.
+È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le _unità_ che sono presenti nella rete.
+Questo servizio gestisce una piccola quantità di nomi e il numero di scritture nella tabella è molto alto proprio perchè la ricerca avviene in broadcast.
 
 Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Sistemi di Directory
 
-È una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizzate una serie di attributi (simili ai record di un DB). Gli attributi devono essere accessibili efficientemente in lettura e devono scalare molto bene su numeri grandi.
+È una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizzate una serie di attributi (simili ai record di un DB). Gli attributi devono essere accessibili efficientemente in lettura e scalare molto bene su numeri grandi.
 
-Ad esempio, LDAP consente di accedere ai laboratori di UNIBO, X500.
+![rmi_iiop](./img/img45.png)
+
+Ad esempio, il protocollo LDAP consente di accedere ai laboratori di UNIBO, X.500.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Directory vs DB
 
 A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta è no:
-- Gli schemi nelle Directory sono prefissati mentre nei DB si devono creare con la progettazione concettuale e logica;
+
+- Gli schemi nelle Directory sono prefissati mentre nei DB si devono creare con la progettazione concettuale e logica.
 - Nelle Directory, le operazioni sono molto più ottimizzate rispetto al DB perchè sono pensati come strumenti da usare in ambiente distribuiti.
+
+<a href="#indice">Torna all'indice</a>
 
 ### JNDI
 
-JNDI è un'interfaccia standard che consente di accedere in modo uniforme a servizi di naming già esistenti. Dunque, non è un servizio di nomi ma un'interfaccia!
-In questo modo si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client. Basta solo modificare la parte di setting.
+JNDI è un'interfaccia standard che consente di accedere in modo uniforme a servizi di naming già esistenti. Dunque, non è un servizio di nomi ma un'**interfaccia**!
 
 ![rmi_iiop](./img/img3.png)
 
+In questo modo si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client perchè basta solo modificare la parte in cui si specifica quale servizio di nomi si sta usando.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Interfaccia Context
 
 Context è l'interfaccia che contiene metodi per aggiungere, cancellare, cercare, ridenominare oggetti. Invece, l'implementazione di Context è InitialContext. I metodi che si trovano nell'interfaccia sono i seguenti:
 
-- **bind**: Consente di associare ad un nome logico un oggetto. È importante che il nome non deve essere associato già ad alcun oggetto
+- **bind**: consente di associare ad un nome logico un oggetto. È importante che il nome non deve essere associato già ad alcun oggetto:
+
     ```
     void bind(String stringName, Object object)
     ```
-- **rebind**: consente di riassegnare al nome logico un nuovo oggetto
+
+- **rebind**: consente di riassegnare al nome logico un nuovo oggetto:
+
     ```
     void rebind(String stringName, Object object)
     ```
-- **lookup**: consente di cercare l'oggetto che corrisponde al nome logico dato come parametro di ingresso.
+
+- **lookup**: consente di cercare l'oggetto che corrisponde al nome logico dato come parametro di ingresso:
+
     ```
     Object lookup(String stringName)
     ```
-- **unbind**: Consente di togliere dalla tabella la riga che corrisponde
+- **unbind**: Consente di togliere dalla tabella la riga che corrisponde:
+
     ```
     void unbind(String stringName)
     ```
-- **rename**: Consente di cambiare nome logico 
+- **rename**: Consente di cambiare nome logico:
+
     ```
     void rename(String stringOldName, String stringNewName)
     ```
-- **listBindings**: Restituisce tutti i nomi del context specificato, insieme a oggetti associati e loro classi. In RMI non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono
+
+- **listBindings**: restituisce tutti i nomi che si trovano nel sistema nome che fanno matching con la stringa di ingresso. In RMI non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono:
+
     ```
     NamingEnumeration listBindings(String stringName)
     ```
 
+Non a caso, in EJB 2.X prima di trovare un componente sul servizio di nomi, bisogna creare un oggetto InitialContext.
+
+<a href="#indice">Torna all'indice</a>
+
 ### Interfaccia DirContext
 
-Per quanto riguarda i servizi di nomi di tipo Directory non è possibile usare Context perchè per come è fatto questo naming service manca la parte relativa agli attributi.
-DirContext è sottoclasse di Context ed estende le funzionalità standard di naming con altre relative a attributi e ricerche su entry di directory.
+Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare Context perchè per come è fatto questo naming service manca la parte relativa agli attributi.
+DirContext è la sottoclasse di Context ed estende le funzionalità standard di naming con altre relative a attributi e ricerche su entry di directory. I metodi che si trovano nell'interfaccia sono i seguenti:
 
-### Esempio di uso di JNDI
+- **bind**: associa un nome a un oggetto e memorizza gli attributi specificati nella entry corrispondente (preserva attributi esistenti). È importante che il nome non deve essere associato già ad alcun oggetto:
 
-- Per prima cosa, serve scegliere un naming service provider (ad es. OpenLDAP o un’altra implementazione di LDAP). Dopo, bisogna aggiungere il nome del provider all’insieme di proprietà di ambiente (in un oggetto Hashtable):
+    ```
+    void bind(String stringName, Object object, Attributes attributes)
+    ```
+
+- **rebind**: consente di riassegnare al nome logico un nuovo oggetto:
+
+    ```
+    void rebind(String stringName, Object object, Attributes attributes)
+    ```
+
+- **createSubcontext**: crea un sottocontesto, eventualmente con attributi:
+
+    ```
+    DirContext createSubcontext(String stringName, Attributes attributes)
+    ```
+
+- **getAttributes**: restituisce gli attributi associati con l’entry specificata:
+
+    ```
+    Attributes getAttributes(String stringName)
+    ```
+
+- **getAttributes**: restituisce gli attributi specificati nell’array fornito:
+
+    ```
+    Attributes getAttributes(String stringName, String [] rgstringAttributeNames)
+    ```
+
+- **modifyAttributes**: Modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
+
+    ```
+    void modifyAttributes(String stringName, int nOperation, Attributes attributes)
+    ```
+
+- **modifyAttributes**: Modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
+
+    ```
+    void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
+    ```
+
+<a href="#indice">Torna all'indice</a>
+
+### Uso di JNDI
+
+- Per prima cosa, serve scegliere un naming service provider. Ad esempio, OpenLDAP o un’altra implementazione di LDAP. Dopo, bisogna aggiungere il nome del provider all’insieme di proprietà di ambiente in un oggetto Hashtable:
 
     ```
     Hashtable hashtableEnvironment = new Hashtable();
     hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
     ```
 
-- Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider (ad es. per LDAP, URL che identifica il servizio, context radice, nome e password per connessione):
+- Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider. Ad esempio, per LDAP, l'URL che identifica il servizio, context radice, nome e password per connessione:
 
 ```
 hashtableEnvironment.put(Context.PROVIDER_URL, "ldap://localhost:389/dc=etcee,dc=com");
@@ -857,18 +928,23 @@ hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
     Context context = new InitialContext(hashtableEnvironment);
     ```
 
-    Se il servizio di naming è una Directory si crea un oggetto InitialDirContext:
+    Invece, se il servizio di naming è una Directory si crea un oggetto InitialDirContext:
 
     ```
     DirContext context = new InitialDirContext(hashtableEnvironment);
     ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Memorizzare i dati in JNDI
 
 La specifica JNDI non impone ai naming service provider la semantica dell’operazione di memorizzazione di un binding: questo dipende dal servizio di nomi specifico che si sta utilizzando. Per momorizzare le risorse un servizio di nomi può usare le seguenti semantiche:
-- Serializzazione
-- Riferimento
-- Attributi
+
+- Serializzazione.
+- Riferimento.
+- Attributi.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Serializzazione
 
@@ -876,31 +952,39 @@ La semantica serialized data la si usa per salvare tutto il contenuto dell’ogg
 
 Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database, file, stampante etc.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Riferimento
 
 In altri casi quello che viene salvato è solo il riferimento ad un oggetto. Quando il cliente fa la lookup viene restituito il riferimento a quella risorsa. Spesso, questo è l’unico comportamento supportabile dal sistema di nomi.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Attributi
 
 Non tutti i linguaggi di programmazione conoscono il concetto di oggetto. Per questo motivo, utilizzare la semantica per attributi consente eliminare il mismatch tra linguaggi differenti perchè il programma userebbe una collezione di attributi.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Configurazione di JNDI
 
-Per accedere a uno specifico naming/directory service, occorre specificare quale service provider utilizzare, quale server etc.
+Per accedere a uno specifico naming/directory service, occorre specificare quale service provider utilizzare, quale server etc:
 
-- **Standard**: sono proprietà indipendenti dal service provider che accomunano tutti i servizi di nomi. Ad esempio, LDAP, RMI etc. Si trovano nel package "java.naming.". Ad esempio, "java.naming.provider.url" o "java.naming.factory.initial";
-- **Service-specific**: proprietà comuni per tutti i naming service provider a prescindere dall'implementazione specifica, Ad esempio, LDAP. Hanno prefisso "java.naming.service.". Ad esempio, "java.naming.ldap.";
-- **Feature-specific**: comuni per tutti naming service provider che implementano una specifica feature, ad es. SASL per autenticazione. Una proprietà più trasversale che interessa più sistemi di nomi. Hanno prefisso "java.naming.feature.". Ad esempio, "java.naming.security.sasl.";
-- **Provider-specific**: specifiche per un determinato naming service provider. Ad esempio, il servizio Sun LDAP ha una proprietà per abilitare tracing. Ovviamente ha un prefisso unico. Ad esempio, "com.sun.jndi.ldap.trace.ber".
+- **Standard**: sono proprietà indipendenti dal service provider che accomunano tutti i servizi di nomi. Ad esempio, LDAP, RMI etc. Si trovano nel package _java.naming_. Ad esempio, _java.naming.provider.url_ o _java.naming.factory.initial_.
+- **Service-specific**: proprietà comuni per tutti i naming service provider a prescindere dall'implementazione specifica, Ad esempio, LDAP. Hanno prefisso _java.naming.service_. Ad esempio, _java.naming.ldap_.
+- **Feature-specific**: comuni per tutti naming service provider che implementano una specifica feature. Ad esempio, SASL per autenticazione. Una proprietà più trasversale che interessa più sistemi di nomi. Hanno prefisso _java.naming.feature_. Ad esempio, _java.naming.security.sasl_.
+- **Provider-specific**: specifiche per un determinato naming service provider. Ad esempio, il servizio Sun LDAP ha una proprietà per abilitare tracing. Ovviamente ha un prefisso unico. Ad esempio, _com.sun.jndi.ldap.trace.ber_.
 
 Come specificare proprietà di ambiente:
 
-- Attraverso parametro environment passato al costruttore di InitialContext
+- Attraverso i parametri di environment passati al costruttore di InitialContext. Ad esempio, si crea un oggetto HashTable.
 - **File application resource**: si modifica il file jndi.properties che contiene una lista di coppie attributo/valore.
-- **Proprietà di sistema**: una proprietà di sistema è una coppia attributo/valore che la Java runtime definisce/usa per descrivere utenti, ambiente di sistema e JVM. Per modificare/aggiungere queste proprietà si usa la linea di comando;
+- **Proprietà di sistema**: una proprietà di sistema è una coppia attributo/valore che la Java runtime definisce/usa per descrivere utenti, ambiente di sistema e JVM. Per modificare/aggiungere queste proprietà si usa la linea di comando.
 - **Parametri di applet**: le applet ormai sono in disuso.
 
 Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle proprietà sono concatenati in una lista separata da virgole; per alcune proprietà viene preso solo primo valore assegnato.
+
+<a href="#indice">Torna all'indice</a>
 
 ## 05.EJB3
 
