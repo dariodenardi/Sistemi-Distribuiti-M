@@ -347,15 +347,18 @@ Il deployment descriptor fornisce istruzioni al container su come gestire e cont
 
 Il ciclo di sviluppo di un’applicazione enterprise parte dalla creazione dei Bean da parte del _Component Developer_ che si può occupare anche di scrivere il deployment descriptor (o lo farà un'altra figura professionale dedicata) che in maniera dichiarativa istruirà il container sui comportamenti da assumere rispetto a tutte quelle funzionalità viste in precedenza (sicurezza, concorrenza, scalabilità etc). Il _Component Developer_ rilascia, quindi, moduli EJB. I moduli, provveniente anche da applicazioni diverse, posso essere assemblati insieme in un’applicazione dall’_Application Assembler_ che rilascia un’applicazione EJB a cui il _Deployer_ aggiunge il deployment descriptor e poi effettua il deploy in un container EJB.
 
-![rmi_iiop](./img/img36.png)
+![Ciclo di sviluppo-Light](./img/img36-light.png#gh-light-mode-only)
+![Ciclo di sviluppo-Dark](./img/img36-dark.png#gh-dark-mode-only)
 
 J2EE è un’architettura pensata per velocizzare e industrializzare lo sviluppo di applicazioni. Gli standard e l’architettura di riferimento hanno il grosso vantaggio, oltre a semplificare il lavoro dello sviluppatore, di abilitare sempre di più la standardizzazione della produzione del software aprendo le porte alla possibilità di assemblare applicazioni utilizzando e facendo coesistere moduli sviluppati da _vendor_ diversi. Ad esempio:
 
-![rmi_iiop](./img/img37.png)
+![Applicazione 1-Light](./img/img37-light.png#gh-light-mode-only)
+![Applicazione 1-Dark](./img/img37-dark.png#gh-dark-mode-only)
 
 Si supponga di avere un produttore di software A (vendor A) specializzato nella modellazione e creazione di componenti busta paga che quindi sviluppa il componente _EJB Payroll_, un secondo produttore di software B sviluppa altri componenti _Self Service_ ed _Employee_, può utilizzare il modulo sviluppato dal vendor A per assemblare un’applicazione in cui il modulo _Payroll_ sviluppato da A coesista con i moduli sviluppati dal vendor B.
 
-![rmi_iiop](./img/img38.png)
+![Applicazione 2-Light](./img/img38-light.png#gh-light-mode-only)
+![Applicazione 2-Dark](./img/img38-dark.png#gh-dark-mode-only)
 
 ### Interfacce EJBHome ed EJBObject
 
