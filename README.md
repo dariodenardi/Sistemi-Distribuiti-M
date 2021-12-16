@@ -64,7 +64,23 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
         <li><a href="#perchè-usarle">Perchè usarle</a></li>
       </ul>
     </li>
-    <li><a href="#">Servizio di nomi</a></li>
+    <li>
+      <a href="#annotazioni">Servizio di nomi</a>
+      <ul>
+        <li><a href="#sistemi-di-discovery">Sistemi di Discovery</a></li>
+        <li><a href="#sistemi-di-directory">Sistemi di Directory</a></li>
+        <li><a href="#directory-vs-db">Directory vs DB</a></li>
+        <li><a href="#jndi-1">JNDI</a></li>
+        <li><a href="#interfaccia-context">Interfaccia Context</a></li>
+        <li><a href="#interfaccia-dircontext">Interfaccia DirContext</a></li>
+        <li><a href="#uso-di-jndi">Uso di JNDI</a></li>
+        <li><a href="#memorizzare-i-dati-in-un-servizio-nomi">Memorizzare i dati in un servizio nomi</a></li>
+        <li><a href="#serializzazione">Serializzazione</a></li>
+        <li><a href="#riferimento">Riferimento</a></li>
+        <li><a href="#attributi">Attributi</a></li>
+        <li><a href="#configurazione-di-jndi">Configurazione di JNDI</a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -781,6 +797,8 @@ Esempi di sistemi di nomi:
 È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le _unità_ che sono presenti nella rete.
 Questo servizio gestisce una piccola quantità di nomi e il numero di scritture nella tabella è molto alto proprio perchè la ricerca avviene in broadcast.
 
+![rmi_iiop](./img/img46.png)
+
 Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
 <a href="#indice">Torna all'indice</a>
@@ -846,7 +864,7 @@ Context è l'interfaccia che contiene metodi per aggiungere, cancellare, cercare
     void rename(String stringOldName, String stringNewName)
     ```
 
-- **listBindings**: restituisce tutti i nomi che si trovano nel sistema nome che fanno matching con la stringa di ingresso. In RMI non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono:
+- **listBindings**: restituisce tutte le entry che si trovano nel sistema nome che fanno matching con la stringa di ingresso. In RMI non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono:
 
     ```
     NamingEnumeration listBindings(String stringName)
@@ -861,7 +879,7 @@ Non a caso, in EJB 2.X prima di trovare un componente sul servizio di nomi, biso
 Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare Context perchè per come è fatto questo naming service manca la parte relativa agli attributi.
 DirContext è la sottoclasse di Context ed estende le funzionalità standard di naming con altre relative a attributi e ricerche su entry di directory. I metodi che si trovano nell'interfaccia sono i seguenti:
 
-- **bind**: associa un nome a un oggetto e memorizza gli attributi specificati nella entry corrispondente (preserva attributi esistenti). È importante che il nome non deve essere associato già ad alcun oggetto:
+- **bind**: associa un nome a un oggetto e memorizza gli attributi specificati nella entry corrispondente. È importante che il nome non deve essere associato già ad alcun oggetto:
 
     ```
     void bind(String stringName, Object object, Attributes attributes)
@@ -873,7 +891,7 @@ DirContext è la sottoclasse di Context ed estende le funzionalità standard di 
     void rebind(String stringName, Object object, Attributes attributes)
     ```
 
-- **createSubcontext**: crea un sottocontesto, eventualmente con attributi:
+- **createSubcontext**: crea un sottocontesto, eventualmente con attributi. Bisogna immaginarsi come una cartella del file system. Al suo interno si possono creare altre cartelle:
 
     ```
     DirContext createSubcontext(String stringName, Attributes attributes)
@@ -891,13 +909,13 @@ DirContext è la sottoclasse di Context ed estende le funzionalità standard di 
     Attributes getAttributes(String stringName, String [] rgstringAttributeNames)
     ```
 
-- **modifyAttributes**: Modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
+- **modifyAttributes**: modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
 
     ```
     void modifyAttributes(String stringName, int nOperation, Attributes attributes)
     ```
 
-- **modifyAttributes**: Modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
+- **modifyAttributes**: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
 
     ```
     void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
