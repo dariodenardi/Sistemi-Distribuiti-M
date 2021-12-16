@@ -293,11 +293,11 @@ I componenti possono essere classificati in due categorie:
 
 - **Sincroni**: l'utente si blocca e aspetta la risposta da parte del server. Si classificano ulteriormente in:
     - **Session Bean**: a sua volta esistono due tipi di Session Bean:
-        - **Stateful**;
-        - **Stateless**;
+        - **Stateful**.
+        - **Stateless**.
     - **Entity Bean**: a sua volta esistono due tipi di Entity Bean:
-        - **Container Managed Persistence (CMP)**;
-        - **Bean Managed Persistence (BMP)**;
+        - **Container Managed Persistence (CMP)**.
+        - **Bean Managed Persistence (BMP)**.
 - **Asincroni**: l'utente non si blocca e non aspetta la risposta. Esiste un solo tipo di componente che fa parte di questa categoria:
     - **Message Driven Bean**.
 
@@ -391,7 +391,7 @@ Si supponga di avere un produttore di software A (vendor A) specializzato nella 
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale;
+- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale.
 - **Interfaccia EJBObject**: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
 Il cliente ottiene il riferimento di EJB Object attraverso i metodi _create()_ o _find()_ dell’interfaccia EJB Home.
 
@@ -411,7 +411,7 @@ import javax.ejb.*;
 import java.rmi.*;
 
 public interface InterestHome extends EJBHome{
-    public Interest create()
+    public Interest create() throws CreateException, RemoteException;
 }
 ```
 
@@ -429,34 +429,31 @@ public interface Interest extends EJBObject {
 }
 ```
 
-Ovviamente gli oggetti che cooperano, in questo caso, si trovano su JVM differenti. Dal lato cliente, vengono invocati i metodi di oggetti che si trovano lato server e necessariamente ci deve essere un meccanismo di comunicazione tra cliente e server.
+Dal lato cliente, vengono invocati i metodi di oggetti che si trovano su nodi differenti e necessariamente ci deve essere un meccanismo di comunicazione tra cliente e server.
 
-RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione RMI.
+RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione etc
 
 ![RMI IIOP](./img/img2.png)
 
 I passaggi sono i seguenti:
 
 - **Cliente**:
-    - Invoca un metodo dell’oggetto remoto;
+    - Invoca un metodo dell’oggetto remoto.
     - Lo stub lato cliente:
-        - Intercetta l’invocazione di metodo;
-        - Effettua il marshalling dei parametri;
-        - Effettua la chiamata vera e propria all’oggetto remoto;
+        - Intercetta l’invocazione di metodo.
+        - Effettua il marshalling dei parametri.
+        - Effettua la chiamata vera e propria all’oggetto remoto.
 - **Oggetto remoto**:
-    - Riceve l’invocazione tramite il suo skeleton;
-    - Effettua l’unmarshalling dei parametri;
-    - Esegue l’invocazione localmente;
-    - Effettua il marshalling dei risultati e li invia al cliente;
+    - Riceve l’invocazione tramite il suo skeleton.
+    - Effettua l’unmarshalling dei parametri.
+    - Esegue l’invocazione localmente.
+    - Effettua il marshalling dei risultati e li invia al cliente.
 - **Lo stub lato cliente**:
-    - Riceve i risultati;
-    - Effettua un marshalling;
+    - Riceve i risultati.
+    - Effettua un marshalling.
     - Restituisce il risultato al programma cliente.
 
-In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protocollo di comunicazione del mondo CORBA.
-C'è una visione in RMI del mondo CORBA. Si paga, quindi un ulteriore overhead dovuto a CORBA.
-
-Idealmente si tiene aperta questa possibilità ma in realtà è tutto Java based.
+In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protocollo di comunicazione del mondo CORBA. C'è una visione in RMI del mondo CORBA. CORBA consente di comunicare fra client e server scritti in due linguaggi completamente diversi. Idealmente si tiene aperta la possibilità di comunicare con mondi che appartengono a linguaggi diversi ma in realtà è tutto Java based.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -490,6 +487,7 @@ import java.rmi.*;
 
 public interface InterestLocal extends EJBLocalObject {
 
+    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno  specifico tasso di interesse (percentuale per term)
     public double getInterestOnPrincipal (double principal, double interestPerTerm, int terms);
 
 }
@@ -504,11 +502,11 @@ public interface InterestLocal extends EJBLocalObject {
 Per interagire con un componente EJB il cliente deve:
 
 - Ottenere l’oggetto EJBHome (in realtà un oggetto stub) via JNDI perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
-    - Creare l'oggetto InitialContext. Questo oggetto serve per poter cercare sul servizio di nomi;
-    - Effettuare la lookup sul servizio di nomi tramite JNDI;
-    - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile;
-- Dall’oggetto EJBHome, si invoca la _create()_ in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto _stub_ di EJBObject per lo stesso motivo di prima;
-- Invocare i metodi di business tramite l’oggetto EJB;
+    - Creare l'oggetto InitialContext. Questo oggetto serve per poter cercare sul servizio di nomi.
+    - Effettuare la lookup sul servizio di nomi tramite JNDI.
+    - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile.
+- Dall’oggetto EJBHome, si invoca la _create()_ in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto _stub_ di EJBObject per lo stesso motivo di prima.
+- Invocare i metodi di business tramite l’oggetto EJB.
 - Effettuare il clean up finale per liberare le risorse. Perchè occupare un'istanza che non si usa?
 
 ```
@@ -549,12 +547,12 @@ public class InterestClient {
 Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti file:
 
 - ***.EAR (Enterprise ARchive)**: è tutta l'applicazione EJB che si trova lato server. Al suo interno ci sono i seguenti file:
-    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc. ). È facoltativo perchè non è detto che lo si debba inserire;
+    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc. ). È facoltativo perchè non è detto che lo si debba inserire.
     - **EJB-JAR (*.jar)**: modulo EJB al cui interno è possibile inserire uno o più componenti. In un .EAR ci possono esserci uno o più moduli (dipende da come si organizza il progetto, se provvengono da altri progetti etc). Il file ejb-jar deve contenere almeno i seguenti file:
 
-        - **Classe Bean**: classe scritta dallo sviluppatore;
-        - **Interfaccia EJBHome**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta;
-        - **Interfaccia EJBObject**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta;
+        - **Classe Bean**: classe scritta dallo sviluppatore.
+        - **Interfaccia EJBHome**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta.
+        - **Interfaccia EJBObject**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta.
         - **application.xml**: descrittore di deployment. La visibilità è _locale_ perchè si limita solo all'interno del modulo.
 
         Per effettuare il deployment di una applicazione EJB, è sempre necessario creare un file *.EAR anche se l’applicazione prevede un solo modulo EJB-JAR e nessun modulo Web. Tuttavia, alcuni container permettono il deployment diretto del solo modulo EJB-JAR senza dover creare il file *.EAR.
