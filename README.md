@@ -4,7 +4,9 @@
 
 Corso tenuto dal _Prof. Foschini_
 
-Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_, _Enrico Valastro_
+Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_ 
+
+Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come realizzarle
 
 [![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark&Light%20Mode-1f425f.svg)](https://github.com/settings/appearance)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
@@ -1317,16 +1319,16 @@ UserTransaction, alcuni dei quali descritti in seguito)
 
 Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può terminare correttamente (commit) oppure no (rollback).
 
-Session bean e message-driven bean possono sfruttare o Container-Managed Transaction o Bean-Managed Transaction.
+Le transazioni possono essere gestite dal container (Container-Managed Transaction) o manualmente dal programmatore (Bean-Managed Transaction).
 
-Sono la tipologia di default
+Le transazioni gestite dal container sono:
 
-Transazione associata con l’intera esecuzione di un
+- Sono la tipologia di default
+- Transazione associata con l’intera esecuzione di un
 metodo (demarcazione automatica della transazione: inizio
 immediatamente prima dell’inizio dell’esecuzione del metodo e
 commit immediatamente prima della terminazione del metodo)
-
-NON si possono utilizzare metodi per gestione delle
+- NON si possono utilizzare metodi per gestione delle
 transazioni che interferiscano con gestione
 automatica del container (ad esempio, proibito l’uso di commit
 o rollback di java.sql.Connection, di rollback di javax.jms.Session
@@ -1337,9 +1339,7 @@ Valore uguale a container (default) oppure a bean
 
 I cosiddetti attributi di transazione permettono di controllare lo scope di una transazione.
 
-Valori possibili: REQUIRED (implicito a default),
-REQUIRES_NEW, MANDATORY, NOT_SUPPORTED,
-SUPPORTS, NEVER
+I Valori possibili sono: REQUIRED (implicito a default), REQUIRES_NEW, MANDATORY, NOT_SUPPORTED, SUPPORTS, NEVER
 
 NotSupported
 ```
@@ -1374,6 +1374,18 @@ Questo Bean verrà approfondito nel `Capitolo 7`.
 Il container EJB è anche responsabile per svolgere azioni
 di controllo dell’accesso sui metodi del bean
 
+Il container EJB basa le sue decisioni di sicurezza sui
+concetti di Realm, Utenti, Gruppi e Ruoli:
+
+Realm come collezione di utenti di una singola applicazione (o di
+un loro insieme), controllati dalla stessa policy di autenticazione.
+Possono o meno essere parte dello stesso gruppo.
+
+![single tier](./img/img48.png)
+
+Consulta policy di sicurezza da applicare (derivanti da deployment
+descriptor + annotation) per determinare i differenti ruoli di accesso
+
 ```
 
 @Stateless public PayrollBean implements Payroll {
@@ -1386,6 +1398,12 @@ public void setSalary(int empId, double salary) {...}
 }
 
 ```
+
+Annotation:
+
+- @RolesAllowed (valore è una lista di nomi di ruoli)
+- @PermitAll,
+- @DenyAll (applicabile solo a livello di singolo metodo)
 
 ### Intercettori
 
@@ -1531,31 +1549,40 @@ Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
 Su hibernate la cache di secondo livello serve per la trasversalità tra diverse applicazioni.
 
-## 07.JMS
+## JMS
 
-Introduzione alla messaggistica. L’importanza dei sistemi di messaging èdovuto alla comunicazione disaccoppiata (o loosely coupled), asincrona (=sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce le funzionalità di base necessarie, per questo si parla di Message Oriented Middleware (MOM), Messaging system, Messaging server, Messaging provider, JMS provider. 
+### Introduzione alla messaggistica
 
-I vantaggi del MOM sono l’indipendenza rispetto al dove stiamo lavorando e rispetto alla locazione di rete. In particolare, non c’è più l’assunzione che il cliente conosca la locazione del servitore.  Nel modello client server il client conosce la locazione del servitore questo non avviene nei MOM, il sistema di messaggistica si occupa di smistare i messaggi verso il destinatario, ciò consente il completo disaccoppiamento. Il disaccoppiamento avviene nello spazio ovvero non bisogna più conoscere la locazione del destinatario e nel tempo ovvero non devono essere online entrambe le entità contemporaneamente.   
+L’importanza dei sistemi di messaging è dovuto principalmente alla comunicazione disaccoppiata (o loosely coupled) e asincrona ( = sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce tutte le funzionalità necessarie, per questo si parla di Message Oriented Middleware (MOM), Messaging system, Messaging server, Messaging provider, JMS provider.
 
-I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono : la scalabilità ovvero la capacità di gestire un numero elevato di clienti senza cambiamenti nella logica applicativa senza cambiamenti nell’architettura, senza (grosso) degrado nello throughput di sistema, infatti si tendono a incrementare le capacità hardware del sistema di messaging se si desidera una maggiore scalabilità complessiva, e la robustezza i consumatori, i produttori e la rete possono avere un fault senza problemi per il sistema di messaging. Da la possibilità di scalare le entità nel modo giusto nel caso dei MOM riusciamo a lavorare in modo non più monolitico ma a microservizi, divindedolo in varie funzionalità, quindi il servizio di messaggistica ci supporta la scalabilità con il disaccoppiamento. A sua volta il MOM deve essere robusto e scalabile.  Con la robustezza può garantire la transazionalità delle comunicazioni. Quindi grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.  
+I vantaggi del MOM sono l’indipendenza rispetto al dove si sta lavorando e rispetto alla locazione di rete. In particolare, non c’è più l’assunzione che il cliente conosca la locazione del servitore. Nel modello client-server, il client conosce la locazione del servitore ma questo non avviene nei MOM: è il sistema di messaggistica che si occupa di smistare i messaggi verso il destinatario, ciò consente il completo disaccoppiamento. Il disaccoppiamento avviene sia nello spazio, ovvero non bisogna più conoscere la locazione del destinatario, sia nel tempo, ovvero non devono essere online entrambe le entità contemporaneamente.
 
-Tra gli esempi del sistema di messaging abbiamo le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto nelle architetture distribuite e cloud a tutti i livelli, dai livelli più bassi fino al livello applicativo. 
+I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono: la scalabilità ovvero la capacità di gestire un numero elevato di clienti senza cambiamenti nella logica applicativa senza cambiamenti nell’architettura, senza (grosso) degrado nello throughput di sistema, infatti si tendono a incrementare le capacità hardware del sistema di messaging se si desidera una maggiore scalabilità complessiva, e la robustezza i consumatori, i produttori e la rete possono avere un fault senza problemi per il sistema di messaging. Da la possibilità di scalare le entità nel modo giusto nel caso dei MOM riusciamo a lavorare in modo non più monolitico ma a microservizi, divindedolo in varie funzionalità, quindi il servizio di messaggistica ci supporta la scalabilità con il disaccoppiamento. A sua volta il MOM deve essere robusto e scalabile. Con la robustezza può garantire la transazionalità delle comunicazioni. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
 
-Chiamiamo le entità produttore consumatore e MOM, si possono avere due modelli di messaging: point to point e publish subscribe. Le principali caratteristiche sono: affidabilità, operazioni con logica transazionale, ovvero trattano lo scambio di messaggi come transazione con la possibilità eventuale di persistere i messaggi, Il messaging può essere distribuito, si possono implementare politiche di sicurezza, i MOM poi possono supportare altre funzionalità: come la qualità dei canali, transazioni sicure, auditing, load balacing.
+Tra gli esempi del sistema di messaging ci sono le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto nelle architetture distribuite e cloud a tutti i livelli, dai livelli più bassi fino al livello applicativo. 
+
+Chiamiamo le entità produttore consumatore e MOM, si possono avere due modelli di messaging:
+
+- point to point;
+- publish subscribe.
+
+Le principali caratteristiche sono: affidabilità, operazioni con logica transazionale, ovvero trattano lo scambio di messaggi come transazione con la possibilità eventuale di persistere i messaggi, Il messaging può essere distribuito, si possono implementare politiche di sicurezza, i MOM poi possono supportare altre funzionalità: come la qualità dei canali, transazioni sicure, auditing, load balacing.
 
 ### Modello point to point 
 
-La comunicazione è un collegamento tra sole due entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore, questo serve per far parlare dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il mom si comporta come proxy che mantiene i messaggi. Un messaggio è consumato da un singolo ricevente, ci possono essere produttori multipli, ovviamente, la “destinazione" di un messaggio è una coda con nome (named queue). Le code sono FIFO (per lo stesso livello di priorità), i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi. 
+La comunicazione è un collegamento tra sole due entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore, questo serve per far parlare dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi. Un messaggio è consumato da un singolo ricevente, ci possono essere produttori multipli, ovviamente, la “destinazione" di un messaggio è una coda con nome (named queue). Le code sono FIFO (per lo stesso livello di priorità), i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi. 
 
-In un caso mobile se ipotizziamo la disconnessione deidestinatari dovremmo avere persistenza dei messaggi.
+In un caso mobile se si ipotizza la disconnessione dei destinatari si dovrebbe avere persistenza dei messaggi.
 
 ![single tier](./img/img12.png)
 
 ### Modello publish subscriber
 
-Il modello publish subscriber è un modello 1-N il messaggio viene consumato n volte. Il consumatore deve dire al MOM che è interessato a quella comunicazione. Il modello publish subscriber è tipicamente utilizzato in tutte le bacheche. Un messaggio è consumato da riceventi multipli, la “destinazione" di un messagggio è un argomento con nome (named topic), i produttori pubblicano su un topic, mentre i consumatori si “abbonano” a un topic.  Sono possibili diverse configurazioni del MOM per cui possiamo ipotizzare che non ci sia persistenza e quindi i messaggi che sono stati inviati quando un consumatore non era presente sono stati persi.
+Il modello publish subscriber è un modello 1-N dove il messaggio viene consumato n volte. Il consumatore deve dire al MOM che è interessato a quella comunicazione. Il modello publish subscriber è tipicamente utilizzato in tutte le bacheche. Un messaggio è consumato da riceventi multipli, la _destinazione_ di un messagggio è un argomento con nome (named topic), i produttori pubblicano su un topic, mentre i consumatori si _abbonano_ a un topic.
 
 ![single tier](./img/img13.png)
+
+Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che non ci sia persistenza e quindi i messaggi che sono stati inviati quando un consumatore non era presente sono stati persi.
 
 ### Affidabilità nello scambio di messaggi
 
@@ -1645,7 +1672,7 @@ I vari tipi di ack dipendono da chi stimola l’ack:
 - Client acknowledgment il cliente a livello applicativo si fa carico di inviare l’ack con la chiamata al metodo acknowledgement(), questo è cumulativo quindi conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ack a quello corrente.
 - Lazy acknowledgment viene inviato saltuariamente senza limiti nel numero di messaggi, sempre in modo cumulativo. Questo tipo di ack è inviato dal supporto ovvero da JMS stesso.
 
-Tutti i tipi di messaggi ack hanno la possibilità di essere duplicati e quindi ritrasmessi.  Nel caso di auto_ack vi sono  differenze tra caso con persistent e non persistent. Nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi) possiamo avere duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running si rende conto che l’ack precedente non è stato inviato e lo rimanda a l consumer. Questo grazie allo storage persistente. In caso di client_ack ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di lazy_ack abbiamo duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ack e presa dal supporto a piacere. In generale è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
+Tutti i tipi di messaggi ack hanno la possibilità di essere duplicati e quindi ritrasmessi. Nel caso di auto_ack vi sono  differenze tra caso con persistent e non persistent. Nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi) possiamo avere duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running si rende conto che l’ack precedente non è stato inviato e lo rimanda a l consumer. Questo grazie allo storage persistente. In caso di client_ack ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di lazy_ack abbiamo duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ack e presa dal supporto a piacere. In generale è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
 
 In produzione posso avere una semantica bloccante per la send() che risulta in generale essere più semplice della receive(). Il client manda il messaggio il server lo persiste e manda l’ack solo dopo questa operazione, a questo punto la publish ritorna, tutto è molto più sincronizzato. L’ack è bloccante per la send() localmente al produttore. Anche in questo caso vi è la ritrasmissione dei messaggi.
 
@@ -1750,7 +1777,7 @@ JBI supporta 4 possibili pattern di scambio messaggi:
 - In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
 - In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
 
-### 08.CORBA
+## CORBA
 
 Corba offre una soluzione per il distributed object computing che definisce un modello a container per oggetti distribuiti, aggiungendo componenti e funzioni. Questo ha portato a una ridefinizione dello standard nel Corba Component Model CCM.
 
@@ -2562,7 +2589,9 @@ Spring Boot è una tecnologia di recente successo per accelerare lo sviluppo di 
 
 ![single tier](./img/img44.png)
 
-## 11. Big Data
+## JMX
+
+## Big Data
 
 real time: rispettare vincolo temporale. Per processare il dato ho un periodo di tempo che può essere molto lungo.
 interactive: interazione con l'utente durante l'analisi
