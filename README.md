@@ -392,7 +392,7 @@ Gli Entity Bean che esistono sono di due tipi:
 
 ### Message Driven Bean
 
-Questo Bean verrà approfondito in un capitolo a parte.
+Questo Bean verrà approfondito nel `Capitolo 7`.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -1008,7 +1008,13 @@ Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle pr
 
 ## EJB 3.X
 
-A seguito dei problemi elencati nel capitolo EJB 2.X, è stata rilasciata una nuova versione di questa tecnologia.
+A seguito dei problemi elencati nel `Capitolo 2`, è stata rilasciata una nuova versione di questa tecnologia.
+
+### Annotation vs Descrittori di Deployment
+
+A partire da EJB 3.X si possono usare le annotazioni al posto del file descriptor e gli sviluppatori le preferiscono decisamente.
+
+Tuttavia, i descrittori possono essere anche parziali e incompleti (_sparse descriptor_) cioè si possono specificare una parte tramite annotazioni e l'altra tramite file descriptor. Lo si può usare anche per fare override di annotazioni. I descrittori sono prioritari sulle annotazioni.
 
 ### Tipologie di componenti
 
@@ -1159,21 +1165,45 @@ metodo o campo.
 
 @Resource ha i seguenti membri:
 
-- **name**: nome JNDI della risorsa.
-- **type**: tipo (Java language type) della risorsa.
-- **authenticationType**: tipo di autenticazione da usarsi.
-- **shareable**: possibilità di condividere la risorsa.
+- **name**: nome JNDI della risorsa. L’elemento name è opzionale per la injection a livello di campo o metodo:
+    - **Livello di campo**: nome di default è il nome del campo qualificato dal nome della classe.
+    - **Livello di metodo**: nome di default è il nome della proprietà basato sul metodo indicato dal nome della classe.
+- **type**: tipo (Java language type) della risorsa. È determinato da:
+    - **Livello di campo**: tipo del campo che l’annotazione @Resource sta decorando.
+    - **Livello di metodo**: tipo della proprietà del componente che l’annotazione @Resource sta decorando.
+    - Dall’elemento type di @Resource.
+- **authenticationType**: solo per risorse di tipo connection factory. Può avere valore CONTAINER (default) o APPLICATION.
+- **shareable**: possibilità di condividere la risorsa. Usato solo per risorse che sono istanze di ORB o connection factory.
 - **mappedName**: nome non portabile e implementation-specific a cui
-associare la risorsa description.
+associare la risorsa description. Usato tipicamente per riferire la risorsa al di fuori dell’application server.
 
 Più precisamente, il container si occupa dell’injection della risorsa nel componente o a runtime o quando esso è inizializzato in base se l'annotazione viene specificata a livello di campo/metodo o di classe:
 
-- **Campo/metodo**: all’inizializzazione del componente:
+- **Campo**: all’inizializzazione del componente:
 
     ```
         public class SomeClass {
             @Resource
             private javax.sql.DataSource myDB;
+        }
+
+    ```
+
+- **Metodo**: all’inizializzazione del componente:
+
+    ```
+        public class SomeClass {
+            private javax.sql.DataSource myDB;
+            
+            ...
+            
+            @Resource(name="customerDB")
+            private void setmyDB(javax.sql.DataSource ds) {
+                myDB = ds;
+            }
+            
+            ... 
+            
         }
 
     ```
@@ -1216,7 +1246,9 @@ Le nuove applicazioni EJB 3.X possono essere clienti di vecchi bean:
 
 // Vista cliente da EJB 3.X di un bean EJB 2.X
 
-@EJB ShoppingCartHome cartHome;
+@EJB
+ShoppingCartHome cartHome;
+
 Cart cart = cartHome.create();
 cart.addItem(...);
 cart.remove();
@@ -1241,31 +1273,121 @@ cart.remove();
 
 Le interfacce EJBHome e EJBObject vengono automaticamente mappate sulla classe del bean di tipo EJB 3.X.
 
-### Annotation vs Descrittori di Deployment
-
-sviluppatori preferiscono usare descrittori
-
-A partire da EJB3.0, i descrittori possono essere
-anche parziali e incompleti (_sparse descriptor_) cioè si possono specificare una parte tramite annotazioni e l'altra tramite file descriptor.
-
-Possono essere anche utilizzati per fare override di annotazioni.
-I descrittori sono prioritari sulle annotazioni
-
 ### Servizi di sistema
 
-I servizi di sistema che sono messi a disposizione dell'EJB come visto nel capitolo di EJB 2.X sono molteplici. Di seguito vengono spiegati ad uno ad uno.
+I servizi di sistema che sono messi a disposizione dell'EJB come visto nel `Capitolo 2` sono molteplici. Di seguito vengono spiegati ad uno ad uno.
 
 ### Pooling e concorrenza
 
+La concorrenza viene gestita a seconda se il Session Bean è di tipo statefull o stateless:
+
+- **Resource Pooling:** l'idea di base è di evitare di mantenere una
+istanza separata di ogni EJB per ogni cliente. Ogni EJB container mantiene un insieme di istanze del bean (cardinalità non definita in specifica) pronte per servire richieste cliente meglio se create prima dell'arrivo delle richieste. Non esiste stato di sessione da mantenere fra richieste successive; ogni invocazione di metodo è indipendente dalle precedenti. Un'idea è quella di mantenere una tabella con scritto se un'istanza è assegnata oppure o no.
+
+Il ciclo di vita di uno Session Bean stateless viene riassunto nei seguenti stati:
+
+- **No state**: non istanziato; stato iniziale e terminale del ciclo di vita.
+- **Pooled state**: istanziato ma non ancora associato ad alcuna
+richiesta cliente.
+- **Ready state**: già associato con una richiesta EJB e pronto a
+rispondere ad una invocazione di metodo.
+
+Questa politica si applica anche ai Message-Driven Bean:
+
+Strategie di pooling analoghe alle precedenti per SB SL.
+Unica differenza che ogni EJB container contiene molti
+pool, ciascuno dei quali è composto di istanze
+(eventualmente di classi MDB diverse) con stessa destination
+JMS
+
+- **Activation**: utilizzata da Session Bean di tipo stateful per risparmiare risorse. La gestione avviene in due fasi:
+
+    - **Passivation**: disassociazione fra l'istanza stateful bean e suo oggetto EJB, con salvataggio dell’istanza su memoria (serializzazione). Il processo è del tutto trasparente al cliente.
+    - **Activation**: recupero dalla memoria (deserializzazione) dello stato dell’istanza e riassociazione con oggetto EJB.
+
+    Nella specifica J2EE, non è richiesto che la classe di uno stateful SB sia serializzabile. Quindi?
+Dipendenza dall’implementazione dello specifico vendor e attenzione al
+trattamento dei transient...
+
+In queste due fasi si possono associare anche metodi di callback sui cambi di stato nel ciclo di vita di un Session Bean di tipo stateful. Ad esempio, l’annotation @javax.ejb.PostActivate associa l’invocazione del metodo a cui si applica immediatamente dopo l’attivazione di un’istanza.
+Similmente, @javax.ejb.PrePassivate viene attivata prima dell’azione di passivation. Ad esempio, vengono utilizzati spesso per la chiusura/apertura di connessioni a risorse per gestione più efficiente (a default vengono mantenuti e serializzati nello stato solo i riferimenti remoti ad altri bean, a SessionContext, al servizio EntityManager e all’oggetto
+UserTransaction, alcuni dei quali descritti in seguito)
+
 ### Transazionalità
+
+Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può terminare correttamente (commit) oppure no (rollback).
+
+Session bean e message-driven bean possono sfruttare o Container-Managed Transaction o Bean-Managed Transaction.
+
+Sono la tipologia di default
+
+Transazione associata con l’intera esecuzione di un
+metodo (demarcazione automatica della transazione: inizio
+immediatamente prima dell’inizio dell’esecuzione del metodo e
+commit immediatamente prima della terminazione del metodo)
+
+NON si possono utilizzare metodi per gestione delle
+transazioni che interferiscano con gestione
+automatica del container (ad esempio, proibito l’uso di commit
+o rollback di java.sql.Connection, di rollback di javax.jms.Session
+o dell’intera interfaccia javax.Transaction.UserTransaction)
+
+Annotation: @TransactionManagement
+Valore uguale a container (default) oppure a bean
+
+I cosiddetti attributi di transazione permettono di controllare lo scope di una transazione.
+
+Valori possibili: REQUIRED (implicito a default),
+REQUIRES_NEW, MANDATORY, NOT_SUPPORTED,
+SUPPORTS, NEVER
+
+NotSupported
+```
+import static TransactionAtributeType.*;
+@Stateless
+@TransactionAttribute(NOT_SUPPORTED)
+public class TravelAgentBean implements TravelAgentRemote {
+public void setCustormer(Customer cust) { ... }
+@TransactionAttribute(REQUIRED)
+public TicketDO bookPassage(CreditCard card, double price) { ... }
+}
+```
+
+![single tier](./img/img47.png)
 
 ### Gestione delle connessioni a risorse
 
+Un componente può avere bisogno di utilizzare altri componenti e risorse come database e sistemi di messaging. In JEE il ritrovamento delle risorse desiderate è basato su un sistema di nomi ad alta portabilità come JNDI. Se un componente usa l'injection, sarà il container a utilizzare JNDI per ritrovare la risorsa desiderata e non il componente stesso com’era prima di EJB 3.X.
+
+In particolare, relativamente a risorse a database si usa la connection pooling: connessioni sono riutilizzabili per ridurre latenza e incrementare prestazioni nell’accesso a DB. Si veda l'annotazione @Resource.
+
 ### Persistenza
+
+Questo Bean verrà approfondito nel `Capitolo 6`.
 
 ### Messaggistica
 
+Questo Bean verrà approfondito nel `Capitolo 7`.
+
 ### Sicurezza
+
+Il container EJB è anche responsabile per svolgere azioni
+di controllo dell’accesso sui metodi del bean
+
+```
+
+@Stateless public PayrollBean implements Payroll {
+public void setBenefitsDeduction(int empId, double deduction) {...}
+public double getBenefitsDeduction(int empId) {...}
+public double getSalary(int empid) {...}
+// setting del salario ha un accesso più restrittivo
+@RolesAllowed(“HR_PayrollAdministrator”)
+public void setSalary(int empId, double salary) {...}
+}
+
+```
+
+### Intercettori
 
 Perchè sono importanti componenti asincroni?
 Svolgono operazioni molto onerose in modo asincrono. Ad esempio, richiedere la VM è asincrona perchè ci vuole tempo.
@@ -1273,7 +1395,7 @@ Svolgono operazioni molto onerose in modo asincrono. Ad esempio, richiedere la V
 Perchè non ci piace l'intercettore?
 Cambiare stati, spargere il codice su più metodi e diventa difficile controllare il codice. perchè mettere il codice di un bean dentro all'intercettore?
 
-## 06.JPA
+## JPA
 
 ### Cos’è JPA e cosa fa? Perché JPA e non DAO?
 
