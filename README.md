@@ -183,8 +183,8 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
         - **Vantaggi**: meno accoppiato del modello RPC.
         - **Svantaggi**: gli stessi di quello basato su RPC.
     - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business è gestita tramite tecnologie come CGI, Servlet/JSP, ASP etc.
-    ![Three Tier WEB-Light](./img/img7-light.png#gh-light-mode-only)
-    ![Three Tier WEB-Dark](./img/img7-dark.png#gh-dark-mode-only)
+    ![Three Tier Web-Light](./img/img7-light.png#gh-light-mode-only)
+    ![Three Tier Web-Dark](./img/img7-dark.png#gh-dark-mode-only)
         - **Vantaggi**:
             - Cliente disponibile ovunque.
             - Nessun problema di aggiornamento del software sul client.
@@ -1585,9 +1585,10 @@ I MOM poi possono supportare altre funzionalità come la qualità dei canali, tr
 
 ### Modello point-to-point 
 
-La comunicazione avviene tra due sole entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore. Ci possono essere produttori multipli, ovviamente, ma il messaggio verrà ricevuto solo da un destinatario. La _destinazione_ di un messaggio da parte del produttore è una coda con nome named queue. Le code sono FIFO (per lo stesso livello di priorità) oppure i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
+La comunicazione avviene tra due sole entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore. Ci possono essere produttori multipli, ovviamente, ma il messaggio verrà ricevuto solo da un destinatario. La destinazione di un messaggio da parte del produttore è una coda con nome named queue. Le code sono FIFO (per lo stesso livello di priorità) oppure i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
 
-![single tier](./img/img12.png)
+![Point-to-Point-Light](./img/img12-light.png#gh-light-mode-only)
+![Point-to-Point-Dark](./img/img12-dark.png#gh-dark-mode-only)
 
 Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi e in un caso, se si ipotizza la disconnessione dei destinatari, si dovrebbe avere persistenza dei messaggi.
 
