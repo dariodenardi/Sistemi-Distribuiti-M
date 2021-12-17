@@ -121,7 +121,7 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
 - **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia.
 - **Diverso dall'oggetto**:
     - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
-    - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T (riusabilità etc).
+    - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T come la riusabilità.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -172,25 +172,25 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
         - Connessione al DB per ogni cliente e questo ha un forte impatto perchè i DB relazionali non sono scalabili.
 
 - **Three-Tier**: ci sono diversi modelli:
-    - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solo la logica di presentazione. Per quanto riguarda la logica di business e di processamento dei dati sono delegate ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza).
+    - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solo la logica di presentazione. La logica di business e di processamento dei dati sono delegati ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza etc).
     ![Three Tier RPC-Light](./img/img8-light.png#gh-light-mode-only)
     ![Three Tier RPC-Dark](./img/img8-dark.png#gh-dark-mode-only)
         - **Vantaggi**: logica di business modificabile in modo più flessibile.
-        - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Il cliente deve conoscere IP fisico del server.
+        - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Ad esempio, il cliente deve conoscere IP fisico del server.
     - **Three Tier (basato su Remote Object)**:
     ![Three Tier RMI-Light](./img/img9-light.png#gh-light-mode-only)
     ![Three Tier RMI-Dark](./img/img9-dark.png#gh-dark-mode-only)
         - **Vantaggi**: meno accoppiato del modello RPC.
         - **Svantaggi**: gli stessi di quello basato su RPC.
-    - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business sono gestite tramite tecnologie come CGI, Servlet/JSP, ASP etc.
+    - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business è gestita tramite tecnologie come CGI, Servlet/JSP, ASP etc.
     ![Three Tier WEB-Light](./img/img7-light.png#gh-light-mode-only)
     ![Three Tier WEB-Dark](./img/img7-dark.png#gh-dark-mode-only)
         - **Vantaggi**:
             - Cliente disponibile ovunque.
             - Nessun problema di aggiornamento del software sul client.
-        - **Svantaggi**: Il middle tier resta ancora molto complesso, la logica di business deve far fronte alle problematiche specifiche dell’applicazione e di tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
+        - **Svantaggi**: Il middle tier resta ancora molto complesso: la logica di business deve far fronte alle problematiche specifiche dell’applicazione e tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) sono in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
 
-Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di più i livelli. Come visto in precedenza, il middle tier rimane molto complesso in quanto la parte di logica dell’applicazione non è ancora separata dalla parte di logica di tutti i servizi di sistema. Questo vuol dire che essi vengono duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
+Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di più i livelli. Come appena visto, il middle tier rimane molto complesso perchè la parte di logica dell’applicazione non è ancora separata da tutti i servizi di sistema. Questo vuol dire che essi vengono duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -206,13 +206,13 @@ L’idea che sta dietro al modello a contenimento è quella in cui i client non 
 Il container può essere implementato in due modi:
 
 - **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Ad esempio, Tuxedo e .NET.
-- **Soluzioni basate su standar aperti**: a differenza del caso precedente, i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. Ad esempio, JEE o J2EE (Java Enterprise Edition) che definisce questi standard, li implementa e abilita quindi questa interazione tra il componente (sviluppato in Java) e un container che realizza queste API standard.
+- **Soluzioni basate su standar aperti**: a differenza del caso precedente, i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. Ad esempio, JEE o J2EE (Java Enterprise Edition) che definisce questi standard, li implementa e abilita quindi questa interazione tra il componente, sviluppato in Java, e un container che realizza queste API standard.
 
 <a href="#indice">Torna all'indice</a>
 
 ### J2EE
 
-È un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java. Viene scritta solo la specifica non l’implementazione: diversi produttori di software hanno fatto diverse implementazioni. Per essere JEE compliant basta che rispettino la specifica. Alcune implementazioni si limitano alla specifica altre aggiungono funzionalità.
+È un insieme di specifiche le cui implementazioni vengono principalmente sviluppate in linguaggio di programmazione Java. Viene scritta solo la specifica non l’implementazione: diversi produttori di software hanno realizzato diverse implementazioni. Per essere JEE compliant, basta che rispettino la specifica. Alcune implementazioni si limitano alla solo specifica, altre aggiungono funzionalità.
 
 Esistono diversi software open source, che vengono spesso usati anche in ambiente di produzione come:
 
@@ -226,19 +226,21 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo tipo di architetture:
 
 - **N-tier**: il middle-tier viene spacchettato in due parti:
-    - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP (Java Server Pages) e/o delle Servlet.
+    - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP e/o delle Servlet.
     - **Server-side business logic**: si occupa della logica applicativa, cioè al suo interno ci sono i componenti.
 
 ![Multi Tier-Light](./img/img10-light.png#gh-light-mode-only)
 ![Multi Tier-Dark](./img/img10-dark.png#gh-dark-mode-only)
 
-Una delle tecnologie che fa uso di componenti è EJB. Nei prossimi capitoli verrà approfondita.
+Una delle tecnologie che fa uso di componenti è EJB. Nei `Capitoli 2` e `Capitolo 5` verrà approfondita.
 
 <a href="#indice">Torna all'indice</a>
 
 ## EJB 2.X
 
 È una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
+
+Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, non sempre essi si prestano ad essere la soluzione migliore. Il trend attuale si sposta verso altri tipi di tecnologie che verranno approfondite nei capitoli successivi. Ciò nonostante, tutte queste soluzioni di livello enterprise, cioè un sistema che deve scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile, sono esagerate quando bisogna progettare delle semplici applicazioni low-cost o delle pagine Web dinamiche.
 
 ### Scenari applicativi
 
@@ -256,9 +258,7 @@ Le architetture possibili sono:
 ![Multi Tier EJB (2)-Light](./img/img11-light.png#gh-light-mode-only)
 ![Multi Tier EJB (2)-Dark](./img/img11-dark.png#gh-dark-mode-only)
 
-Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming e discovery, per gestire la parte di transazionalità, di messaggistica, di accesso ai database etc. Infine, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
-
-Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, offrendo un framework di supporto per componenti portabili, facilitando la configurazione a deployment-time, non sempre essi si prestano ad essere la soluzione migliore. Gli EJB sono interessanti dal punto di vista tecnologico quando il sistema che si progetta ha dei requisiti che sono di tipo enterprise, cioè è un sistema che deve necessariamente scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile. In altre situazioni, per esempio, quando si ha che fare con delle semplici applicazioni low-cost o delle pagine Web dinamiche l’utilizzo degli EJB è esagerato.
+Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming e discovery, la parte di transazionalità, di messaggistica, di accesso ai database etc. Infine, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
 <a href="#indice">Torna all'indice</a>
 
@@ -284,16 +284,19 @@ L'immagine di seguito riportata, fa riferimento ad un'architettura three-tier: c
 
 Sul'EJB Container non si troveranno solo le istanze che il programmatore ha scritto ma anche altri due oggetti che vengono automaticamente generati dal container:
 
-- **Oggetto EJB Home**: implementa l’interfaccia EJBHome. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc).
-- **Oggetto EJB Object**: implementa l’interfaccia EJBObject. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il metodo del componente scritto dal programmatore.
+- **Oggetto EJB Home**: implementa l’interfaccia `EJBHome`. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc).
+- **Oggetto EJB Object**: implementa l’interfaccia `EJBObject`. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il metodo del componente scritto dal programmatore.
+
+![Esempio Funzionamento EJB-Light](./img/img54-light.png#gh-light-mode-only)
+![Esempio Funzionamento EJB-Dark](./img/img54-dark.png#gh-dark-mode-only)
 
 Ad esempio, si consideri un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
 
-- **Sviluppatore**: crea solo una classe che chiama _Account_. Al suo interno ci sono i metodi _prelievo()_ e _deposito()_. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.x ad ogni classe creata, bisogna anche creare due interfacce: EJBHome e EJBObject.
-- **Cliente**: si ipotizzi di avere tre clienti: C1 e C2 che richiedono tutti di eseguire il metodo _prelievo()_:
-    - Quando C1 fa richiesta, essa passa prima da EJB Home il quale crea un oggetto O1 che è l’istanza logica dedicata per C1. EJB Home restituisce al cliente il riferimento di EJB Object.
-    - Adesso, C1 può invocare il metodo _prelievo()_ che verrà fatto su EJB Object che a sua volta potrà invocare il metodo dell’oggetto O1.
-    - C2 fa una richiesta. L'oggetto EJB Home potrà creare un nuovo oggetto O2 oppure dare il riferimento di O1 se l'interazione tra C1 è terminata. Dipende dalla politica adottata dal container.
+- **Sviluppatore**: crea solo una classe che chiama `Account`. Al suo interno ci sono i metodi `prelievo()` e `deposito()`. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.X ad ogni classe creata, bisogna anche creare due interfacce: `EJBHome` e `EJBObject`.
+- **Cliente**: si ipotizzi di avere tre clienti: `C1` e `C2` che richiedono tutti di eseguire il metodo `prelievo()`:
+    - Quando `C1` fa richiesta, essa passa prima da EJB Home il quale crea un oggetto `O1` che è l’istanza logica dedicata per `C1`. EJB Home restituisce al cliente il riferimento di EJB Object.
+    - Adesso, `C1` può invocare il metodo `prelievo()` che verrà eseguito su EJB Object che a sua volta potrà invocare il metodo dell’oggetto `O1`.
+    - `C2` fa una richiesta. L'oggetto EJB Home potrà creare un nuovo oggetto `O2` oppure dare il riferimento di `O1` se l'interazione tra `C1` e l'oggetto `O1` è terminata. Dipende dalla politica adottata dal container.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -1551,16 +1554,18 @@ Su hibernate la cache di secondo livello serve per la trasversalità tra diverse
 
 ## JMS
 
+prima di parlare dello standard JMS, si vedono quali sono le caratteristiche generali di un servizio di messaggistica.
+
 ### Perchè usare un servizio di messagistica
 
-L’importanza dei sistemi di messaging è dovuto principalmente alla comunicazione disaccoppiata (loosely coupled) e asincrona ( = sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce tutte le funzionalità necessarie e prende il nome di Message Oriented Middleware (MOM)/Messaging system/ Messaging server/Messaging provider/JMS provider.
+L’importanza dei sistemi di messaging è dovuto principalmente alla comunicazione disaccoppiata (loosely coupled) e asincrona ( = sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra le applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce tutte le funzionalità necessarie e prende il nome di Message Oriented Middleware (MOM)/Messaging system/ Messaging server/Messaging provider/JMS provider.
 
 I vantaggi del MOM sono l’indipendenza rispetto al dove si sta lavorando e rispetto alla locazione di rete. In particolare, non c’è più l’assunzione che il cliente conosca la locazione del servitore. Nel modello client-server, il client conosce la locazione del servitore ma questo non avviene nei MOM: è il sistema di messaggistica che si occupa di smistare i messaggi verso il destinatario consentendo il completo disaccoppiamento. Il disaccoppiamento avviene sia nello spazio, ovvero non bisogna più conoscere la locazione del destinatario, sia nel tempo, ovvero non devono essere online entrambe le entità contemporaneamente.
 
 I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono:
 
-- La scalabilità ovvero la capacità di gestire un numero elevato di clienti. Se si vuole ottenere scalabilità, basta incrementare solo le capacità hardware del sistema di messaging senza effettuare cambiamenti nella logica applicativa, nell’architettura in modo da non avere un grosso degrado nello throughput di sistema.
-- La robustezza ovvero i consumatori, i produttori e la rete possono avere un fault senza problemi per il sistema di messaging. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
+- La scalabilità ovvero la capacità di gestire un numero elevato di clienti. Se si vuole ottenere scalabilità, basta incrementare solo le capacità hardware del sistema di messaging senza effettuare cambiamenti nella logica applicativa, nell’architettura in modo da non avere un grosso degrado nel throughput di sistema.
+- La robustezza ovvero i consumatori, i produttori e la rete possono avere un fault senza problemi. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
 
 Tra gli esempi di sistemi di messaging ci sono le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto vengono usati nelle architetture distribuite e cloud a tutti i livelli (dai livelli più bassi fino al livello applicativo).
 
@@ -1580,21 +1585,19 @@ I MOM poi possono supportare altre funzionalità come la qualità dei canali, tr
 
 ### Modello point-to-point 
 
-La comunicazione avviene tra due sole entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore. Ad esempio, questo serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi. Un messaggio è consumato da un singolo ricevente. Ci possono essere produttori multipli, ovviamente, la _destinazione_ di un messaggio è una coda con nome named queue.
+La comunicazione avviene tra due sole entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore. Ci possono essere produttori multipli, ovviamente, ma il messaggio verrà ricevuto solo da un destinatario. La _destinazione_ di un messaggio da parte del produttore è una coda con nome named queue. Le code sono FIFO (per lo stesso livello di priorità) oppure i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
 
 ![single tier](./img/img12.png)
 
-Le code sono FIFO (per lo stesso livello di priorità) oppure i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
-
-In un caso mobile se si ipotizza la disconnessione dei destinatari si dovrebbe avere persistenza dei messaggi.
+Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi e in un caso, se si ipotizza la disconnessione dei destinatari, si dovrebbe avere persistenza dei messaggi.
 
 ### Modello publish/subscriber
 
-Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumato n volte. Ad esempio, una applicazione di bacheca per richieste di lavoro. Il consumatore deve dire al MOM che è interessato a quella comunicazione. Un messaggio è consumato da riceventi multipli, la _destinazione_ di un messagggio è un argomento con nome named topic, i produttori pubblicano su una coda chiamata topic, mentre i consumatori si _abbonano_ al topic.
+Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumato n volte. Un produttore invia un messaggio a una coda che si chiama named topic mentre il consumatore deve dire al MOM che è interessato a quella comunicazione. I produttori pubblicano sul topic, mentre i consumatori si _abbonano_ al topic. Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che se non c'è persistenza, i messaggi che sono stati inviati quando un consumatore non era presente vengono persi.
 
 ![single tier](./img/img13.png)
 
-Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che non ci sia persistenza e quindi i messaggi che sono stati inviati quando un consumatore non era presente sono stati persi.
+Ad esempio, questo modello si usa per creare un'applicazione di bacheca per richieste di lavoro. 
 
 ### Affidabilità nello scambio di messaggi
 
@@ -1602,19 +1605,19 @@ Più la semantica di affidabilità è stringente più il throughput del sistema 
 
 ### Transazionalità
 
-Produzione transazionale, il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno.
-Nel consumo transazionale, invece, il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale, fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un reository persistente.
+I MOM moderni supportano la transazionalità di messaggi. È possibile distinguere due fasi:
+
+- **Produzione transazionale**: il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno.
+- **Consumo transazionale**: il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale e fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un repository persistente.
 
 Lo scope della transazionalità è di due tipi:
 
-- scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging.Questo è lo scope supportato da JMS:
+- scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging:
 ![single tier](./img/img49.png)
-- scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi, questo non è supportato da JMS:
+- scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi:
 ![single tier](./img/img50.png)
 
-La seconda opzione è molto complessa e non viene garantita da molti MOM. Inoltre il sistema di messaggistica può essere distribuito e questo può rendere complicata la transazionalità.
-
-Ovviamente il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
+La seconda opzione è molto complessa e non viene garantita da molti MOM come ad esempio JMS. Inoltre il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
 ### Sicurezza
 
@@ -1626,31 +1629,63 @@ Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e 
 
 La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging. Con JMS non si offre un servizio diretto di sicurezza ma esistono API che consentono di implementare varie politiche di sicurezza. JMS consente unicamente di definire il servizio.
 
-### JMS
+### Java Messaging Service (JMS)
 
-JMS è un insieme di interfacce Java (e associata definizione di semantica) che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico. JMS fornisce il supporto alla produzione, distribuzione e consegna di messaggi, alle diverse semantiche per message delivery, ovvero Sincrona/asincrona (bloccante/non-bloccante), con proprietà transazionali, il supporto sia a modello Point-to-Point (reliable queue) che Publish/Subscribe con selettori di messaggio lato ricevente, e cinque tipologie di messaggi possibili.  JMS è un supporto che fornisce interfacce generiche non è la specifica le varie semantiche possono essere implementate.
+JMS è un insieme di interfacce Java che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico.
+
+![single tier](./img/img51.png)
 
 JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è solo fortemente integrato. Gli obiettivi sono di avere dei JMS provider generici che dietro le quinte lavorano con sistemi di messaggistica preesistenti, con consistenza con le API dei sistemi di messaging esistenti, indipendenza dal vendor del sistema di messaging, copertura della maggior parte delle funzionalità comuni nei sistemi di messaging e infine la promozione della tecnologia Java per sistemi messaging.
 
-Architettura: Clienti JMS e non-JMS, Messaggi, Provider JMS (sistema di messaging dipendenti dal specifico vendor), gli oggetti sono amministrati tramite JNDI per recuerare Destination e ConnectionFactory
+Più nello specifico l'architettura è formata dalle entità che vengono mostrate in figura:
+
+![single tier](./img/img52.png)
+
+Le entità in gioco sono:
+
+- Clienti JMS e non-JMS.
+- Messaggi.
+- Provider JMS (sistema di messaging dipendenti dal specifico vendor).
+- Gli oggetti Destination e ConnectionFactory pubblicati tramite JNDI sul servizio di nomi.
 
 ### Tipi di comunicazioni
 
-Nella comunicazione point-to-point i messaggi in una queue possono essere persistenti o non persistenti. Nella comunicazione Pub/Sub, i messaggi non durevoli sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo, se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza. I messaggi durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
+Nella comunicazione point-to-point i messaggi in una queue possono essere persistenti o non persistenti. Nella comunicazione pub/sub, i messaggi non durevoli sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza. I messaggi durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
 
-### Formato del messaggio 
+### Messaggi JMS
 
-JMS definisce formati di messaggi e payload possibili. I messaggi sono  una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno, JMS fornisce quindi solo un modello astratto e unificato per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce, i sicngoli vendor personalizzano i formati e questi sono fortemente dipendenti da essi, i vari vendor spesso non riescono a comunicare, vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
+JMS definisce i formati di messaggi e i possibili payload. I messaggi sono una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno.JMS fornisce, quindi, solo un modello astratto e unificato per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce, i singoli vendor personalizzano i formati e questi sono fortemente dipendenti da essi, i vari vendor spesso non riescono a comunicare, vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
 
-Header utilizzato per l’identificazione del messaggio e il suo routing, include la destination e la modalità di consegna (persistente, non persistente), timestamp, priorità, campo ReplyTo che serve al ricevente per risondere. JMS aggiunge gradi di libertà strutturati per aggiungere nuove feature che sono le proprietà dei messaggi  (coppie nome/valore) personalizzate dai vendor tali proprietà possono essere: campi application-specific, campi dipendenti da e specifici di un particolare sistema di messaging, campi opzionali Elenco delle proprietà: JMSDestination, JMSDeliveryMode (persistente o no), JMSMessageID, JMSTimeStamp, JMSRedelivered, JMSExpiration, JMSPriority, JMSCorrelationID, JMSReplyTo (destinazione fornita dal produttore, dove inviare la risposta), JMSType (tipo del corpo del messaggio). L’idea di dividere l’header dalla propiretà è dovuta la fatto che i Mom possono scegliere di guardare o meno alle proprietà e può farlo senza aprire il payload. 
+Un messaggio JMS è formato da tre parti:
 
-Il payload ovviamente, il contenuto del messaggio, supporta diversi tipi di contenuto, ogni tipo definito da una interfaccia: StreamMessage, MapMessage, TextMessage, ObjectMessage, BytesMessage Ad esempio: StreamMessage contiene valori primitivi e supporta lettura sequenziale, MapMessage contiene coppie nome/valore e supporta lettura sequenziale o by name, BytesMessage contiene byte “non interpretati” e viene utilizzato di solito per fare match con formati preesistenti.  Queste sono interfacce locali per interrogare i payload. 
+- Header.
+- Proprietà.
+- Payload.
 
-L’interfaccia destination rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi) le interfacce figlie per Queue e Topic.. astrazione di una destinazione punto punto o pub sub. Per aggangiarsi al sistema MOM.
+![single tier](./img/img53.png)
+
+Header utilizzato per l’identificazione del messaggio e il suo routing, include la destination e la modalità di consegna (persistente, non persistente), timestamp, priorità, campo ReplyTo che serve al ricevente per rispondere.
+
+JMS aggiunge gradi di libertà strutturati per aggiungere nuove feature che sono le proprietà dei messaggi (coppie nome/valore) personalizzate dai vendor e tali proprietà possono essere: campi application-specific, campi dipendenti da e specifici di un particolare sistema di messaging, campi opzionali etc.
+
+Elenco delle proprietà: JMSDestination, JMSDeliveryMode (persistente o no), JMSMessageID, JMSTimeStamp, JMSRedelivered, JMSExpiration, JMSPriority, JMSCorrelationID, JMSReplyTo (destinazione fornita dal produttore, dove inviare la risposta), JMSType (tipo del corpo del messaggio). L’idea di dividere l’header dalla propiretà è dovuta la fatto che i MOM possono scegliere di guardare o meno alle proprietà e può farlo senza aprire il payload. 
+
+Il payload ovviamente, è il contenuto del messaggio e supporta diversi tipi di contenuto. Ogni tipo definito da una interfaccia: `StreamMessage`, `MapMessage`, `TextMessage`, `ObjectMessage`, `BytesMessage`. Ad esempio:
+- `StreamMessage` contiene valori primitivi e supporta lettura sequenziale.
+- `MapMessage` contiene coppie nome/valore e supporta lettura sequenziale o by name.
+- `BytesMessage` contiene byte _non interpretati_ e viene utilizzato di solito per fare match con formati preesistenti.
+
+Queste sono interfacce locali per interrogare i payload.
+
+### Interfaccia Destination
+
+L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi). Le interfacce figlie sono `Queue` e `Topic`. astrazione di una destinazione punto punto o pub sub. Per aggangiarsi al sistema MOM.
 
 ![single tier](./img/img14.png)
 
-L’interfaccia ConnectionFactory implementata dalla classe factory per creare una connessione provider-specific verso il server JMS, è simile al gestore di driver (java.sql.DriverManager) in JDBC. Le interfacce figlie per QueueConnectionFactory e TopicConnectionFactory.
+### Interfaccia ConnectionFactory
+
+L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS; è simile al gestore di driver (java.sql.DriverManager) in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
 
 ![single tier](./img/img15.png)
 
