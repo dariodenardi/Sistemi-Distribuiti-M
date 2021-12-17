@@ -1317,7 +1317,7 @@ UserTransaction, alcuni dei quali descritti in seguito)
 
 ### Transazionalità
 
-Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può terminare correttamente (commit) oppure no (rollback).
+Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può terminare correttamente (commit) oppure no (rollback).
 
 Le transazioni possono essere gestite dal container (Container-Managed Transaction) o manualmente dal programmatore (Bean-Managed Transaction).
 
@@ -1551,34 +1551,44 @@ Su hibernate la cache di secondo livello serve per la trasversalità tra diverse
 
 ## JMS
 
-### Introduzione alla messaggistica
+### Perchè usare un servizio di messagistica
 
-L’importanza dei sistemi di messaging è dovuto principalmente alla comunicazione disaccoppiata (o loosely coupled) e asincrona ( = sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce tutte le funzionalità necessarie, per questo si parla di Message Oriented Middleware (MOM), Messaging system, Messaging server, Messaging provider, JMS provider.
+L’importanza dei sistemi di messaging è dovuto principalmente alla comunicazione disaccoppiata (o loosely coupled) e asincrona ( = sincrono non bloccante). I messaggi sono lo strumento principale di comunicazione fra applicazioni (modello a scambio di messaggi). Il software di supporto allo scambio di messaggi fornisce tutte le funzionalità necessarie e prende il nome di Message Oriented Middleware (MOM)/Messaging system/ Messaging server/Messaging provider/JMS provider.
 
-I vantaggi del MOM sono l’indipendenza rispetto al dove si sta lavorando e rispetto alla locazione di rete. In particolare, non c’è più l’assunzione che il cliente conosca la locazione del servitore. Nel modello client-server, il client conosce la locazione del servitore ma questo non avviene nei MOM: è il sistema di messaggistica che si occupa di smistare i messaggi verso il destinatario, ciò consente il completo disaccoppiamento. Il disaccoppiamento avviene sia nello spazio, ovvero non bisogna più conoscere la locazione del destinatario, sia nel tempo, ovvero non devono essere online entrambe le entità contemporaneamente.
+I vantaggi del MOM sono l’indipendenza rispetto al dove si sta lavorando e rispetto alla locazione di rete. In particolare, non c’è più l’assunzione che il cliente conosca la locazione del servitore. Nel modello client-server, il client conosce la locazione del servitore ma questo non avviene nei MOM: è il sistema di messaggistica che si occupa di smistare i messaggi verso il destinatario consentendo il completo disaccoppiamento. Il disaccoppiamento avviene sia nello spazio, ovvero non bisogna più conoscere la locazione del destinatario, sia nel tempo, ovvero non devono essere online entrambe le entità contemporaneamente.
 
-I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono: la scalabilità ovvero la capacità di gestire un numero elevato di clienti senza cambiamenti nella logica applicativa senza cambiamenti nell’architettura, senza (grosso) degrado nello throughput di sistema, infatti si tendono a incrementare le capacità hardware del sistema di messaging se si desidera una maggiore scalabilità complessiva, e la robustezza i consumatori, i produttori e la rete possono avere un fault senza problemi per il sistema di messaging. Da la possibilità di scalare le entità nel modo giusto nel caso dei MOM riusciamo a lavorare in modo non più monolitico ma a microservizi, divindedolo in varie funzionalità, quindi il servizio di messaggistica ci supporta la scalabilità con il disaccoppiamento. A sua volta il MOM deve essere robusto e scalabile. Con la robustezza può garantire la transazionalità delle comunicazioni. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
+I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono:
 
-Tra gli esempi del sistema di messaging ci sono le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto nelle architetture distribuite e cloud a tutti i livelli, dai livelli più bassi fino al livello applicativo. 
+- La scalabilità ovvero la capacità di gestire un numero elevato di clienti senza cambiamenti nella logica applicativa, senza cambiamenti nell’architettura e senza (grosso) degrado nello throughput di sistema. Infatti, si tendono a incrementare le capacità hardware del sistema di messaging se si desidera una maggiore scalabilità complessiva.
+- La robustezza ovvero i consumatori, i produttori e la rete possono avere un fault senza problemi per il sistema di messaging. Da la possibilità di scalare le entità nel modo giusto nel caso dei MOM riusciamo a lavorare in modo non più monolitico ma a microservizi, divindedolo in varie funzionalità, quindi il servizio di messaggistica ci supporta la scalabilità con il disaccoppiamento. A sua volta il MOM deve essere robusto. Con la robustezza si può garantire la transazionalità delle comunicazioni. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
 
-Chiamiamo le entità produttore consumatore e MOM, si possono avere due modelli di messaging:
+Tra gli esempi di sistemi di messaging ci sono le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto vengono usati nelle architetture distribuite e cloud a tutti i livelli (dai livelli più bassi fino al livello applicativo).
+
+Si possono avere due modelli di messaging:
 
 - point to point;
 - publish subscribe.
 
-Le principali caratteristiche sono: affidabilità, operazioni con logica transazionale, ovvero trattano lo scambio di messaggi come transazione con la possibilità eventuale di persistere i messaggi, Il messaging può essere distribuito, si possono implementare politiche di sicurezza, i MOM poi possono supportare altre funzionalità: come la qualità dei canali, transazioni sicure, auditing, load balacing.
+Le principali caratteristiche sono:
 
-### Modello point to point 
+- affidabilità;
+- operazioni con logica transazionale, ovvero trattano lo scambio di messaggi come transazione con la possibilità eventuale di persistere i messaggi;
+- messaging può essere distribuito;
+- sicurezza.
 
-La comunicazione è un collegamento tra sole due entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore, questo serve per far parlare dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi. Un messaggio è consumato da un singolo ricevente, ci possono essere produttori multipli, ovviamente, la “destinazione" di un messaggio è una coda con nome (named queue). Le code sono FIFO (per lo stesso livello di priorità), i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi. 
+I MOM poi possono supportare altre funzionalità: come la qualità dei canali, transazioni sicure, auditing, load balacing.
+
+### Modello point-to-point 
+
+La comunicazione è un collegamento tra sole due entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore, questo serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi. Un messaggio è consumato da un singolo ricevente, ci possono essere produttori multipli, ovviamente, la _destinazione_ di un messaggio è una coda con nome (named queue). Le code sono FIFO (per lo stesso livello di priorità), i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
 
 In un caso mobile se si ipotizza la disconnessione dei destinatari si dovrebbe avere persistenza dei messaggi.
 
 ![single tier](./img/img12.png)
 
-### Modello publish subscriber
+### Modello publish/subscriber
 
-Il modello publish subscriber è un modello 1-N dove il messaggio viene consumato n volte. Il consumatore deve dire al MOM che è interessato a quella comunicazione. Il modello publish subscriber è tipicamente utilizzato in tutte le bacheche. Un messaggio è consumato da riceventi multipli, la _destinazione_ di un messagggio è un argomento con nome (named topic), i produttori pubblicano su un topic, mentre i consumatori si _abbonano_ a un topic.
+Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumato n volte. Il consumatore deve dire al MOM che è interessato a quella comunicazione. Un messaggio è consumato da riceventi multipli, la _destinazione_ di un messagggio è un argomento con nome (named topic), i produttori pubblicano su una coda chiamata topic, mentre i consumatori si _abbonano_ al topic.
 
 ![single tier](./img/img13.png)
 
@@ -1586,34 +1596,44 @@ Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che non
 
 ### Affidabilità nello scambio di messaggi
 
-Più la semantica di affidabilità è stringente più il throughput del sistema di abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa. 
-JMS dà alcune garanzie nella consegna dei messaggi vi sono possibili gradi differenti di affidabilità, che possono essere specificate dal produttore.
+Più la semantica di affidabilità è stringente più il throughput del sistema si abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa.
 
 ### Transazionalità
 
-Produzione transazionale, il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno. Nel consumo transazionale, invece,  il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale, fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un reository persistente.
+Produzione transazionale, il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno. Nel consumo transazionale, invece, il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale, fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un reository persistente.
 
-Lo scope della transazionalità si può applicare sull’interazione tra consumatore del sistema MOM e il sistema MOM stesso, oppure tra produttore dei messaggi e MOM, nei casi inc cui si vogia un transazionalità forte si può applicare su tutto il percorso da produttore a consumatore. La terza opzione è molto complessa e non viene garantita da molti mom. Inoltre il sistema di messaggistica può essere distribuito e questo può rendere complicata la transazionalità.
+Lo scope della transazionalità è di due tipi:
 
-Lo scope della transazionalità è di due tipi: scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging questo è lo scope supportato da JMS, e scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi, questo non è supportato da JMS.
+- scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging.Questo è lo scope supportato da JMS:
+![single tier](./img/img49.png)
+- scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi, questo non è supportato da JMS:
+![single tier](./img/img50.png)
 
-Ovviamente sistema di messaging può essere distribuito a sua volta Sistemi di enterprise messaging possono realizzare una infrastruttura in cui i messaggi sono scambiati fra server nel distribuito quindi questo complica la transazionalità.
+La seconda opzione è molto complessa e non viene garantita da molti MOM. Inoltre il sistema di messaggistica può essere distribuito e questo può rendere complicata la transazionalità.
+
+Ovviamente il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
 ### Sicurezza
 
-Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e integrità. L’autenticazione consente l’utilizzo di certificati, la confidenzialità è garantita da encription dei messaggi (payload), l’integrità con l’utilizzo digest dei messaggi. La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging. Con JMS non offriamo un servizio diretto di sicurezza ma esistono api che con sono di implementare con varie politiche. JMS consente unicamente di definire il servizio.
+Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e integrità:
+
+- L’**autenticazione** consente l’utilizzo di certificati.
+- La **confidenzialità** è garantita dall'encription effettuata sui messaggi in particolare sul payload.
+- L’**integrità** con l’utilizzo di un'impronta (digest) dei messaggi.
+
+La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging. Con JMS non si offre un servizio diretto di sicurezza ma esistono API che consentono di implementare varie politiche di sicurezza. JMS consente unicamente di definire il servizio.
 
 ### JMS
 
-JMS è un insieme di interfacce Java (e associata definizione di semantica) che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico, JMS fornisce il supporto alla produzione, distribuzione e consegna di messaggi, alle diverse semantiche per message delivery, ovvero Sincrona/asincrona (bloccante/non-bloccante), con proprietà transazionali, il supporto sia a modello Point-to-Point (reliable queue) che Publish/Subscribe con selettori di messaggio lato ricevente, e  cinque tipologie di messaggi possibili.  JMS è un supporto che fornisce interfacce generiche non è la specifica le varie semantiche possono essere implementate.
+JMS è un insieme di interfacce Java (e associata definizione di semantica) che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico. JMS fornisce il supporto alla produzione, distribuzione e consegna di messaggi, alle diverse semantiche per message delivery, ovvero Sincrona/asincrona (bloccante/non-bloccante), con proprietà transazionali, il supporto sia a modello Point-to-Point (reliable queue) che Publish/Subscribe con selettori di messaggio lato ricevente, e cinque tipologie di messaggi possibili.  JMS è un supporto che fornisce interfacce generiche non è la specifica le varie semantiche possono essere implementate.
 
-JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è "solo" fortemente integrato. Gli obiettivi sono di avere dei JMS provider generiche che dietro le quinte lavorano con sistemi di messaggistica preesistenti, con consistenza con le API dei sistemi di messaging esistenti, indipendenza dal vendor del sistema di messaging, copertura della maggior parte delle funzionalità comuni nei sistemi di messaging e infine la promozione della tecnologia Java per sistemi messaging.
+JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è solo fortemente integrato. Gli obiettivi sono di avere dei JMS provider generici che dietro le quinte lavorano con sistemi di messaggistica preesistenti, con consistenza con le API dei sistemi di messaging esistenti, indipendenza dal vendor del sistema di messaging, copertura della maggior parte delle funzionalità comuni nei sistemi di messaging e infine la promozione della tecnologia Java per sistemi messaging.
 
 Architettura: Clienti JMS e non-JMS, Messaggi, Provider JMS (sistema di messaging dipendenti dal specifico vendor), gli oggetti sono amministrati tramite JNDI per recuerare Destination e ConnectionFactory
 
 ### Tipi di comunicazioni
 
-Nella comunicazione point-to-Point i messaggi in una queue possono essere persistenti o non persistenti. Nella comunicazione Pub/Sub, i messaggi non durevoli sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo, se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza. I messaggi durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
+Nella comunicazione point-to-point i messaggi in una queue possono essere persistenti o non persistenti. Nella comunicazione Pub/Sub, i messaggi non durevoli sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo, se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza. I messaggi durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
 
 ### Formato del messaggio 
 
