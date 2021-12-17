@@ -316,7 +316,7 @@ Esistono due tipi di contratto:
     - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi in modo da poter recuperare EJB Home.
 - **Component contract**: contratto tra componente e container. Il contratto serve a:
     - Abilitare le invocazioni dei metodi dei clienti.
-    - Implementare le interfacce EJBHome e EJBObject per ridurre il carico di lavoro da parte dello sviluppatore.
+    - Implementare le interfacce `EJBHome` e `EJBObject` per ridurre il carico di lavoro da parte dello sviluppatore.
     - Gestisce la persistenza (solo in EJB 2.x, da EJB 3.x la gestione è diversa).
     - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc.
     - Implementa il meccanismo delle callback: ci sono dei componenti asincroni chiamati Message Driven Bean che vengono attivati solo quando ricevono un determinato messaggio.
@@ -327,7 +327,7 @@ Esistono due tipi di contratto:
 
 Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la logica di business mentre il container si occupa di:
 
-- Generare automaticamente le classi concrete delle interfaccia EJBHome e EJBObject scritte dallo sviluppatore che deve creare **solo** interfacce.
+- Generare automaticamente le classi concrete delle interfaccia `EJBHome` e `EJBObject` scritte dallo sviluppatore che deve creare **solo** interfacce.
 - Effettuare il binding dell’oggetto Home presso il servizio di nomi.
 - Persistenza.
 - Transazionalità.
@@ -367,7 +367,7 @@ Un Session Bean ha le seguenti caratteristiche:
 - Transient.
 - No fault-tollerant: lo stato non sopravvive a crash da parte del server.
 - Può avere proprietà transazionali: dipende se il codice fa accesso a un database oppure no.
-- Implementa l’interfaccia _javax.ejb.SessionBean_.
+- Implementa l’interfaccia `javax.ejb.SessionBean`.
 
 I Session Bean che esistono sono di due tipi:
 
@@ -386,7 +386,7 @@ Un Entity Bean ha le seguenti caratteristiche:
 - Persistente.
 - Fault-tollerant: il componente sopravvive a crash del server, quindi, se i campi che si trovano all'interno del componente sono cambiati, viene effettuato lo stesso l'allineamento con il DB.
 - Sempre transazionale.
-- implementa l’interfaccia _javax.ejb.EntityBean_.
+- implementa l’interfaccia `javax.ejb.EntityBean`.
 
 Gli Entity Bean che esistono sono di due tipi:
 
@@ -442,9 +442,9 @@ Si supponga di avere un produttore di software A (vendor A) specializzato nella 
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, _create()_, _find()_, _remove()_ etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale.
+- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale.
 - **Interfaccia EJBObject**: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
-Il cliente ottiene il riferimento di EJB Object attraverso i metodi _create()_ o _find()_ dell’interfaccia EJB Home.
+Il cliente ottiene il riferimento di EJB Object attraverso i metodi `create()` o `find()` dell’interfaccia EJB Home.
 
 Le interfacce possono essere remote o locali a seconda se la comunicazione del cliente avviene in locale o in remoto.
 
@@ -452,7 +452,7 @@ Le interfacce possono essere remote o locali a seconda se la comunicazione del c
 
 ### Invocazione remota
 
-Per prima cosa bisogna implementare le interfacce EJBHome e EJBObject. Di seguito viene riportato un esempio di come si dovrebbe scrivere un'interfaccia EJB Home e EJB Object:
+Per prima cosa bisogna implementare le interfacce `EJBHome` e `EJBObject`. Di seguito viene riportato un esempio di come si dovrebbe scrivere un'interfaccia EJB Home e EJB Object:
 
 ```
 // EJBHome
@@ -515,7 +515,7 @@ Per prima cosa bisogna ricordarsi di implementare le interfacce EJBLocalHome e E
 
 Inoltre, c'è un altro possibile uso delle interfacce locali. Un Session Bean può svolgere a sua volta il ruolo di _cliente locale_ verso altri Bean in modo da non pagare ulteriori costi di overhead.
 
-Questa possibilità è stata introdotta a partire da EJB2.0 anche se alcune implementazioni avevano già delle ottimizzazioni senza che fosse inserito ufficialmente nello standard. Anche guardando lo skeleton di RMI si ha un'idea di ottimizzazione.
+Questa possibilità è stata introdotta a partire da EJB 2.0 anche se alcune implementazioni avevano già delle ottimizzazioni senza che fosse inserito ufficialmente nello standard. Anche guardando lo skeleton di RMI si ha un'idea di ottimizzazione.
 
 ```
 // EJBHome
@@ -553,11 +553,11 @@ public interface InterestLocal extends EJBLocalObject {
 
 Per interagire con un componente EJB il cliente deve:
 
-- Ottenere l’oggetto EJBHome (in realtà un oggetto stub) via JNDI perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
+- Ottenere l’oggetto EJB Home (in realtà un oggetto stub) via JNDI perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
     - Creare l'oggetto InitialContext. Questo oggetto serve per poter cercare sul servizio di nomi.
     - Effettuare la lookup sul servizio di nomi tramite JNDI.
     - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile.
-- Dall’oggetto EJBHome, si invoca la _create()_ in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto _stub_ di EJBObject per lo stesso motivo di prima.
+- Dall’oggetto EJBHome, si invoca la `create()` in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto stub di EJB Object per lo stesso motivo di prima.
 - Invocare i metodi di business tramite l’oggetto EJB.
 - Effettuare il clean up finale per liberare le risorse. Perchè occupare un'istanza che non si usa?
 
@@ -630,19 +630,19 @@ Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni c
 
 Le annotazioni sono state già viste sicuramente in altri corsi anche se non si sapeva che si chiamassero in questo modo. Di seguito vengono riportati alcuni esempi:
 
-- **@Overrided**:
+- `@Overrided`:
     ```
     @Override
     public String toString() {
         ...
     }
     ```
-- **@Deprecated**:
+- `@Deprecated`:
     ```
     @Deprecated
     public class ExampleClass { ... }
     ```
-- **@SuppressWarnings**:
+- `@SuppressWarnings`:
     ```
     @SuppressWarnings("unchecked")
     public void aMethod() { ... }
@@ -660,9 +660,9 @@ Sono metadati con cui si decorano i metodi, le classi, le interfacce etc. Non mo
 
 Riprendendo le annotazioni scritte all'inizio del capitolo:
 
-- **@Overrided**: serve al compilatore. Se non si mettesse questa annotazione, il codice verrebbe generato lo stesso però bisogna stare attenti a come si scrive il nome del metodo sia nella classe padre che in quella figlia perchè se si sbagliasse a scrivere il nome, il metodo non verrebbe sostituito ma aggiunto.
-- **@Deprecated**: serve a livello di documentazione per indicare che quel metodo, classe etc è in disuso.
-- **@SuppressWarnings**: serve al compilatore. Se la compilazione presenta dei warning questi vengono trascurati e non mostrati all’utente.
+- `@Overrided`: serve al compilatore. Se non si mettesse questa annotazione, il codice verrebbe generato lo stesso però bisogna stare attenti a come si scrive il nome del metodo sia nella classe padre che in quella figlia perchè se si sbagliasse a scrivere il nome, il metodo non verrebbe sostituito ma aggiunto.
+- `@Deprecated`: serve a livello di documentazione per indicare che quel metodo, classe etc è in disuso.
+- `@SuppressWarnings`: serve al compilatore. Se la compilazione presenta dei warning questi vengono trascurati e non mostrati all’utente.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -687,8 +687,8 @@ public String toString() {
 
 Le annotazioni si possono classificare nel seguente modo:
 
-- **Marker annotation**: non hanno membri. Ad esempio: @Override.
-- **Single-value annotation**: hanno un solo membro. Ad esempio: @SuppressWarnings("unchecked").
+- **Marker annotation**: non hanno membri. Ad esempio: `@Override`.
+- **Single-value annotation**: hanno un solo membro. Ad esempio: `@SuppressWarnings("unchecked")`.
 - **Full annotation**: l'annotazione è formata da più di un membro.
 - **Custom annotation**: i programmatori possono crearsi le proprie annotazioni.
 
@@ -726,7 +726,7 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 
 ### Limiti delle annotazioni personalizzate
 
-- **Non** si possono avere relazioni di estensione (_extends_) fra tipi di annotazioni.
+- **Non** si possono avere relazioni di estensione (extends) fra tipi di annotazioni.
 - I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati.
 - Una annotation **non** può lanciare eccezioni ovvero non può avere una _throws clause_.
 - **Non** sono permessi _self-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationA`.
@@ -738,26 +738,26 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 
 Sono annotazioni che si specificano sulle annotazioni che vengono create. Le meta-annotazioni sono:
 
-- **@Target**: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc):
+- `@Target`: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc):
 
     ```
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
     ```
 
-- **@Documented**: specifica che le annotazioni di tale tipo faranno parte della Javadoc:
+- `@Documented`: specifica che le annotazioni di tale tipo faranno parte della Javadoc:
 
     ```
     @Documented
     public @interface ExampleAnnotation { ... }
     ```
 
-- **@Inherited**: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata:
+- `@Inherited`: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata:
 
     ```
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
     ```
 
-- **@Retention**: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni:
+- `@Retention`: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni:
 
     ```
     @Inherited
@@ -768,9 +768,9 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 ### Politiche di retention
 
-- **@Retention(RetentionPolicy.SOURCE)**: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se si confrontasse la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, si potrebbe vedere che è la stessa.
-- **@Retention(RetentionPolicy.CLASS)(default)**: l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time.
-- **@Retention(RetentionPolicy.RUNTIME)**: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. È utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
+- `@Retention(RetentionPolicy.SOURCE)`: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se si confrontasse la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, si potrebbe vedere che è la stessa.
+- `@Retention(RetentionPolicy.CLASS)` (default): l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time.
+- `@Retention(RetentionPolicy.RUNTIME)`: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. È utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
 
 <a href="#indice">Torna all'indice</a>
 
