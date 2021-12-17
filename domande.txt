@@ -1,4 +1,0 @@
-Session Bean: transient
-Identificativo del contratto client view
-narrowing: tutto è scritto in Java quindi in teoria si potrebbe non inserire.
-Costo RMI + trasferimento tramite IIOP (protocollo CORBA)
