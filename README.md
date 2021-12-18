@@ -83,6 +83,30 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#configurazione-di-jndi">Configurazione di JNDI</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#">EJB 3.X</a>
+      <ul>
+        <li><a href="#">Annotazioni e Descrittori di Deployment</a></li>
+        <li><a href="#">Tipologie di componenti</a></li>
+        <li><a href="#">Session Bean</a></li>
+        <li><a href="#">Message Driven Bean</a></li>
+        <li><a href="#">Dependency Injection</a></li>
+        <li><a href="#">Interoperabilità tra EJB 3.X e EJB 2.X</a></li>
+        <li><a href="#">Servizi di sistema</a></li>
+        <li><a href="#">Pooling e concorrenza</a></li>
+        <li><a href="#">Resource Pooling</a></li>
+        <li><a href="#">Activation</a></li>
+        <li><a href="#">Transazionalità</a></li>
+        <li><a href="#">Container-Managed Transaction</a></li>
+        <li><a href="#">Transazionalità</a></li>
+        <li><a href="#">Bean-Managed Transaction</a></li>
+        <li><a href="#">Gestione delle connessioni a risorse</a></li>
+        <li><a href="#">Persistenza</a></li>
+        <li><a href="#">Messaggistica</a></li>
+        <li><a href="#">Sicurezza</a></li>
+        <li><a href="#">Intercettori</a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -293,7 +317,7 @@ Sul'EJB Container non si troveranno solo le istanze che il programmatore ha scri
 Ad esempio, si consideri un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
 
 - **Sviluppatore**: crea solo una classe che chiama `Account`. Al suo interno ci sono i metodi `prelievo()` e `deposito()`. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.X ad ogni classe creata, bisogna anche creare due interfacce: `EJBHome` e `EJBObject`.
-- **Cliente**: si ipotizzi di avere tre clienti: `C1` e `C2` che richiedono tutti di eseguire il metodo `prelievo()`:
+- **Cliente**: si ipotizzi di avere due clienti: `C1` e `C2` che richiedono tutti di eseguire il metodo `prelievo()`:
     - Quando `C1` fa richiesta, essa passa prima da EJB Home il quale crea un oggetto `O1` che è l’istanza logica dedicata per `C1`. EJB Home restituisce al cliente il riferimento di EJB Object.
     - Adesso, `C1` può invocare il metodo `prelievo()` che verrà eseguito su EJB Object che a sua volta potrà invocare il metodo dell’oggetto `O1`.
     - `C2` fa una richiesta. L'oggetto EJB Home potrà creare un nuovo oggetto `O2` oppure dare il riferimento di `O1` se l'interazione tra `C1` e l'oggetto `O1` è terminata. Dipende dalla politica adottata dal container.
@@ -311,9 +335,9 @@ I clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home.
 Esistono due tipi di contratto:
 
 - **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da:
-    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente. Con Home Interface si intende la EJB Home, è il nome tecnico usato nella documentazione J2EE.
-    - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore. Con Object Interface si intende la EJB Object, è il nome tecnico usato nella documentazione J2EE.
-    - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi in modo da poter recuperare EJB Home.
+    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente. Con Home Interface si intende la `EJBHome`. È il nome tecnico usato nella documentazione J2EE.
+    - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore. Con Object Interface si intende la `EJBObject`. È il nome tecnico usato nella documentazione J2EE.
+    - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi in modo da poter recuperare l'oggetto EJB Home.
 - **Component contract**: contratto tra componente e container. Il contratto serve a:
     - Abilitare le invocazioni dei metodi dei clienti.
     - Implementare le interfacce `EJBHome` e `EJBObject` per ridurre il carico di lavoro da parte dello sviluppatore.
@@ -328,7 +352,7 @@ Esistono due tipi di contratto:
 Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la logica di business mentre il container si occupa di:
 
 - Generare automaticamente le classi concrete delle interfaccia `EJBHome` e `EJBObject` scritte dallo sviluppatore che deve creare **solo** interfacce.
-- Effettuare il binding dell’oggetto Home presso il servizio di nomi.
+- Effettuare il binding dell’oggetto EJB Home presso il servizio di nomi.
 - Persistenza.
 - Transazionalità.
 - Gestione lifecycle componenti.
@@ -403,19 +427,19 @@ Questo Bean verrà approfondito nel `Capitolo 7`.
 
 ### Interazioni tra Bean
 
-L’immagine seguente mostra come interagiscono i client con i Bean e come i Bean stessi interagiscono tra loro.
+L’immagine seguente mostra come i clienti interagiscono con i Bean e come i Bean stessi interagiscono tra di loro:
 
 ![Interazioni tra Bean-Light](./img/img35-light.png#gh-light-mode-only)
 ![Interazioni tra Bean-Dark](./img/img35-dark.png#gh-dark-mode-only)
 
 L’immagine mette in evidenza l’interazione con e tra componenti senza considerare gli aspetti legati al container come, per esempio, la presenza dell'interfaccia EJB Home e dell'interfaccia EJB Object.
-Agli estremi della catena di interazione vi sono, ovviamente, da un lato i client Java e dall’altro il database, in mezzo si pongono i componenti che danno vita all’applicazione. Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
+Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Deployment
 
-Il deployment descriptor fornisce istruzioni al container su come gestire e controllare il comportamento di componenti J2EE, essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
+Il file di deployment fornisce istruzioni al container su come gestire e controllare il comportamento di componenti J2EE, essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -431,7 +455,7 @@ J2EE è un’architettura pensata per velocizzare e industrializzare lo sviluppo
 ![Applicazione 1-Light](./img/img37-light.png#gh-light-mode-only)
 ![Applicazione 1-Dark](./img/img37-dark.png#gh-dark-mode-only)
 
-Si supponga di avere un produttore di software A (vendor A) specializzato nella modellazione e creazione di componenti busta paga che quindi sviluppa il componente _EJB Payroll_, un secondo produttore di software B sviluppa altri componenti _Self Service_ ed _Employee_, può utilizzare il modulo sviluppato dal vendor A per assemblare un’applicazione in cui il modulo _Payroll_ sviluppato da A coesista con i moduli sviluppati dal vendor B.
+Si supponga di avere un produttore di software `A` (vendor A) specializzato nella modellazione e creazione di componenti busta paga che quindi sviluppa il componente `Payroll`, un secondo produttore di software `B` sviluppa altri componenti `Self Service` ed `Employee`, può utilizzare il modulo sviluppato dal vendor `A` per assemblare un’applicazione in cui il modulo `Payroll` sviluppato da `A` coesista con i moduli sviluppati dal vendor `B`.
 
 ![Applicazione 2-Light](./img/img38-light.png#gh-light-mode-only)
 ![Applicazione 2-Dark](./img/img38-dark.png#gh-dark-mode-only)
@@ -442,8 +466,8 @@ Si supponga di avere un produttore di software A (vendor A) specializzato nella 
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- **Interfaccia EJBHome**: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale.
-- **Interfaccia EJBObject**: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
+- L'interfaccia `EJBHome`: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale.
+- L'nterfaccia `EJBObject`: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
 Il cliente ottiene il riferimento di EJB Object attraverso i metodi `create()` o `find()` dell’interfaccia EJB Home.
 
 Le interfacce possono essere remote o locali a seconda se la comunicazione del cliente avviene in locale o in remoto.
@@ -452,7 +476,7 @@ Le interfacce possono essere remote o locali a seconda se la comunicazione del c
 
 ### Invocazione remota
 
-Per prima cosa bisogna implementare le interfacce `EJBHome` e `EJBObject`. Di seguito viene riportato un esempio di come si dovrebbe scrivere un'interfaccia EJB Home e EJB Object:
+Per prima cosa bisogna implementare le interfacce `EJBHome` e `EJBObject`. Di seguito viene riportato un esempio di come si dovrebbe scrivere queste interfacce:
 
 ```
 // EJBHome
@@ -482,7 +506,7 @@ public interface Interest extends EJBObject {
 
 Dal lato cliente, vengono invocati i metodi di oggetti che si trovano su nodi differenti e necessariamente ci deve essere un meccanismo di comunicazione tra cliente e server.
 
-RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione etc
+RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione etc.
 
 ![RMI IIOP-Light](./img/img2-light.png#gh-light-mode-only)
 ![RMI IIOP-Dark](./img/img2-dark.png#gh-dark-mode-only)
@@ -511,11 +535,11 @@ In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protoco
 
 ### Invocazione locale
 
-Per prima cosa bisogna ricordarsi di implementare le interfacce EJBLocalHome e EJBLocalObject. Le interfacce locali, si usano quando il cliente esegue nella stessa JVM del componente EJB di interesse (e del suo container). Ad esempio, quando lo sviluppatore deve testare il codice. Non avrebbe senso pagare i costi di overhead sulla stessa macchina. In questo caso il passaggio dei parametri può avvenire tramite riferimento proprio perchè ci si trova sullo stesso nodo.
+Per prima cosa bisogna ricordarsi di implementare le interfacce `EJBLocalHome` e `EJBLocalObject`. Le interfacce locali, si usano quando il cliente esegue sulla stessa JVM del componente EJB di interesse (e del suo container). Ad esempio, quando lo sviluppatore deve testare il codice. Non avrebbe senso pagare i costi di overhead sulla stessa macchina. In questo caso il passaggio dei parametri può avvenire tramite riferimento proprio perchè ci si trova sullo stesso nodo.
 
 Inoltre, c'è un altro possibile uso delle interfacce locali. Un Session Bean può svolgere a sua volta il ruolo di _cliente locale_ verso altri Bean in modo da non pagare ulteriori costi di overhead.
 
-Questa possibilità è stata introdotta a partire da EJB 2.0 anche se alcune implementazioni avevano già delle ottimizzazioni senza che fosse inserito ufficialmente nello standard. Anche guardando lo skeleton di RMI si ha un'idea di ottimizzazione.
+Questa possibilità è stata introdotta a partire da EJB 2.0 anche se alcune implementazioni avevano già adottato delle ottimizzazioni senza che fossero inserite ufficialmente nello standard.
 
 ```
 // EJBHome
@@ -545,7 +569,7 @@ public interface InterestLocal extends EJBLocalObject {
 }
 ```
 
-È bene ricordare che non è trasparente passare da EJBHome a EJBLocalHome perchè l'interfaccia locale non ha la _RemoteException_.
+È bene ricordare che non è trasparente passare da `EJBHome` a `EJBLocalHome` perchè l'interfaccia locale non ha la `RemoteException`.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -554,11 +578,11 @@ public interface InterestLocal extends EJBLocalObject {
 Per interagire con un componente EJB il cliente deve:
 
 - Ottenere l’oggetto EJB Home (in realtà un oggetto stub) via JNDI perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
-    - Creare l'oggetto InitialContext. Questo oggetto serve per poter cercare sul servizio di nomi.
+    - Creare l'oggetto `InitialContext`. Questo oggetto serve per poter cercare sul servizio di nomi.
     - Effettuare la lookup sul servizio di nomi tramite JNDI.
     - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile.
-- Dall’oggetto EJBHome, si invoca la `create()` in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto stub di EJB Object per lo stesso motivo di prima.
-- Invocare i metodi di business tramite l’oggetto EJB.
+- Dall’oggetto EJB Home, si invoca la `create()` in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto stub di EJB Object per lo stesso motivo di prima.
+- Invocare i metodi di business tramite l’oggetto EJB Object.
 - Effettuare il clean up finale per liberare le risorse. Perchè occupare un'istanza che non si usa?
 
 ```
@@ -568,23 +592,26 @@ public class InterestClient {
     
         // passo 1: ottenere un’istanza di EJBHome (in realtà un oggetto
         // stub per l’oggetto EJBHome) via JNDI
-        InitialContext initialContext = new InitialContext()
-        Object o = initialContext.lookup ("Interest");
-        InterestHome interest = (InterestHome) PortableRemoteObject.narrow (o, InterestHome.class);
+        InitialContext initialContext = new InitialContext();
+        Object o = initialContext.lookup("Interest");
+        InterestHome interestHome = (InterestHome) PortableRemoteObject.narrow (o, InterestHome.class);
 
-        // passo 2: creare un oggetto EJBObject remoto (in realtà uno stub all’oggetto EJBObject remoto
-        interest.create();
+        // passo 2: creare un oggetto EJBObject remoto (in realtà
+        // uno stub all’oggetto EJBObject remoto
+        Interest interest = interestHome.create();
 
-        double principal=10000.0;
-        double rate=10.0;
-        int terms=10;
+        double principal = 10000.0;
+        double rate = 10.0;
+        int terms = 10;
         
-        System.out.println ("Principal = $" + principal); System.out.println ("Rate(%) = " + rate); System.out.println ("Terms = " + terms);
+        System.out.println("Principal = $" + principal);
+        System.out.println ("Rate(%) = " + rate);
+        System.out.println ("Terms = " + terms);
 
         // passo 3: invocazione metodi di business
-        System.out.println ("Interest = $" + interest.getInterestOnPrincipal(principal, rate, terms));
+        System.out.println("Interest = $" + interest.getInterestOnPrincipal(principal, rate, terms));
     
-        System.out.println ("Total = $" + interest.getTotalRepayment(principal, rate, terms));
+        System.out.println("Total = $" + interest.getTotalRepayment(principal, rate, terms));
 
         // passo 4: clean up
         interest.remove();
@@ -599,8 +626,8 @@ public class InterestClient {
 Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti file:
 
 - ***.EAR (Enterprise ARchive)**: è tutta l'applicazione EJB che si trova lato server. Al suo interno ci sono i seguenti file:
-    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc ). È facoltativo perchè non è detto che lo si debba inserire.
-    - **EJB-JAR (*.jar)**: modulo EJB al cui interno è possibile inserire uno o più componenti. In un .EAR ci possono esserci uno o più moduli (dipende da come si organizza il progetto, se provvengono da altri progetti etc). Il file ejb-jar deve contenere almeno i seguenti file:
+    - ***.WAR (Web ARchive)**: modulo Web (Servlet, JSP etc). È facoltativo perchè non è detto che lo si debba inserire.
+    - **EJB-JAR (*.jar)**: modulo EJB al cui interno è possibile inserire uno o più componenti. In un .EAR ci possono esserci uno o più moduli (dipende da come si organizza il progetto, se provvengono da altri progetti etc). Il file EJB-JAR deve contenere almeno i seguenti file:
 
         - **Classe Bean**: classe scritta dallo sviluppatore.
         - **Interfaccia EJBHome**: nel modulo verrà inserita solo l'interfaccia. A tempo di esecuzione poi è il container ad implementare la classe concreta.
@@ -622,7 +649,7 @@ La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emer
 - **La lookup dei componenti è sempre basata su JNDI**: bisogna scrivere codice per cercare il componente prima di poterlo usare. Se non si facesse questa operazione sarebbe più facile la scrittura di codice.
 - **Difficoltà di uso corretto degli Entity Bean (anti-pattern)**: gli oggetti contengono al loro interno sia lo stato che le operazioni su di esso. Gli Entity Bean hanno solo lo stato e non sono orientati a un mondo object oriented. È vero che alcune volte negli oggetti si inserisce solo lo stato ma non è detto che sia sempre così.
 
-Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nei prossimi due capitoli, si parlerà di annotazioni e di sistema di nomi.
+Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nel `Capitolo 3` e `Capitolo 4`, si parlerà di annotazioni e di sistema di nomi.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -645,14 +672,16 @@ Le annotazioni sono state già viste sicuramente in altri corsi anche se non si 
 - `@SuppressWarnings`:
     ```
     @SuppressWarnings("unchecked")
-    public void aMethod() { ... }
+    public void aMethod() {
+        ...
+    }
     ```
 
 <a href="#indice">Torna all'indice</a>
 
 ### Definizione
 
-Sono metadati con cui si decorano i metodi, le classi, le interfacce etc. Non modificano il comportamento del codice che lo sviluppatore scrive ma aggiungono solo informazioni che possono essere utili:
+Sono metadati con cui si _decorano_ i metodi, le classi, le interfacce etc. Non modificano il comportamento del codice che lo sviluppatore scrive ma aggiungono solo informazioni che possono essere utili:
 
 - Al compilatore.
 - Alla Javadoc.
@@ -707,9 +736,9 @@ public @interface GroupTODO {
 }
 ```
 
-Si noti che le annotazioni personalizzate sono di tipo @interface.
+Si noti che le annotazioni personalizzate sono di tipo `@interface`.
 
-Adesso, la si può aggiungere ad esempio ad un metodo:
+Adesso, la si può aggiungere, ad esempio, ad un metodo:
 
 ```
 @GroupTODO (
@@ -720,7 +749,7 @@ Adesso, la si può aggiungere ad esempio ad un metodo:
 public void calculateInterest(float amount, float rate) { ... }
 ```
 
-Questa annotazione fa parte della categoria delle annotazioni personalizzate e presenta tre membri. Se non fosse stato specificato il membro _severity_ il suo valore sarebbe stato IMPORTANT.
+Questa annotazione fa parte della categoria delle annotazioni personalizzate e presenta tre membri. Se non fosse stato specificato il membro `severity` il suo valore sarebbe stato `IMPORTANT`.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -741,7 +770,8 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 - `@Target`: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc):
 
     ```
-    @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
+    @Target ( { ElementType.METHOD,ElementType.PACKAGE } )
+    public @interface ExampleAnnotation { ... }
     ```
 
 - `@Documented`: specifica che le annotazioni di tale tipo faranno parte della Javadoc:
@@ -754,7 +784,8 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 - `@Inherited`: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata:
 
     ```
-    @Target ( { ElementType.METHOD,ElementType.PACKAGE } ) public @interface ExampleAnnotation { ... }
+    @Target ( { ElementType.METHOD,ElementType.PACKAGE } )
+    public @interface ExampleAnnotation { ... }
     ```
 
 - `@Retention`: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni:
@@ -768,9 +799,13 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 ### Politiche di retention
 
-- `@Retention(RetentionPolicy.SOURCE)`: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione @Override. Se si confrontasse la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, si potrebbe vedere che è la stessa.
+I valori che possono essere specificati nell'annotazione `@Retention` sono:
+
+- `@Retention(RetentionPolicy.SOURCE)`: l'annotazione permane solo a livello di codice sorgente. Dunque, non viene memorizzata nel bytecode cioè nel file .class. Viene utilizzata solo a tempo di sviluppo da parte del compilatore. Ad esempio, l'annotazione `@Override`. Se si confrontasse la dimensione del file in cui l'annotazione è stata scritta e quello in cui l'annotazione non è stata scritta, si potrebbe vedere che è la stessa.
 - `@Retention(RetentionPolicy.CLASS)` (default): l'annotazione verrà registrata nel bytecode ma non verrà mantenuta dalla JVM a runtime. Dunque, non si può usare la reflection ma solo a tempo di caricamento. Ad esempio, si può decidere come trattare il caricamento tramite il class loader del bytecode ma poi le annotazioni non si possono sono usate a run-time.
 - `@Retention(RetentionPolicy.RUNTIME)`: l'annotazione verrà registrata nel bytecode e potrà essere letta a runtime tramite reflection anche dopo il caricamento della classe da parte della JVM. È utilizzabile anche all’interno del codice di supporto/applicativo a tempo di esecuzione, con proprietà eventualmente modificabili a runtime.
+
+Le differenze sostanzialmente sono in termini di spazio quando i file vengono caricati in memoria. Nel primo caso, mom rimane nessuna traccia dell'annotazione, nel secondo e terzo si. L'ultimo caso, dato che si usa la reflection, ci sono strutture in più nel file quindi l'occupazione è maggiore.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -778,13 +813,11 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 Le annotazioni arricchiscono lo spazio concettuale di un linguaggio di programmazione. Consentono di fare programmazione dichiarativa oltre che a quella imperativa perchè permettono di associare delle informazioni in modo dichiarativo al codice non andando a modificare il comportamento dei metodi, delle classi etc. Ad esempio, quello che viene specificato nel di file di deployment si può fare benissimo tramite le annotazioni.
 
-In poche parole, si aggiunge una _parola_ al codice della classe senza combiare la logica di business.
+In poche parole, si aggiunge una _parola_ al codice della classe senza cambiare la logica di business.
 
 <a href="#indice">Torna all'indice</a>
 
 ## Sistemi di Nomi
-
-In ogni sistema distribuito di medie dimensioni si usa sistemi di nomi perchè non si vuole inserire nell'implementazione dove si trova una determinata risorsa.
 
 Un servizio di naming è un sistema che consente di associare ad un nome logico una risorsa (nome fisico, riferimento, oggetto).
 
@@ -828,101 +861,101 @@ A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta �
 
 <a href="#indice">Torna all'indice</a>
 
-### JNDI
+### Java Naming Directory Interface (JNDI)
 
 JNDI è un'interfaccia standard che consente di accedere in modo uniforme a servizi di naming già esistenti. Dunque, non è un servizio di nomi ma un'**interfaccia**!
 
 ![JNDI-Light](./img/img3-light.png#gh-light-mode-only)
 ![JNDI-Dark](./img/img3-dark.png#gh-dark-mode-only)
 
-In questo modo si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client perchè basta solo modificare la parte in cui si specifica quale servizio di nomi si sta usando.
+In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client perchè basta solo modificare la parte in cui si specifica quale servizio di nomi si sta usando.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Interfaccia Context
 
-Context è l'interfaccia che contiene metodi per aggiungere, cancellare, cercare, ridenominare oggetti. Invece, l'implementazione di Context è InitialContext. I metodi che si trovano nell'interfaccia sono i seguenti:
+`Context` è l'interfaccia che contiene metodi per aggiungere, cancellare, cercare, ridenominare oggetti di un sistema di nomi. Invece, l'implementazione di `Context` è `InitialContext`. I metodi che si trovano nell'interfaccia sono i seguenti:
 
-- **bind**: consente di associare ad un nome logico un oggetto. È importante che il nome non deve essere associato già ad alcun oggetto:
+- `bind`: consente di associare ad un nome logico un oggetto. È importante che il nome non deve essere associato già ad alcun oggetto:
 
     ```
     void bind(String stringName, Object object)
     ```
 
-- **rebind**: consente di riassegnare al nome logico un nuovo oggetto:
+- `rebind`: consente di riassegnare al nome logico un nuovo oggetto:
 
     ```
     void rebind(String stringName, Object object)
     ```
 
-- **lookup**: consente di cercare l'oggetto che corrisponde al nome logico dato come parametro di ingresso:
+- `lookup`: consente di cercare l'oggetto che corrisponde al nome logico dato come parametro di ingresso:
 
     ```
     Object lookup(String stringName)
     ```
-- **unbind**: Consente di togliere dalla tabella la riga che corrisponde:
+- `unbind`: Consente di togliere dalla tabella la riga che corrisponde:
 
     ```
     void unbind(String stringName)
     ```
-- **rename**: Consente di cambiare nome logico:
+- `rename`: Consente di cambiare nome logico:
 
     ```
     void rename(String stringOldName, String stringNewName)
     ```
 
-- **listBindings**: restituisce tutte le entry che si trovano nel sistema nome che fanno matching con la stringa di ingresso. In RMI non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono:
+- `listBindings`: restituisce tutte le entry che si trovano nel sistema di nomi che fanno matching con la stringa di ingresso. In RMI, non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono:
 
     ```
     NamingEnumeration listBindings(String stringName)
     ```
 
-Non a caso, in EJB 2.X prima di trovare un componente sul servizio di nomi, bisogna creare un oggetto InitialContext.
+Non a caso, in EJB 2.X prima di trovare un componente sul servizio di nomi, bisogna creare un oggetto `InitialContext`.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Interfaccia DirContext
 
-Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare Context perchè per come è fatto questo naming service manca la parte relativa agli attributi.
-DirContext è la sottoclasse di Context ed estende le funzionalità standard di naming con altre relative a attributi e ricerche su entry di directory. I metodi che si trovano nell'interfaccia sono i seguenti:
+Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare `Context` perchè per come è fatto questo naming service manca la parte relativa agli attributi.
+`DirContext` è la sottoclasse di `Context` ed estende le funzionalità standard di naming con altre relative a attributi e ricerche su entry di directory. I metodi che si trovano nell'interfaccia sono i seguenti:
 
-- **bind**: associa un nome a un oggetto e memorizza gli attributi specificati nella entry corrispondente. È importante che il nome non deve essere associato già ad alcun oggetto:
+- `bind`: associa un nome a un oggetto e memorizza gli attributi specificati nella entry corrispondente. È importante che il nome non deve essere associato già ad alcun oggetto:
 
     ```
     void bind(String stringName, Object object, Attributes attributes)
     ```
 
-- **rebind**: consente di riassegnare al nome logico un nuovo oggetto:
+- `rebind`: consente di riassegnare al nome logico un nuovo oggetto:
 
     ```
     void rebind(String stringName, Object object, Attributes attributes)
     ```
 
-- **createSubcontext**: crea un sottocontesto, eventualmente con attributi. Bisogna immaginarsi come una cartella del file system. Al suo interno si possono creare altre cartelle:
+- `createSubcontext`: crea un sottocontesto, eventualmente con attributi. Bisogna immaginarsi come una cartella del file system. Al suo interno si possono creare altre cartelle:
 
     ```
     DirContext createSubcontext(String stringName, Attributes attributes)
     ```
 
-- **getAttributes**: restituisce gli attributi associati con l’entry specificata:
+- `getAttributes`: restituisce gli attributi associati con l’entry specificata:
 
     ```
     Attributes getAttributes(String stringName)
     ```
 
-- **getAttributes**: restituisce gli attributi specificati nell’array fornito:
+- `getAttributes`: restituisce gli attributi specificati nell’array fornito:
 
     ```
     Attributes getAttributes(String stringName, String [] rgstringAttributeNames)
     ```
 
-- **modifyAttributes**: modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
+- `modifyAttributes`: modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
     ```
     void modifyAttributes(String stringName, int nOperation, Attributes attributes)
     ```
 
-- **modifyAttributes**: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: ADD_ATTRIBUTE, REPLACE_ATTRIBUTE e REMOVE_ATTRIBUTE:
+- `modifyAttributes`: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
     ```
     void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
@@ -932,7 +965,7 @@ DirContext è la sottoclasse di Context ed estende le funzionalità standard di 
 
 ### Uso di JNDI
 
-- Per prima cosa, serve scegliere un naming service provider. Ad esempio, OpenLDAP o un’altra implementazione di LDAP. Dopo, bisogna aggiungere il nome del provider all’insieme di proprietà di ambiente in un oggetto Hashtable:
+- Per prima cosa, serve scegliere un naming service provider. Ad esempio, OpenLDAP o un’altra implementazione di LDAP. Dopo, bisogna aggiungere il nome del provider all’insieme di proprietà di ambiente in un oggetto `Hashtable`:
 
     ```
     Hashtable hashtableEnvironment = new Hashtable();
@@ -947,13 +980,13 @@ hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
 hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
 ```
 
-- Si crea l'oggetto InitialContext:
+- Si crea l'oggetto `InitialContext`:
 
     ```
     Context context = new InitialContext(hashtableEnvironment);
     ```
 
-    Invece, se il servizio di naming è una Directory si crea un oggetto InitialDirContext:
+    Invece, se il servizio di naming è una Directory si crea un oggetto `InitialDirContext`:
 
     ```
     DirContext context = new InitialDirContext(hashtableEnvironment);
@@ -963,7 +996,7 @@ hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
 
 ### Memorizzare i dati in un servizio nomi
 
-La specifica JNDI non impone ai naming service provider la semantica dell’operazione di memorizzazione di un binding: questo dipende dal servizio di nomi specifico che si sta utilizzando. Per momorizzare le risorse un servizio di nomi può usare le seguenti semantiche:
+La specifica JNDI non impone ai naming service provider la semantica dell’operazione di memorizzazione di un binding: questo dipende dal servizio di nomi specifico che si sta utilizzando. Per memorizzare le risorse un servizio di nomi può usare le seguenti semantiche:
 
 - Serializzazione.
 - Riferimento.
@@ -973,7 +1006,7 @@ La specifica JNDI non impone ai naming service provider la semantica dell’oper
 
 ### Serializzazione
 
-La semantica serialized data la si usa per salvare tutto il contenuto dell’oggetto. Quando si effettua l'operazione di lookup si recupera il contenuto dell’oggetto per copia.
+La semantica serialized data (serializzazione) la si usa per salvare tutto il contenuto dell’oggetto. Quando si effettua l'operazione di lookup si recupera il contenuto dell’oggetto per copia.
 
 Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database, file, stampante etc.
 
@@ -1002,7 +1035,7 @@ Per accedere a uno specifico naming/directory service, occorre specificare quale
 
 Come specificare proprietà di ambiente:
 
-- Attraverso i parametri di environment passati al costruttore di InitialContext. Ad esempio, si crea un oggetto HashTable.
+- **Attraverso i parametri di environment**: vengono passati al costruttore di `InitialContext`. Ad esempio, si crea un oggetto `HashTable`.
 - **File application resource**: si modifica il file jndi.properties che contiene una lista di coppie attributo/valore.
 - **Proprietà di sistema**: una proprietà di sistema è una coppia attributo/valore che la Java runtime definisce/usa per descrivere utenti, ambiente di sistema e JVM. Per modificare/aggiungere queste proprietà si usa la linea di comando.
 - **Parametri di applet**: le applet ormai sono in disuso.
@@ -1013,19 +1046,23 @@ Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle pr
 
 ## EJB 3.X
 
-A seguito dei problemi elencati nel `Capitolo 2`, è stata rilasciata una nuova versione di questa tecnologia.
+A seguito dei problemi elencati nel `Capitolo 2` e per contrastare la tecnologia Spring che stava prendendo piede molto in fretta, è stata rilasciata una nuova versione.
 
-### Annotation vs Descrittori di Deployment
+### Annotazioni e Descrittori di Deployment
 
-A partire da EJB 3.X si possono usare le annotazioni al posto del file descriptor e gli sviluppatori le preferiscono decisamente.
+A partire da EJB 3.X si possono usare le annotazioni al posto del file descriptor e gli sviluppatori le preferiscono decisamente. Tuttavia, si possono continuare ad usare i descrittori.
 
-Tuttavia, i descrittori possono essere anche parziali e incompleti (_sparse descriptor_) cioè si possono specificare una parte tramite annotazioni e l'altra tramite file descriptor. Lo si può usare anche per fare override di annotazioni. I descrittori sono prioritari sulle annotazioni.
+I descrittori possono essere anche parziali e incompleti (_sparse descriptor_) cioè si possono specificare una parte tramite annotazioni e l'altra tramite file descriptor. Lo si può usare anche per fare override di annotazioni perchè i descrittori sono prioritari sulle annotazioni.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Tipologie di componenti
 
 In EJB 3.X i componenti sono solo di tipo Session Bean e Message Driven Bean. Gli Entity Bean non sono più gestiti dal container e per gestire la persistenza si usa lo standard JPA. Ciò verrà approfondito nel `Capitolo 6`.
 
-Per specificare che tipo di componente si vuole usare, si aggiungono al codice le annotazioni @Stateless, @Stateful e @MessageDriven che devono essere specificate all'interno della classe.
+Per specificare che tipo di componente si vuole usare, si aggiungono al codice le annotazioni `@Stateless`, `@Stateful` e `@MessageDriven` che devono essere specificate all'interno della classe.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Session Bean
 
@@ -1040,9 +1077,9 @@ public interface Payroll {
 
 ```
 
-Le annotazioni che si usano sono: @Remote, @Local, @WebService. Come suggeriscono i nomi, @Remote viene usata quando il Session Bean è remoto mentre @Local indica che il Session Bean è locale. I Web Service verranno accennati nel `Capitolo 7`.
+Le annotazioni che si usano sono: `@Remote`, `@Local`, `@WebService`. Come suggeriscono i nomi, `@Remote` viene usata quando il Session Bean è remoto mentre `@Local` indica che il Session Bean è locale. I Web Service verranno accennati nel `Capitolo 7`.
 
-Si possono specificare a livello di classe o di interfaccia. Nell'esempio di sopra, viene inserita a livello di interfaccia mentre di seguito la stessa interfaccia viene scritta senza annotazione perchè verrà specificata nella classe che lo sviluppatore andrà a scrivere:
+Queste annotazioni si possono specificare a livello di classe o di interfaccia. Nell'esempio di sopra, viene inserita a livello di interfaccia mentre di seguito la stessa interfaccia viene scritta senza annotazione perchè verrà specificata nella classe che lo sviluppatore andrà a scrivere:
 
 ```
 
@@ -1107,9 +1144,11 @@ public class PayrollBean implements javax.ejb.SessionBean {
 
 Per definire che tipo di componente si sta usando lo si deve inserire a livello di file descryptor mentre in EJB 3.X basta usare un'annotazione.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Message Driven Bean
 
-Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'interfaccia jms.MessageListener e usare l'annotazione @MessageDriven come in EJB 2.X:
+Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'interfaccia `jms.MessageListener` come in EJB 2.X e usare l'annotazione `@MessageDriven`:
 
 ```
 
@@ -1122,9 +1161,11 @@ public class PayrollMDB implements javax.jms.MessageListener {
 
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Dependency Injection
 
-Le risorse di un bean sono _iniettate_ dal container. In questo modo lo sviluppatore non ha più visibilità delle API JNDI.
+Le risorse di un Vean sono _iniettate_ dal container. In questo modo lo sviluppatore non ha più visibilità delle API JNDI.
 
 Di seguito è riportato un pezzo di codice di EJB 3.X:
 
@@ -1141,14 +1182,13 @@ Collection widgets = myCart.startToShop(“widgets”);
 
 ```
 
-Qui è riportato come bisognava ottenere una risorsa in EJB 2.X:
+Qui è riportato come bisogna ottenere una risorsa in EJB 2.X:
 
 ```
 
 Context initialContext = new InitialContext();
-ShoppingCartHome myCartHome = (ShoppingCartHome)
-initialContext.lookup("java:comp/env/ejb/cart");
-ShoppingCart myCart= myCartHome.create();
+ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup("java:comp/env/ejb/cart");
+ShoppingCart myCart = myCartHome.create();
 // utilizzo del bean
 Collection widgets = myCart.startToShop("widgets")
 
@@ -1161,25 +1201,24 @@ Collection widgets = myCart.startToShop("widgets")
 
 La dependency injection viene realizzata sempre tramite annotazioni:
 
-- **@EJB**: utilizzata per indicare interfacce che sono EJB o per integrare interfacce EJBHome di versioni precedenti.
-- **@PersistenceContext, @PersistenceUnit**: utilizzate per l'EntityManager. Si veda `Capitolo 6`.
-- **@Resource:** utilizzata per qualsiasi altro riferimento come factory di connessioni, topic/queque, EJBContext, UserTransaction etc.
+- `@EJB`: utilizzata per indicare interfacce che sono EJB 3.X o per integrare interfacce EJB di versioni precedenti.
+- `@PersistenceContext`, `@PersistenceUnit`: utilizzate per l'EntityManager. Si veda `Capitolo 6`.
+- `@Resource`: utilizzata per qualsiasi altro riferimento come factory di connessioni, topic/queque, EJBContext, UserTransaction etc.
 
-L'annotazione @Resource può essere specificata a livello di classe,
+L'annotazione `@Resource` può essere specificata a livello di classe,
 metodo o campo.
 
-@Resource ha i seguenti membri:
+`@Resource` ha i seguenti membri:
 
-- **name**: nome JNDI della risorsa. L’elemento name è opzionale per la injection a livello di campo o metodo:
+- `name`: nome JNDI della risorsa. L’elemento `name` è opzionale per la injection a livello di campo o metodo:
     - **Livello di campo**: nome di default è il nome del campo qualificato dal nome della classe.
     - **Livello di metodo**: nome di default è il nome della proprietà basato sul metodo indicato dal nome della classe.
-- **type**: tipo (Java language type) della risorsa. È determinato da:
-    - **Livello di campo**: tipo del campo che l’annotazione @Resource sta decorando.
-    - **Livello di metodo**: tipo della proprietà del componente che l’annotazione @Resource sta decorando.
-    - Dall’elemento type di @Resource.
-- **authenticationType**: solo per risorse di tipo connection factory. Può avere valore CONTAINER (default) o APPLICATION.
-- **shareable**: possibilità di condividere la risorsa. Usato solo per risorse che sono istanze di ORB o connection factory.
-- **mappedName**: nome non portabile e implementation-specific a cui
+- `type`: tipo (Java language type) della risorsa. È determinato da:
+    - **Livello di campo**: tipo del campo che l’annotazione `@Resource` sta decorando.
+    - **Livello di metodo**: tipo della proprietà del componente che l’annotazione `@Resource` sta decorando.
+- `authenticationType`: solo per risorse di tipo connection factory. Può avere valore CONTAINER (default) o APPLICATION.
+- `shareable`: possibilità di condividere la risorsa. Usato solo per risorse che sono istanze di ORB o connection factory.
+- `mappedName`: nome non portabile e implementation-specific a cui
 associare la risorsa description. Usato tipicamente per riferire la risorsa al di fuori dell’application server.
 
 Più precisamente, il container si occupa dell’injection della risorsa nel componente o a runtime o quando esso è inizializzato in base se l'annotazione viene specificata a livello di campo/metodo o di classe:
@@ -1222,14 +1261,14 @@ accedere alla risorsa iniettata:
 
     ```
 
-    In questo caso è obbligatorio utilizzare gli elementi name e type perchè altrimenti non si saprebbe a quale campo l'annotazione @Resource viene associata.
+    In questo caso è obbligatorio utilizzare gli elementi `name` e `type` perchè altrimenti non si saprebbe a quale campo l'annotazione `@Resource` viene associata.
 
 I vantaggi e gli svantaggi di usare un modo rispetto altro sono:
 
 - **A tempo di all’inizializzazione**: la risorsa viene istanziata quando viene creata l'istanza, minor tempo ma si occupa più spazio in memoria.
 - **A tempo di caricamento**: la risorsa viene iniettata quando l'utente fa la richiesta di ottenere l'istanza logica dedicata. Ovviamente bisogna aspettare che si risolvano le dipendenze e ci vuole più tempo.
 
-Nel caso di risorse multiple si usa l'annotazione @Resources a livello classe:
+Nel caso di risorse multiple si usa l'annotazione `@Resources` a livello classe:
 
 ```
 
@@ -1240,6 +1279,8 @@ Nel caso di risorse multiple si usa l'annotazione @Resources a livello classe:
 public class SomeMessageBean { ... }
 
 ```
+
+<a href="#indice">Torna all'indice</a>
 
 ### Interoperabilità tra EJB 3.X e EJB 2.X
 
@@ -1260,7 +1301,7 @@ cart.remove();
 
 ```
 
-Come si può notare dal codice, nell'annotazione EJB è stato specificato EJBHome del componente scritto in EJB 2.X.
+Come si può notare dal codice, nell'annotazione EJB è stato specificato `EJBHome` del componente scritto in EJB 2.X.
 
 Anche i nuovi bean conformi a EJB 3.X possono essere utilizzati sulle vecchie applicazioni:
 
@@ -1276,18 +1317,28 @@ cart.remove();
 
 ```
 
-Le interfacce EJBHome e EJBObject vengono automaticamente mappate sulla classe del bean di tipo EJB 3.X.
+Le interfacce `EJBHome` e `EJBObject` vengono automaticamente mappate sulla classe del bean di tipo EJB 3.X.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Servizi di sistema
 
 I servizi di sistema che sono messi a disposizione dell'EJB come visto nel `Capitolo 2` sono molteplici. Di seguito vengono spiegati ad uno ad uno.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Pooling e concorrenza
 
-La concorrenza viene gestita a seconda se il Session Bean è di tipo statefull o stateless:
+La concorrenza viene gestita in modi diversi in base se il componente ha stato oppure no:
 
-- **Resource Pooling:** l'idea di base è di evitare di mantenere una
-istanza separata di ogni EJB per ogni cliente. Ogni EJB container mantiene un insieme di istanze del bean (cardinalità non definita in specifica) pronte per servire richieste cliente meglio se create prima dell'arrivo delle richieste. Non esiste stato di sessione da mantenere fra richieste successive; ogni invocazione di metodo è indipendente dalle precedenti. Un'idea è quella di mantenere una tabella con scritto se un'istanza è assegnata oppure o no.
+- **Resource Pooling:** utilizzata da Session Bean di tipo stateless e dai Message Driven Bean.
+- **Activation**: utilizzata da Session Bean di tipo stateful.
+
+<a href="#indice">Torna all'indice</a>
+
+### Resource Pooling
+
+L'idea di base è di evitare di mantenere un'istanza separata di ogni componente EJB per ogni cliente perchè le richieste potrebbero non essere servite tutte dato che non si possono creare istanze illimitate.
 
 Il ciclo di vita di uno Session Bean stateless viene riassunto nei seguenti stati:
 
@@ -1297,124 +1348,249 @@ richiesta cliente.
 - **Ready state**: già associato con una richiesta EJB e pronto a
 rispondere ad una invocazione di metodo.
 
-Questa politica si applica anche ai Message-Driven Bean:
+![Resource Pooling-Light](./img/img55-light.png#gh-light-mode-only)
+![Resource Pooling-Dark](./img/img55-dark.png#gh-dark-mode-only)
 
-Strategie di pooling analoghe alle precedenti per SB SL.
-Unica differenza che ogni EJB container contiene molti
-pool, ciascuno dei quali è composto di istanze
-(eventualmente di classi MDB diverse) con stessa destination
-JMS
+Quando arriva una richiesta i passaggi che vengono eseguiti sono i seguenti:
 
-- **Activation**: utilizzata da Session Bean di tipo stateful per risparmiare risorse. La gestione avviene in due fasi:
+- Quando viene eseguito il depoly dell'applicazione, l'EJB container si accorge che la classe `Pippo` è stateless perchè trova la corrispondente annotazione.
+- Il container crea un pool di istanze della classe Pippo pari a k. Non c'è scritto da specifica quanto deve essere k.
+- Se ci sono delle dipendenze a livello di classe/metodo, vengono risolte.
+- Il cliente `C1` fa una richiesta e arriva al container.
+- La specifica non dice come mantenere traccia di quali istanze sono usate e quali no. Un'idea è quella di usare una tabella con scritto se l'istanza è assegnata oppure o no. Il container va a vedere nella tabella un'istanza che è di tipo pooled. Lo stato dell'istanza viene aggiornato a ready e viene eseguito il codice del metodo invocato.
+- Alla fine, si libera l'istanza.
 
-    - **Passivation**: disassociazione fra l'istanza stateful bean e suo oggetto EJB, con salvataggio dell’istanza su memoria (serializzazione). Il processo è del tutto trasparente al cliente.
-    - **Activation**: recupero dalla memoria (deserializzazione) dello stato dell’istanza e riassociazione con oggetto EJB.
+Se all'interno della classe è stata specificata una variabile e il valore cambia, il comportamento diventa impredicibile perchè alla richiesta successiva non è detto che il cliente `C1` abbia la stessa istanza. Per mantenere stato si usano i Session Bean di tipo stateful.
 
-    Nella specifica J2EE, non è richiesto che la classe di uno stateful SB sia serializzabile. Quindi?
+Questa politica di gestione si applica anche ai Message-Driven Bean: l'unica differenza che ogni EJB container contiene molti pool, ciascuno dei quali è composto di istanze, eventualmente di classi Message-Driven Bean diversi, appartenenti però alla stessa coda. Se si facesse come nei Session Bean di tipo stateless, si potrebbero avere due istanze nello stesso pool che appartengono però a code diverse e ci sarebbe concorrenza tra di loro.
+
+<a href="#indice">Torna all'indice</a>
+
+### Activation
+
+La gestione avviene in due fasi:
+
+- **Passivation**: disassociazione fra l'istanza stateful bean e suo oggetto EJB, con salvataggio dell’istanza su memoria (serializzazione). Il processo è del tutto trasparente al cliente.
+- **Activation**: recupero dalla memoria (deserializzazione) dello stato dell’istanza e riassociazione con oggetto EJB.
+
+Nella specifica J2EE, non è richiesto che la classe di uno stateful Session Bean sia serializzabile. Quindi?
 Dipendenza dall’implementazione dello specifico vendor e attenzione al
 trattamento dei transient...
 
-In queste due fasi si possono associare anche metodi di callback sui cambi di stato nel ciclo di vita di un Session Bean di tipo stateful. Ad esempio, l’annotation @javax.ejb.PostActivate associa l’invocazione del metodo a cui si applica immediatamente dopo l’attivazione di un’istanza.
-Similmente, @javax.ejb.PrePassivate viene attivata prima dell’azione di passivation. Ad esempio, vengono utilizzati spesso per la chiusura/apertura di connessioni a risorse per gestione più efficiente (a default vengono mantenuti e serializzati nello stato solo i riferimenti remoti ad altri bean, a SessionContext, al servizio EntityManager e all’oggetto
-UserTransaction, alcuni dei quali descritti in seguito)
+![Activation-Light](./img/img56-light.png#gh-light-mode-only)
+![Activation-Dark](./img/img56-dark.png#gh-dark-mode-only)
+
+Non si può permettere di manterere k istanze occupate senza far niente. Per superare questo problema si cerca di liberare lo stato salvandolo.
+
+- Prima parte uguale come nel resource pooling. Quando viene restituito il risultato l'istanza non può essere resa libera perchè c'è lo stato del cliente. In Java, basta prendere l'oggetto che rappresenta lo stato, lo si serializza e si salva (passivation).
+- A questo punto, quando il cliente fa in seguito di nuovo la richiesta basta recuperare lo stato salvato (activation). Non è detto che si debba usare la stessa istanza fisica.
+
+In queste due fasi si possono associare anche metodi di callback sui cambi di stato nel ciclo di vita di un Session Bean di tipo stateful. Ad esempio, l’annotation `@javax.ejb.PostActivate` associa l’invocazione del metodo a cui si applica immediatamente dopo l’attivazione di un’istanza.
+Similmente, `@javax.ejb.PrePassivate` viene attivata prima dell’azione di passivation. Ad esempio, vengono utilizzati spesso per la chiusura/apertura di connessioni a risorse per gestione più efficiente (a default vengono mantenuti e serializzati nello stato solo i riferimenti remoti ad altri bean, a SessionContext, al servizio EntityManager e all’oggetto
+UserTransaction etc).
+
+<a href="#indice">Torna all'indice</a>
 
 ### Transazionalità
 
-Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può terminare correttamente (commit) oppure no (rollback).
+Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può o terminare correttamente (commit) oppure no (rollback).
 
 Le transazioni possono essere gestite dal container (Container-Managed Transaction) o manualmente dal programmatore (Bean-Managed Transaction).
 
+<a href="#indice">Torna all'indice</a>
+
+### Container-Managed Transaction
+
 Le transazioni gestite dal container sono:
 
-- Sono la tipologia di default
-- Transazione associata con l’intera esecuzione di un
-metodo (demarcazione automatica della transazione: inizio
-immediatamente prima dell’inizio dell’esecuzione del metodo e
-commit immediatamente prima della terminazione del metodo)
-- NON si possono utilizzare metodi per gestione delle
-transazioni che interferiscano con gestione
-automatica del container (ad esempio, proibito l’uso di commit
-o rollback di java.sql.Connection, di rollback di javax.jms.Session
-o dell’intera interfaccia javax.Transaction.UserTransaction)
+- La tipologia di default. Si usa l'annotazione `@TransactionManagement` che può avere come membro o CONTAINER (default) oppure BEAN.
+- Transazione associata con l’intera esecuzione di un metodo: inizio immediatamente prima dell’inizio dell’esecuzione del metodo e commit immediatamente prima della terminazione del metodo.
+- Non si possono utilizzare metodi per gestione delle transazioni che interferiscano con gestione automatica del container. Ad esempio, è proibito l’uso di `commit` o `rollback` di `java.sql.Connection`, di `rollback` di `javax.jms.Session` o dell’intera interfaccia j`avax.Transaction.UserTransaction`.
 
-Annotation: @TransactionManagement
-Valore uguale a container (default) oppure a bean
-
-I cosiddetti attributi di transazione permettono di controllare lo scope di una transazione.
-
-I Valori possibili sono: REQUIRED (implicito a default), REQUIRES_NEW, MANDATORY, NOT_SUPPORTED, SUPPORTS, NEVER
-
-NotSupported
-```
-import static TransactionAtributeType.*;
-@Stateless
-@TransactionAttribute(NOT_SUPPORTED)
-public class TravelAgentBean implements TravelAgentRemote {
-public void setCustormer(Customer cust) { ... }
-@TransactionAttribute(REQUIRED)
-public TicketDO bookPassage(CreditCard card, double price) { ... }
-}
-```
+Per rendere più flessibili le transazioni gestite dal container si usa l'annotazione `@TransactionAttribute`. Ad esempio, si consideri `BeanA` e `BeanB`. Se il `BeanA` invoca un metodo del `BeanB`, a default, viene creata un'unica grande transazione che inizia con il metodo di `BeanA` e termina alla fine quando è stato eseguito il metodo di `BeanB`. Se si vuole usare un approccio moderno è necessario rilassare la proprietà ACID di una transazione cioè non devono essere tutte sempre rispettate. Per far ciò si cambia valore dell'annotazione: `REQUIRED` (default), `REQUIRES_NEW`, `MANDATORY`, `NOT_SUPPORTED`, `SUPPORTS`, `NEVER`.
 
 ![single tier](./img/img47.png)
 
+Di seguito viene riportata una rappresentazione grafica per fissare meglio i concetti:
+
+- `NOT_SUPPORTED`:
+![single tier](./img/img57.png)
+- `SUPPORTS`:
+![single tier](./img/img58.png)
+- `REQUIRED`:
+![single tier](./img/img59.png)
+- `REQUIRES_NEW`:
+![single tier](./img/img60.png)
+- `MANDATORY`:
+![single tier](./img/img61.png)
+- `NEVER`:
+![single tier](./img/img62.png)
+
+Se una transazione fallisce bisogna effettuare il rollback della transazione. Può essere scatenata da due cause:
+
+- Eccezione del sistema. Il container automaticamente lancia il rollback.
+- Invocando il metodo `setRollBackOnly` di `EJBContext`. `EJBContext` è un'interfaccia che contente di accedere a molte funzionalità del container come chi è il cliente.
+
+È bene ricordare che non sempre è possibile eseguire un rollback di una transazione. Si consideri questo semplice esempio: `t1` apre la finestra e dopo viene eseguita `t2` ma fallisce. `t1` deve richiuderla ma per un tempo è stata aperta. Nessuno può garantire che non sia entrato un ladro.
+
+È possibile invocare anche metodi di callback associati alla semantica transazionale tramite l'uso dell'interfaccia `SessionSynchronization`:
+
+- Metodo `afterBegin` invocato dal container immediatamente prima
+dell’invocazione del metodo di business all’interno della transazione.
+- Metodo `beforeCompletion` invocato dal container immediatamente prima
+del commit della transazione.
+- Metodo `afterCompletion` invocato dal container immediatamente dopo il
+completamento della transazione (con commit o rollback).
+
+Un esempio di codice è riportato di seguito:
+
+```
+
+import static TransactionAtributeType.*;
+
+@Stateless
+@TransactionAttribute(NOT_SUPPORTED)
+public class TravelAgentBean implements TravelAgentRemote {
+
+    public void setCustormer(Customer cust) { ... }
+    
+    @TransactionAttribute(REQUIRED)
+    public TicketDO bookPassage(CreditCard card, double price) { ... }
+}
+
+```
+
+<a href="#indice">Torna all'indice</a>
+
+### Bean-Managed Transaction
+
+La gestione delle transazioni è a carico dele programmatore, la complessità è molto maggiore ma anche la flessibilità. Un esempio di codice è riportato di seguito:
+
+```
+
+// EJB 3.0: Bean-managed transaction
+@TransactionManagement(BEAN)
+@Stateless
+public class PayrollBean implements Payroll {
+
+    @Resource UserTransaction utx;
+    @PersistenceContext EntityManager payrollMgr;
+    public void setTaxDeductions(int empId, int deductions) {
+
+        utx.begin();
+        payrollMgr.find(Employee.class, empId).setDeductions(deductions);
+        utx.commit();
+    }
+
+    ...
+
+}
+
+```
+
+<a href="#indice">Torna all'indice</a>
+
 ### Gestione delle connessioni a risorse
 
-Un componente può avere bisogno di utilizzare altri componenti e risorse come database e sistemi di messaging. In JEE il ritrovamento delle risorse desiderate è basato su un sistema di nomi ad alta portabilità come JNDI. Se un componente usa l'injection, sarà il container a utilizzare JNDI per ritrovare la risorsa desiderata e non il componente stesso com’era prima di EJB 3.X.
+Un componente può avere bisogno di utilizzare altri componenti e risorse come database e sistemi di messaging. In JEE, il ritrovamento delle risorse desiderate è basato su un sistema di nomi ad alta portabilità come JNDI. Se un componente usa l'injection, sarà il container a utilizzare JNDI per ritrovare la risorsa desiderata e non il componente stesso com’era prima di EJB 3.X.
 
-In particolare, relativamente a risorse a database si usa la connection pooling: connessioni sono riutilizzabili per ridurre latenza e incrementare prestazioni nell’accesso a DB. Si veda l'annotazione @Resource.
+In particolare, relativamente a risorse a database si usa la connection pooling: connessioni sono riutilizzabili per ridurre latenza e incrementare prestazioni nell’accesso a DB. Si veda l'annotazione `@Resource`.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Persistenza
 
 Questo Bean verrà approfondito nel `Capitolo 6`.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Messaggistica
 
 Questo Bean verrà approfondito nel `Capitolo 7`.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Sicurezza
 
-Il container EJB è anche responsabile per svolgere azioni
-di controllo dell’accesso sui metodi del bean
+Il container EJB è anche responsabile nello svolgere azioni di controllo dell’accesso sui metodi del bean cioè verifica se il cliente ha il diritto di invocare una determinata operazione remota.
 
-Il container EJB basa le sue decisioni di sicurezza sui
-concetti di Realm, Utenti, Gruppi e Ruoli:
-
-Realm come collezione di utenti di una singola applicazione (o di
-un loro insieme), controllati dalla stessa policy di autenticazione.
-Possono o meno essere parte dello stesso gruppo.
+Il container EJB basa le sue decisioni di sicurezza sui concetti di realm, utenti, gruppi e ruoli.
 
 ![single tier](./img/img48.png)
 
-Consulta policy di sicurezza da applicare (derivanti da deployment
-descriptor + annotation) per determinare i differenti ruoli di accesso
+Il realm è una collezione di utenti di una singola applicazione (o di un loro insieme), controllati dalla stessa policy di autenticazione.
+Possono o meno essere parte dello stesso gruppo. Ad esempio, accesso tramite username e password, firma digitale etc.
+
+Dopo aver definito il realm, l'amministrazione deve definire gli utenti, gruppi e ruoli. Quando un utente si autentica, ad esempio tramite username e password, l'utente viene riconosciuto con quel username. Ogni utente appartiene ad un gruppo/o più e i permessi vengono mappati sui ruoli cioè il controllo degli accessi avviene su ruoli.
+
+La configurazione della sicurezza viene tipicamente svolta a deployment time (derivanti da deployment descriptor e annotazioni).
+
+Le annotazioni più importanti sono:
+
+- `@RolesAllowed`: il valore è una lista di nomi di ruoli.
+- `@PermitAll`: tutti possono accedere al metodo.
+- `@DenyAll`: nessuno può accedere al metodo (applicabile solo a livello di singolo metodo).
+- `@RunAs`: se il metodo invoca un metodo con questa annotazione, cambia il suo ruolo temporaneamente in un altro. Si pensi quando un sistema operativo chiede di passare a privilegi di amministratore.
+
+La determinazione dei ruoli di sicurezza svolta a runtime dal container. Infatti, il container verifica quale ruolo sta coprendo un determinato utente al momento della richiesta. Di seguito viene riportato un esempio di codice:
 
 ```
 
-@Stateless public PayrollBean implements Payroll {
-public void setBenefitsDeduction(int empId, double deduction) {...}
-public double getBenefitsDeduction(int empId) {...}
-public double getSalary(int empid) {...}
-// setting del salario ha un accesso più restrittivo
-@RolesAllowed(“HR_PayrollAdministrator”)
-public void setSalary(int empId, double salary) {...}
+@Stateless
+public PayrollBean implements Payroll {
+
+    public void setBenefitsDeduction(int empId, double deduction) { ... }
+    public double getBenefitsDeduction(int empId) { ... }
+    public double getSalary(int empid) { ... }
+
+    // setting del salario ha un accesso più restrittivo
+    @RolesAllowed(“HR_PayrollAdministrator”)
+    public void setSalary(int empId, double salary) { ... }
 }
 
 ```
 
-Annotation:
-
-- @RolesAllowed (valore è una lista di nomi di ruoli)
-- @PermitAll,
-- @DenyAll (applicabile solo a livello di singolo metodo)
+<a href="#indice">Torna all'indice</a>
 
 ### Intercettori
 
-Perchè sono importanti componenti asincroni?
-Svolgono operazioni molto onerose in modo asincrono. Ad esempio, richiedere la VM è asincrona perchè ci vuole tempo.
+Sono oggetti capaci di interporsi sulle chiamate di metodo o su eventi del ciclo di vita di SB e MDB. Il container si interpone sempre sulle invocazioni dei metodi della logica applicativa. In particolare, si interpongono dopo l'esecuzione di tutti i servizi di sistema e prima dell’esecuzione del metodo logica applicativa.
 
-Perchè non ci piace l'intercettore?
-Cambiare stati, spargere il codice su più metodi e diventa difficile controllare il codice. perchè mettere il codice di un bean dentro all'intercettore?
+L'intercettore è uno strumento potente ma che bisogna usare con prudenza: cambiare stati, spargere il codice su più metodi, diventa poi difficile controllare il codice. Bisogna stare attenti a mettere il codice di un bean dentro all'intercettore.
+
+Le annotazioni che si usano sono due:
+
+- `@Interceptors`: per associare una classe/metodo di un componente di business alla classe intercettore correlata.
+- `@AroundInvoke`: per definire quale metodo della classe intercettore eseguire all’atto dell’intercettazione.
+
+Gli intercettori possono essere definiti:
+
+- **Specificati nel descrittore di deployment**: si applicano a tutti i metodi di business di ogni componente nel file ejb-jar.
+- **Intercettori a livello di classe**: si applicano ai metodi di business della classe bean.
+- **Intercettori a livello di metodo**: per determinazioni più fini e anche per fare overriding di associazioni precedenti.
+
+Di seguito viene riportato un esempio:
+
+```
+
+//classe Profiler
+public class Profiler {
+
+    @AroundInvoke
+    public Object profile() throws Exception {
+        ... 
+    }
+}
+
+...
+
+//classe intercettata
+@Interceptors(Profiler.class)
+public Objecty m1(...) throws ... { ... }
+
+```
+
+<a href="#indice">Torna all'indice</a>
 
 ## JPA
 
@@ -1596,7 +1772,8 @@ Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con mol
 
 Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumato n volte. Un produttore invia un messaggio a una coda che si chiama named topic mentre il consumatore deve dire al MOM che è interessato a quella comunicazione. I produttori pubblicano sul topic, mentre i consumatori si _abbonano_ al topic. Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che se non c'è persistenza, i messaggi che sono stati inviati quando un consumatore non era presente vengono persi.
 
-![single tier](./img/img13.png)
+![Publish/Subscriber-Light](./img/img13-light.png#gh-light-mode-only)
+![Publish/Subscriber-Dark](./img/img13-dark.png#gh-dark-mode-only)
 
 Ad esempio, questo modello si usa per creare un'applicazione di bacheca per richieste di lavoro. 
 
@@ -1614,9 +1791,11 @@ I MOM moderni supportano la transazionalità di messaggi. È possibile distingue
 Lo scope della transazionalità è di due tipi:
 
 - scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging:
-![single tier](./img/img49.png)
+![Client-to-Messaging System-Light](./img/img49-light.png#gh-light-mode-only)
+![Client-to-Messaging System-Dark](./img/img49-dark.png#gh-dark-mode-only)
 - scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi:
-![single tier](./img/img50.png)
+![Client-to-Client-Light](./img/img50-light.png#gh-light-mode-only)
+![Client-to-Client-Dark](./img/img50-dark.png#gh-dark-mode-only)
 
 La seconda opzione è molto complessa e non viene garantita da molti MOM come ad esempio JMS. Inoltre il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
@@ -1634,13 +1813,13 @@ La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging
 
 JMS è un insieme di interfacce Java che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico.
 
-![single tier](./img/img51.png)
+![JMS Architettura (1)-Light](./img/img51-light.png#gh-light-mode-only)
+![JMS Architettura (1)-Dark](./img/img51-dark.png#gh-dark-mode-only)
 
-JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è solo fortemente integrato. Gli obiettivi sono di avere dei JMS provider generici che dietro le quinte lavorano con sistemi di messaggistica preesistenti, con consistenza con le API dei sistemi di messaging esistenti, indipendenza dal vendor del sistema di messaging, copertura della maggior parte delle funzionalità comuni nei sistemi di messaging e infine la promozione della tecnologia Java per sistemi messaging.
+JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è solo fortemente integrato. Gli obiettivi sono uguali a quelli di JNDI cioè non dipendere da un vendor specifico. Più nello specifico l'architettura è formata dalle entità che vengono mostrate in figura:
 
-Più nello specifico l'architettura è formata dalle entità che vengono mostrate in figura:
-
-![single tier](./img/img52.png)
+![JMS Architettura (2)-Light](./img/img52-light.png#gh-light-mode-only)
+![JMS Architettura (2)-Dark](./img/img52-dark.png#gh-dark-mode-only)
 
 Le entità in gioco sono:
 
@@ -1655,83 +1834,192 @@ Nella comunicazione point-to-point i messaggi in una queue possono essere persis
 
 ### Messaggi JMS
 
-JMS definisce i formati di messaggi e i possibili payload. I messaggi sono una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno.JMS fornisce, quindi, solo un modello astratto e unificato per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce, i singoli vendor personalizzano i formati e questi sono fortemente dipendenti da essi, i vari vendor spesso non riescono a comunicare, vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
+JMS definisce i formati di messaggi e i possibili payload. I messaggi sono una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno.JMS fornisce, quindi, **solo un modello astratto e unificato** per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce. I vari vendor spesso non riescono a comunicare perchè vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
 
 Un messaggio JMS è formato da tre parti:
 
 - Header.
 - Proprietà.
-- Payload.
+- Body (payload).
 
-![single tier](./img/img53.png)
+![Messaggio-Light](./img/img53-light.png#gh-light-mode-only)
+![Messaggio-Dark](./img/img53-dark.png#gh-dark-mode-only)
 
-Header utilizzato per l’identificazione del messaggio e il suo routing, include la destination e la modalità di consegna (persistente, non persistente), timestamp, priorità, campo ReplyTo che serve al ricevente per rispondere.
+L'header è utilizzato per l’identificazione del messaggio e il suo routing, include la destination e la modalità di consegna (persistente, non persistente), timestamp, priorità, campo ReplyTo che serve al ricevente per rispondere.
 
 JMS aggiunge gradi di libertà strutturati per aggiungere nuove feature che sono le proprietà dei messaggi (coppie nome/valore) personalizzate dai vendor e tali proprietà possono essere: campi application-specific, campi dipendenti da e specifici di un particolare sistema di messaging, campi opzionali etc.
 
-Elenco delle proprietà: JMSDestination, JMSDeliveryMode (persistente o no), JMSMessageID, JMSTimeStamp, JMSRedelivered, JMSExpiration, JMSPriority, JMSCorrelationID, JMSReplyTo (destinazione fornita dal produttore, dove inviare la risposta), JMSType (tipo del corpo del messaggio). L’idea di dividere l’header dalla propiretà è dovuta la fatto che i MOM possono scegliere di guardare o meno alle proprietà e può farlo senza aprire il payload. 
+Le proprietà che si possono specificare sono: `JMSDestination`, `JMSDeliveryMode` (persistente o no), `JMSMessageID`, `JMSTimeStamp`, `JMSRedelivered`, `JMSExpiration`, `JMSPriority`, `JMSCorrelationID`, `JMSReplyTo` (destinazione fornita dal produttore, dove inviare la risposta), `JMSType` (tipo del corpo del messaggio).
+
+L’idea di dividere l’header dalla propiretà è dovuta la fatto che i MOM possono scegliere di guardare o meno alle proprietà e può farlo senza aprire il payload del messaggio.
 
 Il payload ovviamente, è il contenuto del messaggio e supporta diversi tipi di contenuto. Ogni tipo definito da una interfaccia: `StreamMessage`, `MapMessage`, `TextMessage`, `ObjectMessage`, `BytesMessage`. Ad esempio:
+
 - `StreamMessage` contiene valori primitivi e supporta lettura sequenziale.
 - `MapMessage` contiene coppie nome/valore e supporta lettura sequenziale o by name.
 - `BytesMessage` contiene byte _non interpretati_ e viene utilizzato di solito per fare match con formati preesistenti.
 
-Queste sono interfacce locali per interrogare i payload.
+Queste sono interfacce locali per interrogare i payload cioè funzionano sul nodo e non si sa come viene trasmesso effettivamente il contenuto.
 
 ### Interfaccia Destination
 
-L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi). Le interfacce figlie sono `Queue` e `Topic`. astrazione di una destinazione punto punto o pub sub. Per aggangiarsi al sistema MOM.
+L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi). Le interfacce figlie sono `Queue` e `Topic`.
 
-![single tier](./img/img14.png)
+![Interfaccia Destination-Light](./img/img14-light.png#gh-light-mode-only)
+![Interfaccia Destination-Dark](./img/img14-dark.png#gh-dark-mode-only)
 
 ### Interfaccia ConnectionFactory
 
-L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS; è simile al gestore di driver (java.sql.DriverManager) in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
+L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS. È simile al gestore di driver (java.sql.DriverManager) in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
 
-![single tier](./img/img15.png)
+![Interfaccia ConnectionFactory-Light](./img/img15-light.png#gh-light-mode-only)
+![Interfaccia ConnectionFactory-Dark](./img/img15-dark.png#gh-dark-mode-only)
 
-Interfaccia connection factory è un’astrazione che rappresenta un singolo canale di comunicazione verso il provider JMS. La connessione viene creata da un oggetto ConnectionFactory, la connessione dovrebbe essere chiusa quando si è terminato di utilizzare la risorsa.
+### Interfaccia Connection
 
-![single tier](./img/img16.png)
+L'interfaccia `Connection` è un’astrazione che rappresenta un singolo canale di comunicazione verso il provider JMS. La connessione viene creata da un oggetto `ConnectionFactory`.
 
-L’interfaccia Session è creata da un oggetto Connection. Una volta connessi al JMS provider attraverso una Connection, tutte le operazioni si svolgono nel contesto di una Session attiva, ogni sessione è singlethreaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni realizzano un contesto "limitato" con "proprietà transazionali"
+![Interfaccia Connection-Light](./img/img16-light.png#gh-light-mode-only)
+![Interfaccia Connection-Dark](./img/img16-dark.png#gh-dark-mode-only)
+
+La connessione dovrebbe essere chiusa quando si è terminato di utilizzare la risorsa.
+
+### Interfaccia Session
+
+L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connessi al JMS provider attraverso una `Connection`, tutte le operazioni si svolgono nel contesto di una sessione attiva, ogni sessione è single-threaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni, quindi, realizzano un contesto _limitato_ con la possibilità di definire proprietà transazionali.
 
 ![single tier](./img/img17.png)
 
-Le interfacce Message Consumer e Message Producer. Per inviare un messaggio verso una Destination, il cliente deve richiedere esplicitamente all’oggetto Session di creare un oggetto MessageProducer Analogamente per l’interfaccia MessageConsumer i clienti che vogliono ricevere messaggi creano un oggetto MessageConsumer (collegato ad un oggetto Destination) attraverso Session. Vi sono due modalità di ricezione dei messaggi: blocking, nonblocking
+### Interfacce Message Consumer e Message Producer
+
+Per inviare un messaggio verso una `Destination`, il cliente deve richiedere esplicitamente all’oggetto `Session` di creare un oggetto `MessageProducer`. Analogamente per l’interfaccia `MessageConsumer` i clienti che vogliono ricevere messaggi creano un oggetto `MessageConsumer` (collegato ad un oggetto `Destination`) attraverso `Session`.
 
 ![single tier](./img/img18.png)
 
-Modalità blocking: solito metodo receive() bloccante. Modalità non blocking: il cliente registra un oggetto MessageListener, quando un messaggio è disponibile, il provider JMS richiama il metodo onMessage() di MessageListener (callback).
+Vi sono due modalità di ricezione dei messaggi:
+
+- **Modalità blocking**: solito metodo `receive()` bloccante.
+- **Modalità non blocking**: il cliente registra un oggetto `MessageListener`, quando un messaggio è disponibile, il provider JMS richiama il metodo `onMessage()` di `MessageListener` (callback).
 
 ![single tier](./img/img19.png)
 
-In questa slide dall’alto verso il basso abbiamo tutte le astrazioni per le due parti 1-1 e 1-N ci sono diverse tipologie di messaggi dovuti alle diverse persistenze
+Le API JMS possono essere riassunte nella seguente figura:
 
 ![single tier](./img/img20.png)
 
-Diagramma di flusso con tutte le operazioni necessarie ad abilitare le comunicazione.
+In modo più dettagliato la stessa figura può essere rappresentata anche nel seguente modo:
 
 ![single tier](./img/img21.png)
 
+### Uso di JMS
+
+I passi per costruire una'aplicazione JMS Sender sono:
+
+- Ottenere un oggetto `ConnectionFactory` e un oggetto `Destination` (`Topic` o `Queue`) attraverso JNDI:
+
+```
+
+// Ottiene oggetto InitialContext
+Context jndiContext = new InitialContext();
+
+// Trova l’oggetto ConnectionFactory via JNDI
+TopicConnectionFactory factory = (TopicConnectionFactory) jndiContext.lookup("MyTopicConnectionFactory");
+
+// Trova l’oggetto Destination via JNDI
+// (Topic o Queue)
+Topic weatherTopic = (Topic) jndiContext.lookup("WeatherData");
+
+```
+
+- Creare una `Connection`:
+
+```
+
+// Richiede la creazione di un oggetto Connection
+// all’oggetto ConnectionFactory
+TopicConnection topicConnection = factory.createTopicConnection();
+
+// Crea un oggetto Session da Connection:
+// primo parametro controlla transazionalità
+// secondo specifica il tipo di ack
+TopicSession session = topicConnection.createTopicSession(false, session.CLIENT_ACKNOWLEDGE);
+
+```
+
+- Creare una `Session` per inviare/ricevere messaggi.
+- Creare un oggetto `MessageProducer` (`TopicPublisher` o `QueueSender`).
+- Avviare la `Connection`.
+- Inviare o pubblicare messaggi.
+- Chiudere `Session` e `Connection`.
+
+```
+
+// Richiede la creazione di un oggetto MessageProducer
+// all’oggetto Session
+// TopicPublisher per Pub/Sub
+// QueueSender per Point-to-Point
+TopicPublisher publisher = session.createPublisher(weatherTopic);
+
+// Avvia la Connection
+// Fino a che la connessione non è avviata, il
+// flusso dei messaggi non comincia: di solito
+// Connection viene avviata prima dell’invocazione
+// dei metodi per la trasmissione messaggi
+topicConnection.start();
+
+// Creazione del messaggio
+TextMessage message = session.createMessage();
+message.setText("text:35 degrees");
+
+// Invio del messaggio
+publisher.publish(message);
+
+```
+
+I passi per Ricevente JMS (non-blocking) sono i seguenti:
+
+- Ottenere oggetti `ConnectionFactory` e `Destination` (`Topic` o
+`Queue`) tramite JNDI.
+- Creare un oggetto `Connection`.
+- Creare un oggetto `Session` per inviare/ricevere messaggi.
+- Creare un oggetto `MessageConsumer` (`TopicSubscriber` o `QueueReceiver`).
+- Registrare `MessageListener` per modalità non-blocking.
+- Avviare la `Connection`.
+- Chiudere `Session` e `Connection`.
+
+```
+
+// Crea oggetto Subscriber da Session
+TopicSubscriber subscriber = session.createSubscriber(weatherTopic);
+
+// Crea oggetto MessageListener
+WeatherListener myListener = new WeatherListener();
+
+// Registra MessageListener per l’oggetto
+// TopicSubscriber desiderato
+subscriber.setMessageListener(myListener);
+
+```
+
 ### Affidabilità dei messaggi
 
-JMS offre diversi livelli di affidabilità dei messaggi. Il livello più alto si ottiene quando abbiamo la persistenza dei messaggi, fattibile con la subscription durevole a un certo topic o con la ricezione da queue avendo la persistenza del messaggio spedito o ricevuto se il ricevente si è assentato per un certo tempo con l’utilizzo di transazioni.
+JMS offre diversi livelli di affidabilità dei messaggi. Il livello più alto si ottiene quando si ha la persistenza dei messaggi, fattibile con la subscription durevole a un certo topic o con la ricezione da queue avendo la persistenza del messaggio spedito o ricevuto se il ricevente si è assentato per un certo tempo con l’utilizzo di transazioni.
 
-Nell’affidabilità di base(Basic reliability) vi è l’utilizzo di messaggi ACK, l’utilizzo di messaggi peristenti, la possibilità di definire dei time to live, la configurazione dei livelli di priorità e l possibilità di consentire l’expiration dei messaggi.
+Nell’affidabilità di base (basic reliability) vi è l’utilizzo di messaggi ACK, di messaggi persistenti, la possibilità di definire dei time-to-live, la configurazione dei livelli di priorità e l possibilità di consentire l’expiration dei messaggi.
 
-Nell’affidabilità avanzata (advanced reliability) possiamo avere abbonamenti durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end to end ma solo tra consumatore e provider e/o tra provider e produttore.
+Nell’affidabilità avanzata (advanced reliability) si può avere _abbonamenti_ durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end-to-end ma solo tra consumatore e provider e/o tra provider e produttore.
 
 ### ACK
 
-Alla ricezione di un messaggio si possono effettuare varie operazioni, prima di tutto vi è il processamento, dopo di che, se necessario vi è lo scambio di ack con varie modalità associate a ciascuna sessione. Se ci sono sessioni con transazionalità, vi è un ack automatico al commitment, poi per la proprietà del tutto o niente in caso di rollback vi è il rinvio di tutti i messaggi. In sessioni senza transazionalità il numero di ack scambiati dipende dall’attributo specificato in createSession().
+Alla ricezione di un messaggio, si possono effettuare varie operazioni: prima di tutto vi è il processamento, dopo di che, se necessario vi è lo scambio di ACK con varie modalità associate a ciascuna sessione. Se ci sono sessioni con transazionalità, vi è un ACK automatico al commitment, poi per la proprietà del tutto o niente in caso di rollback vi è il rinvio di tutti i messaggi. In sessioni senza transazionalità, il numero di ACK scambiati dipende dall’attributo specificato in `createSession()`.
 
-I vari tipi di ack dipendono da chi stimola l’ack:
-- Auto acknowledgment ack generato automaticamente dai metodi MessageConsumer.receive() o MessageListener.onMessage() se la return ha successo e inviato dal supporto.
-- Client acknowledgment il cliente a livello applicativo si fa carico di inviare l’ack con la chiamata al metodo acknowledgement(), questo è cumulativo quindi conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ack a quello corrente.
-- Lazy acknowledgment viene inviato saltuariamente senza limiti nel numero di messaggi, sempre in modo cumulativo. Questo tipo di ack è inviato dal supporto ovvero da JMS stesso.
+I vari tipi di ACK dipendono da chi stimola l'ACK:
 
-Tutti i tipi di messaggi ack hanno la possibilità di essere duplicati e quindi ritrasmessi. Nel caso di auto_ack vi sono  differenze tra caso con persistent e non persistent. Nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi) possiamo avere duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running si rende conto che l’ack precedente non è stato inviato e lo rimanda a l consumer. Questo grazie allo storage persistente. In caso di client_ack ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di lazy_ack abbiamo duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ack e presa dal supporto a piacere. In generale è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
+- **Auto acknowledgment**: ACK generato automaticamente dai metodi `MessageConsumer.receive()` o `MessageListener.onMessage()` se la return ha successo e inviato dal supporto.
+- **Client acknowledgment**: il cliente a livello applicativo si fa carico di inviare l’ACK con la chiamata al metodo `acknowledge()`, questo è cumulativo quindi conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ACK a quello corrente.
+- **Lazy acknowledgment**: viene inviato saltuariamente senza limiti nel numero di messaggi, sempre in modo cumulativo. Questo tipo di ACK è inviato dal supporto ovvero da JMS stesso.
+
+Tutti i tipi di messaggi ACK hanno la possibilità di essere duplicati e quindi ritrasmessi. Nel caso di auto_ack vi sono  differenze tra caso con persistent e non persistent. Nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi) possiamo avere duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running si rende conto che l’ack precedente non è stato inviato e lo rimanda a l consumer. Questo grazie allo storage persistente. In caso di client_ack ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di lazy_ack abbiamo duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ack e presa dal supporto a piacere. In generale è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
 
 In produzione posso avere una semantica bloccante per la send() che risulta in generale essere più semplice della receive(). Il client manda il messaggio il server lo persiste e manda l’ack solo dopo questa operazione, a questo punto la publish ritorna, tutto è molto più sincronizzato. L’ack è bloccante per la send() localmente al produttore. Anche in questo caso vi è la ritrasmissione dei messaggi.
 
@@ -1741,21 +2029,22 @@ Vi è un trade-off tra il numero di ack che possiamo inviare l’overhead che in
 
 ### Priorità
 
-Attributo che fa parte dell’header del messaggio (JMSPriority), a livello di API, quindi è una parte funzionale che tutti devono trattare, sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
+Attributo che fa parte dell’header del messaggio (`JMSPriority`), a livello di API, quindi è una parte funzionale che tutti devono trattare, sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
 
-La priorità e impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il TimeToLive, la priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4, per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo setPriority() e il TTl si imposta con setTimeToLive() dell’interfaccia MessageProducer.
+La priorità è impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il TimeToLive (TTL), la priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4. Per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo `setPriority()` mentre il TTl si imposta con `setTimeToLive()` dell’interfaccia `MessageProducer`.
 
-La configurazione dei livelli di affidabilità è spesso determinata da scelte di default o prese alla creazione di Destination. Per la basic reliability:
-- Persistenza scelta a livello di singolo messaggio, ad es. interfaccia MessageProducer 
-- Controllo degli ACK  scelta a livello di sessione, interfaccia Session 
-- Livelli di priorità scelti a livello di singolo messaggio, ad es. interfaccia MessageProducer 
-- Expiration time scelto a livello di singolo messaggio, ad es. interfaccia MessageProducer Advanced Reliability 
-- Sottoscrizione durevole scelto a livello di sessione, interfaccia Session 
-- Transazionalità scelto a livello di sessione, interfaccia Session
+La configurazione dei livelli di affidabilità è spesso determinata da scelte di default o prese alla creazione di `Destination`. Per la basic reliability:
+
+- Persistenza scelta a livello di singolo messaggio, ad es. interfaccia `MessageProducer`.
+- Controllo degli ACK  scelta a livello di sessione, interfaccia Session.
+- Livelli di priorità scelti a livello di singolo messaggio, ad es. interfaccia `MessageProducer`.
+- Expiration time scelto a livello di singolo messaggio, ad es. interfaccia `MessageProducer` Advanced Reliability.
+- Sottoscrizione durevole scelto a livello di sessione, interfaccia `Session`.
+- Transazionalità scelto a livello di sessione, interfaccia `Session`.
 
 ### Durable Subscription
 
-Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi bhobisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi il provider JMs mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene expiration. All’interno di una singola  applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
+Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi il provider JMs mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene expiration. All’interno di una singola  applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
 
 ### Gestione delle transazioni di JMS
 
@@ -1765,22 +2054,24 @@ Lo scope delle transazioni in JMS è solo fra clienti e sistema di messaging, no
 
 I selettori sono filtri la cui logica di filtraggio è specificabile con stringe SQL like (SQL92) che possono lavorare sui messaggi in arrivo per estrarne solo alcuni. Lato receiver, le applicazioni JMS possono utilizzare selettori per scegliere i soli messaggi che sono potenzialmente di loro interesse, non possono riferire il contenuto dei messaggi, ma solo proprietà e header, non possono leggere il payload. I selettori consentono una gestione più semplice e rimuovono overhead dal provider e dal supporto. Il fatto che non sia content base è dovuto al fatto della retrocompatibilità con i precedenti MOM. 
 
-### JMS e MDB
+### JMS in EJB
 
-I MDB vengono istanziati e prelevati da un poll di istanze quando il messaggio viene ricevuto, vi è un JMS provider che invia i messaggi a istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti, a questo punto il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback tipicamente, a questo punto vi è un applicazione con un EJB client legato all’applicazione che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un session bean con dietro entity bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS. 
+I MDB vengono istanziati e prelevati da un poll di istanze quando il messaggio viene ricevuto. Vi è un JMS provider che invia i messaggi a istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti. A questo punto, il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback tipicamente, a questo punto vi è un applicazione con un EJB client legato all’applicazione che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un session bean con dietro entity bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS. 
 
 L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
 
-![single tier](./img/img22.png)
+![JMS in EJB-Light](./img/img22-light.png#gh-light-mode-only)
+![JMS in EJB-Dark](./img/img22-dark.png#gh-dark-mode-only)
 
 ### ENTERPRISE SERVICE BUS
 
 Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare per la possibilità di mettere insieme  parti di questi sistemi che sono legacy preesitsenti e parti nuove sviluppate di recente. In qeusta direzione dsi sono sviluppati gli ESB infrastrutture molto large con principi di integrazione che sono condivisi. L’idea è di avere disaccopiamento forte e quindi MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, solo quando vi sono riposte complete.  Mettiamo insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Middleware che disaccoppia molto la comunicazione. Modello asincrono e pubsub con in mezzo un intermediario ovvero l’enterprise service bus che offre molte più funzionalità di un mom, ma comunque garantisce lo scambio di messaggi che porta a un’elevata asincronicità e conseguente disaccoppiamento. Le principali caratteristiche sono:
-- Disaccoppiamento  
-- Gestione dei “topic”  
-- Controllo degli accessi  
-- Struttura messaggi  
-- QoS configurabile
+
+- Disaccoppiamento. 
+- Gestione dei _topic_ 
+- Controllo degli accessi.
+- Struttura messaggi.
+- QoS configurabile.
 
 ### Service Oriented Architecture SOA
 
