@@ -2242,7 +2242,7 @@ Ci sono diverse politiche di gestione, le strategie container managed cercano di
 
 Nel mondo Corba quando parliamo di tutte queste funzionalità siamo nel mondo delle interfacce, Corba predispone tutto per il linguaggio target per sollevarci dalla gestione di tutti i problemi legati alla gestione dei servizi di sistema, poi il programmatore si deve occupare di implementare le varie cose.  Ma tutto si riferisce a interfacce in prima battuta. Gli Executor vanno a eseguire nel container, il modello è un container pesante EJB con differenze, ma con un’idea di container pesante in cui i vari Executor vanno a interagire. Gli Executor dei componenti devono implementare un’interfaccia locale per callback lifecycle ad uso del container, vi sono SessionComponent per componenti transienti, ed EntityComponent per componenti persistenti. Gli Executor dei componenti possono interagire con container e componenti connessi via context interface. L’interazione avvien attraverso un contesto che viene esposto attraverso un container.
 
-## 09.Spring
+## Spring
 
 Soluzione a container leggero utile per applicazioni Java Standard Edition, sia per POJO sia per evoluzioni dell’EE java. Ha avuto un forte impatto con idee rivoluzionarie che hanno portato ad evolvere anche EJB.
 
