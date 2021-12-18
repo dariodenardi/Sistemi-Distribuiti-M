@@ -974,11 +974,11 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 - Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider. Ad esempio, per LDAP, l'URL che identifica il servizio, context radice, nome e password per connessione:
 
-```
-hashtableEnvironment.put(Context.PROVIDER_URL, "ldap://localhost:389/dc=etcee,dc=com");
-hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
-hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
-```
+    ```
+    hashtableEnvironment.put(Context.PROVIDER_URL, "ldap://localhost:389/dc=etcee,dc=com");
+    hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
+    hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
+    ```
 
 - Si crea l'oggetto `InitialContext`:
 
@@ -1069,12 +1069,10 @@ Per specificare che tipo di componente si vuole usare, si aggiungono al codice l
 Grazie all'uso delle annotazioni è possibile riscrivere le interfacce in modo POJI (Plain Old Java Interface) cioè l'interfaccia viene riscritta in un modo più simile a quello di come viene scritta un'interfaccia _normale_.
 
 ```
-
 @Remote
 public interface Payroll {
     public void setTaxDeductions(int empId, int deductions);
 }
-
 ```
 
 Le annotazioni che si usano sono: `@Remote`, `@Local`, `@WebService`. Come suggeriscono i nomi, `@Remote` viene usata quando il Session Bean è remoto mentre `@Local` indica che il Session Bean è locale. I Web Service verranno accennati nel `Capitolo 7`.
@@ -1082,11 +1080,9 @@ Le annotazioni che si usano sono: `@Remote`, `@Local`, `@WebService`. Come sugge
 Queste annotazioni si possono specificare a livello di classe o di interfaccia. Nell'esempio di sopra, viene inserita a livello di interfaccia mentre di seguito la stessa interfaccia viene scritta senza annotazione perchè verrà specificata nella classe che lo sviluppatore andrà a scrivere:
 
 ```
-
 public interface Payroll {
     public void setTaxDeductions(int empId, int deductions);
 }
-
 ```
 
 Invece, di seguito è riportato come un pezzo di codice che mostra come venivano scritte le interfacce in EJB 2.X:
@@ -1108,7 +1104,6 @@ Si può notare la differenza di scrittura di codice nelle due versioni.
 Anche la classe che deve scrivere lo sviluppatore con la logica di Business con l'uso delle annotazioni è diventata molto più semplice:
 
 ```
-
 @Stateless
 public class PayrollBean implements Payroll {
 
@@ -1117,7 +1112,6 @@ public class PayrollBean implements Payroll {
     }
 
 }
-
 ```
 
 Si noti la differenza di codice rispetto a EJB 2.X:
@@ -1151,14 +1145,12 @@ Per definire che tipo di componente si sta usando lo si deve inserire a livello 
 Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'interfaccia `jms.MessageListener` come in EJB 2.X e usare l'annotazione `@MessageDriven`:
 
 ```
-
 @MessageDriven
 public class PayrollMDB implements javax.jms.MessageListener {
     public void onMessage(Message msg) {
         ...
     }
 }
-
 ```
 
 <a href="#indice">Torna all'indice</a>
@@ -1170,7 +1162,6 @@ Le risorse di un Vean sono _iniettate_ dal container. In questo modo lo sviluppa
 Di seguito è riportato un pezzo di codice di EJB 3.X:
 
 ```
-
 @EJB
 ShoppingCart myCart;
 
@@ -1179,13 +1170,11 @@ ShoppingCart myCart;
 Collection widgets = myCart.startToShop(“widgets”);
 
 ...
-
 ```
 
 Qui è riportato come bisogna ottenere una risorsa in EJB 2.X:
 
 ```
-
 Context initialContext = new InitialContext();
 ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup("java:comp/env/ejb/cart");
 ShoppingCart myCart = myCartHome.create();
@@ -1196,7 +1185,6 @@ Collection widgets = myCart.startToShop("widgets")
 
 // necessario anche il codice per gestire esplicitamente
 // l’eccezione javax.ejb.CreateException
-
 ```
 
 La dependency injection viene realizzata sempre tramite annotazioni:
@@ -1230,7 +1218,6 @@ Più precisamente, il container si occupa dell’injection della risorsa nel com
             @Resource
             private javax.sql.DataSource myDB;
         }
-
     ```
 
 - **Metodo**: all’inizializzazione del componente:
@@ -1249,7 +1236,6 @@ Più precisamente, il container si occupa dell’injection della risorsa nel com
             ... 
             
         }
-
     ```
 
 - **Classe**: a runtime, by need cioè solo quando si ha necessità di
@@ -1258,7 +1244,6 @@ accedere alla risorsa iniettata:
     ```
         @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory")
         public class SomeMessageBean { ... }
-
     ```
 
     In questo caso è obbligatorio utilizzare gli elementi `name` e `type` perchè altrimenti non si saprebbe a quale campo l'annotazione `@Resource` viene associata.
@@ -1271,13 +1256,11 @@ I vantaggi e gli svantaggi di usare un modo rispetto altro sono:
 Nel caso di risorse multiple si usa l'annotazione `@Resources` a livello classe:
 
 ```
-
 @Resources({
     @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory"),
     @Resource(name="myMailSession", type="javax.mail.Session")
 })
 public class SomeMessageBean { ... }
-
 ```
 
 <a href="#indice">Torna all'indice</a>
@@ -1289,7 +1272,6 @@ Ovviamente il codice deve essere riutilizzabile per non perdere tutto quello che
 Le nuove applicazioni EJB 3.X possono essere clienti di vecchi bean:
 
 ```
-
 // Vista cliente da EJB 3.X di un bean EJB 2.X
 
 @EJB
@@ -1298,7 +1280,6 @@ ShoppingCartHome cartHome;
 Cart cart = cartHome.create();
 cart.addItem(...);
 cart.remove();
-
 ```
 
 Come si può notare dal codice, nell'annotazione EJB è stato specificato `EJBHome` del componente scritto in EJB 2.X.
@@ -1306,7 +1287,6 @@ Come si può notare dal codice, nell'annotazione EJB è stato specificato `EJBHo
 Anche i nuovi bean conformi a EJB 3.X possono essere utilizzati sulle vecchie applicazioni:
 
 ```
-
 // Vista cliente da EJB 2.X di un bean conforme a EJB 3.X
 
 Context initialContext = new InitialContext();
@@ -1314,7 +1294,6 @@ ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup(“java:c
 ShoppingCart cart = myCartHome.create();
 cart.addItem(...);
 cart.remove();
-
 ```
 
 Le interfacce `EJBHome` e `EJBObject` vengono automaticamente mappate sulla classe del bean di tipo EJB 3.X.
@@ -1445,7 +1424,6 @@ completamento della transazione (con commit o rollback).
 Un esempio di codice è riportato di seguito:
 
 ```
-
 import static TransactionAtributeType.*;
 
 @Stateless
@@ -1457,7 +1435,6 @@ public class TravelAgentBean implements TravelAgentRemote {
     @TransactionAttribute(REQUIRED)
     public TicketDO bookPassage(CreditCard card, double price) { ... }
 }
-
 ```
 
 <a href="#indice">Torna all'indice</a>
@@ -1467,7 +1444,6 @@ public class TravelAgentBean implements TravelAgentRemote {
 La gestione delle transazioni è a carico dele programmatore, la complessità è molto maggiore ma anche la flessibilità. Un esempio di codice è riportato di seguito:
 
 ```
-
 // EJB 3.0: Bean-managed transaction
 @TransactionManagement(BEAN)
 @Stateless
@@ -1485,7 +1461,6 @@ public class PayrollBean implements Payroll {
     ...
 
 }
-
 ```
 
 <a href="#indice">Torna all'indice</a>
@@ -1535,7 +1510,6 @@ Le annotazioni più importanti sono:
 La determinazione dei ruoli di sicurezza svolta a runtime dal container. Infatti, il container verifica quale ruolo sta coprendo un determinato utente al momento della richiesta. Di seguito viene riportato un esempio di codice:
 
 ```
-
 @Stateless
 public PayrollBean implements Payroll {
 
@@ -1547,7 +1521,6 @@ public PayrollBean implements Payroll {
     @RolesAllowed(“HR_PayrollAdministrator”)
     public void setSalary(int empId, double salary) { ... }
 }
-
 ```
 
 <a href="#indice">Torna all'indice</a>
@@ -1572,7 +1545,6 @@ Gli intercettori possono essere definiti:
 Di seguito viene riportato un esempio:
 
 ```
-
 //classe Profiler
 public class Profiler {
 
@@ -1587,56 +1559,204 @@ public class Profiler {
 //classe intercettata
 @Interceptors(Profiler.class)
 public Objecty m1(...) throws ... { ... }
-
 ```
 
 <a href="#indice">Torna all'indice</a>
 
 ## JPA
 
-### Cos’è JPA e cosa fa? Perché JPA e non DAO?
+Una parte rilevante nello sviluppo di ogni applicazione distribuita di livello enterprise si concentra sul layer di persistenza. È importante poter accedere, manipolare, gestire dati persistenti che tipicamente sono mantenuti in un DB relazionale.
 
-JPA è la specifica Java standard che consente il supporto al mapping O/R.
+### Object/Relational Mapping (ORM)
+
+Mapping O/R si occupa di risolvere il potenziale mismatch fra i dati mantenuti in un DB relazionale e il loro processamento tramite oggetti in
+esecuzione. Infatti, i database relazionali sono progettati per operazioni di query efficienti su dati di tipo tabellare mentre in Java c'è la necessità di lavorare invece tramite interazione fra oggetti.
+
+### JPA
+
+JPA è la specifica Java standard che consente il supporto al mapping O/R. Le API di persistenza sono state estese per includere anche l’utilizzo al di fuori di un container EJB. Infatti, ci sono le stesse API per sviluppare applicazioni JSE, Web e EJB.
 
 Astrarre: usiamo le annotazioni semplificando il modello della programmazione
 Vista performance: nel 2.1 la connessione era da gestire esplicitamente dallo sviluppatore. Nella 3 la gestione è demandata al container in modo da ottimizzare le risorse.
 
-Ho un unico framework che può essere usato nel mondo Java (standard ed enterprise edition)
+### Perchè usare JPA
 
-DAO: bisogna aprire la connessione, inviare la query, ottenere i risultati. Programmazione molto meno intuitiva.
-Svantaggi:
-- No POJO
-- Ogni oggetto apre una connessione
-- Tutto dipende dal Data Source
+Prima di JPA, il tipico modo per accedere a dati era tramite i metodi Java Data Access Object (DAO). La persistenza e la transazionalità sono gestite a livello di programmazione. Ad esempio, per la creazione di un nuovo dato, l’eliminazione di un dato, la ricerca su chiave primaria.
 
-### Cos’è un’entità in JPA? Che caratteristiche ha? Come può essere la chiave primaria?
+Di seguito viene riportato il codice per la ricerca di una chiave primaria: 
+
+```
+public SampleDAO samplelookup(String id) {
+
+    Connection c = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    SampleDAO dao = null;
+    try {
+        c = getDataSource().getConnection();
+        ps = c.prepareStatement("SELECT ...");
+        ps.setString(1, id);
+        rs = ps.executeQuery();
+        if (rs.first()) {
+            dao = new SampleDAO(id, rs.getString(2), rs.getString(2));
+        }
+    }
+    catch (SQLException se) {
+        throw new SampleDAORuntimeException(se));
+    }
+    finally {
+        if (rs != null) try {rs.close(); } catch (SQLException se) {}
+        if (ps != null) try {ps.close(); } catch (SQLException se) {}
+        if (c != null) try {c.close(); } catch (SQLException se) {}
+    }
+    
+    return dao;
+}
+```
+
+Come si può vedere la codice, bisogna aprire la connessione, inviare la query e infine si ottengono i risultati. La programmazione risulta essere molto meno intuitiva. Gli svantaggi di usare questo approccio sono:
+- No POJO.
+- Ogni oggetto apre una connessione.
+- Tutto dipende dal Data Source.
+
+### Entity
+
+Una Entity è un oggetto “leggero” (non un componente
+“pesante”) appartenente a un dominio di persistenza.
+Usualmente rappresenta dati di un DB relazionale: ogni
+istanza di Entity corrisponde a una riga in una tabella
+
+Un Entity è un POJO (Plain Old Java Object) cioè viene creato attraverso l’invocazione di `new()` come per ogni usuale oggetto Java. Non c'è nessuna necessità di implementare interfacce come si deve fare per gli Entity Bean EJB 2.X.
+
+Può avere stato sia persistente che non persistente. Per specificare che lo stato è non persistente si usa l'annotazione `@Transient`.
+
+Può fare sub-classing di altre classi, sia Entity che non Entity
+
+È serializzabile. Utilizzabile come detached object in altri tier
+(lo vedremo). Non necessari oggetti specifici addizionali per il trasferimento di
+dati, ovvero mancata necessità di DTO espliciti
+
+Una classe Entity deve avere le seguenti caratteristiche:
 
 - annatazione javafx.persistence.Entity
-- cotruttore senza argomenti public o protected
-- nessun metodo deve essere final perchè i valori devono essere modificati
+- avere un costruttore senza argomenti, public o protected (costruttori
+aggiuntivi sono ovviamente consentiti)
+- (nessun metodo o variabile di istanza persistente deve
+essere dichiarata final) perchè i valori devono essere modificati
 
-### Come funziona l’ereditarietà per le entity? Quali sono le strategie di mapping possibili per gli ORM? Che performance comportano?
+Entity possono usare campi persistenti (annotazioni di mapping
+applicate a variabili di istanza) o proprietà persistenti
+(annotazioni di mapping applicate ai metodi getter per proprietà in stile
+JavaBean). NON si possono utilizzare annotazioni di
+entrambi i tipi in una singola Entity
+
+```
+public final class LineItemKey implements Serializable {
+
+    public Integer orderId;
+    public int itemId;
+    
+    public LineItemKey() {
+    }
+
+    public LineItemKey(Integer orderId, int itemId) {
+        this.orderId = orderId;
+        this.itemId = itemId;
+    }
+
+    public boolean equals(Object otherOb) {
+        
+        if (this == otherOb) { 
+            return true;
+        }
+        
+        if (!(otherOb instanceof LineItemKey)) {
+            return false;
+        }
+        
+        LineItemKey other = (LineItemKey) otherOb;
+        return ((orderId==null ? other.orderId==null : orderId.equals(other.orderId)) && (itemId == other.itemId));
+    }
+
+    public int hashCode() {
+        return ((orderId==null?0:orderId.hashCode())^((int) itemId));
+    }
+
+    public String toString() {
+        return "" + orderId + "-" + itemId;
+    } 
+
+}
+```
+
+### Ereditarietà Entity
+
+Possono estendere classi non-Entity e classi non-Entity possono
+estendere entità
+
+Classi Entity possono essere sia astratte che concrete
+
+Se una query è effettuata su una Entity astratta, si opera su tutte le
+sue sottoclassi non astratte
 
 MappedSuperclass: integrare con codice non scritto da noi
 
+```
+@Entity
+public abstract class Employee {
+@Id
+protected Integer employeeId; ... }
+@Entity
+public class FullTimeEmployee extends Employee {
+protected Integer salary; ... }
+@Entity
+public class PartTimeEmployee extends Employee {
+protected Float hourlyWage; }
+```
 
-### Come vengono gestite le molteplicità nelle relazioni? E la direzionalità?
+### Strategie di Mapping
+
+come provider di persistenza debba
+fare mapping della gerarchia di classi Entity definita
+sulle tabelle del DB
 
 - **SINGLE_TABLE**: tutte i campi in un'unica tabella con un attributo chiamato discriminator che consente di stabilire il tipo di Entity. Questo può servire per risalire alla tipologia dell'oggetto che ci interessa. Scarsa efficienza se abbiamo molti NULL nella tabella
 - **TABLE_PER_CLASS**: ogni tabella ha colonne per ogni proprietà comprese quelle ereditatte dalle superclassi. Non c'è bisogno del discriminator e non è uno schema normalizzato
 - **JOINED**: ogni tabella ha le colonne con valore con le sole proprietà definite nella classe specifica ma lo schema è normalizzato (schema non ridondante). Se bisogna normalizzare i dati non c'è ridondanza ma dobbiamo effettuare le join. Se la gerarchia è estesa il costo diventa molto alto.
 
-Molteplicità delle relazioni: 1-1 N-1 N-M
+Default è InheritanceType.SINGLE_TABLE, usato se l’annotation
+@Inheritance non è specificata alla classe radice gerarchia di Entity
 
-### ORM Direzionalià delle relazioni.
+### Molteplicità nelle Relazioni
 
-Le relazion i possono essere mono o bidirezionali possiamo avere relazioni tra le varie entità un uno o in più sensi. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono passsare da un’entità all’altra.  Inoltre si possono utilizzzare per navigare tra le varie entità e capire Quali relazioni cancellare.
+Ci sono quattro tipologie di molteplicità che corrispondono a quelle delle
+relazioni E/R:
+
+- One-to-one: ogni istanza di Entity è associata a una singola istanza
+di un’altra Entity. Annotazione javax.persistence.OneToOne sul
+corrispondente campo/proprietà persistente
+- One-to-many: ad esempio un ordine di vendita con associati oggetti
+multipli. Annotazione javax.persistence.OneToMany
+- Many-to-one: viceversa, uno degli oggetti contenuti nell’ordine di
+vendita. Annotazione javax.persistence.ManyToOne
+- Many-to-many: annotation javax.persistence.ManyToMany
+
+Nel mondo ad oggetti, non si cattura questo aspetto che c'è nel mondo relazione per cui è importante aggiungere l'annotazione nella classe Entity che si sta costruendo sopra al campo/proprietà appropriata.
+
+### Direzionalità delle relazioni
+
+Le relazioni possono essere monodirezionale o bidirezionali. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono passsare da un’entità all’altra. Inoltre si possono utilizzzare per navigare tra le varie entità e capire quali relazioni cancellare.
+
+```
+@OneToMany(cascade=REMOVE, mappedBy="customer")
+public Set<Order> getOrders() { return orders; }
+```
 
 ### Gestione a runtime di Entity
 
 Cosa vaviene a runitme e come il container riesce a gestire tutte le info per la gestione della ersistenza. A livvelo di container abbiamo un Entity Manager che si occupa della persistenza. All’interno di tale contesto è come se entity vivessero con il loro cilo di vita. Il constesto di persistenza è quindi il luogo dove esistono tutte le istanze di entity. L’entity manager può essere utilizzato demandando completamente la gestione al container o gestendolo a livello applicativo. Come per le transazioni.
 
-### Container managed entity manager
+### Container managed EntityManager
 
 Tutto è interallaciato con la gestione delle transazioni, il conttesto è automaticamnete propagato dal container ai servizi applicativi. Oltre ad essere nello stesso container devono essere nello stesso contesto di persistenza quindi con l’annotazione @PErsistenceContext viene passtao Entity MAnger. In questo senso l’entity manager è container managed poiché è direttamnete passato. In vece se il contesto di persistenza non propagato ai servizi applicativi l’entity manager non è passato e questo contesto è utilizzato quando l’applicazione necessita di più contesti di persistena contemporaneamente.
 
@@ -1664,7 +1784,9 @@ I parametri con nome sonom parametri di query preceduti da : sono legati al valo
 
 Insieme di tutte le classi gestite dall’entity manager in un’applicazione. Rappresenta l’insieme di dati che sono significativi e sui quali vogliamo agire per una certa applicazione e che sono contenuti in un unico data store. L’entità di persistenza è un concetto legato al deployment e dato un datastore sappiamo quali sono tutti i componenti su cui lavorare per arrivare a quello store. Nel caso del contesto di persitenza ragioniamo in termini di transazioni da effettuare e nel senso degli oggeti che devono essere persistiti,  non in termini di deployment delle classi,. Queste due cose sono ortogonali. 
 
-Per le unità di persistenza possiamo definire un data source e poi tutti i vari componenti coinvolti- JTA data source specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container. 
+Per le unità di persistenza possiamo definire un data source e poi tutti i vari componenti coinvolti- JTA data source specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container.
+
+### Loading Lazy/Eager
 
 Controllare il caricamento dei dati:
 
@@ -1918,7 +2040,6 @@ I passi per costruire una'aplicazione JMS Sender sono:
 - Ottenere un oggetto `ConnectionFactory` e un oggetto `Destination` (`Topic` o `Queue`) attraverso JNDI:
 
 ```
-
 // Ottiene oggetto InitialContext
 Context jndiContext = new InitialContext();
 
@@ -1928,13 +2049,11 @@ TopicConnectionFactory factory = (TopicConnectionFactory) jndiContext.lookup("My
 // Trova l’oggetto Destination via JNDI
 // (Topic o Queue)
 Topic weatherTopic = (Topic) jndiContext.lookup("WeatherData");
-
 ```
 
 - Creare una `Connection`:
 
 ```
-
 // Richiede la creazione di un oggetto Connection
 // all’oggetto ConnectionFactory
 TopicConnection topicConnection = factory.createTopicConnection();
@@ -1943,7 +2062,6 @@ TopicConnection topicConnection = factory.createTopicConnection();
 // primo parametro controlla transazionalità
 // secondo specifica il tipo di ack
 TopicSession session = topicConnection.createTopicSession(false, session.CLIENT_ACKNOWLEDGE);
-
 ```
 
 - Creare una `Session` per inviare/ricevere messaggi.
@@ -1953,7 +2071,6 @@ TopicSession session = topicConnection.createTopicSession(false, session.CLIENT_
 - Chiudere `Session` e `Connection`.
 
 ```
-
 // Richiede la creazione di un oggetto MessageProducer
 // all’oggetto Session
 // TopicPublisher per Pub/Sub
@@ -1973,7 +2090,6 @@ message.setText("text:35 degrees");
 
 // Invio del messaggio
 publisher.publish(message);
-
 ```
 
 I passi per Ricevente JMS (non-blocking) sono i seguenti:
@@ -1988,7 +2104,6 @@ I passi per Ricevente JMS (non-blocking) sono i seguenti:
 - Chiudere `Session` e `Connection`.
 
 ```
-
 // Crea oggetto Subscriber da Session
 TopicSubscriber subscriber = session.createSubscriber(weatherTopic);
 
@@ -1998,7 +2113,6 @@ WeatherListener myListener = new WeatherListener();
 // Registra MessageListener per l’oggetto
 // TopicSubscriber desiderato
 subscriber.setMessageListener(myListener);
-
 ```
 
 ### Affidabilità dei messaggi
@@ -2454,7 +2568,7 @@ public MessageProvider getMessageProvider();
 ```
 
 ```
-ublic class StandardOutMessageRenderer implements MessageRenderer { 
+public class StandardOutMessageRenderer implements MessageRenderer { 
 // MessageProvider è una interfaccia Java ora 
 private MessageProvider messageProvider = null; 
 public void render() { 
