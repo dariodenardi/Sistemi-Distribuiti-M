@@ -1572,7 +1572,7 @@ Una parte rilevante nello sviluppo di ogni applicazione distribuita di livello e
 Mapping O/R si occupa di risolvere il potenziale mismatch fra i dati mantenuti in un DB relazionale e il loro processamento tramite oggetti in
 esecuzione. Infatti, i database relazionali sono progettati per operazioni di query efficienti su dati di tipo tabellare mentre in Java c'è la necessità di lavorare invece tramite interazione fra oggetti.
 
-### JPA
+### Java Persistence API (JPA)
 
 JPA è la specifica Java standard che consente il supporto al mapping O/R. Le API di persistenza sono state estese per includere anche l’utilizzo al di fuori di un container EJB. Infatti, ci sono le stesse API per sviluppare applicazioni JSE, Web e EJB.
 
@@ -1615,42 +1615,65 @@ public SampleDAO samplelookup(String id) {
 ```
 
 Come si può vedere la codice, bisogna aprire la connessione, inviare la query e infine si ottengono i risultati. La programmazione risulta essere molto meno intuitiva. Gli svantaggi di usare questo approccio sono:
+
 - No POJO.
 - Ogni oggetto apre una connessione.
 - Tutto dipende dal Data Source.
 
 ### Entity
 
-Una Entity è un oggetto “leggero” (non un componente
-“pesante”) appartenente a un dominio di persistenza.
-Usualmente rappresenta dati di un DB relazionale: ogni
-istanza di Entity corrisponde a una riga in una tabella
+Una Entity è un oggetto POJO (Plain Old Java Object) e _leggero_ (non un componente pesante) cioè può essere trattato sia all'interno di un container ma anche all'esterno. Non c'è nessuna necessità di implementare interfacce come si deve fare per gli Entity Bean EJB 2.X. Un Entity appartiene a un dominio di persistenza nel senso che rappresenta dati di un DB. Ogni istanza di Entity corrisponde a una riga di una tabella relazionale.
 
-Un Entity è un POJO (Plain Old Java Object) cioè viene creato attraverso l’invocazione di `new()` come per ogni usuale oggetto Java. Non c'è nessuna necessità di implementare interfacce come si deve fare per gli Entity Bean EJB 2.X.
+Una classe Entity deve avere le seguenti caratteristiche:
 
-Può avere stato sia persistente che non persistente. Per specificare che lo stato è non persistente si usa l'annotazione `@Transient`.
-
-Può fare sub-classing di altre classi, sia Entity che non Entity
+- Ha la annatazione `javafx.persistence.Entity`.
+- avere un costruttore senza argomenti, public o protected (costruttori
+aggiuntivi sono ovviamente consentiti)
+- Nessun metodo o variabile di istanza persistente deve essere dichiarata final perchè i valori devono essere modificati.
+- Le annotazioni di mapping possono essere applicate solo a variabili di istanza o ai metodi getter per proprietà in stile JavaBean. Non si possono utilizzare annotazioni di entrambi i tipi in una singola classe Entity.
 
 È serializzabile. Utilizzabile come detached object in altri tier
 (lo vedremo). Non necessari oggetti specifici addizionali per il trasferimento di
 dati, ovvero mancata necessità di DTO espliciti
 
-Una classe Entity deve avere le seguenti caratteristiche:
+Se una istanza di Entity è passata per valore (by value) come oggetto
+detached (vedremo che cosa vuol dire), ad esempio all’interfaccia remota di
+un session bean, allora la classe deve implementare l’interfaccia Serializable
 
-- annatazione javafx.persistence.Entity
-- avere un costruttore senza argomenti, public o protected (costruttori
-aggiuntivi sono ovviamente consentiti)
-- (nessun metodo o variabile di istanza persistente deve
-essere dichiarata final) perchè i valori devono essere modificati
+- Variabili di istanza persistenti devono essere dichiarate private,
+protected, o package-private, e possono essere accedute
+direttamente solo dai metodi della classe dell’Entity
 
-Entity possono usare campi persistenti (annotazioni di mapping
-applicate a variabili di istanza) o proprietà persistenti
-(annotazioni di mapping applicate ai metodi getter per proprietà in stile
-JavaBean). NON si possono utilizzare annotazioni di
-entrambi i tipi in una singola Entity
+Campi persistenti:
+- Consentito accesso diretto alle variabili di istanza
+- Tutti i campi non annotati `javax.persistence.Transient` sono gestiti come persistenti verso il DB
+
+Proprietà persistenti:
+- Si devono seguire le convenzioni sui metodi tipiche dei JavaBean. cioè devono avere i metodi getter e setter: getProperty, setProperty, isProperty. Ad esempio, se è stata creata la classe Customer con proprietà persistenti, con una variabile di istanza privata chiamata firstName di tipo String, i metodi saranno String getFirstName() e setFirstName(String firstName).
+
+Per campi/proprietà persistenti con valori non singoli (collection-valued) => uso di
+Java Collection. Ad esempio:
 
 ```
+protected Set<Purchase> purchases;
+```
+
+Ogni Entity deve avere un identificatore unico perchè nel mondo relazionale esistono le primary key. La chiave primaria di una Entity può essere semplice o composta:
+
+- **Chiave primaria semplice**: si usa l'annotazione `javax.persistence.Id` sulla proprietà o sul campo che deve ricoprire il ruolo di chiave.
+- **Chiave primaria composita**: anche un insieme di campi o proprietà
+persistenti. Annotazioni javax.persistence.EmbeddedId e
+javax.persistence.IdClass
+
+Alcuni requisiti sulle classi di chiave primaria sono:
+
+- Costruttore di default deve essere public
+- Implementare i metodi `hashCode()` e `equals(Object other)`
+- Serializzabile
+- Se la classe contiene campi/proprietà multiple della classe Entity, nomi e tipi dei campi/proprietà nella chiave devono fare match con quelli nella classe Entity
+
+```
+@Entity
 public final class LineItemKey implements Serializable {
 
     public Integer orderId;
@@ -1689,29 +1712,69 @@ public final class LineItemKey implements Serializable {
 }
 ```
 
-### Ereditarietà Entity
+### Ereditarietà e Polimorfismo
 
-Possono estendere classi non-Entity e classi non-Entity possono
-estendere entità
+In JPA, c'è il supporto all'ereditarietà e al polimorfismo. Una classe Entity può estendere una classe non-Entity e una classe non-Entity può estendere Entity.
 
-Classi Entity possono essere sia astratte che concrete
-
-Se una query è effettuata su una Entity astratta, si opera su tutte le
-sue sottoclassi non astratte
-
-MappedSuperclass: integrare con codice non scritto da noi
+Le classi Entity possono essere sia astratte che concrete. Se una query è effettuata su un Entity astratta, si opera su tutte le sue sottoclassi non astratte.
 
 ```
 @Entity
 public abstract class Employee {
-@Id
-protected Integer employeeId; ... }
+
+    @Id
+    protected Integer employeeId;
+    
+    ...
+
+}
+
 @Entity
 public class FullTimeEmployee extends Employee {
-protected Integer salary; ... }
+
+    protected Integer salary;
+
+    ...
+
+}
+
 @Entity
 public class PartTimeEmployee extends Employee {
-protected Float hourlyWage; }
+
+    protected Float hourlyWage;
+
+}
+```
+
+Esiste anche un'altra annotazione `@MappedSuperclass`: lo stato definito in questa classe, è stato persistente **solo** per le sue classi figlie. Gli oggetti creati dalle classi figlie saranno persistenti ma gli oggetti marcati con `@MappedSuperclass` non sono entità persistenti. Questa annotazione evita di creare tabelle inutili quando non servono.
+
+```
+@MappedSuperclass
+public class Employee {
+
+    @Id
+    protected Integer employeeId;
+    
+    ...
+}
+
+@Entity
+public class FullTimeEmployee extends Employee {
+
+    protected Integer salary;
+    
+    ...
+    
+}
+
+@Entity
+public class PartTimeEmployee extends Employee {
+
+    protected Float hourlyWage;
+    
+    ...
+
+}
 ```
 
 ### Strategie di Mapping
@@ -1732,16 +1795,23 @@ Default è InheritanceType.SINGLE_TABLE, usato se l’annotation
 Ci sono quattro tipologie di molteplicità che corrispondono a quelle delle
 relazioni E/R:
 
-- One-to-one: ogni istanza di Entity è associata a una singola istanza
-di un’altra Entity. Annotazione javax.persistence.OneToOne sul
-corrispondente campo/proprietà persistente
-- One-to-many: ad esempio un ordine di vendita con associati oggetti
-multipli. Annotazione javax.persistence.OneToMany
-- Many-to-one: viceversa, uno degli oggetti contenuti nell’ordine di
-vendita. Annotazione javax.persistence.ManyToOne
-- Many-to-many: annotation javax.persistence.ManyToMany
+- **One-to-one**: ogni istanza di Entity è associata a una singola istanza
+di un’altra Entity. Si usa l'annotazione `javax.persistence.OneToOne` sul
+corrispondente campo/proprietà persistente.
+- **One-to-many**: ad esempio un ordine di vendita con associati oggetti
+multipli. Si usa l'annotazione `javax.persistence.OneToMany`.
+- **Many-to-one**: viceversa, uno degli oggetti contenuti nell’ordine di
+vendita. Si usa l'annotazione `javax.persistence.ManyToOne`.
+- **Many-to-many**: so usa l'annotation `javax.persistence.ManyToMany`.
 
-Nel mondo ad oggetti, non si cattura questo aspetto che c'è nel mondo relazione per cui è importante aggiungere l'annotazione nella classe Entity che si sta costruendo sopra al campo/proprietà appropriata.
+Nel mondo ad oggetti, non si cattura questo aspetto che c'è nel mondo relazione per cui è importante aggiungere l'annotazione nella classe Entity che si sta costruendo sopra al campo/proprietà appropriata:
+
+```
+@OneToMany
+public Set<Purchase> getPurchases() {
+    return purchases;
+}
+```
 
 ### Direzionalità delle relazioni
 
@@ -1749,7 +1819,9 @@ Le relazioni possono essere monodirezionale o bidirezionali. Questo tipo di rela
 
 ```
 @OneToMany(cascade=REMOVE, mappedBy="customer")
-public Set<Order> getOrders() { return orders; }
+public Set<Order> getOrders() {
+    return orders;
+}
 ```
 
 ### Gestione a runtime di Entity
@@ -1862,8 +1934,8 @@ I vantaggi del MOM sono l’indipendenza rispetto al dove si sta lavorando e ris
 
 I vantaggi dal punto di vista architetturale in un’applicazione distribuita di grandi dimensioni sono:
 
-- La scalabilità ovvero la capacità di gestire un numero elevato di clienti. Se si vuole ottenere scalabilità, basta incrementare solo le capacità hardware del sistema di messaging senza effettuare cambiamenti nella logica applicativa, nell’architettura in modo da non avere un grosso degrado nel throughput di sistema.
-- La robustezza ovvero i consumatori, i produttori e la rete possono avere un fault senza problemi. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
+- La **scalabilità** ovvero la capacità di gestire un numero elevato di clienti. Se si vuole ottenere scalabilità, basta incrementare solo le capacità hardware del sistema di messaging senza effettuare cambiamenti nella logica applicativa, nell’architettura in modo da non avere un grosso degrado nel throughput di sistema.
+- La **robustezza** ovvero i consumatori, i produttori e la rete possono avere un fault senza problemi. Quindi, grazie al MOM se avvengono dei fault in diversi punti del sistema, nelle altre isole del sistema il resto può continuare a funzionare.
 
 Tra gli esempi di sistemi di messaging ci sono le transazioni commerciali che usano carte di credito, i report con previsioni del tempo, i workflow, la gestione di dispositivi di rete, la gestione di supply chain, il customer care, ma soprattutto vengono usati nelle architetture distribuite e cloud a tutti i livelli (dai livelli più bassi fino al livello applicativo).
 
@@ -1901,13 +1973,13 @@ Ad esempio, questo modello si usa per creare un'applicazione di bacheca per rich
 
 ### Affidabilità nello scambio di messaggi
 
-Più la semantica di affidabilità è stringente più il throughput del sistema si abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa.
+Più la semantica di affidabilità è stringente più il throughput del sistema si abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa. Di solito i supporti ai sistemi di messaging utilizzano storage persistente per preservare i messaggi.
 
 ### Transazionalità
 
 I MOM moderni supportano la transazionalità di messaggi. È possibile distinguere due fasi:
 
-- **Produzione transazionale**: il produttore può raggruppare una serie di messaggi in un’unica transazione, o tutti i messaggi sono accodati con successo o nessuno.
+- **Produzione transazionale**: il produttore può raggruppare una serie di messaggi in un’unica transazione: o tutti i messaggi sono accodati con successo o nessuno.
 - **Consumo transazionale**: il consumatore riceve un gruppo di messaggi come serie di oggetti con proprietà transazionale e fino a che tutti i messaggi non sono stati consegnati e ricevuti con successo, i messaggi sono mantenuti permanentemente nella loro queue o topic. Per garantire transazionalità il MOM deve utilizzare un repository persistente.
 
 Lo scope della transazionalità è di due tipi:
@@ -1919,7 +1991,7 @@ Lo scope della transazionalità è di due tipi:
 ![Client-to-Client-Light](./img/img50-light.png#gh-light-mode-only)
 ![Client-to-Client-Dark](./img/img50-dark.png#gh-dark-mode-only)
 
-La seconda opzione è molto complessa e non viene garantita da molti MOM come ad esempio JMS. Inoltre il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
+La seconda opzione è molto complessa e non viene garantita da molti MOM come ad esempio JMS. Inoltre, il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
 ### Sicurezza
 
@@ -1952,11 +2024,19 @@ Le entità in gioco sono:
 
 ### Tipi di comunicazioni
 
-Nella comunicazione point-to-point i messaggi in una queue possono essere persistenti o non persistenti. Nella comunicazione pub/sub, i messaggi non durevoli sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza. I messaggi durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
+Nella comunicazione point-to-point i messaggi in una queue possono essere:
+
+- Persistenti;
+- Non persistenti.
+
+Nella comunicazione pub/sub, i messaggi possono essere:
+
+- Non durevoli: sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza.
+- Durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
 
 ### Messaggi JMS
 
-JMS definisce i formati di messaggi e i possibili payload. I messaggi sono una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno.JMS fornisce, quindi, **solo un modello astratto e unificato** per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce. I vari vendor spesso non riescono a comunicare perchè vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
+JMS definisce i formati dei messaggi. I messaggi sono una modalità di comunicazione disaccoppiata fra le applicazioni. I veri formati che attualmente sono utilizzati per l’encoding dei messaggi sono fortemente dipendenti dal vendor del sistema di messaging. Un sistema di messaging può interoperare completamente solo al suo interno. JMS fornisce, quindi, **solo un modello astratto e unificato** per la rappresentazione interoperabile dei messaggi attraverso le sue interfacce. I vari vendor spesso non riescono a comunicare perchè vi è una perdita di interoperabilità dovuta al fatto che Java lascia libertà nella definizione dei protocolli.
 
 Un messaggio JMS è formato da tre parti:
 
@@ -1992,7 +2072,7 @@ L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una qu
 
 ### Interfaccia ConnectionFactory
 
-L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS. È simile al gestore di driver (java.sql.DriverManager) in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
+L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS. È simile al gestore di driver `java.sql.DriverManager` in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
 
 ![Interfaccia ConnectionFactory-Light](./img/img15-light.png#gh-light-mode-only)
 ![Interfaccia ConnectionFactory-Dark](./img/img15-dark.png#gh-dark-mode-only)
@@ -2008,22 +2088,27 @@ La connessione dovrebbe essere chiusa quando si è terminato di utilizzare la ri
 
 ### Interfaccia Session
 
-L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connessi al JMS provider attraverso una `Connection`, tutte le operazioni si svolgono nel contesto di una sessione attiva, ogni sessione è single-threaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni, quindi, realizzano un contesto _limitato_ con la possibilità di definire proprietà transazionali.
+L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connessi al JMS provider attraverso una `Connection`, tutte le operazioni si svolgono nel contesto di una sessione attiva, ogni sessione è single-threaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni, quindi, realizzano un contesto _limitato_ con la possibilità di definire proprietà transazionali. Nel caso di invio di due messaggi si ha la garanzia che il primo messaggio venga accodato nella coda prima del secondo messaggio.
 
-![single tier](./img/img17.png)
+![Interfaccia Session-Light](./img/img17-light.png#gh-light-mode-only)
+![Interfaccia Session-Dark](./img/img17-dark.png#gh-dark-mode-only)
 
 ### Interfacce Message Consumer e Message Producer
 
 Per inviare un messaggio verso una `Destination`, il cliente deve richiedere esplicitamente all’oggetto `Session` di creare un oggetto `MessageProducer`. Analogamente per l’interfaccia `MessageConsumer` i clienti che vogliono ricevere messaggi creano un oggetto `MessageConsumer` (collegato ad un oggetto `Destination`) attraverso `Session`.
 
-![single tier](./img/img18.png)
+![Interfaccia Message Producer-Light](./img/img18-light.png#gh-light-mode-only)
+![Interfaccia Message Producer-Dark](./img/img18-dark.png#gh-dark-mode-only)
 
 Vi sono due modalità di ricezione dei messaggi:
 
 - **Modalità blocking**: solito metodo `receive()` bloccante.
 - **Modalità non blocking**: il cliente registra un oggetto `MessageListener`, quando un messaggio è disponibile, il provider JMS richiama il metodo `onMessage()` di `MessageListener` (callback).
 
-![single tier](./img/img19.png)
+![Interfaccia Message Consumer-Light](./img/img19-light.png#gh-light-mode-only)
+![Interfaccia Message Consumer-Dark](./img/img19-dark.png#gh-dark-mode-only)
+
+### Riassunto API JMS
 
 Le API JMS possono essere riassunte nella seguente figura:
 
@@ -2035,7 +2120,12 @@ In modo più dettagliato la stessa figura può essere rappresentata anche nel se
 
 ### Uso di JMS
 
-I passi per costruire una'aplicazione JMS Sender sono:
+I passi per costruire una'aplicazione JMS sono:
+
+- Sviluppare un JMS Sender.
+- Sviluppare un JMS Receiver.
+
+I passaggi per costruire un JMS Sender sono:
 
 - Ottenere un oggetto `ConnectionFactory` e un oggetto `Destination` (`Topic` o `Queue`) attraverso JNDI:
 
@@ -2057,18 +2147,18 @@ Topic weatherTopic = (Topic) jndiContext.lookup("WeatherData");
 // Richiede la creazione di un oggetto Connection
 // all’oggetto ConnectionFactory
 TopicConnection topicConnection = factory.createTopicConnection();
+```
 
+- Creare una `Session` per inviare/ricevere messaggi:
+
+```
 // Crea un oggetto Session da Connection:
 // primo parametro controlla transazionalità
 // secondo specifica il tipo di ack
 TopicSession session = topicConnection.createTopicSession(false, session.CLIENT_ACKNOWLEDGE);
 ```
 
-- Creare una `Session` per inviare/ricevere messaggi.
-- Creare un oggetto `MessageProducer` (`TopicPublisher` o `QueueSender`).
-- Avviare la `Connection`.
-- Inviare o pubblicare messaggi.
-- Chiudere `Session` e `Connection`.
+- Creare un oggetto `MessageProducer` (`TopicPublisher` o `QueueSender`):
 
 ```
 // Richiede la creazione di un oggetto MessageProducer
@@ -2076,14 +2166,22 @@ TopicSession session = topicConnection.createTopicSession(false, session.CLIENT_
 // TopicPublisher per Pub/Sub
 // QueueSender per Point-to-Point
 TopicPublisher publisher = session.createPublisher(weatherTopic);
+```
 
+- Avviare la `Connection`:
+
+```
 // Avvia la Connection
 // Fino a che la connessione non è avviata, il
 // flusso dei messaggi non comincia: di solito
 // Connection viene avviata prima dell’invocazione
 // dei metodi per la trasmissione messaggi
 topicConnection.start();
+```
 
+- Inviare o pubblicare messaggi:
+
+```
 // Creazione del messaggio
 TextMessage message = session.createMessage();
 message.setText("text:35 degrees");
@@ -2092,21 +2190,29 @@ message.setText("text:35 degrees");
 publisher.publish(message);
 ```
 
-I passi per Ricevente JMS (non-blocking) sono i seguenti:
+- Chiudere `Session` e `Connection`:
+
+```
+session.close();
+topicConnection.close();
+```
+
+I passaggi per costruire un JMS Receiver (non-blocking) sono:
 
 - Ottenere oggetti `ConnectionFactory` e `Destination` (`Topic` o
 `Queue`) tramite JNDI.
 - Creare un oggetto `Connection`.
 - Creare un oggetto `Session` per inviare/ricevere messaggi.
-- Creare un oggetto `MessageConsumer` (`TopicSubscriber` o `QueueReceiver`).
-- Registrare `MessageListener` per modalità non-blocking.
-- Avviare la `Connection`.
-- Chiudere `Session` e `Connection`.
+- Creare un oggetto `MessageConsumer` (`TopicSubscriber` o `QueueReceiver`):
 
 ```
 // Crea oggetto Subscriber da Session
 TopicSubscriber subscriber = session.createSubscriber(weatherTopic);
+```
 
+- Registrare `MessageListener` per modalità non-blocking:
+
+```
 // Crea oggetto MessageListener
 WeatherListener myListener = new WeatherListener();
 
@@ -2114,6 +2220,11 @@ WeatherListener myListener = new WeatherListener();
 // TopicSubscriber desiderato
 subscriber.setMessageListener(myListener);
 ```
+
+- Avviare la `Connection`.
+- Chiudere `Session` e `Connection`.
+
+Il codice è stato inserito solo nei punti diversi rispetto al produttore.
 
 ### Affidabilità dei messaggi
 
