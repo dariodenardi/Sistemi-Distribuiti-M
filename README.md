@@ -1622,13 +1622,12 @@ Come si può vedere la codice, bisogna aprire la connessione, inviare la query e
 
 ### Entity
 
-Una Entity è un oggetto POJO (Plain Old Java Object) e _leggero_ (non un componente pesante) cioè può essere trattato sia all'interno di un container ma anche all'esterno. Non c'è nessuna necessità di implementare interfacce come si deve fare per gli Entity Bean EJB 2.X. Un Entity appartiene a un dominio di persistenza nel senso che rappresenta dati di un DB. Ogni istanza di Entity corrisponde a una riga di una tabella relazionale.
+Una Entity è un oggetto POJO (Plain Old Java Object) e _leggero_ (non un componente pesante) cioè può essere trattato sia all'interno di un container ma anche all'esterno. Non c'è nessuna necessità di implementare interfacce come si far per gli Entity Bean EJB 2.X. Un Entity appartiene a un dominio di persistenza nel senso che rappresenta dati di un DB. In particolare, ogni istanza corrisponde a una riga di una tabella relazionale.
 
 Una classe Entity deve avere le seguenti caratteristiche:
 
 - Ha la annatazione `javafx.persistence.Entity`.
-- avere un costruttore senza argomenti, public o protected (costruttori
-aggiuntivi sono ovviamente consentiti)
+- avere un costruttore senza argomenti, `public` o `protected` (costruttori aggiuntivi sono ovviamente consentiti).
 - Nessun metodo o variabile di istanza persistente deve essere dichiarata final perchè i valori devono essere modificati.
 - Le annotazioni di mapping possono essere applicate solo a variabili di istanza o ai metodi getter per proprietà in stile JavaBean. Non si possono utilizzare annotazioni di entrambi i tipi in una singola classe Entity.
 
@@ -1637,40 +1636,100 @@ aggiuntivi sono ovviamente consentiti)
 dati, ovvero mancata necessità di DTO espliciti
 
 Se una istanza di Entity è passata per valore (by value) come oggetto
-detached (vedremo che cosa vuol dire), ad esempio all’interfaccia remota di
-un session bean, allora la classe deve implementare l’interfaccia Serializable
+detached (vedremo che cosa vuol dire), ad esempio all’interfaccia remota di un Session Bean, allora la classe deve implementare l’interfaccia Serializable
 
-- Variabili di istanza persistenti devono essere dichiarate private,
-protected, o package-private, e possono essere accedute
-direttamente solo dai metodi della classe dell’Entity
+Per quanto riguarda i campi persistenti:
 
-Campi persistenti:
-- Consentito accesso diretto alle variabili di istanza
-- Tutti i campi non annotati `javax.persistence.Transient` sono gestiti come persistenti verso il DB
+- Variabili di istanza persistenti devono essere dichiarate `private`,
+`protected`, o `package-private`, e possono essere accedute direttamente solo dai metodi della classe dell’Entity.
+- Tutti i campi non annotati `javax.persistence.Transient` sono gestiti come persistenti verso il DB.
+- Per campi persistenti con valori non singoli si usa Java Collection. Ad esempio:
 
-Proprietà persistenti:
-- Si devono seguire le convenzioni sui metodi tipiche dei JavaBean. cioè devono avere i metodi getter e setter: getProperty, setProperty, isProperty. Ad esempio, se è stata creata la classe Customer con proprietà persistenti, con una variabile di istanza privata chiamata firstName di tipo String, i metodi saranno String getFirstName() e setFirstName(String firstName).
+    ```
+    protected Set<Purchase> purchases;
+    ```
 
-Per campi/proprietà persistenti con valori non singoli (collection-valued) => uso di
-Java Collection. Ad esempio:
+Invece per le proprietà persistenti:
 
-```
-protected Set<Purchase> purchases;
-```
+- Si devono seguire le convenzioni sui metodi tipiche dei JavaBean. cioè devono avere i metodi getter e setter: `getProperty()`, `setProperty()`, `isProperty()`. Ad esempio, se è stata creata la classe `Customer` con proprietà persistenti, con una variabile di istanza privata chiamata `firstName` di tipo `String`, i metodi saranno:
+
+    ```
+    public String getFirstName() {
+        return name;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    ```
+
+- Per le proprietà persistenti con valori non singoli si usa Java Collection. Ad esempio:
+
+    ```
+    public Set<Purchase> getPurchases() {
+        return purchases;
+    }
+    ```
 
 Ogni Entity deve avere un identificatore unico perchè nel mondo relazionale esistono le primary key. La chiave primaria di una Entity può essere semplice o composta:
 
-- **Chiave primaria semplice**: si usa l'annotazione `javax.persistence.Id` sulla proprietà o sul campo che deve ricoprire il ruolo di chiave.
-- **Chiave primaria composita**: anche un insieme di campi o proprietà
-persistenti. Annotazioni javax.persistence.EmbeddedId e
-javax.persistence.IdClass
+- **Chiave primaria semplice**: si usa l'annotazione `javax.persistence.Id` sulla proprietà o sul campo che deve ricoprire il ruolo di chiave:
+    ```
+    @Entity
+    public class Project {
+        @Id
+        private long id;
+     
+     ...
 
-Alcuni requisiti sulle classi di chiave primaria sono:
+    }
+    ```
+- **Chiave primaria composita**: si usa quando un'entità ha più campi o proprietà come chiave primaria
+persistenti. Si usano le annotazioni `javax.persistence.EmbeddedId` oppure `javax.persistence.IdClass`:
+    ```
+    @Entity @IdClass(ProjectId.class)
+    public class Project {
+        @Id
+        private int departmentId;
+        @Id
+        private long projectId;
 
-- Costruttore di default deve essere public
-- Implementare i metodi `hashCode()` e `equals(Object other)`
-- Serializzabile
-- Se la classe contiene campi/proprietà multiple della classe Entity, nomi e tipi dei campi/proprietà nella chiave devono fare match con quelli nella classe Entity
+        ...
+
+    }
+
+    public class ProjectId {
+        private int departmentId;
+        private long projectId;
+    }
+    ```
+    Quando un'entità ha più campi chiave primaria, JPA richiede la definizione di una classe ID _speciale_ collegata alla classe dell'entità utilizzando l'annotazione `@IdClass`. La classe ID riflette i campi della chiave primaria e i suoi oggetti rappresentano i valori della chiave primaria. 
+    Un modo alternativo per rappresentare una chiave primaria composita consiste nell'utilizzare una classe incorporabile: 
+
+    ```
+    @Entity
+    public class Project {
+        @EmbeddedId
+        private ProjectId id;
+     
+        ...
+
+    }
+
+    @Embeddable
+    public class ProjectId {
+        private int departmentId;
+        private long projectId;
+    }
+    ```
+    La classe `Project` ha una primary key i cui campi sono _embeddati_ dalla classe ProjectId.
+
+Per quanto riguarda la chiave primaria:
+
+- Costruttore di default deve essere `public`.
+- Implementare i metodi `hashCode()` e `equals(Object other)`.
+- Serializzabile.
+- Se la classe contiene campi/proprietà multiple della classe Entity, nomi e tipi dei campi/proprietà nella chiave devono fare match con quelli nella classe Entity.
 
 ```
 @Entity
@@ -1779,16 +1838,28 @@ public class PartTimeEmployee extends Employee {
 
 ### Strategie di Mapping
 
-come provider di persistenza debba
-fare mapping della gerarchia di classi Entity definita
-sulle tabelle del DB
+Dato che si è nel mondo ad oggetti, il provider di persistenza si deve occupare di effettuare il mapping della gerarchia di classi Entity perchè nel mondo relazionale le tabelle sono piatte ovvero non esiste classe padre e figlia. Si usa l'annotazione `javax.persistence.Inheritance`.
 
-- **SINGLE_TABLE**: tutte i campi in un'unica tabella con un attributo chiamato discriminator che consente di stabilire il tipo di Entity. Questo può servire per risalire alla tipologia dell'oggetto che ci interessa. Scarsa efficienza se abbiamo molti NULL nella tabella
-- **TABLE_PER_CLASS**: ogni tabella ha colonne per ogni proprietà comprese quelle ereditatte dalle superclassi. Non c'è bisogno del discriminator e non è uno schema normalizzato
-- **JOINED**: ogni tabella ha le colonne con valore con le sole proprietà definite nella classe specifica ma lo schema è normalizzato (schema non ridondante). Se bisogna normalizzare i dati non c'è ridondanza ma dobbiamo effettuare le join. Se la gerarchia è estesa il costo diventa molto alto.
+- `InheritanceType.SINGLE_TABLE`: tutte i campi in un'unica tabella con un attributo chiamato discriminator che consente di stabilire il tipo di Entity. Questo può servire per risalire alla tipologia dell'oggetto che ci interessa. Scarsa efficienza se abbiamo molti NULL nella tabella.
+- `InheritanceType.TABLE_PER_CLASS`: ogni tabella ha colonne per ogni proprietà comprese quelle ereditatte dalle superclassi. Non c'è bisogno del discriminator e non è uno schema normalizzato.
+- `InheritanceType.JOINED`: ogni tabella ha le colonne con valore con le sole proprietà definite nella classe specifica ma lo schema è normalizzato (schema non ridondante). Se bisogna normalizzare i dati non c'è ridondanza ma dobbiamo effettuare le join. Se la gerarchia è estesa il costo diventa molto alto.
 
-Default è InheritanceType.SINGLE_TABLE, usato se l’annotation
-@Inheritance non è specificata alla classe radice gerarchia di Entity
+Il default è `InheritanceType.SINGLE_TABLE`, usato se l’annotation
+`@Inheritance` non è specificata alla classe radice gerarchia di Entity.
+
+La strategia `TABLE_PER_CLASS` offre una scarsa efficienza nel supporto a relazioni (e query) polimorfiche; di solito richiede query separate per ogni sottoclasse per coprire l’intera gerarchia
+
+Invece, utilizzando JOINED, ogni sottoclasse ha una tabella
+separata che contiene i soli campi specifici per la sottoclasse (la
+tabella non contiene colonne per i campi e le proprietà ereditati)
+=> buon supporto a relazioni polimorfiche ma richiede
+operazioni di join (anche multiple) quando si istanziano
+sottoclassi di Entity (scarsa performance per gerarchie
+di classi estese). Analogamente, query che intendono coprire
+l’intera gerarchia richiedono operazioni di join fra tabelle sottoclassi
+
+In conclusione, la scelta della strategia ottimale presuppone una buona
+conoscenza del tipo di query che si faranno sulle Entity.
 
 ### Molteplicità nelle Relazioni
 
@@ -1815,7 +1886,9 @@ public Set<Purchase> getPurchases() {
 
 ### Direzionalità delle relazioni
 
-Le relazioni possono essere monodirezionale o bidirezionali. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono passsare da un’entità all’altra. Inoltre si possono utilizzzare per navigare tra le varie entità e capire quali relazioni cancellare.
+Le relazioni possono essere monodirezionale o bidirezionali. 
+
+Nella relazione bidirezionale, ogni entità ha un campo o una proprietà che riferisce l’altra entità. Ad esempio, una classe `Ordine` al cui interno ha un campo che indica gli oggetti dell'ordine e una classe `Oggetto` che al suo interno ha un campo che indica a quale ordine appartiene. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono _navigare_ da un’entità all’altra. Inoltre, si possono utilizzzare per capire quali relazioni cancellare. Sembra normale che se si cancella un ordine non venga cancellato chi l'ha fatto ma il contrario. Per questo motivo è importante stabilire chi è il proprietario della relazione con il membro `@mappedBy`:
 
 ```
 @OneToMany(cascade=REMOVE, mappedBy="customer")
@@ -1826,87 +1899,264 @@ public Set<Order> getOrders() {
 
 ### Gestione a runtime di Entity
 
-Cosa vaviene a runitme e come il container riesce a gestire tutte le info per la gestione della ersistenza. A livvelo di container abbiamo un Entity Manager che si occupa della persistenza. All’interno di tale contesto è come se entity vivessero con il loro cilo di vita. Il constesto di persistenza è quindi il luogo dove esistono tutte le istanze di entity. L’entity manager può essere utilizzato demandando completamente la gestione al container o gestendolo a livello applicativo. Come per le transazioni.
+Le Entity sono gestite da un EntityManager. Ogni istanza di un EntityManager è associata ad un contesto di persistenza. Il contesto di persistenza è una sorta di cache ad oggetti del database che mantiene gli Entity e che sono gestite da un singolo EntityManager. L’interfaccia dell’EntityManager definisce i metodi che sono usati per interagire con il contesto di persistenza (creazione e rimozione di istanze di Entity persistenti, ritrovamento di Entity tramite chiave primaria ed esecuzione di query).
 
-### Container managed EntityManager
+All’interno di tale contesto è come se le Entity avessero con un loro ciclo di vita. Il constesto di persistenza è, quindi, il luogo dove esistono tutte le istanze Entity.
 
-Tutto è interallaciato con la gestione delle transazioni, il conttesto è automaticamnete propagato dal container ai servizi applicativi. Oltre ad essere nello stesso container devono essere nello stesso contesto di persistenza quindi con l’annotazione @PErsistenceContext viene passtao Entity MAnger. In questo senso l’entity manager è container managed poiché è direttamnete passato. In vece se il contesto di persistenza non propagato ai servizi applicativi l’entity manager non è passato e questo contesto è utilizzato quando l’applicazione necessita di più contesti di persistena contemporaneamente.
+L’Entity Manager può essere utilizzato demandando completamente la gestione al container oppure lo si può gestire a livello applicativo.
 
-Le enitiy vivvono all’interno di contesti di persistenza ciascuna di esse può avere 4 diversi stati. New/transient Entity sono instanze non associate, MAnaged sono associate Detached sono mo,mentaneamnete non asssociate a un contesto, Removed sono istanze er cui è stato avviato il processo di eliminazione dal datastore.
+### Container-managed EntityManager
+
+Il contesto è automaticamente propagato dal container ai componenti applicativi. L'injection avviene tramite l'annotazione `@PersistenceContext` e viene passato all'Entity Manager. In questo senso, l’Entity Manager è container-managed poiché il contesto di persistenza è direttamente passato ai componenti:
+
+```
+@PersistenceContext
+EntityManager em;
+```
+
+Il tutto è interlacciato con le transazioni. Le transazioni JTA eseguono generalmente chiamate fra componenti applicativi che, per completare la transazione, devono avere accesso a un contesto di persistenza.
+
+### Application-managed EntityManager
+
+Il contesto di persistenza non è propagato ai componenti applicativi e il ciclo di vita delle istanze dell'Entity Manager è gestito direttamente dall’applicazione. Viene usato quando l’applicazione necessita di diversi contesti di persistenza e di diverse istanze di Entity Manager correlate. In questo caso, si usa il metodo `createEntityManager()` di `javax.persistence.EntityManagerFactory` per crearsi un Entity Manager:
+
+```
+@PersistenceUnit
+EntityManagerFactory emf;
+EntityManager em = emf.createEntityManager();
+```
+
+### Entity Manager singoli vs multipli
+
+Di solito, quando l'applicazione è semplice e si ha un solo DB si usa un solo Entity Manager. Invece, se l'applicazione è più complessa si usano molte Entity che fanno parte di DB diversi e di conseguenza servono più Entity Manager. Tuttavia, è possibile che ci siano Entity Manager multipli verso lo stesso DB per gestire tabelle diverse e di conseguenza avere diversi contesti di persitenza per gestirli in modo diverso e separare i contesti e le diverse transazioni collegate.
 
 ### Ciclo di Vita
 
-![single tier](./img/img25.png)
+Le Entity vivono all’interno di contesti di persistenza e ciascuna di esse può avere 4 diversi stati:
 
-La refresh nello stato managed serve quando abbiamo necessita di aggiornarne lo stato. Soprattutto in caso di transazioni non ACID esempio nel caso della mandatory.
+![Ciclo di Vita Entity-Light](./img/img25-light.png#gh-light-mode-only)
+![Ciclo di Vita Entity-Dark](./img/img25-dark.png#gh-dark-mode-only)
 
-Le nuove istanze diventano gestitee con l’invocazione del metodo persist dell’entity manager, oppuere il metodo persist viene chiamato da un’entity correlata e a cascata sono persistiti anche gli oggetti in rrelazione con quello su cui stiamo agendo. I dati sono memorizzati nel DB quando le transazioni associati alla perist sono state completate.
+- **New/transient entity** istanze non hanno ancora identità di persistenza e non sono ancora associate ad uno specifico contesto di persistenza.
+- **Managed entity**: istanze con identità di persistenza e associate con un contesto di persistenza.
+- **Detached entity**: istanze con identità di persistenza e correntemente
+(possibilmente temporaneamente) disassociate da contesti di persistenza.
+- **Removed entity**: istanze con identità di persistenza, associate con un contesto e la cui eliminazione dalla cache è stata già schedulata.
 
-Per propagare le perisst usiamo le annotazioni one to many e le mandiamo a molti. Le istanze di entity possono essere rimosse e quando invochiamo la remove fallisce solo in caso che sia detached viene isgnorata se lo stato è new entity e se è gia stata rimossa.
+Le istanze Entity nello stato new diventano gestite e persistenti se viene invocato il metodo `persist()` o attraverso l’operazione `persist()` in cascata da Entity correlate con `cascade=PERSIST` o `cascade=ALL`:
 
-Per sincronizzarsi con il DB bisogna effetuare il commit della transazione a quel punto viene salvata nel db. Se abbiamo cascading attivata o comunque relazioni bisdirezionali la commit crea una reazione a catena. Ossiamo forzare la commit con l’operazione di flush.
+- Se `persist()` è invocato per una istanza nello stato removed entity, questa ritorna nello stato di managed.
+- Se viene fatto su una istanza nello stato detached entity viene restituita l'eccezione `IllegalArgumentException` o fallimento della transazione.
 
-Creazione di query che devono essere conformi allla specifica java peristence e la specifica consete la definizione di query all’interno della logia di business. Tutto ciò è scritto con un liguaggio SQL like di JAVA.
+Questo comporta che i dati saranno memorizzati nel DB quando la transazione associata a `persist()` sarà completata.
 
-Questo serve per costruire query dinamiche popolabili con i valori che le variabili assumono. Le query statiche invece vengono create con l’annotazione name o query.
+```
+@PersistenceContext
+EntityManager em;
 
-I parametri con nome sonom parametri di query preceduti da : sono legati al valore dal metodo javax.persistence.Query.setParameter()
+...
+
+public LineItem createLineItem(Order order, Product product) {
+
+    LineItem li = new LineItem(order, product, quantity);
+    order.getLineItems().add(li);
+    em.persist(li);
+
+    return li;
+}
+
+// persist propagata a tutte le Entity in relazione con
+// cascade element = ALL o PERSIST
+@OneToMany(cascade=ALL, mappedBy="order")
+public Collection<LineItem> getLineItems() {
+    return lineItems;
+}
+```
+
+Dallo stato managed entity, le Entity possono essere rimosse tramite `remove()` o attraverso l'operazione di rimozione in cascata da Entity correlate con `cascade=REMOVE` o `cascade=ALL`:
+
+- Se `remove()` è invocato su new entity, l'operazione viene ignorata.
+- Se `remove()` è invocato su detached entity viene lanciata l'eccezione `IllegalArgumentException` o fallimento del commit della transazione.
+- Se `remove()` è invocato su Entity già in stato di removed l'operazione viene ignorata.
+
+I dati relativi alla Entity sono effettivamente rimossi dal DB solo a
+transazione completata o come risultato di una operazione esplicita di flush:
+
+```
+public void removeOrder(Integer orderId) {
+    try {
+        Order order = em.find(Order.class, orderId);
+        em.remove(order);
+    }
+}
+```
+
+La refresh nello stato managed serve quando si ha la necessità di aggiornarne lo stato. Soprattutto in caso di transazioni non ACID. Ad esempio, nel caso di transazioni di tipo mandatory.
+
+Quando lo stato viene persistito con la commit verso il DB, si stacca l’oggetto dal contesto di persistenza che entra nello stato di detached. Questo può portare a stati non significativi.
+
+Quando si lavora con le Entity bisogna verificare sempre che le Entity siano ancora collegate e attive.
+
+Per sincronizzarsi con il DB bisogna effetuare la commit della transazione. A quel punto avviene l'allineamento con il DB. Se si ha il cascading attivo o comunque relazioni bidirezionali, la commit crea una reazione a catena. Per forzare la sincronizzazione con DB, possibilità di invocare il metodo `flush()` (con solito effetto cascade).
 
 ### Unità di Persistenza
 
-Insieme di tutte le classi gestite dall’entity manager in un’applicazione. Rappresenta l’insieme di dati che sono significativi e sui quali vogliamo agire per una certa applicazione e che sono contenuti in un unico data store. L’entità di persistenza è un concetto legato al deployment e dato un datastore sappiamo quali sono tutti i componenti su cui lavorare per arrivare a quello store. Nel caso del contesto di persitenza ragioniamo in termini di transazioni da effettuare e nel senso degli oggeti che devono essere persistiti,  non in termini di deployment delle classi,. Queste due cose sono ortogonali. 
+L’unità di persistenza è un concetto legato al deployment in cui viene specificato il database da usare, quali sono gli Entity etc. Definisce l'insieme di tutte le potenziali classi gestite dall’Entity Manager in un’applicazione. Potenziali perchè non è detto che nell'applicazione poi vengono usate davvero le classi che modellano l'Entity. Nel caso del contesto di persitenza, si ragiona in termini di transazioni da effettuare sugli oggetti della cache che poi devono essere persistiti, non in termini di deployment delle classi. Queste due cose sono ortogonali.
 
-Per le unità di persistenza possiamo definire un data source e poi tutti i vari componenti coinvolti- JTA data source specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container.
+Le unità di persistenza sono definite all’interno di un file XML chiamato
+persistence.xml, distribuito insieme al file EJB-JAR o WAR, a seconda
+dell’applicazione sviluppata:
+
+```
+<persistence>
+    <persistence-unit name="OrderManagement">
+        <description> Questa unità gestisce ordini e clienti</description>
+        <jta-data-source>jdbc/MyOrderDB</jta-data-source>
+        <jar-file>MyOrderApp.jar</jar-file>
+        <class>com.widgets.Order</class>
+        <class>com.widgets.Customer</class>
+    </persistence-unit>
+</persistence>
+```
+
+Ad esempio, il file sopra definisce una unità di persistenza chiamata `OrderManagement`, che usa una sorgente dati `jdbc/MyOrderDB` che è _consapevole_ di JTA. Invece, gli Entity sono associati a classi di tipo `Order` e `Customer`.
+
+Gli elementi `jar-file` e `class` specificano le classi relative all’unità di persistenza: classi Entity, Embeddable, e superclassi Mapped. Invece, l’elemento `jta-data-source` specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container.
+
+### Creazione di Query
+
+È possibile creare query invocando i metodi `createQuery()` e `createNamedQuery()` dell'EntityManager. Le query devono essere conformi alla specifica Java Peristence Query Language e sono scritte con un liguaggio SQL like Java.
+
+Il metodo `createQuery()` permette la costruzione di query dinamiche, ovvero query definite all’interno della business logic:
+
+```
+public List findWithName(String name) {
+
+    return em.createQuery(
+        "SELECT c FROM Customer c WHERE c.name LIKE :custName")
+        .setParameter("custName", name)
+        .setMaxResults(10)
+        .getResultList();
+}
+```
+
+Il metodo `createNamedQuery()` si utilizza invece per creare query
+statiche, ovvero definite a livello di annotazione tramite `@NamedQuery` ma non sono query compilate prima dell'esecuzione:
+
+```
+@NamedQuery(
+    name="findAllCustomersWithName",
+    query="SELECT c FROM Customer c WHERE c.name LIKE :custName")
+    
+    @PersistenceContext
+    public EntityManager em;
+    
+    ...
+
+    customers = em.createNamedQuery("findAllCustomersWithName")
+    .setParameter("custName", "Smith")
+    .getResultList();
+```
+
+I valori in entrambi i casi sono dinamici cioè dipendono dai valori che le variabili assumono.
+
+Da notare che i _parametri con nome_ sono parametri di query preceduti da `:` e sono legati al valore dal metodo `setParameter()`. Ad esempio, nell'esempio di sopra `:custName`.
 
 ### Loading Lazy/Eager
 
-Controllare il caricamento dei dati:
+Nell'applicazione è possibile controllare il caricamento dei dati:
 
-il caricamento è lazy o eager. In caso di caricamento lazy le entità sono caricate solo nel momento in cui andiamo a usarle.  Se invece utilizziamo il caricamento eager l’entità viene caricata quando è caricata l’entità padre. In generale usiamo eager per realtà ristrette e lazy in tutti gli altri casi in alcune applicazioni non ci interessa portarci dietro tutte le relazioni in cascata. Utile se usiamo sotto-parti e utilizziamo il resto dello stato solo in alcuni casi per le entità in relazione. 
+- In caso di caricamento **lazy**, le entità sono caricate solo nel momento in cui si vanno ad usarle:
+    ```
+    @OneToMany(cascade=ALL, mappedBy="owner", fetch=EAGER)
+    ```
+- Se invece si usa il caricamento **eager**, l’entità viene caricata quando è caricata l’entità padre:
+    ```
+    @OneToMany(cascade=ALL, mappedBy="owner", fetch=LAZY)
+    ```
 
-JPA definisce una specifica e un linguaggio di Query che ha l’obiettivo di essere indipendenti dal data store. Che vuole essere indipendente dal data store che siano relazionali o meno.  PORTABILITA’ e INDIPENDENZA.
+In generale, si usa eager per realtà ristrette e lazy in tutti gli altri casi. È costoso portarsi dietro tutte le relazioni in cascata ma è utile se vengono sicuramente usate. Bisogna valutare sempre i costi e benefici.
 
-Le annotazioni iniettano nel container degli schemi per le relazioni tra entità. Possiamo definire query che lavorano su un contesto di persistenza definito da tutte queste annotazioni. 
+### Listener di Entity
 
-Entity manager svolge funzionalità svolge un’attività di controllo dei data object e di data transfer verso il data store. Gestisce il ciclo di vita degli oggetti con la sincronizzazione tra contesto di persistenza e DB. 
+Si possono definire listener o metodi di callback che saranno invocati dal provider di persistenza alla transizione fra diversi stati del ciclo di vita delle Entity. Quindi, è un controllo uteriore per controllare che sia possibile effettuare, ad esempio, la persist e cambiare lo stato. L’obiettivo è quello di effettuare controlli e aggiornamenti prima o dopo le operazioni che riguardano la persistenza dei dati.
 
-Il contesto di persistenza è uno stato che è gestito in modo transazionale e su questo vengono invocate localmente tutte le operazioni di persistenza ma il momento esatto in cui verranno fatte flush e commit non lo conosciamo poichè è tutto demandato al container. 
+Per usare metodi di callback, occorre annotare i metodi di callback desiderati nella classe della Entity:
 
-Find e remove degli ordini sono anche esse effetuate con flush e commit in caso di remove o find di un entità già rimossa o non disponibile una entity gia rimossa restituisce i risultati non definiti.
+```
+@Entity
+@EntityListener(com.acme.AlertMonitor.class)
+public class AccountBean implements Account {
 
-Merge nel caso in cui si voglia lavorare su entity detached che non sitrovano ancora nel contesto di persitenza tutte le modifiche fatte all’entity detached vengono applicate con la merge facendo diventare l’istanza manage. 
+    Long accountId;
+    Integer balance;
+    boolean preferred;
+    @Transient ClassA obj1;
 
-Listener di Entity, invocati dal provider della persistenza con metodo di call back si occupano diaggiurnare gli stati e di relazionarsi con il DB. Il listener serve per effettuare controlli quando si cambia lo stato. Quindi è un controllo uteriore per controllare che sia possibile effettuare la persist e cambiare lo stato. L’obiettivo è quello di effettuare controlli e aggiornamenti prima o dopo le operazioni che riguardano la persistenza dei dati. 
+    public Long getAccountId() { ... }
+    public Integer getBalance() { ... }
+    public boolean isPreferred() { ... }
+    public void deposit(Integer amount) { ... }
+    public Integer withdraw(Integer amount) throws NSFException {... }
 
-Il contesto ersistenza è una sorta di cache del databease che mantiene lo stato.
+    @PrePersist
+    public void validateCreate() {
 
-Singolo entity manager utile per la gestione semplifica le transazioni e il contesto di prsistenza.
+        if (getBalance() < MIN_REQUIRED_BALANCE)
+            throw new AccountException("Insufficient balance to open an account");
+    }
 
-Molte enity e molti db con una relazione un entity un db.
+    @PostLoad
+    public void adjustPreferredStatus() {
+        preferred = (getBalance() >= AccountManager.getPreferredStatusLevel());
+    }
+}
+```
 
-Entity manager multipli veros lo stesso db per gestire tabelle diverse dello stesso db e avere diversi contesti di peristenza per gestirli in modo diverso e separare i contesti e le diverse transazioni collegate. 
+o definirli all’interno di una classe listener separata:
 
-La propagazione del contesto di persistenza è possibile e può essere fatto su più transazioni. Quando lo stato viene persistito con la commit verso il database stacchiamo l’oggetto dal contesto di persistenza che entra nello stato di detached. Questo può portare a stati non significativi. 
+```
+public class AlertMonitor {
+    @PostPersist
+    public void newAccountAlert(Account acct) {
+        Alerts.sendMarketingInfo(acct.getAccountId(), acct.getBalance());
+    }
+}
+```
 
-Quando lavoriamo con le entity dobbiamo verificare che le entity siano ancora collegate e attive.
+La classe `AccountBean` usa l'annotazione `@EntityListener(com.acme.AlertMonitor.class)` per indicare che la classe AlertMonitor contiene metodi di callback (in realtà solo uno).
 
 ### Hibernate
 
-Ha l’obiettivo di realizzare la persistenza di oggetti POJO. Passando dal mondo object oriented al mondo relazionale. Facilita la gestione di oggetti persistenza. La gestione del cahing è ancora più esplicita, di jpa, ha un supporto alla scrittura di query. 
+Hibernate ha l’obiettivo di realizzare la persistenza di oggetti POJO passando dal mondo object oriented al mondo relazionale.
 
-SessionFactory consente di creare oggetti Session e mantenere le risorse necessarie per cache di primo e secondo livello. L session di hibernate è un contesto di persistenza che viene gestito dall’inizio alla fine dalle transazioni. Va a gestire anche il ciclo di vita degli oggetti persistenti e operaa da factori per gli oggetti transaction. Gli oggetti peristenti sono oggetti per cui vogliamo mantenere uno stato persistente e devono essere inseriti in un contesto di persitenza con una session che operae lavora come una cache. Quado si chiude una sessione gli oggetti diventano detached e possono essere usati sapendo che non c’è iù un collegamento con il db. Gli oggetti transient o detached hanno istanze non legate alla session. Modificando gli oggetti no modificihiamo il db ciò avvine solo con la perist o la merge. Le transazioi sono oggetti single therad che servono a specificare unità atomiche di lavoro astraendo dai dettagli delle librerie e dei framework che usiamo. Unsa session può essere usata più transaction.
+L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostanti. Il livello di applicazione può essere trasparente a questi dettagli:
 
-Abbiamo 3 possibili stati, transient non appartiene al contesto di persistenza persistent appartiene al  contesto di persistenza detached è un istanza che non è al momento nel contestio di persistenza poiché è stat scollegata.
+![Ciclo di Vita Entity-Light](./img/img67.png)
 
-Stato transient non è mai associato a un contesto di persistenza e quetso accacde quando definiamo un’istanza fuori da una sessione. Nello stato persistent l’stanza è associata a una sessione e il suo stato corrisponde a una riga del db. Detached quando un’istanza che corrisponde a uno stato di persistenza viene staccata, questo però non vuol dire che sia aggiornata.
+### Principali Oggetti
 
-Le transizioni di stato al momento della delete di un oggetto quell’oggetto diventa transient.
+SessionFactory consente di creare oggetti Session e mantiene le risorse necessarie per cache di primo e secondo livello.
 
-### Il caching in hibernate
+La Session di Hibernate è un contesto di persistenza che viene gestito dall’inizio alla fine dalle transazioni. Va a gestire anche il ciclo di vita degli oggetti persistenti e opera da factory per gli oggetti transaction.
 
-In genrale migliora la performance dei sistemi che consente un miglioramento delle prestazioni accedendo al database solo se lo stato necessario non è presente in cache. In caso in cui tutti gli oggetti siano nella sessione faccio tutte le operazioni posticipando l’accesso  al db solo per la flush e non per le varie parti della tnsazione. Ovviamente essendo delle cache quindi una trnsazione può avere necessità di svuotare l cache se sappiamo che quancuno esternamente sta modificando il db e quindi dobbiamo ripopolare i valori per riallinearlial db.
+Gli oggetti peristenti sono oggetti per cui si vuole mantenere uno stato persistente e devono essere inseriti in un contesto di persitenza con una Session che opera e lavora come una cache. Quando si chiude una sessione gli oggetti diventano detached e possono essere usati sapendo che non c’è un collegamento con il DB. Gli oggetti transient o detached hanno istanze non legate alla session. Modificando gli oggetti no modificihiamo il db ciò avvine solo con la perist o la merge. Le transazioi sono oggetti single therad che servono a specificare unità atomiche di lavoro astraendo dai dettagli delle librerie e dei framework che usiamo. Unsa session può essere usata più transaction.
 
-Esistono due livelli di cache uno associata alal sessione  e una associata alla session factory ovvero legata alla getsion edel supporto al cahing. Le cache di primo livello hanno i confini della transazioni e sono legati alla sessione ci consnete di fare meno uery sul db quindi ci sono solo statement inziiali e finali senza stati intermedi. Le cache di secondo livello mantendgono informazioni utilizzabili da diverse transazioni.
+Si hanno tre possibili stati:
+
+- transient non appartiene al contesto di persistenza. Stato transient non è mai associato a un contesto di persistenza e questo accade quando si definisce un’istanza fuori da una sessione. Non ha righe corrispondenti nel DB.
+- persistent appartiene al contesto di persistenza. Nello stato persistent l’stanza è associata a una sessione e il suo stato corrisponde a una riga del DB.
+- detached è un istanza che non è al momento nel contesto di persistenza poiché è stata scollegata.
+
+ Detached quando un’istanza che corrisponde a uno stato di persistenza viene staccata, questo però non vuol dire che sia aggiornata.
+
+### Il caching in Hibernate
+
+In generale, migliora la performance dei sistemi che consente un miglioramento delle prestazioni accedendo al database solo se lo stato necessario non è presente in cache. In caso in cui tutti gli oggetti siano nella sessione si fanno tutte le operazioni posticipando l’accesso  al DB solo per la flush e non per le varie parti della transazione.
+
+Ovviamente essendo delle cache quindi una trnsazione può avere necessità di svuotare l cache se sappiamo che quancuno esternamente sta modificando il DB e quindi dobbiamo ripopolare i valori per riallinearlial db.
+
+Esistono due livelli di cache uno associata alla sessione e uno associata alla session factory ovvero legata alla gestione del supporto al caching. Le cache di primo livello hanno i confini della transazioni e sono legati alla sessione ci consnete di fare meno uery sul db quindi ci sono solo statement inziiali e finali senza stati intermedi. Le cache di secondo livello mantendgono informazioni utilizzabili da diverse transazioni.
 
 Per l’invalidazione della cache usiamo una strategia ottimistica poiché si assume che la maggiorarte delle transazioni verso il db non siano in conflitto con le altre. Se ciò è vero riusciamo ad avere un throughput molto alto. Le modifiche da fare in caso di collisioni sono possibili con un versioning dei dati che consente di cìfare dei check e controllare i dati. 
 
@@ -1991,7 +2241,7 @@ Lo scope della transazionalità è di due tipi:
 ![Client-to-Client-Light](./img/img50-light.png#gh-light-mode-only)
 ![Client-to-Client-Dark](./img/img50-dark.png#gh-dark-mode-only)
 
-La seconda opzione è molto complessa e non viene garantita da molti MOM come ad esempio JMS. Inoltre, il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
+La seconda opzione è molto complessa e non viene garantita da molti MOM. Inoltre, il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
 ### Sicurezza
 
@@ -2230,113 +2480,166 @@ Il codice è stato inserito solo nei punti diversi rispetto al produttore.
 
 JMS offre diversi livelli di affidabilità dei messaggi. Il livello più alto si ottiene quando si ha la persistenza dei messaggi, fattibile con la subscription durevole a un certo topic o con la ricezione da queue avendo la persistenza del messaggio spedito o ricevuto se il ricevente si è assentato per un certo tempo con l’utilizzo di transazioni.
 
-Nell’affidabilità di base (basic reliability) vi è l’utilizzo di messaggi ACK, di messaggi persistenti, la possibilità di definire dei time-to-live, la configurazione dei livelli di priorità e l possibilità di consentire l’expiration dei messaggi.
+Nell’**affidabilità di base** (basic reliability) vi è l’utilizzo di messaggi ACK, di messaggi persistenti, la possibilità di definire dei time-to-live, la configurazione dei livelli di priorità e la possibilità di consentire l’expiration dei messaggi.
 
-Nell’affidabilità avanzata (advanced reliability) si può avere _abbonamenti_ durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end-to-end ma solo tra consumatore e provider e/o tra provider e produttore.
+Nell’**affidabilità avanzata** (advanced reliability) si può avere _abbonamenti_ durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end-to-end ma solo tra consumatore e provider e/o tra provider e produttore.
 
 ### ACK
 
-Alla ricezione di un messaggio, si possono effettuare varie operazioni: prima di tutto vi è il processamento, dopo di che, se necessario vi è lo scambio di ACK con varie modalità associate a ciascuna sessione. Se ci sono sessioni con transazionalità, vi è un ACK automatico al commitment, poi per la proprietà del tutto o niente in caso di rollback vi è il rinvio di tutti i messaggi. In sessioni senza transazionalità, il numero di ACK scambiati dipende dall’attributo specificato in `createSession()`.
+Alla ricezione di un messaggio, si possono effettuare varie operazioni: prima di tutto vi è il processamento, dopo di che, se necessario vi è lo scambio di ACK con varie modalità associate a ciascuna sessione.
+
+Se ci sono sessioni con transazionalità, vi è un ACK automatico al commitment, poi per la proprietà del tutto o niente in caso di rollback vi è il rinvio di tutti i messaggi. Invece, in sessioni senza transazionalità, il numero di ACK scambiati dipende dall’attributo specificato in `createSession()`.
 
 I vari tipi di ACK dipendono da chi stimola l'ACK:
 
-- **Auto acknowledgment**: ACK generato automaticamente dai metodi `MessageConsumer.receive()` o `MessageListener.onMessage()` se la return ha successo e inviato dal supporto.
-- **Client acknowledgment**: il cliente a livello applicativo si fa carico di inviare l’ACK con la chiamata al metodo `acknowledge()`, questo è cumulativo quindi conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ACK a quello corrente.
+- **Auto acknowledgment**: ACK generato automaticamente dal supporto JMS dai metodi `MessageConsumer.receive()` o `MessageListener.onMessage()` dopo la return del metodo (se ha successo).
+- **Client acknowledgment**: il cliente a livello applicativo si fa carico di inviare l’ACK con la chiamata al metodo `acknowledge()`, questo è cumulativo, quindi, conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ACK a quello corrente.
 - **Lazy acknowledgment**: viene inviato saltuariamente senza limiti nel numero di messaggi, sempre in modo cumulativo. Questo tipo di ACK è inviato dal supporto ovvero da JMS stesso.
 
-Tutti i tipi di messaggi ACK hanno la possibilità di essere duplicati e quindi ritrasmessi. Nel caso di auto_ack vi sono  differenze tra caso con persistent e non persistent. Nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi) possiamo avere duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running si rende conto che l’ack precedente non è stato inviato e lo rimanda a l consumer. Questo grazie allo storage persistente. In caso di client_ack ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di lazy_ack abbiamo duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ack e presa dal supporto a piacere. In generale è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
+Tutti i tipi di messaggi ACK hanno la possibilità di essere duplicati e quindi ritrasmessi. Nel caso di `AUTO_ACKNOWLEDGE` nel caso persistent (supponendo il non fallimento dello storage dove sono salvati i messaggi), si può avere la duplicazione del messaggio perchè in caso di crash del server, quando questo torna in modalità up and running, si rende conto che l'ACK precedente non è stato inviato e lo rimanda al consumer. Questo grazie allo storage persistente. In caso di `CLIENT_ACKNOWLEDGE`, ci possono essere duplicati perché ci possono essere situazioni simili a quella precedenti con più ritrasmissioni se più messaggi sono stati persi a causa della politica cumulativa. In caso di `DUPS_OK_ACKNOWLEDGE`, si ha la duplicazione ma i messaggi da rinviare potrebbero essere ancora di più di quelli delle modalità precedenti poiché la decisione di mandare ACK è presa dal supporto a piacere. In generale, è meglio che le applicazioni siano idempotenti e quindi che implementino la ritrasmissione.
 
-In produzione posso avere una semantica bloccante per la send() che risulta in generale essere più semplice della receive(). Il client manda il messaggio il server lo persiste e manda l’ack solo dopo questa operazione, a questo punto la publish ritorna, tutto è molto più sincronizzato. L’ack è bloccante per la send() localmente al produttore. Anche in questo caso vi è la ritrasmissione dei messaggi.
+In produzione si può avere una semantica bloccante per la `send()`. Il client manda il messaggio, il server lo persiste e manda l’ACK solo dopo questa operazione. A questo punto la publish ritorna, tutto è molto più sincronizzato. L’ACK è bloccante per la `send()` localmente al produttore. Anche in questo caso vi è la ritrasmissione dei messaggi.
 
-Nell’invio dei messaggi vi sono due diversi modi di gestire la persistenza che si differenziano per la modalità di consegna. La modalità persistent richiede la persistenza quindi il provider ha la responsabilità di non perdere il messaggio e questo grazie allo storage è possibile. Il non persistent non dà garanzie rispetto al fault ma non ha problemi relativi al collo di bottiglia generato dallo storage quindi è possibile sostenere un high rate nell’invio con migliori performance.
+Nell’invio dei messaggi vi sono due diversi modi di gestire la persistenza che si differenziano per la modalità di consegna. La modalità persistent richiede la persistenza quindi il provider ha la responsabilità di non perdere il messaggio e questo grazie allo storage è possibile. Il non persistent non dà garanzie rispetto al fault ma non ha problemi relativi al collo di bottiglia generato dallo storage quindi è possibile sostenere un high rate nell’invio con migliori performance. La modalità di consegna si imposta con il metodo `setDeliveryMode()` dell’interfaccia `MessageProducer`:
 
-Vi è un trade-off tra il numero di ack che possiamo inviare l’overhead che introduciamo e il livello generale di affidabilità che vogliamo raggiungere. Quanto bisogna coinvolgere la parte applicativa nella gestione degli ack, coinvolgere molto il client nella gestione degli ack può aiutare a diminuire l’overhead legato al gfatto di non inviare più un ack per ogni messaggio dall’altra parte però il livello applicativo che si prende in carico l’invio dei messaggi deve essere ben fatto e con maggiore cura. L’API permette quidi di gestire diversamente l’invio dei messaggi.  
+```
+\\ metodo dell’interfaccia MessageProducer
+producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+```
+
+Vi è un trade-off tra il numero di ACK che si può inviare, l’overhead che si introduce e il livello generale di affidabilità che si vuole raggiungere. Quanto bisogna coinvolgere la parte applicativa nella gestione degli ACK, coinvolgere molto il client nella gestione degli ACK può aiutare a diminuire l’overhead legato al fatto di non inviare più un ACK per ogni messaggio dall’altra parte però il livello applicativo che si prende in carico l’invio dei messaggi deve essere ben fatto e con maggiore cura. L’API permette quidi di gestire diversamente l’invio dei messaggi.
 
 ### Priorità
 
-Attributo che fa parte dell’header del messaggio (`JMSPriority`), a livello di API, quindi è una parte funzionale che tutti devono trattare, sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
+Attributo che fa parte dell’header del messaggio (`JMSPriority`), a livello di API, quindi è una parte funzionale che tutti devono trattare. Sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
 
-La priorità è impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il TimeToLive (TTL), la priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4. Per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo `setPriority()` mentre il TTl si imposta con `setTimeToLive()` dell’interfaccia `MessageProducer`.
+La priorità è impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il TimeToLive (TTL). La priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4. Per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo `setPriority()` mentre il TTL si imposta con `setTimeToLive()` dell’interfaccia `MessageProducer`:
 
-La configurazione dei livelli di affidabilità è spesso determinata da scelte di default o prese alla creazione di `Destination`. Per la basic reliability:
+```
+// metodi nell’interfaccia MessageProducer
+producer.setTimeToLive(60000);
+producer.setPriority(7);
+```
 
-- Persistenza scelta a livello di singolo messaggio, ad es. interfaccia `MessageProducer`.
-- Controllo degli ACK  scelta a livello di sessione, interfaccia Session.
+### Affidabilità
+
+La configurazione dei livelli di affidabilità è spesso determinata da scelte di default o prese alla creazione di `Destination`.
+
+Per la basic reliability:
+
+- Persistenza scelta a livello di singolo messaggio, ad es. interfaccia `MessageProducer`:
+- Controllo degli ACK scelta a livello di sessione, ad es. interfaccia `Session`.
 - Livelli di priorità scelti a livello di singolo messaggio, ad es. interfaccia `MessageProducer`.
-- Expiration time scelto a livello di singolo messaggio, ad es. interfaccia `MessageProducer` Advanced Reliability.
+- Expiration time scelto a livello di singolo messaggio, ad es. interfaccia `MessageProducer`.
+
+Per l'advanced reliability:
+
 - Sottoscrizione durevole scelto a livello di sessione, interfaccia `Session`.
 - Transazionalità scelto a livello di sessione, interfaccia `Session`.
 
 ### Durable Subscription
 
-Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi il provider JMs mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene expiration. All’interno di una singola  applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
+Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi, il provider JMS mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene l'expiration (la scadenza). All’interno di una singola applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
 
 ### Gestione delle transazioni di JMS
 
-Lo scope delle transazioni in JMS è solo fra clienti e sistema di messaging, non fra produttori e consumatori. Quindi un gruppo di messaggi all’interno di una singola transazione è consegnato come un’unica unità lato produttore e un gruppo di messaggi in una transazione è ricevuto come un’unica unità lato consumatore.  Le Transazioni possono essere gestite localmente e sono controllate dall’oggetto Session. La transazione inizia implicitamente quando l’oggetto di sessione è creato e termina all’invocazione di Session.commit() o Session.abort(). La sessione è transazionale se si specifica il flag appropriato all’atto della creazione. Ad esempio: QueueConnection.createQueueSession(true, …). Eventualmente le transazioni possono essere anche essere gestite in modo distribuito, in tal caso devono essere coordinate da un transactional manager esterno, ovvero Java Transactions API (JTA). Le applicazioni possono controllare la transazione attraverso metodi JTA, tuttavia l’utilizzo di Session.commit() e Session.rollback() è non consentito. In questo modo,c con l’utilizzo di JTA, le operazioni di messaging possono essere combinate con transazioni salvate su DB in una singola transazione complessiva.
+Lo scope delle transazioni in JMS è solo fra clienti e sistema di messaging, non fra produttori e consumatori. Quindi, un gruppo di messaggi all’interno di una singola transazione è consegnato come un’unica unità lato produttore e un gruppo di messaggi in una transazione è ricevuto come un’unica unità lato consumatore. Le transazioni possono essere gestite _localmente_ e sono controllate dall’oggetto `Session`. La transazione inizia implicitamente quando l’oggetto di sessione è creato e termina all’invocazione di `Session.commit()` o `Session.abort()`. La sessione è transazionale se si specifica il flag appropriato all’atto della creazione. Ad esempio: `QueueConnection.createQueueSession(true, ...)`. Eventualmente le transazioni possono essere anche essere gestite in modo _distribuito_ se si vuole combinare in un unico blocco operazioni a scambio di messaggi e operazioni transazionali DB. In tal caso devono essere coordinate da un transactional manager esterno, ovvero tramite l'uso di Java Transactions API (JTA). L’utilizzo di `Session.commit()` e `Session.rollback()` è non consentito perchè viene eseguita tramite i metodi JTA.
 
 ### Selettori di messaggi
 
-I selettori sono filtri la cui logica di filtraggio è specificabile con stringe SQL like (SQL92) che possono lavorare sui messaggi in arrivo per estrarne solo alcuni. Lato receiver, le applicazioni JMS possono utilizzare selettori per scegliere i soli messaggi che sono potenzialmente di loro interesse, non possono riferire il contenuto dei messaggi, ma solo proprietà e header, non possono leggere il payload. I selettori consentono una gestione più semplice e rimuovono overhead dal provider e dal supporto. Il fatto che non sia content base è dovuto al fatto della retrocompatibilità con i precedenti MOM. 
+I selettori sono filtri la cui logica di filtraggio è specificabile con stringe SQL like 92 (SQL92) che possono lavorare sui messaggi in arrivo per estrarne solo alcuni. Dal lato receiver, le applicazioni JMS possono utilizzare i selettori per scegliere i soli messaggi che sono potenzialmente di loro interesse. Non possono riferire il contenuto dei messaggi ma solo tramite proprietà e header (non possono leggere il payload). I selettori consentono una gestione più semplice e rimuovono overhead dal provider e dal supporto. Il fatto che il MOM non sia content-based è dovuto al fatto della retrocompatibilità con i precedenti MOM.
 
 ### JMS in EJB
 
-I MDB vengono istanziati e prelevati da un poll di istanze quando il messaggio viene ricevuto. Vi è un JMS provider che invia i messaggi a istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti. A questo punto, il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback tipicamente, a questo punto vi è un applicazione con un EJB client legato all’applicazione che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un session bean con dietro entity bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS. 
-
-L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
+I MDB prelevati da un poll di istanze quando il messaggio viene ricevuto. Vi è un JMS provider che invia i messaggi alle istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti. A questo punto, il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback. A questo punto vi è un applicazione con un EJB client che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un Session Bean con dietro Entity Bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS.
 
 ![JMS in EJB-Light](./img/img22-light.png#gh-light-mode-only)
 ![JMS in EJB-Dark](./img/img22-dark.png#gh-dark-mode-only)
 
-### ENTERPRISE SERVICE BUS
+L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
 
-Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare per la possibilità di mettere insieme  parti di questi sistemi che sono legacy preesitsenti e parti nuove sviluppate di recente. In qeusta direzione dsi sono sviluppati gli ESB infrastrutture molto large con principi di integrazione che sono condivisi. L’idea è di avere disaccopiamento forte e quindi MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, solo quando vi sono riposte complete.  Mettiamo insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Middleware che disaccoppia molto la comunicazione. Modello asincrono e pubsub con in mezzo un intermediario ovvero l’enterprise service bus che offre molte più funzionalità di un mom, ma comunque garantisce lo scambio di messaggi che porta a un’elevata asincronicità e conseguente disaccoppiamento. Le principali caratteristiche sono:
+### Enterprise Service Bus (ESB)
+
+Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare, per la possibilità di mettere insieme parti di questi sistemi che sono legacy preesistenti e parti nuove sviluppate di recente. In questa direzione si sono sviluppati gli ESB che sono infrastrutture molto large con principi di integrazione condivisi. L’idea è di avere un disaccopiamento forte e quindi i MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, solo quando vi sono riposte complete. Si mettano insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Il modello è asincrono e pub/sub con in mezzo un intermediario, ovvero l’ESB che offre molte più funzionalità di un MOM, ma comunque garantisce lo scambio di messaggi che porta a un’elevata asincronicità e conseguente disaccoppiamento. Le principali caratteristiche sono:
 
 - Disaccoppiamento. 
-- Gestione dei _topic_ 
+- Gestione dei topic. 
 - Controllo degli accessi.
 - Struttura messaggi.
 - QoS configurabile.
 
-### Service Oriented Architecture SOA
+### Service Oriented Architecture (SOA)
 
-Un SOA mette a disposizione servizi a grana grossa completi e autonomi, interfacce astratte ben fatte che definiscono contratti tra Consumer e Provider, scambio di messaggi che compongono le operazioni invocabili sui servizi di input e output, registri dei servizi con naming e trading, possibilità di comporre i servizi in processi di business, ovvero molti servizi messi insieme seguendo le linee guide SOA, tutto questo ha  l’obiettivo di ottenere  accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte.
+SOA è un'architettura software che mette a disposizione:
 
-Azure espone api con interfacce rest.
+- Servizi a grana grossa completi e autonomi.
+- Interfacce astratte ben fatte che definiscono contratti tra Consumer e Provider.
+- Scambio di messaggi che compongono le operazioni invocabili sui servizi di input e output.
+- Registri dei servizi con naming e trading.
+- Possibilità di comporre i servizi in processi di business, ovvero molti servizi messi insieme seguendo le linee guide SOA.
 
-### WEB SERVICES
+Tutto questo ha l’obiettivo di ottenere accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte. Ad esempio, Azure espone API con interfacce REST.
 
-Infrastrutture che soddisfano le caratteristiche SOA per l’interazione tra applicazioni basata sul concetto di “servizio”, che utilizzano interfacce web, in particolare operano sulla porta 80. Tali Web services sfruttano essenzialmente tre tecnologie, o API al mondo esterno: WSDL è un file contenente la descrizione del web service, descrizione scritta in xml che contiene le funzionalità offerte da quel servizio, SOAP è la descrizione di un protocollo per lo scambio di messaggi si cambiano “buste soap” che contengono file xml (indipendenti dal linguaggio) con diversi contenuti che vengono scambiati, le buste soap possono essere trasmesse con http per garantire massima interoperabilità. UDDI è un servizio di trading che consente la discovery dei servizi, restituisce un file WSDL che contiene la descrizione di quel servizio cosa si aspetta in termini di input e output e come collegarsi con quel servizio.
+### Web Services
 
-La differenza tra un web service un servizio di distributed object computing è la standardizzazione e come implementiamo i vari servizi, nel caso dei web service non c’è dipendenza dall’implementazione.
+SOno infrastrutture che soddisfano le caratteristiche SOA per l’interazione tra applicazioni basata sul concetto di servizio, che utilizzano interfacce Web, in particolare operano sulla porta 80. Tali Web services sfruttano essenzialmente tre tecnologie, o API:
 
-WSDL è suddiviso in due parti, chiara separazione fra livello astratto (interfaccia) che contiene la definizione di operazioni di servizio come ingresso e uscita di documenti e struttura messaggi, e livello concreto che implementa l’interfaccia presenta una serie di endpoint con indirizzo di rete e protocollo per definire i servizi (binding – per ogni interfaccia), tipico di tutte le soluzioni SOA.
+- WSDL è un file contenente la descrizione del Web service, descrizione scritta in XML che contiene le funzionalità offerte da quel servizio.
+- SOAP è la descrizione di un protocollo per lo scambio di messaggi, si scambiano _buste soap_ che contengono file XML (indipendenti dal linguaggio) con diversi contenuti che vengono scambiati. Le buste SOAP possono essere trasmesse con HTTP per garantire massima interoperabilità.
+- UDDI è un servizio di trading che consente la discovery dei servizi, restituisce un file WSDL che contiene la descrizione di quel servizio cosa si aspetta in termini di input e output e come collegarsi con quel servizio.
+
+La differenza tra un Web service un servizio di distributed object computing è la standardizzazione e come si implementano i vari servizi, nel caso dei Web service non c’è dipendenza dall’implementazione.
+
+WSDL è suddiviso in due parti:
+
+- Una chiara separazione fra livello astratto (interfaccia) che contiene la definizione di operazioni di servizio come ingresso e uscita di documenti e struttura messaggi.
+- Livello concreto che implementa l’interfaccia presenta una serie di endpoint con indirizzo di rete e protocollo per definire i servizi (binding – per ogni interfaccia), tipico di tutte le soluzioni SOA.
 
 Nell’architettura SOA non ci importa la tecnologia utilizzata si possono esporre più modi di comunicazione.
 
 ![single tier](./img/img23.png)
 
-L’integrazione è un grosso problema, solo 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura “casuale” che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
+L’integrazione è un grosso problema: solo 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
+
+### Enterprise Application Integration (EAI)
 
 L’Enterprise Application Integration si occupa dell’integrazione di queste applicazioni, costruendo intorno a queste applicazioni degli strumenti che le integrano.
 
-Enterprise Application Integration permette di sfruttare con operazioni extract transform and load. Si passa quindi per processi batch tra un app e un’altra trasmettiamo i dati con ftp li trasformiamo i dati in un formato utile per la seconda app e le passiamo con ftp e batch. Questo è il funzionamneto di molti servizi bancari. 
+![single tier](./img/img63.png)
 
-Questa soluzione ha alte latenze al momento delle batch, ci possono essere fault al momento delle trasnform, questa è una soluzione con diversi problemi ESB vuole andare oltre rispetto a questa soluzione cercando di automatizzare al più possibile il processo di trasmissione e trasformazione, renedendolo il più possibile pulito.
+Enterprise Application Integration si basa su un approccio formato da tre tipi di operazioni: extract, transform and load. Si passa, quindi, per processi batch tra un app e un’altra. I dati vengono trasmessi con FTP, poi li si trasforma in un formato utile per la seconda app e infine vengono passati di alla seconda app di nuovo con FTP. Questo è il funzionamneto di molti servizi bancari.
 
-La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione, non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus. Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e con le applicazioni che hanno un adapter a un formato comune e una central automation engine un motore che consuma i messaggi guarda dentro i messaggi e facendo routing intelligente tra le applicazioni e mandandolo dove deve arrivare, inoltre vi sono tutti i servizi di sistema, tra cui persistenza e transazioni. L’altra architettura di riferimento è quella a bus, l’automation engine risiede con l’applicazione non abbiamo il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto. 
+Questa soluzione ha alte latenze al momento delle batch perchè ci possono essere fault al momento delle trasnform. ESB vuole andare oltre rispetto a questa soluzione cercando di automatizzare al più possibile il processo di trasmissione e trasformazione, renedendolo il più possibile pulito.
 
-I pro dell’architettura a stella sono la facilità di gestione (centralizzata) il principale contro è che l’hub è punto critico di centralizzazione, inoltre ha ridotta scalabilità. I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
+La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione, non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus.
 
-Enterprise Service bus è la realizzazione della seconda architettura, l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso. 
+### Hub-and-Spoke
+
+Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e con le applicazioni che hanno un adapter a un formato comune e una central automation engine cioè un motore che consuma i messaggi, guarda dentro i messaggi e facendo routing intelligente tra le applicazioni e mandandoli dove deve arrivare. Inoltre, vi sono tutti i servizi di sistema, tra cui persistenza e transazioni.
+
+![single tier](./img/img64.png)
+
+I pro dell’architettura a stella sono la facilità di gestione (centralizzata). Il principale contro è che l’hub è punto critico di centralizzazione. Inoltre, ha ridotta scalabilità.
+
+### Bus di Interconnessione
+
+L’altra architettura di riferimento è quella a bus, l’automation engine risiede con l’applicazione non c'è il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto.
+
+![single tier](./img/img65.png)
+
+I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
+
+L'ESB è la realizzazione della seconda architettura. l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso. 
 
 ### Orchestrazione ESB concetti chiavi
 
-Qui l’orchestrazione avviene per le interazioni tra i servizi a grana grossa e per il routing intelligente. Asptteto di descrizione astratta del servizio e realizzazione concreta dei diversi binding, l’ESB risolve entrambi i problemi. Consente di utilizzare tanti e diversi protocolli per scambiare l’informazione, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta del WSDL, descriverò con un biding concreto le interazioni con il mondo esterno con la parte concreta del WSDL, e ESB fa da orchestratore nel mezzo risparmiando al programmatore di fare l’integrazione poiché il supporto lo fa già. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti e nei vari servizi come auditing e logging. 
+Qui l’orchestrazione avviene per le interazioni tra i servizi a grana grossa e per il routing intelligente. Aspetto di descrizione astratta del servizio e realizzazione concreta dei diversi binding, l’ESB risolve entrambi i problemi. Consente di utilizzare tanti e diversi protocolli per scambiare l’informazione, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta del WSDL, descriverò con un biding concreto le interazioni con il mondo esterno con la parte concreta del WSDL, e ESB fa da orchestratore nel mezzo risparmiando al programmatore di fare l’integrazione poiché il supporto lo fa già. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti e nei vari servizi come auditing e logging. 
 
 ESB è un architettura altamente distribuita con integrazione basata su standard, mette a disposizione servizi di orchestration, mantiene l’autonomia delle singole applicazioni, consente un real-time throughput,  mette in atto servizi di auditing e logging, consente l’adozione incrementale. Nell’invocazione dei servizi, invece rende i servizi completamente disaccoppiati, utilizza pattern “find-bind-invoke” è gestito automaticamente dall’infrastruttura, il progettista deve solo definire l’itinerario logico che i messaggi devono seguire, mentre i servizi si “limitano” a inviare e ricevere messaggi.
 
-Nel mondo Java a supporto di tutto questo abbiamo JBI, java business integration. In JBI ci sono servizi interni e esterni, i servizi esterni non riescono a parlare direttamente con l’orchestratore per questi servizi ci sono dei biding componenent che fungono da proxy verso i servizi esterni tra orchestratore e servizi esterni, sono degli adatatori per passare dal protocollo A al B . Poi vi sono i servizi interni e con questi abbiamo la possibilità di utilizzare il Normalized Message Router che si occupa dell’interazione tra componenti, nel routing delle informazioni. Sopra abbiamo la parte di servizi offerta dal framework tra cui l’orchestrazione dei servizi stessi offerta da BPEL che orchestra i servizi a grana grossa, con diagrammi di flusso che gestiscono le integrazioni. Sono offerti anche servizi grafici al programmatore per l’integrazione più facile dei servizi.  
+### Java Business Integration (JBI)
+
+Nel mondo Java a supporto di tutto questo c'è JBI (Java Business Integration). In JBI, ci sono servizi interni e esterni, i servizi esterni non riescono a parlare direttamente con l’orchestratore per questi servizi ci sono dei biding componenent che fungono da proxy verso i servizi esterni tra orchestratore e servizi esterni, sono degli adatatori per passare dal protocollo A al B. Poi vi sono i servizi interni e con questi abbiamo la possibilità di utilizzare il Normalized Message Router che si occupa dell’interazione tra componenti, nel routing delle informazioni. Sopra abbiamo la parte di servizi offerta dal framework tra cui l’orchestrazione dei servizi stessi offerta da BPEL che orchestra i servizi a grana grossa, con diagrammi di flusso che gestiscono le integrazioni. Sono offerti anche servizi grafici al programmatore per l’integrazione più facile dei servizi.  
 
 La comunicazione tra componenti all’interno del bus NON è diretta. NMR che agisce da mediatore fra i vari componenti, ha il compito di fare routing dei messaggi tra 2 o più componenti, è distribuito e quindi consente di disaccoppiare Service Consumer da Service Provider garantendo un basso accoppiamento tra i componenti JBI, i messaggi sono scambiati in formato XML per cui la comunicazione è "technology-neutral" tra endpoint. Normalized Message scambiati sono definiti in formato indipendente e neutrale da qualsiasi specifica applicazione, tecnologia o protocollo di comunicazione, le  trasformazioni di formato sono trasformazioni XSLT.
 
@@ -2346,8 +2649,11 @@ Scambio di messaggi funzionamento:
 
 Per rispondere a ciascuna richiesta JBI è in grado di capire quale sia il provider migliore per il componente B a quel punto B accetta il messaggio e continua l’interazione, da notare come A non conosca B si è solo registrato a JBI.  Componenti SOA e modello a scambio di messaggi basato su interposizione:  Elevato grado di disaccoppiamento tra componenti con la possibilità di operare su messaggi (trasformazioni) in modo trasparente.
 
-JBI supporta 4 possibili pattern di scambio messaggi: 
-- In-Only per interazione/trasferimenti one-way, spesso molte integrazioni sono soddisfabili con questo pattern, prevede una conferma che tutto sia andato a buon fine
+![single tier](./img/img66.png)
+
+JBI supporta 4 possibili pattern di scambio messaggi:
+
+- In-Only per interazione/trasferimenti one-way, spesso molte integrazioni sono soddisfabili con questo pattern, prevede una conferma che tutto sia andato a buon fine.
 - Robust In-Only per possibilità di segnalare fault a livello applicativo, simile a un handshake a tre vie con la conferma che le cose siano andate bene nelle due parti semantica per gli errori o danni 
 - In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
 - In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
