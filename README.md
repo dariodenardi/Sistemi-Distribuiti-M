@@ -72,7 +72,7 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#sistemi-di-discovery">Sistemi di Discovery</a></li>
         <li><a href="#sistemi-di-directory">Sistemi di Directory</a></li>
         <li><a href="#directory-vs-db">Directory vs DB</a></li>
-        <li><a href="#jndi-1">JNDI</a></li>
+        <li><a href="#java-naming-directory-interface-jndi">Java Naming Directory Interface (JNDI)</a></li>
         <li><a href="#interfaccia-context">Interfaccia Context</a></li>
         <li><a href="#interfaccia-dircontext">Interfaccia DirContext</a></li>
         <li><a href="#uso-di-jndi">Uso di JNDI</a></li>
@@ -84,27 +84,101 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       </ul>
     </li>
     <li>
-      <a href="#">EJB 3.X</a>
+      <a href="#ejb-3x">EJB 3.X</a>
       <ul>
-        <li><a href="#">Annotazioni e Descrittori di Deployment</a></li>
-        <li><a href="#">Tipologie di componenti</a></li>
-        <li><a href="#">Session Bean</a></li>
-        <li><a href="#">Message Driven Bean</a></li>
-        <li><a href="#">Dependency Injection</a></li>
-        <li><a href="#">Interoperabilità tra EJB 3.X e EJB 2.X</a></li>
-        <li><a href="#">Servizi di sistema</a></li>
-        <li><a href="#">Pooling e concorrenza</a></li>
-        <li><a href="#">Resource Pooling</a></li>
-        <li><a href="#">Activation</a></li>
+        <li><a href="#annotazioni-e-descrittori-di-deployment">Annotazioni e Descrittori di Deployment</a></li>
+        <li><a href="#tipologie-di-componenti">Tipologie di componenti</a></li>
+        <li><a href="#session-bean-1">Session Bean</a></li>
+        <li><a href="#message-driven-bean-1">Message Driven Bean</a></li>
+        <li><a href="#dependency-injection">Dependency Injection</a></li>
+        <li><a href="#interoperabilità-tra-ejb-3x-e-ejb-2x">Interoperabilità tra EJB 3.X e EJB 2.X</a></li>
+        <li><a href="#servizi-di-sistema">Servizi di sistema</a></li>
+        <li><a href="#pooling-e-concorrenza">Pooling e concorrenza</a></li>
+        <li><a href="#resource-pooling">Resource Pooling</a></li>
+        <li><a href="#activation">Activation</a></li>
+        <li><a href="#transazionalità">Transazionalità</a></li>
+        <li><a href="#container-managed-transaction">Container-Managed Transaction</a></li>
+        <li><a href="#bean-managed-transaction">Bean-Managed Transaction</a></li>
+        <li><a href="#gestione-delle-connessioni-a-risorse">Gestione delle connessioni a risorse</a></li>
+        <li><a href="#persistenza">Persistenza</a></li>
+        <li><a href="#messaggistica">Messaggistica</a></li>
+        <li><a href="#sicurezza">Sicurezza</a></li>
+        <li><a href="#intercettori">Intercettori</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">JPA</a>
+      <ul>
+        <li><a href="#">Object/Relational Mapping (ORM)</a></li>
+        <li><a href="#">Java Persistence API (JPA)</a></li>
+        <li><a href="#">Perchè usare JPA</a></li>
+        <li><a href="#">Entity</a></li>
+        <li><a href="#">Ereditarietà e Polimorfismo</a></li>
+        <li><a href="#">Strategie di Mapping</a></li>
+        <li><a href="#">Molteplicità nelle Relazioni</a></li>
+        <li><a href="#">Direzionalità delle relazioni</a></li>
+        <li><a href="#">Gestione a runtime di Entity</a></li>
+        <li><a href="#">Container-managed EntityManager</a></li>
+        <li><a href="#">Application-managed EntityManager</a></li>
+        <li><a href="#">Entity Manager singoli vs multipli</a></li>
+        <li><a href="#">Ciclo di Vita</a></li>
+        <li><a href="#">Unità di Persistenza</a></li>
+        <li><a href="#">Creazione di Query</a></li>
+        <li><a href="#">Loading Lazy/Eager</a></li>
+        <li><a href="#">Listener di Entity</a></li>
+        <li><a href="#">Hibernate</a></li>
+        <li><a href="#">Principali Oggetti</a></li>
+        <li><a href="#">Il caching in Hibernate</a></li>
+        <li><a href="#">Hibernate Fetching dei dati</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">JMS</a>
+      <ul>
+        <li><a href="#">Perchè usare un servizio di messagistica</a></li>
+        <li><a href="#">Modello point-to-point</a></li>
+        <li><a href="#">Modello publish/subscriber</a></li>
+        <li><a href="#">Affidabilità nello scambio di messaggi</a></li>
         <li><a href="#">Transazionalità</a></li>
-        <li><a href="#">Container-Managed Transaction</a></li>
-        <li><a href="#">Transazionalità</a></li>
-        <li><a href="#">Bean-Managed Transaction</a></li>
-        <li><a href="#">Gestione delle connessioni a risorse</a></li>
-        <li><a href="#">Persistenza</a></li>
-        <li><a href="#">Messaggistica</a></li>
         <li><a href="#">Sicurezza</a></li>
-        <li><a href="#">Intercettori</a></li>
+        <li><a href="#">Java Messaging Service (JMS)</a></li>
+        <li><a href="#">Tipi di comunicazioni</a></li>
+        <li><a href="#">Messaggi JMS</a></li>
+        <li><a href="#">Interfaccia Destination</a></li>
+        <li><a href="#">Interfaccia ConnectionFactory</a></li>
+        <li><a href="#">Interfaccia Connection</a></li>
+        <li><a href="#">Interfaccia Session</a></li>
+        <li><a href="#">Interfacce Message Consumer e Message Producer</a></li>
+        <li><a href="#">Riassunto API JMS</a></li>
+        <li><a href="#">Uso di JMS</a></li>
+        <li><a href="#">Affidabilità dei messaggi</a></li>
+        <li><a href="#">ACK</a></li>
+        <li><a href="#">Priorità</a></li>
+        <li><a href="#">Affidabilità</a></li>
+        <li><a href="#">Durable Subscription</a></li>
+        <li><a href="#">Gestione delle transazioni di JMS</a></li>
+        <li><a href="#">Selettori di messaggi</a></li>
+        <li><a href="#">JMS in EJB</a></li>
+        <li><a href="#">Enterprise Service Bus (ESB)</a></li>
+        <li><a href="#">Service Oriented Architecture (SOA)</a></li>
+        <li><a href="#">Web Services</a></li>
+        <li><a href="#">Enterprise Application Integration (EAI)</a></li>
+        <li><a href="#">Hub-and-Spoke</a></li>
+        <li><a href="#">Bus di Interconnessione</a></li>
+        <li><a href="#">Orchestrazione ESB concetti chiavi</a></li>
+        <li><a href="#">Java Business Integration (JBI)</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">CORBA</a>
+      <ul>
+        <li><a href="#"></a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">Spring</a>
+      <ul>
+        <li><a href="#"></a></li>
       </ul>
     </li>
   </ol>
@@ -2775,27 +2849,21 @@ Nel mondo Corba quando parliamo di tutte queste funzionalità siamo nel mondo de
 
 ## Spring
 
-Soluzione a container leggero utile per applicazioni Java Standard Edition, sia per POJO sia per evoluzioni dell’EE java. Ha avuto un forte impatto con idee rivoluzionarie che hanno portato ad evolvere anche EJB.
+Spring è una soluzione a container leggero utile per sviluppare applicazioni Java SE e Java EE. Spring non è solo un altro framework, rappresenta un approccio piuttosto unico, che ha fortemente influenzato i container successivi, verso tecnologie a microcontainer. Le principali proprietà originali sono: la modularità, architettura a layer, possibilità di utilizzare anche solo alcune parti (i container)  in isolamento, si può introdurre Spring incrementalmente in progetti esistenti e di imparare ad utilizzare la tecnologia _pezzo per pezzo_, supporta importanti aree non coperte da altri framework diffusi, come il management degli oggetti di business, una tecnologia di integrazione di soluzioni esistenti, maggiore facilità di testing, e infine è un progetto con una community attivi.
 
-Caratteristiche principali: invertion of control, dependency injection, iniezioni di dipendenza nei componenti con Invertion of control, supporto alla persistenza, integrazione di una parte di presentazione o web tier, supporto all’aspect oriented programming in modo pervasivo. Programmazione orientata agli aspetti ovvero una serie di funzionalità che sono ortogonali rispetto al core della logica di business, tale tecnologia vuole mantenere la logica di business pura senza doverla allacciare ad aspetti esterni, quindi separare, il tutto è gestito esternamente, ogni funzionalità è un aspetto che viene integrata nella logica di business.
-
-La Dependency injection è utilizzata per facilitare i binding tra component. Esiste una factory globale che si può utilizzare per ritrovare e gestire le relazioni, cercando di parcelizzare meno il sistema della gestione rispetto a EJB. Integrazione con il web framework MVC. Web flow a grana fine.
-
-Spring non è solo un altro framework, rappresenta un approccio piuttosto unico, che ha fortemente influenzato i container successivi, verso tecnologie a microcontainer. Le principali proprietà originali sono:   la modularità,  architettura a layer, possibilità di utilizzare anche solo alcune parti (i container)  in isolamento, si può introdurre Spring incrementalmente in progetti esistenti e di imparare ad utilizzare la tecnologia “pezzo per pezzo”, supporta  importanti aree non coperte da altri framework diffusi, come il management degli oggetti di business, una tecnologia di integrazione di soluzioni esistenti, maggiore facilità di testing, e infin un progetto e una community attivi.
+### Perchè usare Spring
 
 Le motivazioni per cui scegliere spring sono diverse. Spring consente l’integrazione e la cooperazione fra componenti (secondo il semplice modello JavaBean) via dependency Injection, pone molta importanza al disaccoppiamento, mette a disposizione Test-Driven Development (TDD), ovvero la possibilità di effettuare testing delle classi (POJO) senza essere legati al framework, ha un uso semplificato di tecnologie diffuse e di successo utilizzando astrazioni che isolano il codice applicativo, con eliminazione di codice ridondante, e gestione di comuni condizioni di errore (caso delle unchecked exception), lascia una parziale visibilità quindi non vi è totale trasparenza. La progettazione avviene per interfacce, con ottimo isolamento delle funzionalità dai dettagli implementativi, inoltre integra la programmazione dichiarativa via AOP che consente una facile configurazione degli aspetti, come ad esempio il supporto alle transazioni.
 
-Spring non è una soluzione “all-or-nothing”, ma pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e O/RM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
+Spring non è una soluzione _all-or-nothing_, ma pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e O/RM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
+
+### Architettura
+
+Il Core è un container leggero basato sull’inversion of control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE si occupa della gestione di tutti i servizi enterpise. Il Web Tier contiene tutti i framework web che possono essere integrati con il core. DAO e ORM sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il Core, DAO e ORM.
 
 ![single tier](./img/img39.png)
 
-Il core è un container leggero basato sull’inversion of control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE  si occupa della gestione di tutti i servizi enterpise. Web Tier contiene tutti i framework web che possono essere integrati con il core. Dao e Orm sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il core, Dao e Orm.
-
-![single tier](./img/img40.png)
-
-Nel dettaglio dell’architettura a livelli. Dal basso abbiamo il core, la parte di accesso all’oggetto che astrae l’accesso alle varie entità, puoi vi è il mapping tra oggetti e modello relazionale, a questo livello vi sono parti di business logic, parte di gestione delle transazioni, dichiarativa, che è applicabile ai POJO, al di sopra di questo tutte le parti che vanno nel senso del web tier e supporto a framework evoluti. Al livello più alto troviamo ponti verso mondi esterni, per l’integrazione con strumenti molto diffusi e tutta la parte di binding con il domain model applicativo e tutte le parti per la gestione delle risorse esterne, ad esempio dei file e per la gestione dell’interazione attraverso controller.
-
-Possiamo sempre pensare di specializzare il framework e utilizzare le parti che ci servono, quindi possiamo creare diversi scenari Spring in base alle nostre esigenze.
+Si può sempre pensare di specializzare il framework e utilizzare le parti che ci servono, quindi si possono creare diversi scenari Spring in base alle esigenze di progettazione.
 
 Il Core Package è una parte fondamentale del framework. Consiste in un container leggero che si occupa di Inversion of Control o Dependency Injection. L’elemento fondamentale è BeanFactory, che fornisce una implementazione estesa del pattern factory ed elimina la necessità di gestione di singleton a livello di programmazione, permettendo di disaccoppiare configurazione e dipendenze dalla logica applicativa.
 
@@ -2807,7 +2875,7 @@ MVC Package, implementazione di Model-View-Controller (MVC) per applicazioni Web
 
 AOP Package implementazione di aspect-oriented programming conforme allo standard AOP Alliance. Permette di definire, ad esempio, degli intercettori di metodo e pointcut per la logica disaccoppiamento degli aspetti in modo pulito, inoltre dà la possibilità di utilizzare metadati a livello sorgente per incorporare informazioni aggiuntive di comportamento all’interno del codice.
 
-### Aspect Oriented Programming AOP
+### Aspect Oriented Programming (AOP)
 
 Aspect Oriented programming (AOP) è un approccio di design e una tecnica per semplificare la gestione di aspetti trasversali e non strettamente legati alla logica di business con l’applicazione di cross-cutting concern, per problematiche trasversali alla logica applicativa. Degli esempi di cross-cutting concern sono il logging, il locking, la gestione degli eventi, la gestione delle transazioni, sicurezza e auditing. AOP introduce anche nuovi strumenti che facilitano la gestione di questi aspetti tra cui: Joinpoint, Advice, Pointcut e Aspect, Weaving e Target, Introduction. L’idea di base è quella di intercettare le chiamate da remoto.
 
@@ -2829,37 +2897,81 @@ Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime
 
 Spring realizza AOP sulla base dell’utilizzo di proxy, infatti se si desidera creare una classe advised, occorre utilizzare la classe ProxyFactory per creare un proxy per un’istanza di quella classe, fornendo a ProxyFactory tutti gli aspect con cui si desidera informare il proxy.
 
-La Dependency Injection è l’applicazione più nota e di maggiore successo del principio di Inversion of Control e l’Hollywood Principle, che si traduce in “Don't call me, I'll call you”. L’idea è che il container leggero si occupi di risolvere (injection) le dipendenze dei componenti attraverso l’opportuna configurazione dell’implementazione dell’oggetto (push), per questo fu chiamato dependency injection, questa idea è opposta ai pattern più classici di istanziazione di componenti o service locator, dove è il componente che deve determinare l’implementazione della risorsa desiderata (pull), questo consente di mantenere il più possibile l’implementazione leggera.
+### Dependency Injection
+
+La Dependency Injection è l’applicazione più nota e di maggiore successo del principio di Inversion of Control e l’Hollywood Principle, che si traduce in _Don't call me, I'll call you_. L’idea è che il container leggero si occupi di risolvere (injection) le dipendenze dei componenti attraverso l’opportuna configurazione dell’implementazione dell’oggetto (push), per questo fu chiamato dependency injection. Questa idea è opposta ai pattern più classici di istanziazione di componenti o Service Locator, dove è il componente che deve determinare l’implementazione della risorsa desiderata (pull). Questo consente di mantenere il più possibile l’implementazione leggera.
 
 Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le annotazioni per aggiungere tutte le informazioni utili che servono a esprimere tutte le dipendenze tra i vari compoennti, con il vantaggio della flessibilità con l’eliminazione del codice di lookup nella logica di business, in caso di cambio delle risorse esterne non vi è la necessità di cambiare il codice, la possibilità e facilità di testing con nessun bisogno di dipendere da risorse esterne o da container in fase di testing, vi è la possibilità di abilitare testing automatico, ed un’elevata manutenibilità del codice che permette riutilizzo in diversi ambienti applicativi cambiando semplicemente i file di configurazione (o in generale le specifiche di dependency injection) e non il codice, dividendo nettamente la parte di programma da quella di configurazione.
 
-Dependency injection possono essere effettuate a livello di costruttore, in cui le dipendenze sono fornite attraverso i costruttori dei componenti.
+### Varianti per Dependency Injection
+
+La dependency injection può essere effettuate a livello di costruttore, in cui le dipendenze sono fornite attraverso i costruttori dei componenti:
 
 ```
-public class ConstructorInjection { 
-    private Dependency dep; 
-    public ConstructorInjection(Dependency dep) { this.dep = dep; } 
+public class ConstructorInjection {
+
+    private Dependency dep;
+
+    public ConstructorInjection(Dependency dep) {
+        this.dep = dep;
+    } 
 }
 ```
 
-Dependency injection è possibile anche a livello di metodi “setter” in cui le dipendenze sono fornite attraverso i metodi di configurazione (metodi setter in stile JavaBean) dei componenti. Questa modalità è più frequentemente utilizzata nella comunità degli sviluppatori.
+Tuttavia, la dependency injection è possibile anche a livello di metodi `setter` in cui le dipendenze sono fornite attraverso i metodi di configurazione (metodi `setter` in stile JavaBean) dei componenti. Questa modalità è più frequentemente utilizzata nella comunità degli sviluppatori:
 
 ```
-public class SetterInjection { 
-    private Dependency dep; 
-    public void setMyDependency(Dependency dep) { this.dep = dep; } 
+public class SetterInjection {
+
+    private Dependency dep;
+
+    public void setMyDependency(Dependency dep) {
+        this.dep = dep;
+    } 
 }
 ```
 
-L’oggetto BeanFactory è responsabile della gestione dei bean che usano Spring e delle loro dipendenze. Ogni applicazione interagisce con la dependency injection di Spring (IoC container) tramite l’interfaccia BeanFactory, che viene realizzata da un oggetto BeanFactory che viene creato dall’applicazione, tipicamente nella forma di XmlBeanFactory, questo oggetto BeanFactory una volta creato legge un file di configurazione XML e si occupa di fare l’injection, detto anche wiring della configurazione. XmlBeanFactory è estensione di DefaultListableBeanFactory per leggere definizioni di Bean da un documento XML. La xml BeanFactory legge la configurazione da un file e attraverso il metodo getBean() è possibile specificare il nome del Bean e crearlo, le informazioni sono invece contenute tutte nel file XML.
+### Oggetto BeanFactory
+
+L’oggetto `BeanFactory` è responsabile della gestione dei Bean che usano Spring e delle loro dipendenze. Ogni applicazione interagisce con la dependency injection di Spring (IoC container) tramite l'interfaccia `BeanFactory`. L'oggetto `BeanFactory` viene creato dall’applicazione tipicamente nella forma di `XmlBeanFactory`. Questo oggetto `BeanFactory` legge un file di configurazione XML e si occupa di fare l’injection, detto anche wiring della configurazione. `XmlBeanFactory` è l'estensione di `DefaultListableBeanFactory` per leggere definizioni di Bean da un documento XML. La XML `BeanFactory` legge la configurazione da un file e attraverso il metodo `getBean()` è possibile specificare il nome del Bean e crearlo. Le informazioni sono invece contenute tutte nel file XML:
 
 ```
 public class XmlConfigWithBeanFactory { 
     public static void main(String[] args) { 
         XmlBeanFactory factory = new XmlBeanFactory(new FileSystemResource("beans.xml")); 
-        SomeBeanInterface b = (SomeBeanInterface) factory.getBean(“nameOftheBean”); 
+        SomeBeanInterface b = (SomeBeanInterface) factory.getBean("nameOftheBean"); 
     } 
 }
+```
+
+Oppure a livello di costruttore:
+
+```
+public class ConfigurableMessageProvider implements MessageProvider { 
+    
+    private String message;
+
+    // usa dependency injection per config. del messaggio
+    public ConfigurableMessageProvider(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    } 
+}
+```
+
+File di configurazione:
+
+```
+<beans>
+    <bean id="provider" class="ConfigurableMessageProvider">
+        <constructor-arg>
+            <value> Questo è il messaggio configurabile</value>
+        </constructor-arg>
+    </bean>
+</beans>
 ```
 
 File di configurazione:
@@ -2868,75 +2980,61 @@ File di configurazione:
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
 "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-<bean id="renderer" class="StandardOutMessageRenderer">
-<property name="messageProvider">
-<ref local="provider"/>
-</property>
-</bean>
-<bean id="provider" class="HelloWorldMessageProvider"/> 
+    <bean id="renderer" class="StandardOutMessageRenderer">
+        <property name="messageProvider">
+            <ref local="provider"/>
+        </property>
+    </bean>
+    <bean id="provider" class="HelloWorldMessageProvider"/> 
 </beans>
-```
-
-Oppure a livello di costruttore:
-
-```
-<beans>
-<bean id="provider" class="ConfigurableMessageProvider">
-<constructor-arg>
-<value> Questo è il messaggio configurabile</value>
-</constructor-arg>
-</bean>
-</beans>
-```
-
-Uso della dependency injection:
-
-```
-public class ConfigurableMessageProvider implements MessageProvider { 
-private String message; // usa dependency injection per config. del messaggio public ConfigurableMessageProvider(String message) { this.message = message; } 
-public String getMessage() { return message; } 
-}
 ```
 
 Spring supporta diversi tipi di parametri iniettabili con cui fare injection:
 
-- Valori semplici;
-- Bean all’interno della stessa factory (stesso file di configurazione XML);
-- Bean anche in diverse factory;
-- Collezioni (collection);
+- Valori semplici.
+- Bean all’interno della stessa factory (stesso file di configurazione XML).
+- Bean anche in diverse factory.
+- Collezioni (collection).
 - Proprietà definite esternamente.
 
-Tutti questi tipi possono essere usati sia per injection sui costruttori che sui metodi setter:
+Tutti questi tipi possono essere usati sia per injection sui costruttori che sui metodi setter.
 
 Injection di valori semplici esempio:
 
 ```
 <beans>
-<bean id="injectSimple" class="InjectSimple">
-<property name="name"> <value>John Smith</value>
-</property>
-<property name="age"> <value>35</value>
-</property>
-<property name="height"> <value>1.78</value>
-</property>
-</bean> </beans>
+    <bean id="injectSimple" class="InjectSimple">
+        <property name="name"> <value>John Smith</value>
+        </property>
+        <property name="age"> <value>35</value>
+        </property>
+        <property name="height"> <value>1.78</value>
+        </property>
+    </bean>
+</beans>
 ```
 
-L’Injection di Bean della stessa Factory è usata quando è necessario fare injection di un bean all’interno di un altro target bean.  Uso del tag in o del target bean. Controllo lasco sul tipo del bean “iniettato” rispetto a quanto definito nel target, se il tipo definito nel target è un’interfaccia, il bean injected deve essere un’implementazione di tale interfaccia, se il tipo definito nel target è una classe, il bean injected deve essere della stessa classe o di una sottoclasse.
+L’injection di Bean della stessa Factory è usata quando è necessario fare injection di un Bean all’interno di un altro target bean. Si Usa il tag `ref` in `property` o `constructor-arg` del target bean. Il controllo lasco sul tipo del bean è _iniettato_ rispetto a quanto definito nel target, se il tipo definito nel target è un’interfaccia, il bean injected deve essere un’implementazione di tale interfaccia, se il tipo definito nel target è una classe, il bean injected deve essere della stessa classe o di una sottoclasse.
 
 Il ritrovamento dei Bean avviene attraverso il naming dei componenti Spring, ogni bean deve avere un nome unico all’interno della BeanFactory che lo contiene, la procedura di risoluzione dei nomi avviene seguendo le seguenti regole: se un tag ha un attributo di nome id, il valore di questo attributo viene usato come nome, se non c’è attributo id, Spring cerca un attributo di nome name, se non è definito né id né name, Spring usa il nome della classe del Bean come suo nome. Spring è un buon esempio di tecnologia a container leggeri perché facilita molto la gestione delle dipendenze con Dependency Injection.
 
+### Costruzione dell'dependency injection
+
 ```
-public class HelloWorld { 
-public static void main(String[] args) { System.out.println("Hello World!"); } 
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
 }
 ```
 
 Un programma come questo si porta dietro alcuni problemi, se vi è la necessità di cambiare il codice (e di ricompilare) per imporre una modifica del messaggio, dobbiamo modificare e ricompilare, il codice non è estensibile o modificabile. Per risolvere dobbiamo effettuare alcune operazioni quali il disaccoppiamento dell’implementazione della logica del Message Provider rispetto al resto del codice tramite creazione di una classe separata.
 
 ```
-public class HelloWorldMessageProvider { 
-public String getMessage() { return "Hello World!"; } 
+public class HelloWorldMessageProvider {
+    public String getMessage() {
+        return "Hello World!";
+    } 
 }
 ```
 
@@ -3253,7 +3351,7 @@ class="org.springframework.aop.framework.ProxyFactoryBean">
 </bean> </beans>
 ```
 
-Ripasso Transazioni verso DB Sistemi Informativi:
+### Transazioni verso DB
 
 Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability). Isolation richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni. Consistency è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
 
