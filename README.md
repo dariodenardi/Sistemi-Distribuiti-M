@@ -1500,17 +1500,23 @@ Per rendere più flessibili le transazioni gestite dal container si usa l'annota
 Di seguito viene riportata una rappresentazione grafica per fissare meglio i concetti:
 
 - `NOT_SUPPORTED`:
-![single tier](./img/img57.png)
+![Not Supported-Light](./img/img57-light.png#gh-light-mode-only)
+![Not Supported-Dark](./img/img57-dark.png#gh-dark-mode-only)
 - `SUPPORTS`:
-![single tier](./img/img58.png)
+![Supports-Light](./img/img58-light.png#gh-light-mode-only)
+![Supports-Dark](./img/img58-dark.png#gh-dark-mode-only)
 - `REQUIRED`:
-![single tier](./img/img59.png)
+![Required-Light](./img/img59-light.png#gh-light-mode-only)
+![Required-Dark](./img/img59-dark.png#gh-dark-mode-only)
 - `REQUIRES_NEW`:
-![single tier](./img/img60.png)
+![Requires New-Light](./img/img60-light.png#gh-light-mode-only)
+![Requires New-Dark](./img/img60-dark.png#gh-dark-mode-only)
 - `MANDATORY`:
-![single tier](./img/img61.png)
+![Mandatory-Light](./img/img61-light.png#gh-light-mode-only)
+![Mandatory-Dark](./img/img61-dark.png#gh-dark-mode-only)
 - `NEVER`:
-![single tier](./img/img62.png)
+![Never-Light](./img/img62-light.png#gh-light-mode-only)
+![Never-Dark](./img/img62-dark.png#gh-dark-mode-only)
 
 Se una transazione fallisce bisogna effettuare il rollback della transazione. Può essere scatenata da due cause:
 
@@ -1598,7 +1604,8 @@ Il container EJB è anche responsabile nello svolgere azioni di controllo dell�
 
 Il container EJB basa le sue decisioni di sicurezza sui concetti di realm, utenti, gruppi e ruoli.
 
-![single tier](./img/img48.png)
+![Sicurezza EJB-Light](./img/img48-light.png#gh-light-mode-only)
+![Sicurezza EJB-Dark](./img/img48-dark.png#gh-dark-mode-only)
 
 Il realm è una collezione di utenti di una singola applicazione (o di un loro insieme), controllati dalla stessa policy di autenticazione.
 Possono o meno essere parte dello stesso gruppo. Ad esempio, accesso tramite username e password, firma digitale etc.
@@ -2307,7 +2314,8 @@ Gli oggetti transient o detached hanno istanze non legate alla sessione. Modific
 
 In generale, la cache migliora la performance dei sistemi e si accede al database solo se lo stato necessario non è presente in cache. In Hibernatem esistono due livelli di cache: uno associata alla `Session` e uno associata alla `SessionFactory`. Le cache di primo livello è usata da Hibernate all’interno dei confini di una singola transazione principalmente al fine di ridurre il numero di query SQL generate all’interno di una transazione. Ad esempio, se un oggetto è modificato diverse volte all’interno della medesima transazione, Hibernate genera un unico statement SQL UPDATE alla fine della transazione, con tutte le modifiche. Invece, la cache di secondo livello, mantiene dati a livello di `Session Factory`, utilizzabili da diverse transazioni.
 
-![Ciclo di Vita Entity-Light](./img/img70-light.png)
+![Caching Hibernate-Light](./img/img70-light.png)
+![Caching Hibernate-Dark](./img/img70-dark.png)
 
 Dalla `SessionFactory` si crea un oggetto `Session`. Un primo componente `C1` si crea il proprio oggetto `Session` e lavora sulla cacha di primo livello `L1_1`. La `Session` fa una find di un dato del DB. La cache all'inizio è vuota. Il layer di persistenza prende il dato dal DB e carica in cache l'oggetto `O1`. Non viene fatta una copia solo nella cache di primo livello, ma viene fatta una copia anche nella cache di secondo livello. Un secondo componente `C2` crea dalla stessa `SessionFactory` un nuovo oggetto `Session` e lavora sulla cache di primo livello `L1_2`. Il secondo componente non trova l'oggetto `O1` nella propria cache di primo livello `C1` ma lo trova nella cache di secondo livello `L2` e se lo porta nella propria cache di primo livello una copia di `O1` senza andare su DB.
 
