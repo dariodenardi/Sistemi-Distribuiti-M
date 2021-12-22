@@ -127,9 +127,13 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#">Loading Lazy/Eager</a></li>
         <li><a href="#">Listener di Entity</a></li>
         <li><a href="#">Hibernate</a></li>
-        <li><a href="#">Principali Oggetti</a></li>
+        <li><a href="#">Interfaccia SessionFactory</a></li>
+        <li><a href="#">Interfaccia Session</a></li>
+        <li><a href="#">Transazioni</a></li>
+        <li><a href="#">Ciclo di Vita</a></li>
         <li><a href="#">Il caching in Hibernate</a></li>
-        <li><a href="#">Hibernate Fetching dei dati</a></li>
+        <li><a href="#">Fetching dei dati</a></li>
+        <li><a href="#">Query By Examples (QBE)</a></li>
       </ul>
     </li>
     <li>
