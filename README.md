@@ -2907,53 +2907,6 @@ Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime
 
 Spring realizza AOP sulla base dell’utilizzo di proxy, infatti se si desidera creare una classe advised, occorre utilizzare la classe ProxyFactory per creare un proxy per un’istanza di quella classe, fornendo a ProxyFactory tutti gli aspect con cui si desidera informare il proxy.
 
-### HelloWorld con AOP
-
-Si ipotizzi di avere il `MessageWriter` che scrive `Hello World!` e avremmo bisogno di un around advice per inserire prima e dopo `World`, `Hello` e “!, mentre con il  joinpoint avremo l’invocazione del metodo writeMessage() dovendo intervenire prima e dopo l’invocazione di questo metodo
-
-```
-public class MessageWriter implements IMessageWriter{
-
-    public void writeMessage() {
-        System.out.print("World");
-    }
-
-} 
-```
-
-Gli advice Spring sono scritti in Java (nessun linguaggio AOPspecific). Pointcut tipicamente specificati in file XML di configurazione. Spring supporta solo joinpoint a livello di metodo (ad esempio, impossibile associare advice alla modifica di un campo di un oggetto). Con l’idea di definire come decorator queste parti cdi codice, dal punto di vista dell’esecuzione questi lavorano come intercettori che consentono di cambiare il codice.
-
-```
-public class MessageDecorator implements MethodInterceptor { 
-public Object invoke(MethodInvocation invocation) throws Throwable { 
-System.out.print("Hello "); 
-Object retVal = invocation.proceed(); 
-System.out.println("!"); 
-return retVal; 
-} 
-}
-```
-
-I pointcut lavorano come intercettori e consentono se adeguatamente settati di cambiare la logica applicativa. Uso della classe ProxyFactory per creare il proxy dell’oggetto target, anche modalità più di base, tramite uso di possibilità predeterminate e file XML, senza istanziare uno specifico proxy per AOP.
-
-```
-public static void main(String[] args) { 
-MessageWriter target = new MessageWriter(); 
-ProxyFactory pf = new ProxyFactory(); 
-// aggiunge advice alla coda della catena dell’advice pf.addAdvice(new //MessageDecorator()); 
-// configura l’oggetto dato come target 
-pf.setTarget(target); 
-// crea un nuovo proxy in accordo con le configurazioni 
-// della factory MessageWriter 
-proxy = (MessageWriter) pf.getProxy(); 
-proxy.writeMessage(); 
-// Come farei invece a supportare lo stesso comportamento // con chiamata diretta al //metodo dell’oggetto target?...
-}
-}
-```
-
-Guarda caso, anche in Spring possiamo definire intercettori, ma questa volta in modo molto diverso e meno trasparente rispetto a un modello a container pesante, sfruttando i concetti di AOP e gli oggetti con proxy. Intercettore Spring può eseguire immediatamente prima o dopo l’invocazione della richiesta corrispondente. Implementa l’interfaccia MethodInterceptor o estende HandlerInterceptorAdaptor
-
 ### Dependency Injection
 
 La Dependency Injection è l’applicazione più nota e di maggiore successo del principio di Inversion of Control e l’Hollywood Principle, che si traduce in _Don't call me, I'll call you_. L’idea è che il container leggero si occupi di risolvere (injection) le dipendenze dei componenti attraverso l’opportuna configurazione dell’implementazione dell’oggetto (push), per questo fu chiamato dependency injection. Questa idea è opposta ai pattern più classici di istanziazione di componenti o Service Locator, dove è il componente che deve determinare l’implementazione della risorsa desiderata (pull). Questo consente di mantenere il più possibile l’implementazione leggera.
@@ -3439,260 +3392,303 @@ public class ConfigurableMessageProvider implements MessageProvider {
 }
 ```
 
+### Considerazioni sulla dependency injection
+
+La possibilità di semplice Dependency Injection tramite costruttori o metodi semplifica il testing delle applicazioni Spring. Per esempio è semplice scrivere un test JUnit che crea l’oggetto Spring e configura le sue proprietà a fini di testing. Il container IoC non è invasivo: molti oggetti di business non dipendono dalle API di invocazione del container, queste possono essere portabili verso altre implementazioni di container (PicoContainer, HiveMind etc) ed è facile _introdurre_ vecchi POJO in ambiente Spring. Le factory Spring sono leggere, esistono anche implementazioni all’interno di singole applet o come applicazioni Swing standalone. Un altro importante aspetto, secondario ma comunque rilevante è la possibilità di avere di avere unchecked runtime exception. Un'eccezione runtime exception è un oggetto che viene generato e viene gestito tramite `try-catch`. Tuttavia, è possibile che a tempo di esecuzione, un'eccezione non venga gestita quindi l'errore viene propagato e l'applicazione si può interrompere. In Spring, se un'eccezione non viene catturata viene ignorata.
+
+### HelloWorld con AOP
+
+La classe `MessageWriter` scrive `World`. L'obiettivo è quello di stampare prima la parola `Hello` e alla fine `!`:
+
+```
+public class MessageWriter implements IMessageWriter {
+
+    public void writeMessage() {
+        System.out.print("World");
+    }
+
+} 
+```
+
+Si ha bisogno di un around advice per inserire prima e dopo `World`, le parole `Hello` e `!`, mentre con il joinpoint si ha l’invocazione del metodo `writeMessage()` dovendo intervenire prima e dopo l’invocazione di questo metodo.
+
+Gli advice sono scritti in Java (nessun linguaggio AOP-specific). I pointcut tipicamente specificati in file XML di configurazione. Spring supporta solo joinpoint a livello di metodo (ad esempio, impossibile associare advice alla modifica di un campo di un oggetto). Con l’idea di definire come decorator queste parti di codice, dal punto di vista dell’esecuzione questi lavorano come intercettori che consentono di cambiare il codice:
+
+```
+public class MessageDecorator implements MethodInterceptor {
+
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        System.out.print("Hello ");
+        Object retVal = invocation.proceed();
+        System.out.println("!");
+        return retVal;
+    }
+}
+```
+
+I pointcut lavorano come intercettori e consentono se adeguatamente settati di cambiare la logica applicativa. Si usa la classe `ProxyFactory` per creare il proxy dell’oggetto target, anche modalità più di base, tramite uso di possibilità predeterminate e file XML, senza istanziare uno specifico proxy per AOP:
+
+```
+public static void main(String[] args) {
+
+    MessageWriter target = new MessageWriter();
+    ProxyFactory pf = new ProxyFactory();
+    // aggiunge advice alla coda della catena dell’advice
+    pf.addAdvice(new MessageDecorator());
+    // configura l’oggetto dato come target
+    pf.setTarget(target);
+    // crea un nuovo proxy in accordo con le configurazioni
+    // della factory MessageWriter
+    proxy = (MessageWriter) pf.getProxy();
+    proxy.writeMessage();
+    // Come farei invece a supportare lo stesso comportamento
+    // con chiamata diretta al metodo dell’oggetto target?
+    
+}
+```
+
+Guarda caso, anche in Spring si possono definire intercettori, ma questa volta in modo molto diverso e meno trasparente rispetto a un modello a container pesante, sfruttando i concetti di AOP e gli oggetti con proxy.
+
 ### Intercettori
 
+L'intercettore Spring può eseguire immediatamente prima o dopo l’invocazione della richiesta corrispondente. Implementa l’interfaccia `MethodInterceptor` o estende `HandlerInterceptorAdaptor`:
+
 ```
-public class MyService { 
-public void doSomething() { 
-for (int i = 1; i < 10000; i++) { System.out.println("i=" + i); } 
-} 
-} 
+public class MyService {
+
+    public void doSomething() {
+        for (int i = 1; i < 10000; i++) {
+            System.out.println("i=" + i);
+        } 
+    }
+
+}
 ```
 
 ```
-public class ServiceMethodInterceptor implements MethodInterceptor { 
-public Object invoke(MethodInvocation methodInvocation) throws Throwable { 
-long startTime = System.currentTimeMillis(); 
-Object result = methodInvocation.proceed(); 
-long duration = System.currentTimeMillis() - startTime;
-Method method = methodInvocation.getMethod(); 
-String methodName = method.getDeclaringClass().getName() + "." + method.getName(); System.out.println("Method '" + methodName + "' took " + duration + " milliseconds to run"); return null; 
-} 
-} 
+public class ServiceMethodInterceptor implements MethodInterceptor {
+
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+
+        long startTime = System.currentTimeMillis();
+        Object result = methodInvocation.proceed();
+        long duration = System.currentTimeMillis() - startTime;
+        Method method = methodInvocation.getMethod();
+        String methodName = method.getDeclaringClass().getName() + "." + method.getName();
+        System.out.println("Method '" + methodName + "' took " + duration + " milliseconds to run");
+        
+        return null;
+    }
+}
 ```
 
-Nel file di configurazione si definiscono i componenti, l’intercettore e quali sono i vari target e nei vari target si definiscono gli intercettori da utilizzare.
+Nel file di configurazione si definiscono i componenti, l’intercettore e quali sono i vari target e nei vari target si definiscono gli intercettori da utilizzare:
 
 ```
 <beans>
-<bean id="myService" class="com.test.MyService"> </bean>
-<bean id="interceptor" class="com.test.ServiceMethodInterceptor">
-</bean>
-<bean id="interceptedService"
-class="org.springframework.aop.framework.ProxyFactoryBean">
-<property name="target">
-<ref bean="myService"/> </property>
-<property name="interceptorNames">
-<list> <value>interceptor</value> </list> </property>
-</bean> </beans>
+    <bean id="myService" class="com.test.MyService"></bean>
+    <bean id="interceptor" class="com.test.ServiceMethodInterceptor"></bean>
+    <bean id="interceptedService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <ref bean="myService"/> </property>
+        <property name="interceptorNames">
+            <list>
+                <value>interceptor</value>
+            </list>
+        </property>
+    </bean>
+</beans>
 ```
 
 ### Transazioni verso DB
 
-Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability). Isolation richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni. Consistency è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
+Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability):
 
-Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti in questo caso riduciamo il tempo di risposta, con interleaving di circa la metà. La concorrenza però va gestita, se le varie transazioni interferiscono tra di loro possiamo avere problemi in lettura e in scrittura.
+- Atomicity si basa sul principio del _tutto o niente_ cioè o viene eseguita tutta correttamente oppure no.
+- Isolation richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni.
+- Consistency è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
+- Durability: le operazioni della transazioni devono persistere nel tempo.
 
-- Tra i problemi di lettura troviamo Lost Update: due persone entrano sulla stessa riga e con la perdita di stato, per esempio entrambe comprano l’ultimo biglietto rimasto.
-- Nel caso della dirtyread, qualora si voglia acquistare un biglietto per una certa data questa data è cambiata nel frattempo. 
-- Unrepeatable read, letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
-- Phantom row nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero. 
+Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti e in questo caso si riduce il tempo di risposta.
+
+![single tier](./img/img68.png)
+
+Eseguire più transazioni concorrentemente è necessario per garantire buone prestazioni: si sfrutta il fatto che, mentre una transazione è in attesa del completamento di una operazione di I/O, un’altra può utilizzare la CPU.
+
+La concorrenza però va gestita, se le varie transazioni interferiscono tra di loro possiamo avere problemi in lettura e in scrittura. Infatti, ci sono quattro problemi principali quando si eseguono le transazioni in modo concorrente:
+
+- **Lost Update**: due persone entrano sulla stessa riga e con la perdita di stato, per esempio entrambe comprano l’ultimo biglietto rimasto.
+- **Dirty Read**: qualora si voglia acquistare un biglietto per una certa data questa data è cambiata nel frattempo. 
+- **Unrepeatable read**: letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
+- **Phantom row**: nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero. 
 
 ### Lost Update
 
-Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (“entrambe vedono l’ultimo biglietto disponibile”).
-
-### Dirty read
-
-In questo caso il problema è che una transazione legge un dato “che non c’è”: quanto svolto da T2 si basa su un valore di X “intermedio”, e quindi non stabile (“la data definitiva non è il 15/07/10”). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse
+Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
 
 ![single tier](./img/img41.png)
 
-### Unrepeatble read
+### Dirty read
 
-Ora il problema è che una transazione legge due volte un dato e trova valori diversi (“il prezzo nel frattempo è aumentato”):
+In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
 
 ![single tier](./img/img42.png)
 
-Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di “analisi”. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
+### Unrepeatble read
+
+Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
+
+![single tier](./img/img69.png)
+
+Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
 
 ### Phantom row
 
-Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un “phantom”, in quanto T1 “non la vede”.
+Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un _phantom_, in quanto T1 non la vede.
 
 ![single tier](./img/img43.png)
 
-Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce 4 livelli di isolamento, che sono Serializable, repeatable read, read committed, uncommitted read.
+### Livello di Isolamento
+
+Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce 4 livelli di isolamento, che sono serializable, repeatable read, read committed, uncommitted read:
+
+- `ISOLATION_READ_UNCOMMITTED`: possono accadere letture sporche (dirty read), non ripetibili e fantasma (phantom read).
+- `ISOLATION_READ_COMMITTED`: letture sporche rese impossibili, possibilità di accadimento di letture non ripetibili e fantasma.
+- `ISOLATION_REPEATABLE_READ`: possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili.
+- `ISOLATION_SERIALIZABLE`: tutte le possibilità spiacevoli sopra elencate per la lettura sono rese impossibili. Viene garantita le proprietà ACID
 
 ### Transazionalità verso DB
 
-Con scarsa sorpresa in Spring chiamiamo transazione locale, una transazione specifica per una singola risorsa transazionale, ad esempio unica risorsa JDBC, mentre chiamiamo transazione globale, una transazione gestita dal container, questa può includere risorse transazionali multiple e distribuite. Il programmatore può specificare in modo dichiarativo che un metodo di bean deve avere proprietà transazionali. Anche l’implementazione delle transazioni è basata su AOP, infatti avviene l’intercettazione di chiamate a metodi per la gestione transazioni. Nessuna necessità di modificare la logica di business, né al cambio della transazionalità desiderata né al cambio del provider di transazionalità.
+Con scarsa sorpresa in Spring, si chiama transazione locale, una transazione specifica per una singola risorsa transazionale, ad esempio un'unica risorsa di un database, mentre si chiama transazione globale, una transazione gestita dal container, questa può includere risorse  multiple e distribuite. Il programmatore può specificare in modo dichiarativo che un metodo di Bean deve avere proprietà transazionali. Anche l’implementazione delle transazioni è basata su AOP, infatti avviene l’intercettazione di chiamate a metodi per la gestione transazioni. Nessuna necessità di modificare la logica di business, né al cambio della transazionalità desiderata né al cambio del provider di transazionalità.
 
-Livelli di isolamento, da letture sporche a letture pulite
-- ISOLATION_DEFAULT 
-- ISOLATION_READ_UNCOMMITTED, possono accadere letture “sporche” (dirty read), non ripetibili e fantasma (phantom read)
-- ISOLATION_READ_COMMITTED, letture sporche rese impossibili, possibilità di accadimento di letture non ripetibili e fantasma 
-- ISOLATION_REPEATABLE_READ, possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili 
-- ISOLATION_SERIALIZABLE, tutte le possibilità “spiacevoli” sopra per la lettura sono rese impossibili.
+In Spring, i livelli di propagazione delle transazioni sono:
 
-Phantom read avviene quando, nel corso di una transazione, vengono eseguite due query identiche e i risultati restituiti dalla seconda query sono differenti da quelli per la prima. Causa: “lock di range” non acquisiti (solo acquisizione di read lock) in fase di SELECT. Arriva una riga fantasma.
+- `PROPAGATION_REQUIRED`: supporto alla propagazione della transazione di partenza. Crea una nuova transazione se non era transazionale il contesto di partenza.
+- `PROPAGATION_SUPPORTS`: supporto alla propagazione della transazione di partenza, esegue non transazionalmente se la partenza non era transazionale.
+- `PROPAGATION_MANDATORY`: supporto alla propagazione della transazione di partenza; lancia un’eccezione se la partenza non era transazionale.
+- `PROPAGATION_REQUIRES_NEW`: crea una nuova transazione, sospendendo quella di partenza, se esistente.
+- `PROPAGATION_NOT_SUPPORTED`.
+- `PROPAGATION_NEVER`.
+- `PROPAGATION_NESTED`.
 
-```
-Transaction 1 /* Query 1 */ 
-SELECT * 
-FROM users 
+### Pooling e concorrenza
 
-WHERE age BETWEEN 10 AND 30;
- /* più tardi, dopo l’esecuzione di Query 2 */ 
-SELECT * 
-FROM users 
-WHERE age BETWEEN 10 AND 30; 
-Transaction 2 /* Query 2 */ 
-INSERT INTO users VALUES ( 3, 'Bob', 27 ); 
-COMMIT;
-```
+Alla base dell’architettura Spring, c’è l’idea di Inversion of Control (prima che in EJB 3.0) e di container leggeri per factory per l’istanziazione, il ritrovamento e la gestione delle relazioni fra oggetti. Le factory supportano due modalità di oggetto:
 
-Non-repeatable read accade quando i lock in lettura non vengono rispettati, i dati vengono rilasciati prima della fine della transazione totale. In soluzioni di controllo della concorrenza basate su lock, letture non-repeatable possono avvenire quando i lock in lettura non sono acquisiti durante una SELECT. In soluzioni di controllo della concorrenza multiversion, letture non-repeatable possono avvenire quando si rilassa il vincolo che una transazione con conflitto di commit debba effettuare rollback.
+- **Singleton (default)**: singleton vuol dire che il primo cliente che chiede alla `BeanFactory` un'istanza logica di un componente di classe `Pippo`, dato che non esiste, viene creata un'istanza, viene inizializzata, risolte le dipendenze e poi la restituirà al cliente. Un secondo cliente chiede alla `BeanFactory` una propria istanza logica, allora la gestione a singleton porterà la `BeanFactory` di restituire sempre un riferimento all'istanza già generata in precedenza. Ideale per oggetti stateless perchè questo riduce la proliferazione di istanze nel codice applicativo.
+- **Prototype**: ogni operazione di ritrovamento di un oggetto produrrà la creazione di una nuova istanza. Ideale per oggetti statefull.
 
-```
-Transaction 1
- /* Query 1 */
- SELECT * 
-
- FROM users 
-WHERE id = 1; 
-/* Dopo Query 2 e suo commit parziale */ 
-SELECT * 
-FROM users 
-WHERE id = 1; 
-Transaction 2 /* Query 2 */ 
-UPDATE users 
-SET age = 21 
-WHERE id = 1; 
-COMMIT; 
-/* ad es. per read-committed isolation: read lock rilasciati prima della fine della transazione totale */ COMMIT; 
-/* fine della transazione totale, anche write lock rilasciati */
-```
-
-Dirty read  avviene quando una transazione legge dati che sono stati modificati da un’altra transazione non ancora committed. Letture dirty sono simili a letture non-repeatable, ma la seconda transazione non necessita di commit per la prima query per restituire un risultato diverso.
-
-```
-Transaction 1 
-/* Query 1 */ 
-SELECT * 
-FROM users 
-WHERE id = 1; 
-/* Dopo Query 2 */
- SELECT * 
-FROM users 
-WHERE id = 1; 
-Transaction 2 
-/* Query 2 */
- UPDATE users 
-SET age = 21 
-WHERE id = 1;
- /* Nessun commit immediato, solo alla fine della transazione */ 
-COMMIT;
-```
-
-Propagazione delle transazioni in spring
-- PROPAGATION_REQUIRED supporto alla propagazione della transazione di partenza; crea una nuova transazione se non era transazionale il contesto di partenza,
-- PROPAGATION_SUPPORTS Supporto alla propagazione della transazione di partenza, esegue non transazionalmente se la partenza non era transazionale ,
-- PROPAGATION_MANDATORY  Supporto alla propagazione della transazione di partenza; lancia un’eccezione se la partenza non era transazionale, 
-- PROPAGATION_REQUIRES_NEW Crea una nuova transazione, sospendendo quella di partenza, se esistente PROPAGATION_NOT_SUPPORTED 
-- PROPAGATION_NEVER 
-- PROPAGATION_NESTED
-
-Questi vincoli sono modificabili in modo atomico senza cambiamenti in altre parti.
-
-Alla base dell’architettura Spring c’è l’idea di Inversion of Control (prima che in EJB3.0) e di container leggeri per factory  per l’istanziazione, il ritrovamento e la gestione delle relazioni fra oggetti Factory supportano due modalità di oggetto:  Singleton (default) unica istanza condivisa dell’oggetto con nome specificato, ideale per oggetti stateless, questo riduce la proliferazione di istanze nel codice applicativo, oppure prototype  ogni operazione di ritrovamento di un oggetto produrrà la creazione di una nuova istanza,
-
-questo è utile per far avere ad ogni invocante una istanza distinta, aggiunge un nuovo livello di indirettezza. Un Bean Spring può essere anche un FactoryBean (implementazione dell’interfaccia corrispondente), questo aggiunge un livello di indirettezza e viene solitamente usato per creare oggetti con proxy utilizzando ad es. AOP (concettualmente simile a interception in EJB, ma di più semplice utilizzo).
-
-La possibilità di semplice Dependency Injection tramite costruttori o metodi semplifica il testing delle applicazioni Spring, per esempio è semplice scrivere un test JUnit che crea l’oggetto Spring e configura le sue proprietà a fini di testing. Il container IoC non è invasivo: molti oggetti di business non dipendono dalle API di invocazione del container, queste possono essere portabili verso altre implementazioni di container (PicoContainer, HiveMind, …) ed è facile “introdurre” vecchi POJO in ambiente Spring.  Le factory Spring sono leggere, esistono anche implementazioni all’interno di singole applet o come applicazioni Swing standalone. Un antro importante aspetto, secondario ma comunque rilevante è la possibilità di avere di avere unchecked runtime exception.
+La modalità singleton di Spring è vicina a quella di EJB stateless perchè non c'è lo stato ma è diversa perchè in Spring non c'è un pool di thread. Lo stesso vale per prototype che si avvicina agli EJB statefull ma sono diversi perchè ogni volta quando si invoca `getBean()`, viene restituita una nuova istanza dedicata senza ottimizzazione di carico (non c'è activation e passivation). Inoltre, in Spring le richieste non vengono intercettate per cui è necessario crearsi a mano un altro `BeanFactory` che funge da proxy utilizzando ad esempio con AOP (concettualmente simile a interception in EJB, ma di più semplice utilizzo).
 
 ### Autowiring
 
-Spring può occuparsi automaticamente di risolvere dipendenze tramite introspezione delle classi bean, in questo modo il programmatore non si deve preoccupare di specificare esplicitamente le proprietà del bean o gli argomenti del costruttore nel xml file. Le proprietà del bean sono “autowired” attraverso matching basato su nome o su tipo, autowire=“name” (configurazione di default). L’autowiring può essere effettuato anche su sui nomi delle proprietà (metodi di nome set() del bean), autowire=“type”. Infine può essere applicato anche ai tipi di proprietà del bean (set(ArgumentType arg)) autowire=”constructor”, il match viene fatto sui tipi degli argomenti del costruttore. Anche in EJB esiste la stessa risoluzione delle dipendenze attraverso JNDI.
+Spring può occuparsi automaticamente di risolvere dipendenze tramite introspezione delle classi Bean. In questo modo, il programmatore può dimenticarsi di specificare esplicitamente le proprietà del Bean o gli argomenti del costruttore nel file XML. Le proprietà del Bean sono risolte attraverso il matching basato su nome o su tipo:
+
+- `autowire="name"` (configurazione di default): l’autowiring può essere effettuato sui nomi delle proprietà (metodi di nome `set()` del Bean).
+- `autowire="type"`: il match viene fatto sui tipi degli tipi delle proprietà del Bean (`set(ArgumentType arg)`).
+- `autowire="constructor"`, il match viene fatto sui tipi degli argomenti del costruttore.
+
+Anche in EJB esiste la stessa risoluzione delle dipendenze attraverso JNDI.
 
 ### Dependency checking
 
-Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenze non risolte quando abbiamo già fatto il deployment di un bean all’interno di un container Spring, è utile per tutte le proprietà che non hanno valori configurati all’interno della definizione del bean, per i quali anche l’autowiring non ha prodotto alcun setting. Questa è una caratteristica utile quando ci si vuole assicurare che tutte le proprietà (o tutte le proprietà di un determinato tipo) siano state configurate su un bean. Vi sono diverse modalità possibili e configurabili: 
-- none, nessun check;
-- simple, dependency checking effettuato solo per tipi primitivi e collection;
-- object, dependency checking effettuato solo per altri bean associati all’interno della stessa factory (collaborator);
-- all, dependency checking effettuato per collaborator, tipi primitivi e collection.
+Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenze non risolte senza ricevere spiacevoli sorprese quando è già fatto il deployment di un Bean all’interno di un container Spring. È utile per tutte le proprietà che non hanno valori configurati all’interno della definizione del Bean, per i quali anche l’autowiring non ha prodotto alcun setting. Questa è una caratteristica utile quando ci si vuole assicurare che tutte le proprietà (o tutte le proprietà di un determinato tipo) siano state configurate correttamente su un Bean. Vi sono diverse modalità possibili e configurabili:
+
+- none: nessun check;
+- simple: dependency checking effettuato solo per tipi primitivi e collection;
+- object: dependency checking effettuato solo per altri bean associati all’interno della stessa factory cioè quando è presente il tag ref local (collaborator);
+- all: dependency checking effettuato per collaborator, tipi primitivi e collection.
 
 ### ApplicationContext
 
-In realtà, per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’uso della semplice interfaccia BeanFactory, l’ApplicationContext è l’estensione dell’interfaccia BeanFactory, questo oltre a fornire tutte le funzionalità base, integra la gestione delle transazioni e di AOP, ad esempio non supportate dalla BeanFactory di base.  ApplicationContext si utilizza in modalità più “tradizionale” e framework-oriented. Le funzionalità aggiuntive dell’ApplicationContext non sono supportante di base dal BeanFactory perché in un’ottica di container leggeri questo appesantirebbe tale interfaccia, tra le funzionalità aggiuntive di ApplicationContext vi sono:
+Per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’uso della semplice interfaccia `BeanFactory`, l’`ApplicationContext` è l’estensione dell’interfaccia `BeanFactory`. Questo oltre a fornire tutte le funzionalità base, integra la gestione delle transazioni e di AOP, ad esempio, non supportate dalla `BeanFactory` di base. `ApplicationContext` si utilizza in modalità più _tradizionale_ e quindi framework-oriented cioè invocando dal codice direttamente la chiamata di cui si ha bisogno. Le funzionalità aggiuntive dell’`ApplicationContext` non sono supportante di base dal `BeanFactory` perché in un’ottica di container leggeri questo appesantirebbe tale interfaccia. Tra le funzionalità aggiuntive di `ApplicationContext` vi sono:
 
-- Interfacce per la gestione del ciclo di vita;
-- Propagazione di eventi a bean che implementano l’interfaccia ApplicationListener;
-- Accesso a risorse come URL e file;
+- Gestione delle transazioni.
+- Propagazione di eventi a Bean che implementano l’interfaccia `ApplicationListener`.
+- Accesso a risorse come URL e file.
 
-La gestione del ciclo di vita di un ApplicationContext si basa sull’implementazione di interfacce standardizzate; quindi, è possibile avere un metodo che consente di aggiungere l’ApplicationContext e collegarlo alla gestione del ciclo di vita. Ad esempio: presa l’interfaccia ApplicationContextAware un bean che implementa questa interfaccia avrà il suo metodo di interfaccia setApplicationContext() automaticamente invocato alla creazione del bean stesso, riceverà così un riferimento al contesto su cui poter effettuare invocazioni nel seguito
+Per aggiungere l’`ApplicationContext` e collegarlo alla gestione del ciclo di vita del Bean, bisogna prendere l’interfaccia `ApplicationContextAware`, implementarla in modo da poter aggiungere il metodo di interfaccia `setApplicationContext() ` che verrà automaticamente invocato alla creazione del Bean stesso che riceverà così un riferimento al contesto su cui poter effettuare invocazioni:
 
 ```
 public class Publisher implements ApplicationContextAware {
- private ApplicationContext ctx; 
-// Questo metodo sarà automaticamente invocato da IoC container 
-public void setApplicationContext( ApplicationContext applicationContext) throws BeansException { 
-this.ctx = applicationContext; 
+
+    private ApplicationContext ctx; 
+    
+    // Questo metodo sarà automaticamente invocato da IoC container 
+    public void setApplicationContext( ApplicationContext applicationContext) throws BeansException { 
+        this.ctx = applicationContext;
+    }
+
 }
 ```
 
-La gestione degli eventi in ApplicationContext è realizzata tramite la classe ApplicationEvent e l’interfaccia ApplicationListener. Se un bean implementa l’interfaccia ApplicationListener di cui si è fatto il deployment in un ApplicationContext ac1, quel bean viene notificato ogni volta che un ApplicationEvent viene pubblicato in ac1, essenzialmente, si tratta del design pattern Observer. Tre tipologie di eventi built-in oltre a quelli applicativi che si possono definire: ContextRefreshEvent, che consente l’inizializzazione o refresh di ApplicationContext,  ContextClosedEvent per la  chiusura di un ApplicationContext,  RequestHandleEvent evento specifico per il Web, significa che una richiesta HTTP è stata appena servita.
+La gestione degli eventi in `ApplicationContext` è realizzata tramite la classe `ApplicationEvent` e l’interfaccia `ApplicationListener` che consente la ricezione degli eventi. Se un Bean implementa l’interfaccia `ApplicationListener` deve fare la sottoscrizione ad un `ApplicationContext` ac1. Quel Bean viene notificato ogni volta che un `ApplicationEvent` viene pubblicato in ac1. In poche parole, si tratta del design pattern `Observer`. Ci sono tre tipologie di eventi built-in:
 
-Ad esempio, qui si mostra la configurazione in ApplicationContext.xml del comportamento “ad ogni ricezione di un email da un indirizzo in black list, invia un email di notifica a spam@list.org” black@list.org white@list.org john@doe.org Facilita attraverso il pattern observer la gestione degli eventi. L’aggiunta di queste funzionalità riporta su un container pesante Spring non più leggero.
+- `ContextRefreshEvent` che consente l’inizializzazione o refresh di `ApplicationContext`.
+- `ContextClosedEvent` per la chiusura di un `ApplicationContext`.
+- `RequestHandleEvent` evento specifico per il Web, significa che una richiesta HTTP è stata appena servita.
+
+Ad esempio, qui si mostra la configurazione in ApplicationContext.xml del comportamento "ad ogni ricezione di un'email da un indirizzo in black list, invia un email di notifica a spam@list.org":
 
 ```
 <bean id="emailer" class="example.EmailBean">
-<property name="blackList">
-<list>
-<value>black@list.org</value>
-<value>white@list.org</value>
-<value>john@doe.org</value>
-</list>
-</property> </bean>
-<bean id="blackListListener"
-class="example.BlackListNotifier">
-<property name="notificationAddress"
-value="spam@list.org"/>
+    <property name="blackList">
+        <list>
+            <value>black@list.org</value>
+            <value>white@list.org</value>
+            <value>john@doe.org</value>
+        </list>
+    </property>
+</bean>
+<bean id="blackListListener" class="example.BlackListNotifier">
+    <property name="notificationAddress" value="spam@list.org"/>
 </bean>
 ```
 
-Classe bean che pubblica eventi tramite l’oggetto ApplicationContext:
+La classe Bean che pubblica eventi tramite l’oggetto `ApplicationContext`:
 
 ```
-public class EmailBean implements ApplicationContextAware { 
-private List blackList; 
-public void setBlackList(List blackList) { 
-this.blackList = blackList; 
-} 
-public void setApplicationContext(ApplicationContext ctx) { 
-this.ctx = ctx; 
-} 
-public void sendEmail(String address, String text) { 
-if (blackList.contains(address)) {
- 		BlackListEvent evt = new BlackListEvent(address, text); 
-ctx.publishEvent(evt); return; 
-} 
-} 
+public class EmailBean implements ApplicationContextAware {
+
+    private List blackList;
+    
+    public void setBlackList(List blackList) {
+        this.blackList = blackList;
+    }
+
+    public void setApplicationContext(ApplicationContext ctx) {
+        this.ctx = ctx;
+    }
+
+    public void sendEmail(String address, String text) {
+        
+        if (blackList.contains(address)) {
+            BlackListEvent evt = new BlackListEvent(address, text);
+            ctx.publishEvent(evt); return;
+        }
+    }
 }
 ```
 
-Classe Notifier, che riceve le notifiche degli eventi generati.
+La classe `Notifier` riceve le notifiche degli eventi generati:
 
 ```
-public class BlackListNotifier implement ApplicationListener { 
-private String notificationAddress; 
-public void setNotificationAddress(String notificationAddress) { 
-this.notificationAddress = notificationAddress; 
-} 
-public void onApplicationEvent(ApplicationEvent evt) { 
-if (evt instanceof BlackListEvent) { 
-// invio dell’email di notifica all’indirizzo appropriato 
-} 
-} 
+public class BlackListNotifier implement ApplicationListener {
+
+    private String notificationAddress;
+    
+    public void setNotificationAddress(String notificationAddress) {
+        this.notificationAddress = notificationAddress;
+    }
+
+    public void onApplicationEvent(ApplicationEvent evt) {
+        if (evt instanceof BlackListEvent) {
+            // invio dell’email di notifica all’indirizzo appropriato
+        }
+    }
+
 }
 ```
-
-Spring Boot è una tecnologia di recente successo per accelerare lo sviluppo di nuove applicazioni Spring Sostanzialmente supporto a configurazione e integrazione con DevOps. Principali package di Spring Boot, anche con integrazione parte Web.
-
-### Pattern MVC
-
-![single tier](./img/img44.png)
 
 ## JMX
 
