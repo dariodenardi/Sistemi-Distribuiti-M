@@ -1675,12 +1675,16 @@ Una parte rilevante nello sviluppo di ogni applicazione distribuita di livello e
 Mapping O/R si occupa di risolvere il potenziale mismatch fra i dati mantenuti in un DB relazionale e il loro processamento tramite oggetti in
 esecuzione. Infatti, i database relazionali sono progettati per operazioni di query efficienti su dati di tipo tabellare mentre in Java c'è la necessità di lavorare invece tramite interazione fra oggetti.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Java Persistence API (JPA)
 
 JPA è la specifica Java standard che consente il supporto al mapping O/R. Le API di persistenza sono state estese per includere anche l’utilizzo al di fuori di un container EJB. Infatti, ci sono le stesse API per sviluppare applicazioni JSE, Web e EJB.
 
 Astrarre: usiamo le annotazioni semplificando il modello della programmazione
 Vista performance: nel 2.1 la connessione era da gestire esplicitamente dallo sviluppatore. Nella 3 la gestione è demandata al container in modo da ottimizzare le risorse.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Perchè usare JPA
 
@@ -1722,6 +1726,8 @@ Come si può vedere la codice, bisogna aprire la connessione, inviare la query e
 - No POJO.
 - Ogni oggetto apre una connessione.
 - Tutto dipende dal Data Source.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Entity
 
@@ -1874,6 +1880,8 @@ public final class LineItemKey implements Serializable {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Ereditarietà e Polimorfismo
 
 In JPA, c'è il supporto all'ereditarietà e al polimorfismo. Una classe Entity può estendere una classe non-Entity e una classe non-Entity può estendere Entity.
@@ -1939,6 +1947,8 @@ public class PartTimeEmployee extends Employee {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Strategie di Mapping
 
 Dato che si è nel mondo ad oggetti, il provider di persistenza si deve occupare di effettuare il mapping della gerarchia di classi Entity perchè nel mondo relazionale le tabelle sono piatte ovvero non esiste classe padre e figlia. Si usa l'annotazione `javax.persistence.Inheritance`.
@@ -1964,6 +1974,8 @@ l’intera gerarchia richiedono operazioni di join fra tabelle sottoclassi
 In conclusione, la scelta della strategia ottimale presuppone una buona
 conoscenza del tipo di query che si faranno sulle Entity.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Molteplicità nelle Relazioni
 
 Ci sono quattro tipologie di molteplicità che corrispondono a quelle delle
@@ -1987,6 +1999,8 @@ public Set<Purchase> getPurchases() {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Direzionalità delle relazioni
 
 Le relazioni possono essere monodirezionale o bidirezionali. 
@@ -2000,6 +2014,8 @@ public Set<Order> getOrders() {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Gestione a runtime di Entity
 
 Le Entity sono gestite da un EntityManager. Ogni istanza di un EntityManager è associata ad un contesto di persistenza. Il contesto di persistenza è una sorta di cache ad oggetti del database che mantiene gli Entity e che sono gestite da un singolo EntityManager. L’interfaccia dell’EntityManager definisce i metodi che sono usati per interagire con il contesto di persistenza (creazione e rimozione di istanze di Entity persistenti, ritrovamento di Entity tramite chiave primaria ed esecuzione di query).
@@ -2007,6 +2023,8 @@ Le Entity sono gestite da un EntityManager. Ogni istanza di un EntityManager è 
 All’interno di tale contesto è come se le Entity avessero con un loro ciclo di vita. Il constesto di persistenza è, quindi, il luogo dove esistono tutte le istanze Entity.
 
 L’Entity Manager può essere utilizzato demandando completamente la gestione al container oppure lo si può gestire a livello applicativo.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Container-managed EntityManager
 
@@ -2019,6 +2037,8 @@ EntityManager em;
 
 Il tutto è interlacciato con le transazioni. Le transazioni JTA eseguono generalmente chiamate fra componenti applicativi che, per completare la transazione, devono avere accesso a un contesto di persistenza.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Application-managed EntityManager
 
 Il contesto di persistenza non è propagato ai componenti applicativi e il ciclo di vita delle istanze dell'Entity Manager è gestito direttamente dall’applicazione. Viene usato quando l’applicazione necessita di diversi contesti di persistenza e di diverse istanze di Entity Manager correlate. In questo caso, si usa il metodo `createEntityManager()` di `javax.persistence.EntityManagerFactory` per crearsi un Entity Manager:
@@ -2029,9 +2049,13 @@ EntityManagerFactory emf;
 EntityManager em = emf.createEntityManager();
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Entity Manager singoli vs multipli
 
 Di solito, quando l'applicazione è semplice e si ha un solo DB si usa un solo Entity Manager. Invece, se l'applicazione è più complessa si usano molte Entity che fanno parte di DB diversi e di conseguenza servono più Entity Manager. Tuttavia, è possibile che ci siano Entity Manager multipli verso lo stesso DB per gestire tabelle diverse e di conseguenza avere diversi contesti di persitenza per gestirli in modo diverso e separare i contesti e le diverse transazioni collegate.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Ciclo di Vita
 
@@ -2102,6 +2126,8 @@ Quando si lavora con le Entity bisogna verificare sempre che le Entity siano anc
 
 Per sincronizzarsi con il DB bisogna effetuare la commit della transazione. A quel punto avviene l'allineamento con il DB. Se si ha il cascading attivo o comunque relazioni bidirezionali, la commit crea una reazione a catena. Per forzare la sincronizzazione con DB, possibilità di invocare il metodo `flush()` (con solito effetto cascade).
 
+<a href="#indice">Torna all'indice</a>
+
 ### Unità di Persistenza
 
 L’unità di persistenza è un concetto legato al deployment in cui viene specificato il database da usare, quali sono gli Entity etc. Definisce l'insieme di tutte le potenziali classi gestite dall’Entity Manager in un’applicazione. Potenziali perchè non è detto che nell'applicazione poi vengono usate davvero le classi che modellano l'Entity. Nel caso del contesto di persitenza, si ragiona in termini di transazioni da effettuare sugli oggetti della cache che poi devono essere persistiti, non in termini di deployment delle classi. Queste due cose sono ortogonali.
@@ -2125,6 +2151,8 @@ dell’applicazione sviluppata:
 Ad esempio, il file sopra definisce una unità di persistenza chiamata `OrderManagement`, che usa una sorgente dati `jdbc/MyOrderDB` che è _consapevole_ di JTA. Invece, gli Entity sono associati a classi di tipo `Order` e `Customer`.
 
 Gli elementi `jar-file` e `class` specificano le classi relative all’unità di persistenza: classi Entity, Embeddable, e superclassi Mapped. Invece, l’elemento `jta-data-source` specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Creazione di Query
 
@@ -2165,6 +2193,8 @@ I valori in entrambi i casi sono dinamici cioè dipendono dai valori che le vari
 
 Da notare che i _parametri con nome_ sono parametri di query preceduti da `:` e sono legati al valore dal metodo `setParameter()`. Ad esempio, nell'esempio di sopra `:custName`.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Loading Lazy/Eager
 
 Nell'applicazione è possibile controllare il caricamento dei dati:
@@ -2179,6 +2209,8 @@ Nell'applicazione è possibile controllare il caricamento dei dati:
     ```
 
 In generale, si usa eager per realtà ristrette e lazy in tutti gli altri casi. È costoso portarsi dietro tutte le relazioni in cascata ma è utile se vengono sicuramente usate. Bisogna valutare sempre i costi e benefici.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Listener di Entity
 
@@ -2229,6 +2261,8 @@ public class AlertMonitor {
 
 La classe `AccountBean` usa l'annotazione `@EntityListener(com.acme.AlertMonitor.class)` per indicare che la classe AlertMonitor contiene metodi di callback (in realtà solo uno).
 
+<a href="#indice">Torna all'indice</a>
+
 ### Hibernate
 
 Hibernate ha l’obiettivo di realizzare la persistenza di oggetti POJO passando dal mondo object oriented al mondo relazionale.
@@ -2236,6 +2270,8 @@ Hibernate ha l’obiettivo di realizzare la persistenza di oggetti POJO passando
 L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostanti. Il livello di applicazione può essere trasparente a questi dettagli:
 
 ![Ciclo di Vita Entity-Light](./img/img67.png)
+
+<a href="#indice">Torna all'indice</a>
 
 ### Principali Oggetti
 
@@ -2253,6 +2289,8 @@ Si hanno tre possibili stati:
 
  Detached quando un’istanza che corrisponde a uno stato di persistenza viene staccata, questo però non vuol dire che sia aggiornata.
 
+ <a href="#indice">Torna all'indice</a>
+
 ### Il caching in Hibernate
 
 In generale, migliora la performance dei sistemi che consente un miglioramento delle prestazioni accedendo al database solo se lo stato necessario non è presente in cache. In caso in cui tutti gli oggetti siano nella sessione si fanno tutte le operazioni posticipando l’accesso  al DB solo per la flush e non per le varie parti della transazione.
@@ -2263,7 +2301,9 @@ Esistono due livelli di cache uno associata alla sessione e uno associata alla s
 
 Per l’invalidazione della cache usiamo una strategia ottimistica poiché si assume che la maggiorarte delle transazioni verso il db non siano in conflitto con le altre. Se ciò è vero riusciamo ad avere un throughput molto alto. Le modifiche da fare in caso di collisioni sono possibili con un versioning dei dati che consente di cìfare dei check e controllare i dati. 
 
-Il version checking non sono sempre automatici però abbiamo una proprietà @Version che viene salvata e mantiene la versione dell’entità. Lanciando un’eccezione se gli stati di sono diversi ci rendiamo conto se ci sono stati conflitti. In caso di conflitti effettueremo refresh e update. 
+Il version checking non sono sempre automatici però abbiamo una proprietà @Version che viene salvata e mantiene la versione dell’entità. Lanciando un’eccezione se gli stati di sono diversi ci rendiamo conto se ci sono stati conflitti. In caso di conflitti effettueremo refresh e update.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Hibernate Fetching dei dati
 
@@ -2274,6 +2314,8 @@ Ricerche di tipo associativo il programmatore definisce i Criterion, con una int
 Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
 Su hibernate la cache di secondo livello serve per la trasversalità tra diverse applicazioni.
+
+<a href="#indice">Torna all'indice</a>
 
 ## JMS
 
@@ -2306,6 +2348,8 @@ Le principali caratteristiche sono:
 
 I MOM poi possono supportare altre funzionalità come la qualità dei canali, transazioni sicure, auditing, load balacing etc.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Modello point-to-point 
 
 La comunicazione avviene tra due sole entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore. Ci possono essere produttori multipli, ovviamente, ma il messaggio verrà ricevuto solo da un destinatario. La destinazione di un messaggio da parte del produttore è una coda con nome named queue. Le code sono FIFO (per lo stesso livello di priorità) oppure i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
@@ -2315,6 +2359,8 @@ La comunicazione avviene tra due sole entità. Questo modello viene utilizzato q
 
 Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi e in un caso, se si ipotizza la disconnessione dei destinatari, si dovrebbe avere persistenza dei messaggi.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Modello publish/subscriber
 
 Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumato n volte. Un produttore invia un messaggio a una coda che si chiama named topic mentre il consumatore deve dire al MOM che è interessato a quella comunicazione. I produttori pubblicano sul topic, mentre i consumatori si _abbonano_ al topic. Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che se non c'è persistenza, i messaggi che sono stati inviati quando un consumatore non era presente vengono persi.
@@ -2322,11 +2368,15 @@ Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumat
 ![Publish/Subscriber-Light](./img/img13-light.png#gh-light-mode-only)
 ![Publish/Subscriber-Dark](./img/img13-dark.png#gh-dark-mode-only)
 
-Ad esempio, questo modello si usa per creare un'applicazione di bacheca per richieste di lavoro. 
+Ad esempio, questo modello si usa per creare un'applicazione di bacheca per richieste di lavoro.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Affidabilità nello scambio di messaggi
 
 Più la semantica di affidabilità è stringente più il throughput del sistema si abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa. Di solito i supporti ai sistemi di messaging utilizzano storage persistente per preservare i messaggi.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Transazionalità
 
@@ -2346,6 +2396,8 @@ Lo scope della transazionalità è di due tipi:
 
 La seconda opzione è molto complessa e non viene garantita da molti MOM. Inoltre, il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Sicurezza
 
 Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e integrità:
@@ -2355,6 +2407,8 @@ Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e 
 - L’**integrità** con l’utilizzo di un'impronta (digest) dei messaggi.
 
 La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging. Con JMS non si offre un servizio diretto di sicurezza ma esistono API che consentono di implementare varie politiche di sicurezza. JMS consente unicamente di definire il servizio.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Java Messaging Service (JMS)
 
@@ -2375,6 +2429,8 @@ Le entità in gioco sono:
 - Provider JMS (sistema di messaging dipendenti dal specifico vendor).
 - Gli oggetti Destination e ConnectionFactory pubblicati tramite JNDI sul servizio di nomi.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Tipi di comunicazioni
 
 Nella comunicazione point-to-point i messaggi in una queue possono essere:
@@ -2386,6 +2442,8 @@ Nella comunicazione pub/sub, i messaggi possono essere:
 
 - Non durevoli: sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza.
 - Durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Messaggi JMS
 
@@ -2416,6 +2474,8 @@ Il payload ovviamente, è il contenuto del messaggio e supporta diversi tipi di 
 
 Queste sono interfacce locali per interrogare i payload cioè funzionano sul nodo e non si sa come viene trasmesso effettivamente il contenuto.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Interfaccia Destination
 
 L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi). Le interfacce figlie sono `Queue` e `Topic`.
@@ -2423,12 +2483,16 @@ L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una qu
 ![Interfaccia Destination-Light](./img/img14-light.png#gh-light-mode-only)
 ![Interfaccia Destination-Dark](./img/img14-dark.png#gh-dark-mode-only)
 
+<a href="#indice">Torna all'indice</a>
+
 ### Interfaccia ConnectionFactory
 
 L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS. È simile al gestore di driver `java.sql.DriverManager` in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
 
 ![Interfaccia ConnectionFactory-Light](./img/img15-light.png#gh-light-mode-only)
 ![Interfaccia ConnectionFactory-Dark](./img/img15-dark.png#gh-dark-mode-only)
+
+<a href="#indice">Torna all'indice</a>
 
 ### Interfaccia Connection
 
@@ -2439,12 +2503,16 @@ L'interfaccia `Connection` è un’astrazione che rappresenta un singolo canale 
 
 La connessione dovrebbe essere chiusa quando si è terminato di utilizzare la risorsa.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Interfaccia Session
 
 L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connessi al JMS provider attraverso una `Connection`, tutte le operazioni si svolgono nel contesto di una sessione attiva, ogni sessione è single-threaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni, quindi, realizzano un contesto _limitato_ con la possibilità di definire proprietà transazionali. Nel caso di invio di due messaggi si ha la garanzia che il primo messaggio venga accodato nella coda prima del secondo messaggio.
 
 ![Interfaccia Session-Light](./img/img17-light.png#gh-light-mode-only)
 ![Interfaccia Session-Dark](./img/img17-dark.png#gh-dark-mode-only)
+
+<a href="#indice">Torna all'indice</a>
 
 ### Interfacce Message Consumer e Message Producer
 
@@ -2461,6 +2529,8 @@ Vi sono due modalità di ricezione dei messaggi:
 ![Interfaccia Message Consumer-Light](./img/img19-light.png#gh-light-mode-only)
 ![Interfaccia Message Consumer-Dark](./img/img19-dark.png#gh-dark-mode-only)
 
+<a href="#indice">Torna all'indice</a>
+
 ### Riassunto API JMS
 
 Le API JMS possono essere riassunte nella seguente figura:
@@ -2470,6 +2540,8 @@ Le API JMS possono essere riassunte nella seguente figura:
 In modo più dettagliato la stessa figura può essere rappresentata anche nel seguente modo:
 
 ![single tier](./img/img21.png)
+
+<a href="#indice">Torna all'indice</a>
 
 ### Uso di JMS
 
@@ -2579,6 +2651,8 @@ subscriber.setMessageListener(myListener);
 
 Il codice è stato inserito solo nei punti diversi rispetto al produttore.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Affidabilità dei messaggi
 
 JMS offre diversi livelli di affidabilità dei messaggi. Il livello più alto si ottiene quando si ha la persistenza dei messaggi, fattibile con la subscription durevole a un certo topic o con la ricezione da queue avendo la persistenza del messaggio spedito o ricevuto se il ricevente si è assentato per un certo tempo con l’utilizzo di transazioni.
@@ -2586,6 +2660,8 @@ JMS offre diversi livelli di affidabilità dei messaggi. Il livello più alto si
 Nell’**affidabilità di base** (basic reliability) vi è l’utilizzo di messaggi ACK, di messaggi persistenti, la possibilità di definire dei time-to-live, la configurazione dei livelli di priorità e la possibilità di consentire l’expiration dei messaggi.
 
 Nell’**affidabilità avanzata** (advanced reliability) si può avere _abbonamenti_ durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end-to-end ma solo tra consumatore e provider e/o tra provider e produttore.
+
+<a href="#indice">Torna all'indice</a>
 
 ### ACK
 
@@ -2612,6 +2688,8 @@ producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
 Vi è un trade-off tra il numero di ACK che si può inviare, l’overhead che si introduce e il livello generale di affidabilità che si vuole raggiungere. Quanto bisogna coinvolgere la parte applicativa nella gestione degli ACK, coinvolgere molto il client nella gestione degli ACK può aiutare a diminuire l’overhead legato al fatto di non inviare più un ACK per ogni messaggio dall’altra parte però il livello applicativo che si prende in carico l’invio dei messaggi deve essere ben fatto e con maggiore cura. L’API permette quidi di gestire diversamente l’invio dei messaggi.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Priorità
 
 Attributo che fa parte dell’header del messaggio (`JMSPriority`), a livello di API, quindi è una parte funzionale che tutti devono trattare. Sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
@@ -2623,6 +2701,8 @@ La priorità è impostabile sia a livello di produttore del messaggio sia per il
 producer.setTimeToLive(60000);
 producer.setPriority(7);
 ```
+
+<a href="#indice">Torna all'indice</a>
 
 ### Affidabilità
 
@@ -2640,17 +2720,25 @@ Per l'advanced reliability:
 - Sottoscrizione durevole scelto a livello di sessione, interfaccia `Session`.
 - Transazionalità scelto a livello di sessione, interfaccia `Session`.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Durable Subscription
 
 Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi, il provider JMS mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene l'expiration (la scadenza). All’interno di una singola applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Gestione delle transazioni di JMS
 
 Lo scope delle transazioni in JMS è solo fra clienti e sistema di messaging, non fra produttori e consumatori. Quindi, un gruppo di messaggi all’interno di una singola transazione è consegnato come un’unica unità lato produttore e un gruppo di messaggi in una transazione è ricevuto come un’unica unità lato consumatore. Le transazioni possono essere gestite _localmente_ e sono controllate dall’oggetto `Session`. La transazione inizia implicitamente quando l’oggetto di sessione è creato e termina all’invocazione di `Session.commit()` o `Session.abort()`. La sessione è transazionale se si specifica il flag appropriato all’atto della creazione. Ad esempio: `QueueConnection.createQueueSession(true, ...)`. Eventualmente le transazioni possono essere anche essere gestite in modo _distribuito_ se si vuole combinare in un unico blocco operazioni a scambio di messaggi e operazioni transazionali DB. In tal caso devono essere coordinate da un transactional manager esterno, ovvero tramite l'uso di Java Transactions API (JTA). L’utilizzo di `Session.commit()` e `Session.rollback()` è non consentito perchè viene eseguita tramite i metodi JTA.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Selettori di messaggi
 
 I selettori sono filtri la cui logica di filtraggio è specificabile con stringe SQL like 92 (SQL92) che possono lavorare sui messaggi in arrivo per estrarne solo alcuni. Dal lato receiver, le applicazioni JMS possono utilizzare i selettori per scegliere i soli messaggi che sono potenzialmente di loro interesse. Non possono riferire il contenuto dei messaggi ma solo tramite proprietà e header (non possono leggere il payload). I selettori consentono una gestione più semplice e rimuovono overhead dal provider e dal supporto. Il fatto che il MOM non sia content-based è dovuto al fatto della retrocompatibilità con i precedenti MOM.
+
+<a href="#indice">Torna all'indice</a>
 
 ### JMS in EJB
 
@@ -2661,6 +2749,8 @@ I MDB prelevati da un poll di istanze quando il messaggio viene ricevuto. Vi è 
 
 L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Enterprise Service Bus (ESB)
 
 Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare, per la possibilità di mettere insieme parti di questi sistemi che sono legacy preesistenti e parti nuove sviluppate di recente. In questa direzione si sono sviluppati gli ESB che sono infrastrutture molto large con principi di integrazione condivisi. L’idea è di avere un disaccopiamento forte e quindi i MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, solo quando vi sono riposte complete. Si mettano insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Il modello è asincrono e pub/sub con in mezzo un intermediario, ovvero l’ESB che offre molte più funzionalità di un MOM, ma comunque garantisce lo scambio di messaggi che porta a un’elevata asincronicità e conseguente disaccoppiamento. Le principali caratteristiche sono:
@@ -2670,6 +2760,8 @@ Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integra
 - Controllo degli accessi.
 - Struttura messaggi.
 - QoS configurabile.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Service Oriented Architecture (SOA)
 
@@ -2682,6 +2774,8 @@ SOA è un'architettura software che mette a disposizione:
 - Possibilità di comporre i servizi in processi di business, ovvero molti servizi messi insieme seguendo le linee guide SOA.
 
 Tutto questo ha l’obiettivo di ottenere accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte. Ad esempio, Azure espone API con interfacce REST.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Web Services
 
@@ -2704,6 +2798,8 @@ Nell’architettura SOA non ci importa la tecnologia utilizzata si possono espor
 
 L’integrazione è un grosso problema: solo 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Enterprise Application Integration (EAI)
 
 L’Enterprise Application Integration si occupa dell’integrazione di queste applicazioni, costruendo intorno a queste applicazioni degli strumenti che le integrano.
@@ -2716,6 +2812,8 @@ Questa soluzione ha alte latenze al momento delle batch perchè ci possono esser
 
 La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione, non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Hub-and-Spoke
 
 Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e con le applicazioni che hanno un adapter a un formato comune e una central automation engine cioè un motore che consuma i messaggi, guarda dentro i messaggi e facendo routing intelligente tra le applicazioni e mandandoli dove deve arrivare. Inoltre, vi sono tutti i servizi di sistema, tra cui persistenza e transazioni.
@@ -2723,6 +2821,8 @@ Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale 
 ![single tier](./img/img64.png)
 
 I pro dell’architettura a stella sono la facilità di gestione (centralizzata). Il principale contro è che l’hub è punto critico di centralizzazione. Inoltre, ha ridotta scalabilità.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Bus di Interconnessione
 
@@ -2732,13 +2832,17 @@ L’altra architettura di riferimento è quella a bus, l’automation engine ris
 
 I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
 
-L'ESB è la realizzazione della seconda architettura. l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso. 
+L'ESB è la realizzazione della seconda architettura. l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Orchestrazione ESB concetti chiavi
 
 Qui l’orchestrazione avviene per le interazioni tra i servizi a grana grossa e per il routing intelligente. Aspetto di descrizione astratta del servizio e realizzazione concreta dei diversi binding, l’ESB risolve entrambi i problemi. Consente di utilizzare tanti e diversi protocolli per scambiare l’informazione, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta del WSDL, descriverò con un biding concreto le interazioni con il mondo esterno con la parte concreta del WSDL, e ESB fa da orchestratore nel mezzo risparmiando al programmatore di fare l’integrazione poiché il supporto lo fa già. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti e nei vari servizi come auditing e logging. 
 
 ESB è un architettura altamente distribuita con integrazione basata su standard, mette a disposizione servizi di orchestration, mantiene l’autonomia delle singole applicazioni, consente un real-time throughput,  mette in atto servizi di auditing e logging, consente l’adozione incrementale. Nell’invocazione dei servizi, invece rende i servizi completamente disaccoppiati, utilizza pattern “find-bind-invoke” è gestito automaticamente dall’infrastruttura, il progettista deve solo definire l’itinerario logico che i messaggi devono seguire, mentre i servizi si “limitano” a inviare e ricevere messaggi.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Java Business Integration (JBI)
 
@@ -2760,6 +2864,8 @@ JBI supporta 4 possibili pattern di scambio messaggi:
 - Robust In-Only per possibilità di segnalare fault a livello applicativo, simile a un handshake a tre vie con la conferma che le cose siano andate bene nelle due parti semantica per gli errori o danni 
 - In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
 - In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
+
+<a href="#indice">Torna all'indice</a>
 
 ## CORBA
 
@@ -2880,11 +2986,15 @@ Nel mondo Corba quando parliamo di tutte queste funzionalità siamo nel mondo de
 
 Spring è una soluzione a container leggero utile per sviluppare applicazioni Java SE e Java EE. Spring non è solo un altro framework, rappresenta un approccio piuttosto unico, che ha fortemente influenzato i container successivi, verso tecnologie a microcontainer. Le principali proprietà originali sono: la modularità, architettura a layer, possibilità di utilizzare anche solo alcune parti (i container)  in isolamento, si può introdurre Spring incrementalmente in progetti esistenti e di imparare ad utilizzare la tecnologia _pezzo per pezzo_, supporta importanti aree non coperte da altri framework diffusi, come il management degli oggetti di business, una tecnologia di integrazione di soluzioni esistenti, maggiore facilità di testing, e infine è un progetto con una community attivi.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Perchè usare Spring
 
 Le motivazioni per cui scegliere spring sono diverse. Spring consente l’integrazione e la cooperazione fra componenti (secondo il semplice modello JavaBean) via dependency Injection, pone molta importanza al disaccoppiamento, mette a disposizione Test-Driven Development (TDD), ovvero la possibilità di effettuare testing delle classi (POJO) senza essere legati al framework, ha un uso semplificato di tecnologie diffuse e di successo utilizzando astrazioni che isolano il codice applicativo, con eliminazione di codice ridondante, e gestione di comuni condizioni di errore (caso delle unchecked exception), lascia una parziale visibilità quindi non vi è totale trasparenza. La progettazione avviene per interfacce, con ottimo isolamento delle funzionalità dai dettagli implementativi, inoltre integra la programmazione dichiarativa via AOP che consente una facile configurazione degli aspetti, come ad esempio il supporto alle transazioni.
 
 Spring non è una soluzione _all-or-nothing_ cioè si prende solo quello di cui si ha bisogno, e pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e ORM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Architettura
 
@@ -2902,29 +3012,43 @@ Alcuni package importanti sono:
 - Il **MVC Package** implementa il pattern Model-View-Controller (MVC) per applicazioni Web, con buona separazione e indipendenza fra codice del modello di dominio e form Web ovvero la parte di presentazione e la logica applicativa a livello di control.
 - Il **AOP Package** implementa l'aspect-oriented programming conforme allo standard AOP Alliance. Permette di definire, ad esempio, degli intercettori di metodo e pointcut per la logica disaccoppiamento degli aspetti in modo pulito, inoltre dà la possibilità di utilizzare metadati a livello sorgente per incorporare informazioni aggiuntive di comportamento all’interno del codice.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Aspect Oriented Programming (AOP)
 
 Aspect Oriented programming (AOP) è un approccio di design e una tecnica per semplificare la gestione di aspetti trasversali e non strettamente legati alla logica (cross-cutting concern). Degli esempi di cross-cutting concern sono il logging, il locking, la gestione degli eventi, la gestione delle transazioni, sicurezza e auditing. AOP introduce anche nuovi strumenti che facilitano la gestione di questi aspetti tra cui: Joinpoint, Advice, Pointcut e Aspect, Weaving e Target, Introduction. L’idea di base è quella di intercettare le chiamate da remoto.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Joinpoint
 
 Joinpoint è un punto ben definito all’interno del codice applicativo, anche determinabile a runtime, dove può essere inserita logica addizionale, alcuni esempi di joinpoint sono: l’Invocazione di metodi, l’Inizializzazione di classi, l’inizializzazione di oggetti, ovvero la creazione di istanze.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Advice
 
 Advice è una parte di codice che aggiunge logica addizionale al programma, deve essere aggiunto ed eseguito ad un determinato joinpoint. I diversi tipi di Advice sono: i before advice che eseguono prima del joinpoint, after advice eseguono dopo il joinpoint, around advice eseguono attorno (around) al joinpoint.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Pointcut
 
 Pointcut è un Insieme di joinpoint che vengono verificati per definire quando eseguire un advice, il pointcut è l’insieme di tutte le invocazioni di quel metodo in una determinata classe, i pointcut possono essere messi in relazione tra di loro per decidere quando eseguirli insieme al collegato advice, con controllo fine e flessibile su come applicare advice al codice applicativo. La differenza tra pointcut e jointpoit è la seguente: il pointcut è l’insieme di tutte le invocazioni di metodo in una determinata classe mentre l’invocazione di un metodo è un tipico joinpoint. I pointcut possono essere composti in relazioni anche complesse per vincolare il momento di esecuzione dell’advice corrispondente.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Aspect
 
 Aspect definisce quando e come gestire la logica per quell’aspetto, Aspect è la combinazione di advice e pointcut.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Weaving
 
 Weaving è il processo dell’effettivo inserimento di aspect dentro il codice applicativo nel punto appropriato (la traduzione di weaving è cucire il codice nel punto appropriato), ci sono due possibilità per effettuare il weaving a tempo di compilazione, o a runtime ritardiamo il più possibile l’inserimento dell’aspetto.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Target
 
@@ -2936,11 +3060,15 @@ Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime
 
 Spring realizza AOP sulla base dell’utilizzo di proxy, infatti se si desidera creare una classe advised, occorre utilizzare la classe ProxyFactory per creare un proxy per un’istanza di quella classe, fornendo a ProxyFactory tutti gli aspect con cui si desidera informare il proxy.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Dependency Injection
 
 La Dependency Injection è l’applicazione più nota e di maggiore successo del principio di Inversion of Control e l’Hollywood Principle, che si traduce in _Don't call me, I'll call you_. L’idea è che il container leggero si occupi di risolvere (injection) le dipendenze dei componenti attraverso l’opportuna configurazione dell’implementazione dell’oggetto (push), per questo fu chiamato dependency injection. Questa idea è opposta ai pattern più classici di istanziazione di componenti o Service Locator, dove è il componente che deve determinare l’implementazione della risorsa desiderata (pull). Questo consente di mantenere il più possibile l’implementazione leggera.
 
 Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le annotazioni per aggiungere tutte le informazioni utili che servono a esprimere tutte le dipendenze tra i vari compoennti, con il vantaggio della flessibilità con l’eliminazione del codice di lookup nella logica di business, in caso di cambio delle risorse esterne non vi è la necessità di cambiare il codice, la possibilità e facilità di testing con nessun bisogno di dipendere da risorse esterne o da container in fase di testing, vi è la possibilità di abilitare testing automatico, ed un’elevata manutenibilità del codice che permette riutilizzo in diversi ambienti applicativi cambiando semplicemente i file di configurazione (o in generale le specifiche di dependency injection) e non il codice, dividendo nettamente la parte di programma da quella di configurazione.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Varianti per Dependency Injection
 
@@ -2969,6 +3097,8 @@ public class SetterInjection {
     } 
 }
 ```
+
+<a href="#indice">Torna all'indice</a>
 
 ### Oggetto BeanFactory
 
@@ -3027,6 +3157,8 @@ Nei prossimi paragrafi verranno visti solo il primo e il secondo punto.
 
 Tutti questi tipi possono essere usati sia per injection sui costruttori che sui metodi setter.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Injection di valori semplici
 
 un esempio, di injection di valori semplici è il seguente:
@@ -3049,6 +3181,8 @@ un esempio, di injection di valori semplici è il seguente:
 
 Il Bean con nome logico `injectSimple` la cui classe è `InjectSimple` presenta tre metodi `setter`. Ad esempio, il primo si chiama `name` e avrà come valore `John Smith`.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Injection di un Bean all’interno della stessa factory
 
 L’injection di un Bean della stessa Factory è usata quando è necessario fare injection di un Bean all’interno di un altro Bean (target bean). Si Usa il tag `ref` all'interno del tag `property` o `constructor-arg` del target bean:
@@ -3065,9 +3199,13 @@ L’injection di un Bean della stessa Factory è usata quando è necessario fare
 
 Il Bean con nome logio `injectRef` la cui classe è `InjectRef`, ha il metodo setter con nome `oracle`, il cui parametro di ingresso è un altro componente _locale_ cioè usa la stessa factory il cui nome logico è `oracle`. Il controllo sul tipo del Bean è _lasco_ rispetto a quanto definito nel target perchè se il tipo definito nel target è un’interfaccia, il bean injected deve essere un’implementazione di tale interfaccia, se il tipo definito nel target è una classe, il bean injected deve essere della stessa classe o di una sottoclasse.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Naming dei Componenti
 
 Il ritrovamento dei Bean avviene attraverso il naming dei componenti Spring che vengono specificati nei file XML. Ogni bean deve avere un nome unico all’interno della BeanFactory che lo contiene e la procedura di risoluzione dei nomi avviene seguendo le seguenti regole: se un tag ha un attributo di nome `id`, il valore di questo attributo viene usato come nome, se non c’è attributo `id`, Spring cerca un attributo di nome `name`, se non è definito né `id` né `name`, Spring usa il nome della classe del Bean come suo nome.
+
+<a href="#indice">Torna all'indice</a>
 
 ### HelloWorld con dependency injection
 
@@ -3421,9 +3559,13 @@ public class ConfigurableMessageProvider implements MessageProvider {
 }
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Considerazioni sulla dependency injection
 
 La possibilità di semplice Dependency Injection tramite costruttori o metodi semplifica il testing delle applicazioni Spring. Per esempio è semplice scrivere un test JUnit che crea l’oggetto Spring e configura le sue proprietà a fini di testing. Il container IoC non è invasivo: molti oggetti di business non dipendono dalle API di invocazione del container, queste possono essere portabili verso altre implementazioni di container (PicoContainer, HiveMind etc) ed è facile _introdurre_ vecchi POJO in ambiente Spring. Le factory Spring sono leggere, esistono anche implementazioni all’interno di singole applet o come applicazioni Swing standalone. Un altro importante aspetto, secondario ma comunque rilevante è la possibilità di avere di avere unchecked runtime exception. Un'eccezione runtime exception è un oggetto che viene generato e viene gestito tramite `try-catch`. Tuttavia, è possibile che a tempo di esecuzione, un'eccezione non venga gestita quindi l'errore viene propagato e l'applicazione si può interrompere. In Spring, se un'eccezione non viene catturata viene ignorata.
+
+<a href="#indice">Torna all'indice</a>
 
 ### HelloWorld con AOP
 
@@ -3478,6 +3620,8 @@ public static void main(String[] args) {
 
 Guarda caso, anche in Spring si possono definire intercettori, ma questa volta in modo molto diverso e meno trasparente rispetto a un modello a container pesante, sfruttando i concetti di AOP e gli oggetti con proxy.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Intercettori
 
 L'intercettore Spring può eseguire immediatamente prima o dopo l’invocazione della richiesta corrispondente. Implementa l’interfaccia `MethodInterceptor` o estende `HandlerInterceptorAdaptor`:
@@ -3529,6 +3673,8 @@ Nel file di configurazione si definiscono i componenti, l’intercettore e quali
 </beans>
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ### Transazioni verso DB
 
 Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability):
@@ -3549,7 +3695,9 @@ La concorrenza però va gestita, se le varie transazioni interferiscono tra di l
 - **Lost Update**: due persone entrano sulla stessa riga e con la perdita di stato, per esempio entrambe comprano l’ultimo biglietto rimasto.
 - **Dirty Read**: qualora si voglia acquistare un biglietto per una certa data questa data è cambiata nel frattempo. 
 - **Unrepeatable read**: letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
-- **Phantom row**: nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero. 
+- **Phantom row**: nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Lost Update
 
@@ -3557,11 +3705,15 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 
 ![single tier](./img/img41.png)
 
+<a href="#indice">Torna all'indice</a>
+
 ### Dirty Read
 
 In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
 
 ![single tier](./img/img42.png)
+
+<a href="#indice">Torna all'indice</a>
 
 ### Unrepeatble Read
 
@@ -3571,20 +3723,26 @@ Ora il problema è che una transazione legge due volte un dato e trova valori di
 
 Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
 
+<a href="#indice">Torna all'indice</a>
+
 ### Phantom Row
 
 Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un _phantom_, in quanto T1 non la vede.
 
 ![single tier](./img/img43.png)
 
-### Livello di Isolamento
+<a href="#indice">Torna all'indice</a>
+
+### Livelli di Isolamenti
 
 Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce 4 livelli di isolamento, che sono serializable, repeatable read, read committed, uncommitted read:
 
 - `ISOLATION_READ_UNCOMMITTED`: possono accadere letture sporche (dirty read), non ripetibili e fantasma (phantom read).
 - `ISOLATION_READ_COMMITTED`: letture sporche rese impossibili, possibilità di accadimento di letture non ripetibili e fantasma.
 - `ISOLATION_REPEATABLE_READ`: possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili.
-- `ISOLATION_SERIALIZABLE`: tutte le possibilità spiacevoli sopra elencate per la lettura sono rese impossibili. Viene garantita le proprietà ACID
+- `ISOLATION_SERIALIZABLE`: tutte le possibilità spiacevoli sopra elencate per la lettura sono rese impossibili. Viene garantita le proprietà ACID.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Transazionalità verso DB
 
@@ -3600,6 +3758,8 @@ In Spring, i livelli di propagazione delle transazioni sono:
 - `PROPAGATION_NEVER`.
 - `PROPAGATION_NESTED`.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Pooling e concorrenza
 
 Alla base dell’architettura Spring, c’è l’idea di Inversion of Control (prima che in EJB 3.0) e di container leggeri per factory per l’istanziazione, il ritrovamento e la gestione delle relazioni fra oggetti. Le factory supportano due modalità di oggetto:
@@ -3608,6 +3768,8 @@ Alla base dell’architettura Spring, c’è l’idea di Inversion of Control (p
 - **Prototype**: ogni operazione di ritrovamento di un oggetto produrrà la creazione di una nuova istanza. Ideale per oggetti statefull.
 
 La modalità singleton di Spring è vicina a quella di EJB stateless perchè non c'è lo stato ma è diversa perchè in Spring non c'è un pool di thread. Lo stesso vale per prototype che si avvicina agli EJB statefull ma sono diversi perchè ogni volta quando si invoca `getBean()`, viene restituita una nuova istanza dedicata senza ottimizzazione di carico (non c'è activation e passivation). Inoltre, in Spring le richieste non vengono intercettate per cui è necessario crearsi a mano un altro `BeanFactory` che funge da proxy utilizzando ad esempio con AOP (concettualmente simile a interception in EJB, ma di più semplice utilizzo).
+
+<a href="#indice">Torna all'indice</a>
 
 ### Autowiring
 
@@ -3619,6 +3781,8 @@ Spring può occuparsi automaticamente di risolvere dipendenze tramite introspezi
 
 Anche in EJB esiste la stessa risoluzione delle dipendenze attraverso JNDI.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Dependency checking
 
 Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenze non risolte senza ricevere spiacevoli sorprese quando è già fatto il deployment di un Bean all’interno di un container Spring. È utile per tutte le proprietà che non hanno valori configurati all’interno della definizione del Bean, per i quali anche l’autowiring non ha prodotto alcun setting. Questa è una caratteristica utile quando ci si vuole assicurare che tutte le proprietà (o tutte le proprietà di un determinato tipo) siano state configurate correttamente su un Bean. Vi sono diverse modalità possibili e configurabili:
@@ -3627,6 +3791,8 @@ Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenz
 - simple: dependency checking effettuato solo per tipi primitivi e collection;
 - object: dependency checking effettuato solo per altri bean associati all’interno della stessa factory cioè quando è presente il tag ref local (collaborator);
 - all: dependency checking effettuato per collaborator, tipi primitivi e collection.
+
+<a href="#indice">Torna all'indice</a>
 
 ### ApplicationContext
 
@@ -3718,6 +3884,8 @@ public class BlackListNotifier implement ApplicationListener {
 
 }
 ```
+
+<a href="#indice">Torna all'indice</a>
 
 ## JMX
 
