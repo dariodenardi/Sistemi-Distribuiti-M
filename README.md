@@ -2273,47 +2273,115 @@ L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostant
 
 <a href="#indice">Torna all'indice</a>
 
-### Principali Oggetti
+### Interfaccia SessionFactory
 
-SessionFactory consente di creare oggetti Session e mantiene le risorse necessarie per cache di primo e secondo livello.
+`SessionFactory` é l'equivalente all'`EntityManagerFactory` di JPA. Consente di creare oggetti `Session` e mantiene le risorse necessarie per cache di primo e secondo livello. Di solito si crea una `SessionFactory` per ogni DB ma niente vieta di creare più `SessionFactory` per un singolo DB.
 
-La Session di Hibernate è un contesto di persistenza che viene gestito dall’inizio alla fine dalle transazioni. Va a gestire anche il ciclo di vita degli oggetti persistenti e opera da factory per gli oggetti transaction.
+### Interfaccia Session
 
-Gli oggetti peristenti sono oggetti per cui si vuole mantenere uno stato persistente e devono essere inseriti in un contesto di persitenza con una Session che opera e lavora come una cache. Quando si chiude una sessione gli oggetti diventano detached e possono essere usati sapendo che non c’è un collegamento con il DB. Gli oggetti transient o detached hanno istanze non legate alla session. Modificando gli oggetti no modificihiamo il db ciò avvine solo con la perist o la merge. Le transazioi sono oggetti single therad che servono a specificare unità atomiche di lavoro astraendo dai dettagli delle librerie e dei framework che usiamo. Unsa session può essere usata più transaction.
+La `Session` è l'analogo dell'`EntityManager` in JPA. Va a gestire il ciclo di vita degli oggetti persistenti e opera da factory per gli oggetti `Transaction` cioè ogni volta che si vuole lavorare sui dati con semantica transazionale serve ottenere questo oggetto.
 
-Si hanno tre possibili stati:
+### Transazioni
 
-- transient non appartiene al contesto di persistenza. Stato transient non è mai associato a un contesto di persistenza e questo accade quando si definisce un’istanza fuori da una sessione. Non ha righe corrispondenti nel DB.
+Gli oggetti `Transaction` sono oggetti single-therad che servono ad aprire, chiudere e fare il rollback di una transazione unità atomiche astraendo dai dettagli delle librerie e dei framework che si usano. Le transazioni in Hibernate non sono eseguiti, a default, con semantica transazionale quindi ogni volta è necessario crearsi un oggetto `Transaction`.
+
+### Ciclo di Vita
+
+Gli oggetti si possono trovare in tre possibili stati:
+
+- transient non appartiene al contesto di persistenza. Stato transient non è mai associato a un contesto di persistenza e questo accade quando si definisce un’istanza fuori da una sessione.
 - persistent appartiene al contesto di persistenza. Nello stato persistent l’stanza è associata a una sessione e il suo stato corrisponde a una riga del DB.
 - detached è un istanza che non è al momento nel contesto di persistenza poiché è stata scollegata.
 
- Detached quando un’istanza che corrisponde a uno stato di persistenza viene staccata, questo però non vuol dire che sia aggiornata.
+Gli oggetti persistenti sono oggetti per cui si vuole mantenere uno stato persistente e devono essere inseriti in un contesto di persitenza con una `Session` che opera e lavora come una cache. Quando si chiude una sessione gli oggetti diventano detached e possono essere usati sapendo che non c’è un collegamento con il DB.
 
- <a href="#indice">Torna all'indice</a>
-
-### Il caching in Hibernate
-
-In generale, migliora la performance dei sistemi che consente un miglioramento delle prestazioni accedendo al database solo se lo stato necessario non è presente in cache. In caso in cui tutti gli oggetti siano nella sessione si fanno tutte le operazioni posticipando l’accesso  al DB solo per la flush e non per le varie parti della transazione.
-
-Ovviamente essendo delle cache quindi una trnsazione può avere necessità di svuotare l cache se sappiamo che quancuno esternamente sta modificando il DB e quindi dobbiamo ripopolare i valori per riallinearlial db.
-
-Esistono due livelli di cache uno associata alla sessione e uno associata alla session factory ovvero legata alla gestione del supporto al caching. Le cache di primo livello hanno i confini della transazioni e sono legati alla sessione ci consnete di fare meno uery sul db quindi ci sono solo statement inziiali e finali senza stati intermedi. Le cache di secondo livello mantendgono informazioni utilizzabili da diverse transazioni.
-
-Per l’invalidazione della cache usiamo una strategia ottimistica poiché si assume che la maggiorarte delle transazioni verso il db non siano in conflitto con le altre. Se ciò è vero riusciamo ad avere un throughput molto alto. Le modifiche da fare in caso di collisioni sono possibili con un versioning dei dati che consente di cìfare dei check e controllare i dati. 
-
-Il version checking non sono sempre automatici però abbiamo una proprietà @Version che viene salvata e mantiene la versione dell’entità. Lanciando un’eccezione se gli stati di sono diversi ci rendiamo conto se ci sono stati conflitti. In caso di conflitti effettueremo refresh e update.
+Gli oggetti transient o detached hanno istanze non legate alla sessione. Modificando gli oggetti non si modifica il DB.
 
 <a href="#indice">Torna all'indice</a>
 
-### Hibernate Fetching dei dati
+### Il caching in Hibernate
 
-Per fare fetching (caricare dati dal db alla memoria) possiamo usare varie stretegie che si possono indicare a priori nel file di mapping o successivamente nelle query con override. Le modalità di fetching sono Default, Join Select. La seconda select avviene solo quando accediamo i dati. Simile a eager o lazy
+In generale, la cache migliora la performance dei sistemi e si accede al database solo se lo stato necessario non è presente in cache. In Hibernatem esistono due livelli di cache: uno associata alla `Session` e uno associata alla `SessionFactory`. Le cache di primo livello è usata da Hibernate all’interno dei confini di una singola transazione principalmente al fine di ridurre il numero di query SQL generate all’interno di una transazione. Ad esempio, se un oggetto è modificato diverse volte all’interno della medesima transazione, Hibernate genera un unico statement SQL UPDATE alla fine della transazione, con tutte le modifiche. Invece, la cache di secondo livello, mantiene dati a livello di `Session Factory`, utilizzabili da diverse transazioni.
 
-Ricerche di tipo associativo il programmatore definisce i Criterion, con una interafccia che li relaizza e definendo il criterio di interesse. Si va quindi a costruire i criteri riempiendoli con elementi che rendono la ricerca associativa in modo trasparente cercando nel dtabase tuple che facciano match il programmatore in questo modo non deve conoscere il linguaggio sql e può effettuare ricerche in modo trasparente attraverso il framwork stesso.
+![Ciclo di Vita Entity-Light](./img/img70-light.png)
+
+Dalla `SessionFactory` si crea un oggetto `Session`. Un primo componente `C1` si crea il proprio oggetto `Session` e lavora sulla cacha di primo livello `L1_1`. La `Session` fa una find di un dato del DB. La cache all'inizio è vuota. Il layer di persistenza prende il dato dal DB e carica in cache l'oggetto `O1`. Non viene fatta una copia solo nella cache di primo livello, ma viene fatta una copia anche nella cache di secondo livello. Un secondo componente `C2` crea dalla stessa `SessionFactory` un nuovo oggetto `Session` e lavora sulla cache di primo livello `L1_2`. Il secondo componente non trova l'oggetto `O1` nella propria cache di primo livello `C1` ma lo trova nella cache di secondo livello `L2` e se lo porta nella propria cache di primo livello una copia di `O1` senza andare su DB.
+
+In lettura, non ci sono problemi mentre in scrittura ci possono essere alcuni problemi. Ci sono diverse istanze dell’oggetto persistente nella cache di primo livello. Se il componente `C2` modifica l'oggetto `O1`, si ha un disallineamento perchè la sua copia è diversa rispetto a quella che si trova nella cache `C1` mentre in quella di secondo livello viene aggiornata.
+
+Per l’invalidazione della cache si usa una strategia ottimistica poiché si assume che la maggior parte delle transazioni verso il DB non sono in conflitto con le altre transazioni. In caso di collisioni, si effettua un versioning dei dati. Si inserisce nella tabella del database una colonna in più che si indica con l'annotazione `@Version`:
+
+```
+@Entity
+@Table(name = "orders")
+public class Order {
+    @Id private long id;
+    @Version private int version;
+    private String description;
+    private String status;
+    
+    ...
+
+}
+```
+
+Questo numero viene gestito in modo automatico dal layer di persistenza anche se si perde un pò di trasparenza dato che nella tabella del DB ci sarà una colonna in più. Ogni volta che avviene una scrittura sul record del DB viene aggiornato questo valore:
+
+```
+update orders set description=?, status=?, version=? where id=? and
+version=?
+```
+
+In questo modo, si eliminano i problemi di inconsistenza. Ad esempio, ci sono due utenti (Bob e Alice) che hanno sessioni diverse ma che condividono la cache di secondo livello. Alice decide di approvare l’ordine per cui lo stato è aggiornato sul DB. Il fatto di persistere l’aggiornamento del dato incrementa version counter a 2:
+
+```
+update orders set description=?, status=?, version=2 where id=? and
+version=1
+```
+
+Nel frattempo Bob, ad esempio nella sua GUI, ha ancora la vecchia versione dei dati (version=1). Quando lancia un update all’ordine, la query eseguita risulta essere:
+
+```
+update orders set description=?, status=?, version=2 where id=? and
+version=1
+```
+
+Il risultato è che questa seconda update non fa match con alcuna riga (no
+match con clausola WHERE). Hibernate lancia una eccezione `org.hibernate.StaleObjectStateException`. Risultato è che Bob non può comandare update fino a che non ha rinfrescato la sua vista dati. Ovviamente sta al programmatore gestire opportunamente l'eccezione a livello applicativo.
 
 Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
-Su hibernate la cache di secondo livello serve per la trasversalità tra diverse applicazioni.
+<a href="#indice">Torna all'indice</a>
+
+### Fetching dei dati
+
+Per fare fetching (cioè caricare i dati dal DB alla memoria) si possono usare varie stretegie che si indicano a priori nel file di mapping o successivamente nelle query con override. Quindi, anche in Hibernate si possono fare caricamenti più eager o più lazy che impatteranno sulla cache di primo e di secondo livello, è il programmatore che decide se fare un caricamento più aggressivo o più pigro. Si specifica con un parametro chiamato FetchMode e le modalità di fetching sono:
+
+- `FetchMode.DEFAULT`: FetchMode è presa del file di configurazione.
+- `FetchMode.JOIN`: Hibernate recupera i dati associati, anche collezioni, utilizzando un outer join all’interno della stessa select.
+- `FetchMode.SELECT `: Hibernate effettua una seconda select separata per recuperare le entity o collection associate. Lazy fetching è il default: la seconda select viene eseguita solo quando l’applicazione accede veramente ai dati associati.
+
+Usare una strategia di fetching rispetto ad un'altra ha ovviamente impatto sulle performance ottenibili.
+
+### Query By Examples (QBE)
+
+Lo stile è drasticamente differente da SQL per la ricerca di dati nel DB. L'idea di base è quella di effettuare una ricerca di tipo associativa:
+
+- Popolare parzialmente una istanza di un oggetto.
+- Permettere a Hibernate di costruire trasparentemente un criterio di
+scelta (criteria) usando l’istanza come esempio.
+
+```
+// cerca gli oggetti persona tramite un oggetto di esempio
+Criteria crit = sess.createCriteria(Person.class);
+Person person = new Person();
+person.setName("Shin");
+Example exampleRestriction = Example.create(person);
+crit.add(exampleRestriction);
+List results = crit.list();
+```
+
+Si va quindi a costruire i criteri riempiendoli con elementi che rendono la ricerca associativa in modo trasparente cercando nel database tuple che facciano match. Il programmatore in questo modo non deve conoscere il linguaggio SQL e può effettuare ricerche in modo trasparente attraverso il framwork stesso.
 
 <a href="#indice">Torna all'indice</a>
 
