@@ -178,7 +178,36 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     <li>
       <a href="#">Spring</a>
       <ul>
-        <li><a href="#"></a></li>
+        <li><a href="#perchè-usare-spring">Perchè usare Spring</a></li>
+        <li><a href="#architettura-1">Architettura</a></li>
+        <li><a href="#aspect-oriented-programming-aop">Aspect Oriented Programming (AOP)</a></li>
+        <li><a href="#joinpoint">Joinpoint</a></li>
+        <li><a href="#advice">Advice</a></li>
+        <li><a href="#pointcut">Pointcut</a></li>
+        <li><a href="#aspect">Aspect</a></li>
+        <li><a href="#weaving">Weaving</a></li>
+        <li><a href="#target">Target</a></li>
+        <li><a href="#dependency-injection-1">Dependency Injection</a></li>
+        <li><a href="#varianti-per-dependency-injection">Varianti per Dependency Injection</a></li>
+        <li><a href="#oggetto-beanfactory">Oggetto BeanFactory</a></li>
+        <li><a href="#injection-di-valori-semplici">Injection di valori semplici</a></li>
+        <li><a href="#injection-di-un-bean-allinterno-della-stessa-factory">Injection di un Bean all’interno della stessa factory</a></li>
+        <li><a href="#naming-dei-componenti">Naming dei Componenti</a></li>
+        <li><a href="#helloworld-con-dependency-injection">HelloWorld con dependency injection</a></li>
+        <li><a href="#considerazioni-sulla-dependency-injection">Considerazioni sulla dependency injection</a></li>
+        <li><a href="#helloworld-con-aop">HelloWorld con AOP</a></li>
+        <li><a href="#intercettori-1">Intercettori</a></li>
+        <li><a href="#transazioni-verso-db">Transazioni verso DB</a></li>
+        <li><a href="#lost-update">Lost Update</a></li>
+        <li><a href="#dirty-read">Dirty Read</a></li>
+        <li><a href="#unrepeatble-read">Unrepeatble Read</a></li>
+        <li><a href="#phantom-row">Phantom Row</a></li>
+        <li><a href="#livelli-di-isolamenti">Livelli di Isolamenti</a></li>
+        <li><a href="#transazionalità-verso-db">Transazionalità verso DB</a></li>
+        <li><a href="#pooling-e-concorrenza-1">Pooling e concorrenza</a></li>
+        <li><a href="#autowiring">Autowiring</a></li>
+        <li><a href="#dependency-checking">Dependency checking</a></li>
+        <li><a href="#applicationcontext">ApplicationContext</a></li>
       </ul>
     </li>
   </ol>
@@ -3528,13 +3557,13 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 
 ![single tier](./img/img41.png)
 
-### Dirty read
+### Dirty Read
 
 In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
 
 ![single tier](./img/img42.png)
 
-### Unrepeatble read
+### Unrepeatble Read
 
 Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
 
@@ -3542,7 +3571,7 @@ Ora il problema è che una transazione legge due volte un dato e trova valori di
 
 Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
 
-### Phantom row
+### Phantom Row
 
 Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un _phantom_, in quanto T1 non la vede.
 
@@ -3601,7 +3630,7 @@ Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenz
 
 ### ApplicationContext
 
-Per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’uso della semplice interfaccia `BeanFactory`, l’`ApplicationContext` è l’estensione dell’interfaccia `BeanFactory`. Questo oltre a fornire tutte le funzionalità base, integra la gestione delle transazioni e di AOP, ad esempio, non supportate dalla `BeanFactory` di base. `ApplicationContext` si utilizza in modalità più _tradizionale_ e quindi framework-oriented cioè invocando dal codice direttamente la chiamata di cui si ha bisogno. Le funzionalità aggiuntive dell’`ApplicationContext` non sono supportante di base dal `BeanFactory` perché in un’ottica di container leggeri questo appesantirebbe tale interfaccia. Tra le funzionalità aggiuntive di `ApplicationContext` vi sono:
+Per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’uso della semplice interfaccia `BeanFactory`, l’`ApplicationContext` è l’estensione dell’interfaccia `BeanFactory`. Questo oltre a fornire tutte le funzionalità base, integra la gestione delle transazioni e di AOP, ad esempio, non supportate dalla `BeanFactory` di base. `ApplicationContext` si utilizza in modalità più _tradizionale_ e quindi framework-oriented cioè invocando dal codice direttamente la chiamata di cui si ha bisogno. Le funzionalità aggiuntive dell’`ApplicationContext` non sono supportante di base dal `BeanFactory` perché in un’ottica di container leggeri questo appesantirebbe tale interfaccia. Tra le funzionalità aggiuntive di `ApplicationContext` vi sono ad esempio:
 
 - Gestione delle transazioni.
 - Propagazione di eventi a Bean che implementano l’interfaccia `ApplicationListener`.
