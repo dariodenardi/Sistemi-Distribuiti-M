@@ -2340,7 +2340,8 @@ Hibernate ha l’obiettivo di realizzare la persistenza di oggetti POJO passando
 
 L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostanti. Il livello di applicazione può essere trasparente a questi dettagli:
 
-![Ciclo di Vita Entity-Light](./img/img67.png)
+![Architettura Hibernate-Light](./img/img67-light.png#gh-light-mode-only)
+![Architettura Hibernate-Dark](./img/img67-dark.png#gh-dark-mode-only)
 
 <a href="#indice">Torna all'indice</a>
 
@@ -2676,10 +2677,6 @@ Vi sono due modalità di ricezione dei messaggi:
 Le API JMS possono essere riassunte nella seguente figura:
 
 ![single tier](./img/img20.png)
-
-In modo più dettagliato la stessa figura può essere rappresentata anche nel seguente modo:
-
-![single tier](./img/img21.png)
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3140,7 +3137,8 @@ Spring non è una soluzione _all-or-nothing_ cioè si prende solo quello di cui 
 
 Il Core è un container leggero basato sull’inversion of control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE si occupa della gestione di tutti i servizi enterpise. Il Web Tier contiene tutti i framework web che possono essere integrati con il core. DAO e ORM sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il Core, DAO e ORM.
 
-![single tier](./img/img39.png)
+![Architettura Spring-Light](./img/img39-light.png#gh-light-mode-only)
+![Architettura Spring-Dark](./img/img39-dark.png#gh-dark-mode-only)
 
 Si può sempre pensare di specializzare il framework e utilizzare le parti che ci servono, quindi si possono creare diversi scenari Spring in base alle esigenze di progettazione.
 
@@ -3826,7 +3824,8 @@ Una transazione è un’unità logica di elaborazione che, nel caso generale, si
 
 Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti e in questo caso si riduce il tempo di risposta.
 
-![single tier](./img/img68.png)
+![Seriale vs Concorrente-Light](./img/img68-light.png#gh-light-mode-only)
+![Seriale vs Concorrente-Dark](./img/img68-dark.png#gh-dark-mode-only)
 
 Eseguire più transazioni concorrentemente è necessario per garantire buone prestazioni: si sfrutta il fatto che, mentre una transazione è in attesa del completamento di una operazione di I/O, un’altra può utilizzare la CPU.
 
@@ -3843,7 +3842,8 @@ La concorrenza però va gestita, se le varie transazioni interferiscono tra di l
 
 Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
 
-![single tier](./img/img41.png)
+![Lost Update-Light](./img/img41-light.png#gh-light-mode-only)
+![Lost Update-Dark](./img/img41-dark.png#gh-dark-mode-only)
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3851,7 +3851,8 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 
 In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
 
-![single tier](./img/img42.png)
+![Dirty Read-Light](./img/img42-light.png#gh-light-mode-only)
+![Dirty Read-Dark](./img/img42-dark.png#gh-dark-mode-only)
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3859,7 +3860,8 @@ In questo caso il problema è che una transazione legge un dato che non c’è: 
 
 Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
 
-![single tier](./img/img69.png)
+![Unrepeatble Read-Light](./img/img69-light.png#gh-light-mode-only)
+![Unrepeatble Read-Dark](./img/img69-dark.png#gh-dark-mode-only)
 
 Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
 
