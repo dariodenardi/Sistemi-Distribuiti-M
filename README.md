@@ -2890,10 +2890,10 @@ L’applicazione può per parti lavorare in modo sincrono e per altre lavorare i
 
 ### Enterprise Service Bus (ESB)
 
-Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare, per la possibilità di mettere insieme parti di questi sistemi che sono legacy preesistenti e parti nuove sviluppate di recente. In questa direzione si sono sviluppati gli ESB che sono infrastrutture molto large con principi di integrazione condivisi. L’idea è di avere un disaccopiamento forte e quindi i MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, solo quando vi sono riposte complete. Si mettano insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Il modello è asincrono e pub/sub con in mezzo un intermediario, ovvero l’ESB che offre molte più funzionalità di un MOM, ma comunque garantisce lo scambio di messaggi che porta a un’elevata asincronicità e conseguente disaccoppiamento. Le principali caratteristiche sono:
+Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integrazione di sistemi di grandi dimensioni. In particolare, la possibilità di mettere insieme parti di questi sistemi che sono legacy preesistenti e parti nuove sviluppate di recente. In questa direzione si sono sviluppati gli ESB che sono infrastrutture molto large con principi di integrazione condivisi. L’idea è di avere un disaccopiamento forte e quindi si usano i MOM a supporto della comunicazione, l’utilizzo di SOA con l’obiettivo di avere servizi che lavorano molto e comunicano poco, in particolare solo quando vi sono riposte complete. Si mettono, quindi, insieme sistemi losely coupled con servizi a grana grossa. La parola bus significa facilitare la presentazione ovvero mettere insieme dei servizi molto eterogenei attraverso una funzionalità di trasformation e routing intelligence. Questo servizio garantisce anche la standardizzazione. Il modello è asincrono e pub/sub con in mezzo un intermediario (sarà appunto ESB che offre molte più funzionalità di un servizio MOM), che comunque garantisce lo scambio di messaggi. Le principali caratteristiche sono:
 
-- Disaccoppiamento. 
-- Gestione dei topic. 
+- Disaccoppiamento.
+- Gestione dei topic.
 - Controllo degli accessi.
 - Struttura messaggi.
 - QoS configurabile.
@@ -2904,36 +2904,39 @@ Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integra
 
 SOA è un'architettura software che mette a disposizione:
 
-- Servizi a grana grossa completi e autonomi.
+- Servizi a grana grossa autonomi cioè non hanno bisogno di servizi esterni.
 - Interfacce astratte ben fatte che definiscono contratti tra Consumer e Provider.
 - Scambio di messaggi che compongono le operazioni invocabili sui servizi di input e output.
-- Registri dei servizi con naming e trading.
+- Registri dei servizi con naming (in particolare trading).
 - Possibilità di comporre i servizi in processi di business, ovvero molti servizi messi insieme seguendo le linee guide SOA.
 
-Tutto questo ha l’obiettivo di ottenere accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte. Ad esempio, Azure espone API con interfacce REST.
+Tutto questo ha l’obiettivo di ottenere accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte. Un esempio è Azure che espone API con interfacce REST.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Web Services
 
-SOno infrastrutture che soddisfano le caratteristiche SOA per l’interazione tra applicazioni basata sul concetto di servizio, che utilizzano interfacce Web, in particolare operano sulla porta 80. Tali Web services sfruttano essenzialmente tre tecnologie, o API:
+I Web Services sono una possibile implementazione dell'architettura SOA e facilitano l’interazione tra applicazioni basata sul concetto di servizio, utilizzando interfacce Web, in particolare operano sulla porta 80. Tali Web services sfruttano essenzialmente tre tecnologie:
 
-- WSDL è un file contenente la descrizione del Web service, descrizione scritta in XML che contiene le funzionalità offerte da quel servizio.
-- SOAP è la descrizione di un protocollo per lo scambio di messaggi, si scambiano _buste soap_ che contengono file XML (indipendenti dal linguaggio) con diversi contenuti che vengono scambiati. Le buste SOAP possono essere trasmesse con HTTP per garantire massima interoperabilità.
-- UDDI è un servizio di trading che consente la discovery dei servizi, restituisce un file WSDL che contiene la descrizione di quel servizio cosa si aspetta in termini di input e output e come collegarsi con quel servizio.
+- **WSDL** è un file contenente la descrizione del Web service, descrizione scritta in XML (indipendenti dal linguaggio) che contiene le funzionalità offerte da quel servizio.
+- **SOAP** è la descrizione di un protocollo per lo scambio di messaggi. In particolare, si scambiano messaggi chiamati _buste soap_ che al loro interno contengono file XML. Le buste SOAP possono essere trasmesse con HTTP per garantire massima interoperabilità dato che basta usare poi solo la porta 80.
+- **UDDI** è un servizio di trading che consente la discovery dei servizi, restituisce un file WSDL che contiene la descrizione di quel servizio, cosa si aspetta in termini di input e output e come collegarsi a quel servizio.
 
-La differenza tra un Web service un servizio di distributed object computing è la standardizzazione e come si implementano i vari servizi, nel caso dei Web service non c’è dipendenza dall’implementazione.
+La differenza tra un Web service e un servizio di distributed object computing è che nel caso dei Web Service non c’è dipendenza dall’implementazione e non ha neanche importanza il protocollo su cui viaggia.
+
+### Web Service Description Language (WSDL)
 
 WSDL è suddiviso in due parti:
 
 - Una chiara separazione fra livello astratto (interfaccia) che contiene la definizione di operazioni di servizio come ingresso e uscita di documenti e struttura messaggi.
-- Livello concreto che implementa l’interfaccia presenta una serie di endpoint con indirizzo di rete e protocollo per definire i servizi (binding – per ogni interfaccia), tipico di tutte le soluzioni SOA.
+- Livello concreto che implementa l’interfaccia e presenta una serie di endpoint con indirizzo di rete (binding che consente di raggiungere quel servizio)e uno di questi potrebbe essere, ad esempio, un protocollo HTTP.
 
-Nell’architettura SOA non ci importa la tecnologia utilizzata si possono esporre più modi di comunicazione.
+Nell’architettura SOA non importa quale è la tecnologia utilizzata ma si possono esporre più modi di comunicazione.
 
-![single tier](./img/img23.png)
+![WSDL-Light](./img/img23-light.png#gh-light-mode-only)
+![WSDL-Dark](./img/img23-dark.png#gh-dark-mode-only)
 
-L’integrazione è un grosso problema: solo 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
+L’integrazione è un grosso problema: solo il 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -2941,86 +2944,93 @@ L’integrazione è un grosso problema: solo 10% delle applicazioni è integrato
 
 L’Enterprise Application Integration si occupa dell’integrazione di queste applicazioni, costruendo intorno a queste applicazioni degli strumenti che le integrano.
 
-![single tier](./img/img63.png)
+![EAI-Light](./img/img63-light.png#gh-light-mode-only)
+![EAI-Dark](./img/img63-dark.png#gh-dark-mode-only)
 
-Enterprise Application Integration si basa su un approccio formato da tre tipi di operazioni: extract, transform and load. Si passa, quindi, per processi batch tra un app e un’altra. I dati vengono trasmessi con FTP, poi li si trasforma in un formato utile per la seconda app e infine vengono passati di alla seconda app di nuovo con FTP. Questo è il funzionamneto di molti servizi bancari.
+Enterprise Application Integration si basa su un approccio formato da tre tipi di operazioni: extract, transform and load. Si passa, quindi, per processi batch tra un'app e un’altra. I dati vengono trasmessi con FTP, poi li si trasforma in un formato utile per la seconda app e infine vengono passati di alla seconda app di nuovo con FTP. Questo è il funzionamneto di molti servizi bancari.
 
-Questa soluzione ha alte latenze al momento delle batch perchè ci possono essere fault al momento delle trasnform. ESB vuole andare oltre rispetto a questa soluzione cercando di automatizzare al più possibile il processo di trasmissione e trasformazione, renedendolo il più possibile pulito.
+Questa soluzione ha alte latenze al momento delle batch perchè ci possono essere fault al momento delle transform. ESB vuole andare oltre rispetto a questa soluzione cercando di automatizzare al più possibile il processo di trasmissione e trasformazione, renedendolo il più possibile pulito.
 
-La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione, non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus.
+La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione e non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Hub-and-Spoke
 
-Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e con le applicazioni che hanno un adapter a un formato comune e una central automation engine cioè un motore che consuma i messaggi, guarda dentro i messaggi e facendo routing intelligente tra le applicazioni e mandandoli dove deve arrivare. Inoltre, vi sono tutti i servizi di sistema, tra cui persistenza e transazioni.
+Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e le applicazioni hanno un adapter a un formato comune garantito dal message broker. Una central automation engine cioè un motore che consuma i messaggi, guarda dentro i messaggi e facendo routing intelligente tra le applicazioni li manda dove devono arrivare. Inoltre, vi sono tutti i servizi di sistema, tra cui persistenza e transazioni.
 
-![single tier](./img/img64.png)
+![Hub-and-Spoke-Light](./img/img64-light.png#gh-light-mode-only)
+![Hub-and-Spoke-Dark](./img/img64-dark.png#gh-dark-mode-only)
 
-I pro dell’architettura a stella sono la facilità di gestione (centralizzata). Il principale contro è che l’hub è punto critico di centralizzazione. Inoltre, ha ridotta scalabilità.
+I pro dell’architettura a stella sono la facilità di gestione (centralizzata). Il principale contro è che l’hub è punto critico di centralizzazione. Inoltre, questa architettura ha una ridotta scalabilità.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Bus di Interconnessione
 
-L’altra architettura di riferimento è quella a bus, l’automation engine risiede con l’applicazione non c'è il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto.
+L’altra architettura di riferimento è quella a bus dove l’automation engine risiede con l’applicazione e non c'è il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto.
 
-![single tier](./img/img65.png)
+![Bus di Interconnessione-Light](./img/img65-light.png#gh-light-mode-only)
+![Bus di Interconnessione-Dark](./img/img65-dark.png#gh-dark-mode-only)
 
 I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
 
-L'ESB è la realizzazione della seconda architettura. l’idea principale è quella di avere una lingua franca con cui poter far comunicare i servizi, orchestra l’integrazione, fa da registro dei servizi, e da punto centralizzato della gestione di tutti i servizi che si affacciano sull’enterprise service bus stesso.
-
 <a href="#indice">Torna all'indice</a>
 
-### Orchestrazione ESB concetti chiavi
+### Concetti chiave di ESB
 
-Qui l’orchestrazione avviene per le interazioni tra i servizi a grana grossa e per il routing intelligente. Aspetto di descrizione astratta del servizio e realizzazione concreta dei diversi binding, l’ESB risolve entrambi i problemi. Consente di utilizzare tanti e diversi protocolli per scambiare l’informazione, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta del WSDL, descriverò con un biding concreto le interazioni con il mondo esterno con la parte concreta del WSDL, e ESB fa da orchestratore nel mezzo risparmiando al programmatore di fare l’integrazione poiché il supporto lo fa già. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti e nei vari servizi come auditing e logging. 
+L'ESB è la realizzazione della seconda architettura. L'idea principale è quella di fare integrazione di servizi basata su scambio di messaggi tra applicazioni che hanno un adapter diverso e il bus deve uniformare la visione. Il bus può essere visto come un middleware che consente di integrare il tutto. Il bus mette a disposizione:
 
-ESB è un architettura altamente distribuita con integrazione basata su standard, mette a disposizione servizi di orchestration, mantiene l’autonomia delle singole applicazioni, consente un real-time throughput,  mette in atto servizi di auditing e logging, consente l’adozione incrementale. Nell’invocazione dei servizi, invece rende i servizi completamente disaccoppiati, utilizza pattern “find-bind-invoke” è gestito automaticamente dall’infrastruttura, il progettista deve solo definire l’itinerario logico che i messaggi devono seguire, mentre i servizi si “limitano” a inviare e ricevere messaggi.
+- La possibilità di mandare e ricevere messaggi.
+- Possibilità di registrare i servizi che si affacciano al bus.
+- Orchestrare l'integrazione tra i vari servizi che si affacciano cioè vuol dire gestire il flusso di esecuzione complessivo che deriva dall'interazione tra i componenti e gestisce le varie interazioni
+
+ESB consente di utilizzare tanti e diversi protocolli per scambiare le informazioni, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta WSDL, si descriverà con un biding concreto gli endpoint da offrire al mondo esterno, e ESB funge da _orchestratore_ nel mezzo risparmiando al programmatore di fare l’integrazione poiché è compito del supporto. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti (ad esempio, abilitare un routing rispetto ad un altro) e nei vari servizi aggiuntivi come auditing e logging.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Java Business Integration (JBI)
 
-Nel mondo Java a supporto di tutto questo c'è JBI (Java Business Integration). In JBI, ci sono servizi interni e esterni, i servizi esterni non riescono a parlare direttamente con l’orchestratore per questi servizi ci sono dei biding componenent che fungono da proxy verso i servizi esterni tra orchestratore e servizi esterni, sono degli adatatori per passare dal protocollo A al B. Poi vi sono i servizi interni e con questi abbiamo la possibilità di utilizzare il Normalized Message Router che si occupa dell’interazione tra componenti, nel routing delle informazioni. Sopra abbiamo la parte di servizi offerta dal framework tra cui l’orchestrazione dei servizi stessi offerta da BPEL che orchestra i servizi a grana grossa, con diagrammi di flusso che gestiscono le integrazioni. Sono offerti anche servizi grafici al programmatore per l’integrazione più facile dei servizi.  
+Nel mondo Java a supporto di tutto questo c'è lo standard JBI (Java Business Integration). In JBI, ci sono servizi interni ed esterni. I servizi esterni non riescono a parlare direttamente con l’orchestratore ESB perchè usano, ad esempio, protocolli diversi. Per questi servizi servono dei binding componenent che fungono da proxy verso i servizi esterni. In particolare, essi sono degli adatatori per passare dal protocollo `A` al `B`. Poi, vi sono i servizi interni e con questi si ha la possibilità di utilizzare il Normalized Message Router (il bus) che si occupa dell’interazione tra componenti cioè del routing delle informazioni. Sopra, si ha la parte di servizi offerta dal framework tra cui l’orchestrazione dei servizi stessi offerta da BPEL (engine) che orchestra i servizi a grana grossa tramite diagrammi di flusso che gestiscono le integrazioni. Sono offerti anche servizi grafici al programmatore per l’integrazione più facile dei servizi.
 
-La comunicazione tra componenti all’interno del bus NON è diretta. NMR che agisce da mediatore fra i vari componenti, ha il compito di fare routing dei messaggi tra 2 o più componenti, è distribuito e quindi consente di disaccoppiare Service Consumer da Service Provider garantendo un basso accoppiamento tra i componenti JBI, i messaggi sono scambiati in formato XML per cui la comunicazione è "technology-neutral" tra endpoint. Normalized Message scambiati sono definiti in formato indipendente e neutrale da qualsiasi specifica applicazione, tecnologia o protocollo di comunicazione, le  trasformazioni di formato sono trasformazioni XSLT.
+La comunicazione tra componenti all’interno del bus **non** è diretta ma mediata tramite NMR (ESB) che agisce da mediatore fra i vari componenti, ha il compito di fare routing dei messaggi tra 2 o più componenti ed è distribuito e quindi consente di disaccoppiare Service Consumer da Service Provider garantendo un basso accoppiamento tra i componenti JBI. I messaggi sono scambiati in formato XML per cui la comunicazione è technology-neutral tra endpoint cioè i messaggi scambiati sono definiti in formato indipendente e neutrale da qualsiasi specifica applicazione, tecnologia o protocollo di comunicazione.
 
-Scambio di messaggi funzionamento:
+Il funzionamento dello scambio di messaggi è il seguente:
 
-![single tier](./img/img24.png)
+![Scambio di messaggi JBI (1)-Light](./img/img24-light.png#gh-light-mode-only)
+![Scambio di messaggi JBI (1)-Dark](./img/img24-dark.png#gh-dark-mode-only)
 
-Per rispondere a ciascuna richiesta JBI è in grado di capire quale sia il provider migliore per il componente B a quel punto B accetta il messaggio e continua l’interazione, da notare come A non conosca B si è solo registrato a JBI.  Componenti SOA e modello a scambio di messaggi basato su interposizione:  Elevato grado di disaccoppiamento tra componenti con la possibilità di operare su messaggi (trasformazioni) in modo trasparente.
+Per rispondere a ciascuna richiesta, JBI è in grado di capire quale sia il provider migliore per il componente `B`. A quel punto, `B` accetta il messaggio e continua l’interazione. Da notare come `A` non conosce `B` ma si è solo registrato a JBI. Quindi, i componenti SOA e il modello a scambio di messaggi è basato su un elevato grado di disaccoppiamento tra componenti con la possibilità di operare su messaggi (trasformazioni) in modo trasparente.
 
-![single tier](./img/img66.png)
+![Scambio di messaggi JBI (2)-Light](./img/img66-light.png#gh-light-mode-only)
+![Scambio di messaggi JBI (2)-Dark](./img/img66-dark.png#gh-dark-mode-only)
 
-JBI supporta 4 possibili pattern di scambio messaggi:
+JBI supporta quattro possibili pattern di scambio messaggi:
 
-- In-Only per interazione/trasferimenti one-way, spesso molte integrazioni sono soddisfabili con questo pattern, prevede una conferma che tutto sia andato a buon fine.
-- Robust In-Only per possibilità di segnalare fault a livello applicativo, simile a un handshake a tre vie con la conferma che le cose siano andate bene nelle due parti semantica per gli errori o danni 
-- In-Out per interazione request-response con possibilità fault lato provider ha unsa sola conferma da parte del consumatore.
-- In Optional-Out per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
+- **In-Only** per interazione/trasferimenti one-way, spesso molte integrazioni sono soddisfabili con questo pattern, prevede una conferma che tutto sia andato a buon fine.
+- **Robust In-Only** per possibilità di segnalare fault a livello applicativo, simile a un handshake a tre vie con la conferma che le cose siano andate bene nelle due parti semantica per gli errori o danni.
+- **In-Out** per interazione request-response con possibilità fault lato provider e ha una sola conferma da parte del consumatore.
+- **In Optional-Out** per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
 
 <a href="#indice">Torna all'indice</a>
 
 ## CORBA
 
-Corba offre una soluzione per il distributed object computing che definisce un modello a container per oggetti distribuiti, aggiungendo componenti e funzioni. Questo ha portato a una ridefinizione dello standard nel Corba Component Model CCM.
+CORBA offre una soluzione per il distributed object computing che definisce un modello a container per oggetti distribuiti, aggiungendo componenti e funzioni. Questo ha portato a una ridefinizione dello standard nel CORBA Component Model CCM.
 
-Distributed object compunting (DOC middleware) utilizza sempre un pattern broker con un servizio un proxy che facilita la comunicazione tra il client e il servizio, inoltre non definisce solo API locali ma anche i protocolli da utilizzare in mezzo per facilitare la comunicazione delle due entità, si fa carico anche della parte di comunicazione. Perché il service access point offerto a livello applicativo prescinde dal linguaggio di programmazione. In Corba la cosa è molto simile grazie all’utilizzo di un IDL che non dipende da nessun linguaggio o piattaforma in termini di interfacce applicative, poi per ogni singolo linguaggio possiamo andare a definire un pattern broker che definirà il protocollo che segue le specifiche dello standard Corba. Quindi Corba facilita di integrazione, non solo tra mondi object oriented ma anche tra mondi che non lo sono, rendendoli a oggetti nella loro interfaccia con il mondo esterno.
+Distributed object compunting (DOC middleware) utilizza sempre un pattern broker con un servizio un proxy che facilita la comunicazione tra il client e il servizio, inoltre non definisce solo API locali ma anche i protocolli da utilizzare in mezzo per facilitare la comunicazione delle due entità, si fa carico anche della parte di comunicazione. Perché il service access point offerto a livello applicativo prescinde dal linguaggio di programmazione. In CORBA la cosa è molto simile grazie all’utilizzo di un IDL che non dipende da nessun linguaggio o piattaforma in termini di interfacce applicative, poi per ogni singolo linguaggio possiamo andare a definire un pattern broker che definirà il protocollo che segue le specifiche dello standard CORBA. Quindi CORBA facilita di integrazione, non solo tra mondi object oriented ma anche tra mondi che non lo sono, rendendoli a oggetti nella loro interfaccia con il mondo esterno.
 
-Obiettivo corba è lavorare per dispositivi molto leggeri e con poche risorse quindi GIOP è messo a disposizione per comunicare a byte. Corba è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo Corba.
+Obiettivo CORBA è lavorare per dispositivi molto leggeri e con poche risorse quindi GIOP è messo a disposizione per comunicare a byte. CORBA è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo CORBA.
 
-Corba automatizza una serie di funzionalità e servizi di sistema, tra cui Object location, connection e memory management, parameter marshaling e demarshalling, request demultiplexing, error handling e fault tolerance, Object/server activation, concurrency e synchronization.
+CORBA automatizza una serie di funzionalità e servizi di sistema, tra cui Object location, connection e memory management, parameter marshaling e demarshalling, request demultiplexing, error handling e fault tolerance, Object/server activation, concurrency e synchronization.
 
-L’object adapter è un antenato del container. Tutto è molto integrato con i vari linguaggi in Corba.
+L’object adapter è un antenato del container. Tutto è molto integrato con i vari linguaggi in CORBA.
 
-Uno dei problemi aperti di Corba è il fatto che non c’è nulla per la gestione dell’impacchettamento e del deployment del software, tutto questo deve essere fatto a mano, quindi una volta fatta l’interfaccia poi bisogna a mano mettere insieme tutti i vari pacchetti. Questo causa molti problemi per le infrastrutture perché dobbiamo lavorare in modo diverso ogni volta e non ci sono tool automatici, nella specifica Corba non ci sono strumenti per gestire tutti componenti e metterli nel punto giusto.
+Uno dei problemi aperti di CORBA è il fatto che non c’è nulla per la gestione dell’impacchettamento e del deployment del software, tutto questo deve essere fatto a mano, quindi una volta fatta l’interfaccia poi bisogna a mano mettere insieme tutti i vari pacchetti. Questo causa molti problemi per le infrastrutture perché dobbiamo lavorare in modo diverso ogni volta e non ci sono tool automatici, nella specifica CORBA non ci sono strumenti per gestire tutti componenti e metterli nel punto giusto.
 
-Tra gli esempi delle limitazioni di Corba Requisiti non-trivial di Distributed Runtime Environment (DRE): collaborazione e coordinamento di oggetti e servizi multipli su diverse piattaforme. CORBA 2.x ha limiti come la mancanza di standard per: server/node configuration, object/service configuration, application assembly, object/service deployment. Le principali conseguenze sono la scarsa adattabilità e manutenibilità, una crescita time-to-market e costi integrazione. Per applicazioni anche di poco più complesse che richiedono l’utilizzo di alcuni oggetti e di servizi Corba bisogna scrivere strumenti per il continuos integration e deployment.
+Tra gli esempi delle limitazioni di CORBA Requisiti non-trivial di Distributed Runtime Environment (DRE): collaborazione e coordinamento di oggetti e servizi multipli su diverse piattaforme. CORBA 2.x ha limiti come la mancanza di standard per: server/node configuration, object/service configuration, application assembly, object/service deployment. Le principali conseguenze sono la scarsa adattabilità e manutenibilità, una crescita time-to-market e costi integrazione. Per applicazioni anche di poco più complesse che richiedono l’utilizzo di alcuni oggetti e di servizi CORBA bisogna scrivere strumenti per il continuos integration e deployment.
 
-Per andare oltre a questi limiti è stato proposto il Corba Component Model per far si, che sia possibile creare dei component server che possano ospitare container e componenti, ovvero un’interfaccia home e una parte di componente che permette l’esecuzione.
+Per andare oltre a questi limiti è stato proposto il CORBA Component Model per far si, che sia possibile creare dei component server che possano ospitare container e componenti, ovvero un’interfaccia home e una parte di componente che permette l’esecuzione.
 
 I container definiscono operazioni che abilitano i component executor ad accedere a servizi comuni di middleware & politiche runtime associate, e i servizi di supporto e la composizione di servizi a grana grossa.
 
@@ -3032,7 +3042,7 @@ Quindi agli strumenti classici si affiancano dei nuovi strumenti ovvero un Compo
 
 Prima si definiscono i componenti che possono richiedere l’utilizzo di vari oggetti, poi possiamo assemblarli insieme e farli diventare componenti a grana grossa e sua volta assemblare componenti a grana grossa, e infine abbiamo strumenti per facilitare l’assembly, e per facilitarne il deployment e verso i component servant (anche nel distribuito). Con questi strumenti si può andare a gestire il deployment attraverso un deloyment plan, di codice che si trova nel Component Repository su una rete di nodi distribuiti. La gestione è molto completa e ben pensata per ambienti distribuiti che coinvolgono molti nodi e ambienti molto larghi.
 
-Le tecnologie Corba sono datate, Corba ha avuto grande successo negli anni 80 e 90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi Corba non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i web services, quindi per motivi commerciali.
+Le tecnologie CORBA sono datate, CORBA ha avuto grande successo negli anni 80 e 90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi CORBA non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i web services, quindi per motivi commerciali.
 
 Le principali standardizzazioni sono le seguenti
 
@@ -3069,7 +3079,7 @@ Display Device (NavDisplay) : Riceve eventi Refresh da pubs, legge coordinate co
 
 Le freccette sono (verdi e rosa) servono per scambio di eventi e quindi gestione di scambio a eventi tipicamente sincrona non bloccante, sono detti facet, ovvero rappresentano le comunicazioni sincrone non bloccanti. Il cerchio giallo rappresenta un’interfaccia con cui lavorare, la mezzaluna rappresenta il fatto che il componente si aspetti di interagire con un altro componente che esponga la stessa tipologia di servizio/dato. Il navigator si aspetta da una parte di ricevere eventi dall’altra si aspetta ti poter interagire con il Gps andando a richiedere la location, queste sono comunicazioni tra componenti a eventi.  Il cerchio bianco invece dà la possibilità di configurare il componente.
 
-Il Corba Component Model è molto largo e completo, rispetto al mondo Corba 2 consente di aggiungere una parte sull’integrazione di componenti, la parte per il packaging, fino ad arrivare all’assemblaggio dei vari componenti e infine facilitarne il deployment anche su reti di nodi distribuiti, vi è poi la parte di esecuzione in questi ambienti distribuiti.
+Il CORBA Component Model è molto largo e completo, rispetto al mondo CORBA 2 consente di aggiungere una parte sull’integrazione di componenti, la parte per il packaging, fino ad arrivare all’assemblaggio dei vari componenti e infine facilitarne il deployment anche su reti di nodi distribuiti, vi è poi la parte di esecuzione in questi ambienti distribuiti.
 
 Il componente è l’unità di composizione, di utilizzo e implementazione, è l’unità base di software utilizzabile in parti diverse.  Per utilizzare il componente è possibile, grazie la mondo a oggetti, ereditare da un altro componente e supportare diverse interfacce preesistenti. Il componente offre una facet e questa dà modo di attivare o disattivare il RateGen con il metodo di start() e stop() , vi è poi l’interfaccia rate_control() per controllare il Rate.
 
@@ -3079,15 +3089,15 @@ Definizione delle porte che sono i punti di contatto tra i vari componenti. In p
 
 ![single tier](./img/img31.png)
 
-Il Corba Component Model si occupa di gestire il ciclo di vita dei componenti, tale gestione è integrata e standardizzata nel supporto. Possiamo definire diverse Home per definire diverse strategie di management. Grazie all’interfaccia Home possiamo definire varie strategie e applicare diversi tipi di strategie per il lifecycle management dei componenti, questa interfaccia Home è un metatype che ha riferimenti a interfacce e oggetti e va a gestire una famiglia di componenti attraverso quel tipo di lifecycle management, ogni istanza di un oggetto è gestita da una sola istanza di Home, l’operazione base che si trova sempre nella Home è quella per la creazione dell’oggetto ovvero create(), il tutto in IDL 3 può essere riassunto con questa chiamata. Inoltre, tale interfaccia Home può ospitare operazioni addizionali user-defined.
+Il CORBA Component Model si occupa di gestire il ciclo di vita dei componenti, tale gestione è integrata e standardizzata nel supporto. Possiamo definire diverse Home per definire diverse strategie di management. Grazie all’interfaccia Home possiamo definire varie strategie e applicare diversi tipi di strategie per il lifecycle management dei componenti, questa interfaccia Home è un metatype che ha riferimenti a interfacce e oggetti e va a gestire una famiglia di componenti attraverso quel tipo di lifecycle management, ogni istanza di un oggetto è gestita da una sola istanza di Home, l’operazione base che si trova sempre nella Home è quella per la creazione dell’oggetto ovvero create(), il tutto in IDL 3 può essere riassunto con questa chiamata. Inoltre, tale interfaccia Home può ospitare operazioni addizionali user-defined.
 
-I diversi componenti possono avere la necessita di collaborare fra loro, per questo ciascun componente offre viste diverse. Con Corba 2 era difficile fare una gestione avanzata del componente e la parte relativa di gestione dinamica, con il Corba Component Model, il tutto è strutturato in un modello ben fatto, anche grazie alle Facet, che sono chiamate “top of the lego”, che significa che le funzionalità che offre al mondo esterno e la gestione di eventi stanno sopra e sotto “bottom of the lego” si trova ciò che ci si aspetta per legarsi al mondo sottostante, ovvero i Receptable e i Sink. Le Facet sono le interfacce delle operazioni che i componenti offrono. Dal punto di vista logico, sono i servizi che il componente offre e il tutto da modo di avere internamente componenti che realizzano diverse possibili interfacce. Le Facet definiscono interfacce con operazioni offerte che sono specificate tramite keyword provides() e rappresentano logicamente il componente stesso, non è un’entità separata contenuta nel componente. Le Facet hanno riferimenti a oggetti indipendenti ottenuti tramite operazione provide_*() da una Factory e possono essere usati per implementare Extension Interface pattern. In IDL 2 il tutto deve essere fatto ragionando solo sui componenti di base.
+I diversi componenti possono avere la necessita di collaborare fra loro, per questo ciascun componente offre viste diverse. Con CORBA 2 era difficile fare una gestione avanzata del componente e la parte relativa di gestione dinamica, con il CORBA Component Model, il tutto è strutturato in un modello ben fatto, anche grazie alle Facet, che sono chiamate “top of the lego”, che significa che le funzionalità che offre al mondo esterno e la gestione di eventi stanno sopra e sotto “bottom of the lego” si trova ciò che ci si aspetta per legarsi al mondo sottostante, ovvero i Receptable e i Sink. Le Facet sono le interfacce delle operazioni che i componenti offrono. Dal punto di vista logico, sono i servizi che il componente offre e il tutto da modo di avere internamente componenti che realizzano diverse possibili interfacce. Le Facet definiscono interfacce con operazioni offerte che sono specificate tramite keyword provides() e rappresentano logicamente il componente stesso, non è un’entità separata contenuta nel componente. Le Facet hanno riferimenti a oggetti indipendenti ottenuti tramite operazione provide_*() da una Factory e possono essere usati per implementare Extension Interface pattern. In IDL 2 il tutto deve essere fatto ragionando solo sui componenti di base.
 
 Per quanto riguarda la definizione dei Receptable attraverso l’uso della keyword uses() viene definito il Receptable che si aspetta una Facet, si può connettere il componente con un altro componente, grazie alle parole chiave uses. Le connessioni sono effettuate staticamente durante la fase di deployment o dinamicamente gestite dai container che supportano interazione con clienti o altri componenti via callback. Inoltre, CCM supporta connection establishment a runtime.
 
-Per quanto riguarda lo scambio di messaggi CCM mette a disposizione lo scambio di eventi e le interazioni sincrone non bloccanti con l’idea di definire dei collegamenti per consentire lo scambio di eventi, può essere basato su tipi statici oppure basato su EventType.  Lo standard prevede una interazione di tipo push, perché in Corba il servizio di scambio di eventi può usare sia push che pull, ma per i componenti vi sono solo interazioni push. Per questo all’interno dei componenti sono presenti delle configurazioni che emettono Tick con l’unica differenza che la parola chiave publishes prevede molti consumatori ed emit prevede un solo consumatore.
+Per quanto riguarda lo scambio di messaggi CCM mette a disposizione lo scambio di eventi e le interazioni sincrone non bloccanti con l’idea di definire dei collegamenti per consentire lo scambio di eventi, può essere basato su tipi statici oppure basato su EventType.  Lo standard prevede una interazione di tipo push, perché in CORBA il servizio di scambio di eventi può usare sia push che pull, ma per i componenti vi sono solo interazioni push. Per questo all’interno dei componenti sono presenti delle configurazioni che emettono Tick con l’unica differenza che la parola chiave publishes prevede molti consumatori ed emit prevede un solo consumatore.
 
-Per connettersi al Sink di eventi può essere realizzata una comunicazione diretta o una comunicazione con intermediari. Si possono usare event-service del mondo Corba, oppure IDS standard per la distribuzione di eventi, con qualità e vincoli real-time anche in senso stretto. Dal punto di vista del componente questo emette sempre con interazioni push verso l’altro componente o verso la coda di eventi, questo facilita le cose soprattutto se l’altro componente non ha la pull.
+Per connettersi al Sink di eventi può essere realizzata una comunicazione diretta o una comunicazione con intermediari. Si possono usare event-service del mondo CORBA, oppure IDS standard per la distribuzione di eventi, con qualità e vincoli real-time anche in senso stretto. Dal punto di vista del componente questo emette sempre con interazioni push verso l’altro componente o verso la coda di eventi, questo facilita le cose soprattutto se l’altro componente non ha la pull.
 
 Il Sink Refresh, definito con la parola consumes, riceve i tick.  Si possono avere connessioni named a cui inviare eventi solo di specifiche tipologie.  Event sink multipli dello stesso tipo possono essere subscriber della stessa sorgente, non vi è distinzione fra emitter & publisher, rende possibile connessi a sorgenti via object reference ottenuta tramite operazione get_consumer_*() su factory.
 
@@ -3097,7 +3107,7 @@ Capacità di navigation e introspection realizzate da CCMObject, che offre le se
 
 Uso delle interfacce di navigazione di un componente.
 
-Sin questo esempio si vuole andare a recuperare una certa facet e invocare un metodo di tale interfaccia. Si parte dall’ORB che è un servizio di nomi che dà la possibilità di recuperare i servizi di base come il servizio di naming (come RMI Registry). Una volta recuperato il servizio di nomi si possono andare ad invocare dei servizi di lookup, in particolare in questo caso si fa il lookup della ComponentHome registrata come MyHelloHome, attraverso il narrowing si può recuperare un oggetto tipato Home, su quell’oggetto si applica la create che crea il componente, a questo punto è interrogabile e può restituire una descrizione di tutte le facet offerte da quel compente, si può poi con il receptable effettuare l’introspezione, con il metodo provide possiamo chiedere il recupero del riferimento all’implementazione di quella interfaccia, una volta ottenuto si può fare il narrowing e a quel punto effettuare la chiamata a un metodo che ci interessa. Le interfacce in corba non vengono mantenute insieme alle implementazioni ma in un repository che si chiama Interface Repository. Quindi le informazioni dell’interfaccia non sono insieme agli altri dati questo genera overhead quando bisogna recuperare molte interfacce diverse.
+Sin questo esempio si vuole andare a recuperare una certa facet e invocare un metodo di tale interfaccia. Si parte dall’ORB che è un servizio di nomi che dà la possibilità di recuperare i servizi di base come il servizio di naming (come RMI Registry). Una volta recuperato il servizio di nomi si possono andare ad invocare dei servizi di lookup, in particolare in questo caso si fa il lookup della ComponentHome registrata come MyHelloHome, attraverso il narrowing si può recuperare un oggetto tipato Home, su quell’oggetto si applica la create che crea il componente, a questo punto è interrogabile e può restituire una descrizione di tutte le facet offerte da quel compente, si può poi con il receptable effettuare l’introspezione, con il metodo provide possiamo chiedere il recupero del riferimento all’implementazione di quella interfaccia, una volta ottenuto si può fare il narrowing e a quel punto effettuare la chiamata a un metodo che ci interessa. Le interfacce in CORBA non vengono mantenute insieme alle implementazioni ma in un repository che si chiama Interface Repository. Quindi le informazioni dell’interfaccia non sono insieme agli altri dati questo genera overhead quando bisogna recuperare molte interfacce diverse.
 
 Riassumendo le principali caratteristiche di CCM per il supporto cliente si può dire che CCM definisce operazioni per life-cycle management (home), definisce che cosa un componente offre agli altri componenti, definisce che cosa un componente richiede da altri componenti, definisce quali modalità di collaborazione sono usate fra componenti. Le operazioni possono essere di tipo Point-to-point via operation invocation o Publish/subscribe via event notification, definisce quali attributi dei componenti sono configurabili.
 
@@ -3105,9 +3115,9 @@ Implementazione dinamica dei componenti e supporto runtime
 
 Per rendere le implementazioni dei componenti più adattabili e flessibili, le proprietà dei componenti dovrebbero essere ri-configurabili. Questo presenta diversi problemi: le applicazioni non dovrebbero legarsi a una specifica configurazione troppo presto,  non ci sono  standard per specificare parametri configurabili per componenti in CORBA 2.x, vi è il bisogno di meccanismi standard per configurazione. La soluzione CCM è quella di configurare componenti con attributi di assembly/deployment, via home o nella fase di inizializzazione.
 
-Il supporto run-time dei componenti è possibile grazie al Component Server che facilita il deployment della configurazione delle applicazioni. Questo avviene perché Corba mette a punto astrazioni di alto livello per la gestione del Servant e una serie di tool che facilitano la configurazione attraverso tecniche di meta-programming con anche la possibilità di effettuare l’introspezione, ma anche grazie all’introduzione di una serie di parole chiave gestite dall’IDL compiler.  Questo supporto a runtime facilita la gestione del ciclo di vita di questi componenti.
+Il supporto run-time dei componenti è possibile grazie al Component Server che facilita il deployment della configurazione delle applicazioni. Questo avviene perché CORBA mette a punto astrazioni di alto livello per la gestione del Servant e una serie di tool che facilitano la configurazione attraverso tecniche di meta-programming con anche la possibilità di effettuare l’introspezione, ma anche grazie all’introduzione di una serie di parole chiave gestite dall’IDL compiler.  Questo supporto a runtime facilita la gestione del ciclo di vita di questi componenti.
 
-Il CCM attraverso questa definizione del container va ad estendere l’object adapter di base di Corba ( che si occupa della gestione del ciclo di vita degli oggetti), il container va oltre l’object adapter nella gestione del loro ciclo di vita, indirizzandosi verso l’obiettivo della facilitazione dell’uso delle risorse. Ci sono poi i naming services la gestione della sicurezza, delle transazioni eccetera. Questi servizi esistevano ma dovevano essere utilizzati solo con oggetti a grana fine quindi oggetti che facevano molto poco, invece con l’introduzione dei container abbiamo servizi di più alto livello che con file di configurazione e deployment, automatizzano molti servizi che prima erano programmatici. Inoltre, vi è una gestione a call back su cui si può lavorare per capire come funzionano le cose e prendere misure dove necessario.
+Il CCM attraverso questa definizione del container va ad estendere l’object adapter di base di CORBA ( che si occupa della gestione del ciclo di vita degli oggetti), il container va oltre l’object adapter nella gestione del loro ciclo di vita, indirizzandosi verso l’obiettivo della facilitazione dell’uso delle risorse. Ci sono poi i naming services la gestione della sicurezza, delle transazioni eccetera. Questi servizi esistevano ma dovevano essere utilizzati solo con oggetti a grana fine quindi oggetti che facevano molto poco, invece con l’introduzione dei container abbiamo servizi di più alto livello che con file di configurazione e deployment, automatizzano molti servizi che prima erano programmatici. Inoltre, vi è una gestione a call back su cui si può lavorare per capire come funzionano le cose e prendere misure dove necessario.
 
 Anche nel modello CCM si possono definire categorie di componenti a seconda del tipo di implementazione di container, vi sono i Service che sono componenti senza stato, per la rappresentazione di una sessione si può avere un componente Session con una stato di tipo soft (stateful sessione bean), poi vi  sono Process  e Entity entrambi durable con la possibilità di essere invocati dall’esterno con chiavi o per riferimento.  Queste categorie ossono essere specificate dichiarativamente tramite il CIDL file oppure programmate imperativamente.
 
@@ -3117,7 +3127,7 @@ Il container offre interfacce verso l’interno e verso l’esterno, le interfac
 
 Ci sono diverse politiche di gestione, le strategie container managed cercano di disaccoppiare in modo forte la parte di gestione dalla parte di implementazione del container, il container si fa carico della gestione dei servizi di sistema, ciò avviene preparando metadati xml o direttive da dare al Component IDL Compiler che dichiara la gestione dei servizi di sistema come transazioni eventi eccetera.  In particolare, lato server ci sono degli excecutor che possono andare a realizzare la business logic, vi è una suddivisione tra Component del business model e Home che realizza la gestione e la creazione dei componenti con la possibilità di avere lifecycle diversi. Le Home Executor sono monolitiche mentre i Component Executor possono essere sia monolitici con tutte le porte implementate dalla stessa classe, oppure le porte sono suddivise tra le varie classi che lo implementano. Lo sviluppatore partendo da file definiti dell’IDL nel Component IDL di CCM genera una serie di scatole vuote pronte ad accogliere la logica applicativa. Il programmatore deve solo aggiungere la propria logica applicativa.
 
-Nel mondo Corba quando parliamo di tutte queste funzionalità siamo nel mondo delle interfacce, Corba predispone tutto per il linguaggio target per sollevarci dalla gestione di tutti i problemi legati alla gestione dei servizi di sistema, poi il programmatore si deve occupare di implementare le varie cose.  Ma tutto si riferisce a interfacce in prima battuta. Gli Executor vanno a eseguire nel container, il modello è un container pesante EJB con differenze, ma con un’idea di container pesante in cui i vari Executor vanno a interagire. Gli Executor dei componenti devono implementare un’interfaccia locale per callback lifecycle ad uso del container, vi sono SessionComponent per componenti transienti, ed EntityComponent per componenti persistenti. Gli Executor dei componenti possono interagire con container e componenti connessi via context interface. L’interazione avvien attraverso un contesto che viene esposto attraverso un container.
+Nel mondo CORBA quando parliamo di tutte queste funzionalità siamo nel mondo delle interfacce, CORBA predispone tutto per il linguaggio target per sollevarci dalla gestione di tutti i problemi legati alla gestione dei servizi di sistema, poi il programmatore si deve occupare di implementare le varie cose.  Ma tutto si riferisce a interfacce in prima battuta. Gli Executor vanno a eseguire nel container, il modello è un container pesante EJB con differenze, ma con un’idea di container pesante in cui i vari Executor vanno a interagire. Gli Executor dei componenti devono implementare un’interfaccia locale per callback lifecycle ad uso del container, vi sono SessionComponent per componenti transienti, ed EntityComponent per componenti persistenti. Gli Executor dei componenti possono interagire con container e componenti connessi via context interface. L’interazione avvien attraverso un contesto che viene esposto attraverso un container.
 
 ## Spring
 
@@ -4387,7 +4397,7 @@ Esistono tantissime implementazioni dello standard java enterprise edition qui s
 
 ![single tier](./img/img80.png)
 
-## JBoss Wildfly
+## JBoss Clustering
 
 Clustering: insieme di macchine tendenzialmente vicine che lavorano insieme con la necessità di alto coordinamento.  La distinzione tra logico e fisico dipende da come avviene il coordinamento. Cluster fisico significa che il supporto alla clusterizzazione è nel modo hw con controlli e schede ad hoc oppure se avviene logicamente via software è il caso di cluster logico. Si può dire che il clustering logico riguarda il coordinamento a livello software.
 
@@ -4395,7 +4405,7 @@ Sino ad ora ci si è concentrati sull’infrastruttura di base sulla quale possi
 
 Load sharing: meno potente del load balancing meno intervento
 
-Clustering è utile l’per esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi (ad es. motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, …)  cruciale per: tolleranza ai guasti e disponibilità, load Balancing, e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing). JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e opensource
+Clustering è utile l’per esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi (ad es. motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, etc)  cruciale per: tolleranza ai guasti e disponibilità, load Balancing, e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing). JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e opensource.
 
 Dalla versione 7 di JBoss c’è una novità più rilevante: il servizio Infinispan per la gestione della replicazione stato applicativo (invece di JBoss Cache, indicata nei lucidi successivi). Cambiano i nomi dei file di configurazione: standalone-ha.xml o standalone-full-ha.xml
 
