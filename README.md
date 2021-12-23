@@ -4654,8 +4654,94 @@ Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprie
 
 ## Big Data
 
-real time: rispettare vincolo temporale. Per processare il dato ho un periodo di tempo che può essere molto lungo.
-interactive: interazione con l'utente durante l'analisi
-batch:
+Al giorno d'oggi, sempre più sistemi sono costituiti e caratterizzati da enormi moli di dati da gestire, originati da sorgenti altamente eterogenee e con formati altamente differenziati, oltre a una qualità estremamente eterogenea (fonte dei dati).
 
-variability: stressare l'aspetto di varietà del dato
+### Definizione
+
+In letteratura, esistono molte definizioni di Big Data. La definizione seguente si basa sulla regole delle 5V cioè un sistema per essere definito Big Data deve rispettare tutti questi punti:
+
+- **Volume**: quando la dimensione dei dati è molto grande. Ad esempio, Terabyte.
+- **Varietà**: le diverse tipologie di dati con cui si lavora. Ad esempio, dati strutturati, non strutturati, semistrutturati.
+- **Velocità**: la velocità con cui i dati arrivano:
+    - **Stream**: flusso continuo dei dati e lavorarli man mano che arrivano.
+    - **Real time**: per processare il dato si ha bisogno di un periodo di tempo che può essere anche molto lungo. Si rispetta un vincolo temporale. Ad esempio, il vincolo temporale è processare il dato entro 5 minuti ma il vincolo può essere anche 5 ore.
+    - **Interactive**: interazione con l'utente durante il processamento.
+    - **Batch**: un insieme di dati viene raggruppato per un periodo di tempo specifico e poi processato.
+- **Valore**: è il valore del dato. I dati fini a se stessi non hanno alcuna importanza. Per essere davvero utili devono poter essere convertiti in informazioni preziose che permettono alle aziende di verificare ed eventualmente modificare le sue mosse.
+- **Veridicità**: i dati provvengono da origini diverse creando confusione. Si indica, quindi, il livello di affidabilità o inaffidabilità dei dati.
+
+Altre definizioni di Big Data includono anche un'altra V cioè la **variabilità** cioè il significato o l’interpretazione di uno stesso dato può variare in funzione del contesto in cui questo viene raccolto ed analizzato. Il valore, quindi, non risiede solamente nel dato, ma è strettamente collegato al contesto in cui da cui si ricava.
+
+![single tier](./img/img85.png)
+
+Il processamento dei Big Data può avvenire in due modi: o tramite stream-processing o tramite batch processing.
+
+### Stream-processing
+
+
+
+Ad esempio, InfoSphereSistemi Streams.
+
+### Batch Processing
+
+Probabilmente il padre storico di impatto industriale è il progetto Apache Hadoop. È un framework open source che vede Yahoo come principale
+contributor. Il progetto si suddivide in tre sottoprogetti:
+
+- **Hadoop Common**: package di facilities comuni.
+- **Hadoop Distributed File System (HDFS)**: file system distribuito.
+- **MapReduce**: framework per processing distribuito di grandi insiemi di
+dati su cluster.
+
+### Hadoop Distributed File System (HDFS)
+
+Prende ispirazione da Google file system. È un file system scalabile, distribuito, portabile, scritto in Java per framework Hadoop. HDFS può essere parte di Hadoop o un file system distribuito stand-alone general-purpose. HDFS è costituito da:
+
+- **NameNode** che gestisce i metadata del file system cioè in quale nodo viene salvato un dato.
+- **DataNode** che memorizzano i veri dati.
+
+HDFS memorizza file di grandi dimensioni in blocchi distribuiti sul cluster, garantisce affidabilità e fault-tolerance tramite replicazione su nodi multipli ed è progettato specificamente per deployment su hardware low-cost.
+
+Hadoop può lavorare su qualsiasi file system distribuito ma sfrutta conoscenza di località per ottimizzazione, quindi HDFS particolarmente adatto.
+
+### Map-Reduce
+
+MapReduce è modello di programmazione e un framework software sviluppato originariamente da Google. Questo modello è stato implementato anche nel framework open source da parte di Yahoo. L'obiettivo è quello di semplificare il processamento di enormi moli di dati in parallelo su cluster di grandi dimensioni usando hardware low-cost, in modo affidabile e fault-tolerant. Il processamento deve avvenire su:
+
+- Dati non strutturati (filesystem).
+- Dati strutturati (db).
+
+L'architettura di riferimento è quella master/slave. Il master contiene:
+
+- Job tracker (MapReduce –responsabile scheduling dei job task,
+monitoraggio slave, ri-esecuzione job con fallimenti)
+- Task tracker (MapReduce)
+- NameNode (HDFS)
+- DataNode (HDFS)
+
+I nodi slave includono:
+
+- Nodo Task tracker (MapReduce – esegue i task sotto coordinamento del master)
+- DataNode (HDFS)
+
+![single tier](./img/img86.png)
+
+L'idea alla base si basa sul _divide et impera_ cioè prendere un problema e scomporlo in sotto-problemi. Ci sono due passi fondamentali:
+
+- **Map step**: il nodo master riceve l'input del problema e lo divide in sotto-problemi più piccoli, distribuiti verso i nodi worker. I nodi worker possono farlo a loro volta (struttura gerarchica ad albero multi-livello). Un worker risolve un problema piccolo e riporta il sotto-risultato al master.
+- **Reduce Step**: un nodo master raccoglie le risposte ai sottoproblemi e li combina in modo predefinito per ottenere la risposta complessiva.
+
+L'input reader divide input in chunk di misura appropriata, che
+vengono assegnati a una funzione Map.
+
+Un Job MapReduce controlla l’esecuzione:
+
+- Divide dataset di input in chunk indipendenti.
+- Chunk indipendenti sono processati da task Map in parallelo.
+
+Sia gli input che gli output del job sono memorizzati nel file system integrato in Hadoop.
+
+Il framework gestisce tutte le problematiche di scheduling, monitora e riesegue i task con fallimenti/guasti.
+
+Si consideri il seguente esempio: si vuole contare le occorrenze di ogni parola su un set di file di ingresso.
+
+Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, per evitare i rallentamenti causati dalle letture e scritture su disco.
