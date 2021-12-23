@@ -1495,7 +1495,67 @@ Le transazioni gestite dal container sono:
 
 Per rendere più flessibili le transazioni gestite dal container si usa l'annotazione `@TransactionAttribute`. Ad esempio, si consideri `BeanA` e `BeanB`. Se il `BeanA` invoca un metodo del `BeanB`, a default, viene creata un'unica grande transazione che inizia con il metodo di `BeanA` e termina alla fine quando è stato eseguito il metodo di `BeanB`. Se si vuole usare un approccio moderno è necessario rilassare la proprietà ACID di una transazione cioè non devono essere tutte sempre rispettate. Per far ciò si cambia valore dell'annotazione: `REQUIRED` (default), `REQUIRES_NEW`, `MANDATORY`, `NOT_SUPPORTED`, `SUPPORTS`, `NEVER`.
 
-![single tier](./img/img47.png)
+<table>
+  <tr>
+    <th>Attributo</th>
+    <th>Transazione lato cliente?</th>
+    <th>Transazione lato servitore?</th>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center">Required</td>
+    <td>Nessuna</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>T1</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center">RequiresNew</td>
+    <td>Nessuna</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>T1</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center">Mandatory</td>
+    <td>Nessuna</td>
+    <td>Errore</td>
+  </tr>
+  <tr>
+    <td>T1</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center">NotSupported</td>
+    <td>Nessuna</td>
+    <td>Nessuna</td>
+  </tr>
+  <tr>
+    <td>T1</td>
+    <td>Nessuna</td>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center">Supports</td>
+    <td>Nessuna</td>
+    <td>Nessuna</td>
+  </tr>
+  <tr>
+    <td>T1</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td rowspan="2" align="center">Never</td>
+    <td>Nessuna</td>
+    <td>Nessuna</td>
+  </tr>
+  <tr>
+    <td>T1</td>
+    <td>Errore</td>
+  </tr>
+</table>
 
 Di seguito viene riportata una rappresentazione grafica per fissare meglio i concetti:
 
