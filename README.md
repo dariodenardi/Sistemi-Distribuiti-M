@@ -4387,6 +4387,260 @@ Esistono tantissime implementazioni dello standard java enterprise edition qui s
 
 ![single tier](./img/img80.png)
 
+## JBoss Wildfly
+
+Clustering: insieme di macchine tendenzialmente vicine che lavorano insieme con la necessità di alto coordinamento.  La distinzione tra logico e fisico dipende da come avviene il coordinamento. Cluster fisico significa che il supporto alla clusterizzazione è nel modo hw con controlli e schede ad hoc oppure se avviene logicamente via software è il caso di cluster logico. Si può dire che il clustering logico riguarda il coordinamento a livello software.
+
+Sino ad ora ci si è concentrati sull’infrastruttura di base sulla quale possiamo avere il deployment dei componenti e infine dell’applicazione. La clusterizzazione riguarda la distribuzione dei componenti e delle azioni da performare in caso di guasti. Questo è importante perché è necessario spesso utilizzare un pool di macchine quando si hanno molte richieste e si vuole essere scalabili oltre che a garantire la fault tolerance.
+
+Load sharing: meno potente del load balancing meno intervento
+
+Clustering è utile l’per esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi (ad es. motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, …)  cruciale per: tolleranza ai guasti e disponibilità, load Balancing, e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing). JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e opensource
+
+Dalla versione 7 di JBoss c’è una novità più rilevante: il servizio Infinispan per la gestione della replicazione stato applicativo (invece di JBoss Cache, indicata nei lucidi successivi). Cambiano i nomi dei file di configurazione: standalone-ha.xml o standalone-full-ha.xml
+
+![single tier](./img/img81.png)
+
+Jboss cache= infinispan che supera ala tecnologia precendete ema stessi concetti
+
+### Clustering Service
+
+L’abilitazione del clustering service è possibile con la configurazione dell’application server, lo si lancia con tutte le configurazioni necessarie, utilizzando la configurazione “all” di JBoss
+
+```
+ run.bat -c all
+ ./run.sh -c all
+```
+
+Abilita tutte le librerie necessarie al clustering, come JGroups.jar per il multicast di grruppo affidabile, jbosscache.jar e la cache distribuita
+
+![single tier](./img/img82.png)
+
+Cache memoria tabellare per la memorizzazione di risorse. Le cache distribuite sono cache non più residente su una sola macchina, ma distribuita su più macchine del clustering, è una risorsa vista come memoria a cui possono accedere una serie di istanze dell’application server, è una sorta di stato distribuito dell’application server. La memoria distribuita sarà accessibile da più parti del cluster. L’importanza della cache distribuita risiede nella volontà di far fronte ai guasti, per questo è necessario per i fail over delle macchine accedere allo stato di ciascuna macchina quando si lavora in high avaiability. Questo consente alla macchina che sostituisce quella fallita di recuperare lo  stato  applicativo attraverso la cache distribuita e quindi riprendere l’esecuzione dalla dove era stata lasciata.
+
+Un cluster (o Partition) JBoss è semplicemente un insieme di nodi ed ogni nodo JBoss è definito come una istanza del server JBoss. Ovviamente ci sono più nodi “logici” su una stessa macchina, con differenti porte associate, e allo stesso tempo possono esserci più risorse fisiche. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non possiamo fare il deployment di tutti i nodi llogici sulla stessa macchina fisica, ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
+
+Una volta stabilito il livello di replicazione è necessario un sistema di comunicazione per coordinare le copie. JGroups è lo strumento che consente la comunicazione multicast in JBoss. JGroups utilizza canali di comnicazione  e tiene traccia automaticamente di chi fa parte del cluster sulla base di configurazione e nome del canale JGroups utilizzato, una volta creato questo gruppo dinamico, JGroups supporta scambio affidabile di messaggi all’interno del cluster, a default la comunicazione multicast avviene con il protocollo UDP, ma è data anche la possibilità di utilizzare TCP con connessioni punto-punto costose. UDP è ottimo per connessioni multicast locali, quando invece si vuole lavorare con multicast remoti si può scegliere anche TCP per una maggiore portabilità, pagata però con un costo maggiore della comunicazione. A default JBoss utilizza 4 canali JGroups separati: un canale usato dal servizio general-purpose di High Avaiability partition HAPartition e tre canali creati da JBoss Cache, anche per supportare replicazione dello stato.
+
+La configurazione della comunicazione in JGroups avviene con il file cluster-service.xml nella directory /deploy, descrive la configurazione per la partizione di default del cluster.  Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’ attributo PartitionConfig di MBean ClusterPartition descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast.
+
+```
+<mbean code="org.jboss.ha.framework.server.ClusterPartition"
+name="jboss:service={jboss.partition.name:DefaultPartition}">
+…
+<attribute name="PartitionConfig">
+<Config>
+<UDP mcast_addr="${jboss.partition.udpGroup:228.1.2.3}"
+mcast_port="${jboss.hapartition.mcast_port:45566}”
+tos="8”
+<PING timeout="2000"				//intervalli per determinati msg
+down_thread="false" up_thread="false"	//ping per scoprire I membri
+num_initial_members="3"/>
+
+<MERGE2 max_interval="100000”			//per fondere gruppi già scoperti
+down_thread="false" up_thread="false"
+min_interval="20000"/>
+…
+<FD timeout="10000" max_tries="5"			//timeout per Failure detection
+down_thread="false" up_thread="false" shun="true"/>
+
+<VERIFY_SUSPECT timeout="1500" down_thread="false" //ritardi nella risposta 
+up_thread="false"/>				//timeout se il nodo sospetto torna con tempi accettabili di timeout 
+…
+<pbcast.STATE_TRANSFER down_thread="false" up_thread="false"/>
+```
+
+PING è il protocollo per la scoperta iniziale dei membri del cluster, MERGE2 è il protocollo per la fusione di nuovi sottogruppi già discovered per una gestione dinamica dei gruppi, FD è invece il protocollo per failure detection, verifica ogni X secondi con tentatici il funzionamento del server.
+
+Il clustering lavora a livello software, la failure detection è tra gli application server. In high avaiability per cambiare versione a volte si uccidono webserver e quando questo accade il clustering lo replica con una versione già aggiornata.
+
+High Avaiability(HA) Partition  e un servizio general-purpose di alta disponibilità (High Availability) costruita utilzzando JGroups, utilizzato per diversi compiti in JBoss AS clustering. L’astrazione è costruita sulla base dei canali JGroups, e fornisce inoltre un supporto per effettuare e ricevere invocazioni RPC/RMI da e verso nodi cluster. In questo caso vi è la necessità di supportare un registry distribuito, perché vi sono una serie di nodi; quindi, deve essere disponibile localmente a tutti i nodi del cluster tale servizio.  Si utilizzano notifiche a listener per modifiche nell’appartenenza al cluster o per cambiamenti di servizi nel registry. Questo è il nucleo di molti altri servizi di clustering, come smart proxy lato cliente, il farming e HA-JNDI.
+
+Esempio di configurazione HA Partition
+
+```
+<mbean code="org.jboss.ha.framework.server.ClusterPartition"
+name="jboss:service=DefaultPartition">
+<attribute name="PartitionName">
+${jboss.partition.name:DefaultPartition}</attribute>
+<! – Indirizzo usato per determinare il nome del nodo -->
+<attribute name="NodeAddress">${jboss.bind.address}</attribute>
+<! -- deadlock detection abilitata o no -->
+<attribute name="DeadlockDetection">False</attribute>
+<! -- Max time (in ms) di attesa per il completamento del trasferimento di
+stato -->
+<attribute name="StateTransferTimeout">30000</attribute>
+<! – configurazione protocolli JGroups -->
+<attribute name="PartitionConfig”>... ... </attribute>
+</mbean>
+```
+
+Parametri che lavorano più in alto come “state transfer timeout”.
+Per fare parte dello stesso cluster, i nodi devono semplicemente avere lo stesso PartitionName e gli stessi elementi PartitionConfig. Necessità di configurare i protocolli JGroups e la definizione di timeout ad alto livello per gestire la replicazione, per esempio il tempo massimo per sincronizzare lo stato tra diversi nodi.
+
+Il deployment può avvenire in due modi, vi è la possibilità di deployment omogeneo in cui avviene la replica su tutti i nodi logici del cluster, questo facilita la gestione ed evita diversi possibili porblemi ed è reso automatico attraverso farming, oppure deployment disomogeneo generalmente sconsigliato dagli sviluppatori JBoss, per diverse ragioni, tra cui la mancanza di supporto a transazioni distribuite sul cluster. Il clustering omogeno è quello più utilizzato.
+
+### Servizio di naming in high avaibility-Clustering JNDI
+
+Il cliente non usa più JNDI centralizzato, ma utilizza un proxy HA-JNDI per invocare la JNDI lookup lato server. dal punto di vista del server si ha un servizio HA-JNDI che mantiene un albero JNDI (context tree) sul cluster, tale albero è sempre disponibile fino a che almeno è presente almeno un nodo nel cluster. Ogni nodo ha sua copia locale di parte dell’albero JNDI, spazio di nomi parzialmente replicato e partizionato, e oltre a ciò il servizio HA-JNDI su di un nodo può effettuare binding di oggetti presenti nella sua copia locale JNDI. All’atto del lookup:  se binding non è nell’albero del nodo interrogato, delega a JNDI locale,  se non trovato, avviene il coordinamento fra componenti HA-JNDI nel cluster, se qui non viene trovato nulla NameNotFoundException poiché a questo punto il nome non è presente in nessun JNDI del cluster. Questa ricerca su più livelli, con un livello locale e un livello distribuito con coordinamento forte, consente di limitare i colli di bottiglia e per diminuire il coordinamento tra i nodi.
+
+![single tier](./img/img83.png)
+
+Per evitare overhead di aggiornamento le visioni locali sono parziali.  Nel clustering JNDI: i componenti HA-JNDI mantengono conoscenza reciproca e copia parziale dell’albero JNDI locale, mentre i componenti JNDI locali possono avere alberi più estesi rispetto ai loro HA-JNDI. In questo modo si ha fault tolerance e basso overhead di gestione nel distribuito.
+
+### Comunicazione
+
+Vi sono due tipi di configurazione per la comunicazione client to cluster: 
+
+- JBoss fat client, i clienti usano HA smart proxy che contengono logica di load balancing (ad es. Round Robin) e capacità di resilienza failover in caso di guasti. La logica di HA smart proxy, che è una sorta di stub molto pesante, può essere modificata e plugged-in da parte del programmatore, che può implementare differenti politiche di failover e load balancing basate su pesi differenziati e carico.  Clienti EJB usano necessariamente HA Smart Proxy, che realizza uno stub RMI significativamente accresciuto. 
+- JBoss thin client, in questo caso lato cliente non vi è più intelligenza tuto è gestito lato server utilizzando un proxy locale. Tutta la logica di load-balancing + failover è lasciata al proxy locale quindi il client non ha compiti, la logica è lasciata allo sviluppatore che può adottare soluzioni hardware o software (ad es. Apache mod_jk/mod_cluster + Tomcat) i  clienti Web principalmente accedono trasparentemente attraverso Apache mod_jk/mod_cluster.
+
+### Fat client
+
+Il fat cleint e una sorta di grande stub RMi detto HA-RMI, che contiene al suo interno l lista dei nodi disponibili e le varie politiche che possiamo attuare. Nel caso semplice e specifico di invocazioni RMI: la logica di clustering viene messa in atto dagli stub cliente (HA-RMI). Lo  stub contiene la lista dei nodi disponibili nel cluster e la politica di load balancing da adottare, tra cui sono disponibili Random Robin, Round Robin, First Available, First Available All Identical Proxies. Se avviene una modifica nella composizione del cluster, alla invocazione seguente il server fa piggybacking con un protocollo dedicato della lista aggiornata,  la lista dei nodi è mantenuta automaticamente lato server tramite JGroups, vi è un piano di comunicazione interno a JGroups e un protocollo di comunicazione client to cluster. Client side le comunicazioni sono intercettate tramite meccanismi trasparenti di intercettazione client-side che si occupano di load balancing e failover all’invocazione di metodi nell’interfaccia dello stub.
+
+JBoss Cache è un framework per il supporto a cache distribuita, che può essere utilizzato anche in altri ambienti AS, essa realizza il caching di oggetti Java acceduti frequentemente. Per motivi di performance In JBoss, fornisce servizi di caching per sessioni http, per stati di session bean EJB 3.0, per entity EJB 3.0. Ogni servizio di cache è definito in un Mbean separato con il suo canale JGroups. JBoss Cache è cluster-aware: lo stato è mantenuto consistente fra i vari nodi nel cluster , per questo vi è tolleranza ai guasti in caso di server crash, con necessità di invalidazione e/o aggiornamento dello stato nella cache
+
+### Failover e Load Balancing di sessioni http
+
+La replicazione dello stato della sessione è gestita da JBoss, la configurazione “all” di JBoss include session state replication. Occorre configurare session state replication da gestire tramite JBoss Cache. Il  load balancing è invece gestito usualmente da un software esterno o a livello hardware:  Ad es., suggeriti da JBoss Apache mod_jk o più recentemente Apache mod_cluster. In questo caso si parla di replicazione dello stato in caso di thin client (non cambia nel fat client ma invece di avere solo http abbiamo lo smart proxy in più lato client).
+
+### Proxy mod-cluster apache differenza dal proxy tradizionale mod-jk
+
+Mod-cluster ha maggiore conoscenza del cluster, partecipa a tutte i protocolli di coordinamento all’interno del cluster stesso. Rispetto al più semplice e «tradizionale» Apache mod_jk vi è una configurazione dinamica cluster, è integrato con meccanismi di advertising su JGroups basati su multicast UDP, con costo basso per aggiornare la situazione,  i nodi cluster fanno discovery automatico di uno o più nodi load balancer disponibili , la cosa vale in entrambi i sensi.  Il monitoraggio delle prestazioni attraverso multicast mette a disposizione diverse metriche per la misurazione del carico, numero di cpu, memoriautilizzata, numero di connessioni. Inoltre si possono avere informazioni a livello applicativo utilizzando notifiche per intercettare eventi di re-deploy/un-deploy/... delle applicazioni presenti su un certo nodo del cluster e prendere decisioni di management conseguenti. Avvengono ricezioni di eventi nel momento di deploy o undeploy di una certa applicazione.
+
+Queste funzionalità non erano presenti su mod-jk, ovviamente questi scambi hanno un costo, ma il proxy è locale lato server quindi il costo è limitato poiché queste informazioni all’interno del cluster circolano e il proxy si fa intercettore e riconoscitore di queste informazioni.
+
+### Infinispan
+
+Infinispan sostituisce JBoss Cache. Infinispan è un framework open-source basato su JGroups come supporto di comunicazione utilizzabile anche al difuori di JBoss, anche utilizzabile al di fuori di JBoss. Svolge il ruolo di infrastruttura di caching e replicazione per sessione HTTP, stato di stateful session bean, nomi JNDI e replicazioni e secondo livello di Hibernate. Infinispan ha quattro strategie di caching:
+
+- Locale utilizzata tipicamente per secondo livello di Hibernate. 
+- Replicazione strategia più onerosa perché con questa strategia Infinispan va a replicare tutti gli oggetti in cache su tutti i nodi del cluster. Tipicamente è adatta per piccoli cluster, perché il carico di rete necessario per tenere informati i nodi è alto di conseguenza è scarsamente scalabile.
+- Distribuzione strategia che prevede che il dato sia salvato in un sottoinsieme dei nodi del cluster, se il nome è trovato nel nodo attraverso get non sono necessarie altre azioni, altrimenti va cercato negli altri nodi del cluster in questo caso vi sono tempi di risposta più lunghi. Tutti gli oggetti in cache  sono replicati solo su sottoinsieme fisso (configurabile) di nodi del cluster. Ovviamente vi sono minori performance quando oggetti non disponibili localmente ma in generale, migliore scalabilità. Vi è un trade-off tra grado di replicazione e tempo di risposta, inoltre bisogna tenere conto della dimensione della cache che deve contenere questi dati.
+- Invalidazione strategia utilizzata quando si aggiornano stati della cache, nella fase di scrittura put si va a invalidare copie di quello stato disponibili in altri nodi del cluster, per non avere read inconsistenti. Non vi è replicazione, ma rimozione di entry non valide. Tipicamente è utilizzata per dati comunque disponibili su datastore persistente. Replicazione e invalidazione possono avvenire in modo bloccante o non-bloccante, nel caso non-bloccante si ha una coda con modifiche invalidazioni multiple, questa strategia garantisce migliori performance, ma possono esservi errori riportati in log ed eventualmente utilizzati in rollback se si trattano transazioni. Quando si agistce in modo non bloccante si mantiene il log delle operazioni da effettuare quindi è possibile in caso di fault rendere consistente la situazione su altri nodi.
+
+Per quanto riguarda la gestione locale della cache e le strategie di rimozioni delle entry non più utilizzate detta eviction, abbiamo varie strategie unordered, FIFO, LRU last recent used.
+
+Cache Loader, connessione fra Infinispan come servizio e versione su memoria persistente, ad esempio file system, DB, cloud store come AmazonS3, della cache estesa. Se la passivazione è abilitata la scrittura in datastore avviene solo in caso di eviction.
+
+Vi sono diversi livelli di isolation e locking delle risorse:
+
+- REPEATABLE_READ sono possibili phantom read 
+- READ_COMMITTED possibili non repeatable read ma maggiori performance 
+- Optimistic locking e verifiche a posteriori in fase di commit.
+
+### Replicazione dello stato
+
+Con sticky session si può gestire lo stato mantenendolo in un solo nodo del cluster, quindi, non vi è replicazione questo porta numerosi vantaggi in termini di performance di utilizzo delle risorse ma di contro la caduta del server produce la perdita dello stato di sessione. Si può chiedere un clustering con sticky session (nessuna replicazione di sessioni HTTP) di inviare tutte le richieste dello stesso cliente vengono allo stesso nodo del cluster.
+
+La replicazione dello stato per i diversi bean EJB assume livelli di difficoltà differenti.
+
+Per Stateless Session Bean, data la mancanza di stato, le chiamate possono essere bilanciate su ogni nodo del cluster, si guadagna molto in scalabilità in questo caso. Nel caso di Stateful Session Bean lo stato replicato e sincronizzato sul cluster, quindi ad ogni modifica sullo stato di uno di questi bean, entra in azione session state replication di JBoss Cache o di Infinispan, questo ovvamente ha un costo. Per gli Entity Bean, non si prevede il supporto al clustering, non sono interrogabili da remoto e quindi non prevista abilitazione clustering, solo per secondo livello Hibernate vi è la possibilità di utilizzare Infinispan. Infine, per MessageDriven Bean, vi è l’utilizzo di HornetQ un supporto MOM creato da JBoss.
+
+Opzioni di configurazione di WildFly ovvero dell’application server
+
+La configurazione standalone.xml è la default configuration file per standalone server, contiene tutti i metadati di configuration, inclusi per subsystem, networking, deployment, socket binding .Usata automaticamente quando si fa partire standalone server. Offre il  supporto di Java EE Web-Profile ed alcune estensioni come RESTFul Web Services e invocazioni remote EJB3.
+
+La configurazione standalone-full.xml fornisce il supporto per tutti subsystem eccetto high availability Supporto di Java EE Full-Profile e tutte funzionalità server standalone-ha.xml, include tutti i subsystem di default più l’aggiunta mod_cluster per il supporto al thin client e JGroups per standalone server, così che possa partecipare in un cluster high-availability. Questo è il profilo di default per funzionalità di clustering
+
+La configurazione standalone-full-ha.xml include supporto per ogni subsystem, inclusi quelli richiesti per high availability.
+
+La configurazione standalone-load-balancer.xml configura automaticamente l’uso di proxy Undertow (Web server) per lavorare da load balancer. Undertow si connetterà ai nodi server veri e propri usando le sue richieste built-in per clienti e proxy protocolli supportati: http, ajp, http2, h2c (clear text HTTP2)
+
+Per qunto riguarda il load balancer devono essere configurate le parti di gestione
+
+### Configurazioni di Management
+
+```
+<security-realms>…</security-realms>
+<audit-log>…</audit-log>
+<management-interfaces>…</management-interfaces>
+<access-control provider="simple">…</access-control>
+```
+
+![single tier](./img/img84.png)
+
+Il proxy undertow ha un unto di ingresso che consnete di interagire con i vari cluster del server
+
+### Configurazioni di profilo
+
+```
+<subsystem xmlns="urn:jboss:domain:undertow:9.0" defaultserver="default-server" default-virtual-host="default-host" default-servletcontainer="default" statistics-enabled="${wildfly.undertow.statisticsenabled:${wildfly.statistics-enabled:false}}">
+<server name="default-server">
+<http-listener name="default" socket-binding="http" redirectsocket="https" enable-http2="true"/>
+<http-listener name="management" socket-binding="mcmpmanagement" enable-http2="true"/>
+<host name="default-host" alias="localhost">
+<filter-ref name="load-balancer"/> </host> </server>
+<servlet-container name="default"/> <filters>
+<mod-cluster name="load-balancer" management-socketbinding="mcmp-management" advertise-socket-binding="modcluster"
+enable-http2="true" max-retries="3"/> </filters>
+</subsystem>
+```
+
+Configurazioni di interfaccia in particolare gli indirizzi in cui viene reso diponibile il tutto
+
+```
+<interfaces>
+<interface name="public">
+<inet-address value="${jboss.bind.address:127.0.0.1}"/>
+</interface>
+...
+</interfaces>
+```
+
+Configurazioni Socket-Binding-Group
+
+Gruppo dove si inoltrano tutte le richieste per la gestione, qua si definisce l’indirizzo di multicast dove lavorare.
+
+```
+<socket-binding-group name="standard-sockets" defaultinterface="public" port-offset="${jboss.socket.binding.port-offset:0}"> …
+<socket-binding name="modcluster" interface="private"
+multicastaddress="${jboss.modcluster.multicast.address:224.0.1.105}" multicastport="23364"/> 3…
+</socket-binding-group>
+```
+
+### Linee guida di setup per jboss-cli
+
+LOAD BALANCER
+
+Informare la socket dell’uso di mod-cluster: creare un filtro nella config di undertow in cui si specifica la socket modcluster e aggiungerla alla configurazione server:
+
+```
+./jboss-cli.sh --connect --controller=127.0.0.1:9990
+/subsystem=undertow/configuration=filter/modcluster=modcluster:add(advertise-socketbinding=modcluster,management-socket-binding=http)
+/subsystem=undertow/server=default-server/host=default-host/filterref=modcluster:add
+```
+
+Per lanciare load balancer:
+
+```
+standalone.sh -c standalone-ha.xml -Djboss.node.name=load-balancer
+```
+
+Connettere la socket destinazione dell’istanza remota alla socket, precedentemente esposta dal load balancer, ovvero in sostanza creare un proxy per l’istanza serverX:
+
+```
+./jboss-cli.sh --connect --controller=127.0.0.1:999X
+/socket-binding-group=standard-sockets/remote-destination-outboundsocket-binding=lb:add(host=127.0.0.1,port=8080)
+/subsystem=modcluster/proxy=default:writeattribute(name=proxies,value=[lb])
+```
+
+Per lanciare load balancer:
+
+```
+standalone.sh -c standalone-ha.xml -Djboss.node.name=server
+```
+
+Come deve essere organizzato in questo caso HA smart proxy rispetto i diversi casi di, Stateless Session Bean, Stateful Session Bean, MessageDriven Bean, Entity Bean.
+
+Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprietaria di JBoss, per informare il container EJB di JBoss che il componente considerato deve essere clustered. Annotazione @Clustered. applicabile a:
+
+- Stateless session Bean con smart proxy a cui sono applicabili diverse politiche di load balancing, come RoundRobin (default), FirstAvailable, FirstAvailableIdenticalAllProxies (tutti smart proxy per un bean verso stesso nodo), RandomRobin. 
+- Statefull Session Bean con smart proxy, con diverse politiche di load balancing  FirstAvailable (senza abilitazione esplicita replicazione stato).
+- Message DrivenBean le politiche di load balancing sono RoundRobin, Random, Custom (tramite implementazione interfaccia ConnectionLoadBalancingPolicy).
+- Entity bean non hanno problemi perché sono gestiti internamente quindi non possono essere gestiti dallo smart proxy lato client.
+
 ## Big Data
 
 real time: rispettare vincolo temporale. Per processare il dato ho un periodo di tempo che può essere molto lungo.
