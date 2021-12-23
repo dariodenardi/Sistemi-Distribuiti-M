@@ -166,10 +166,11 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#">Enterprise Service Bus (ESB)</a></li>
         <li><a href="#">Service Oriented Architecture (SOA)</a></li>
         <li><a href="#">Web Services</a></li>
+        <li><a href="#">Web Service Description Language (WSDL)</a></li>
         <li><a href="#">Enterprise Application Integration (EAI)</a></li>
         <li><a href="#">Hub-and-Spoke</a></li>
         <li><a href="#">Bus di Interconnessione</a></li>
-        <li><a href="#">Orchestrazione ESB concetti chiavi</a></li>
+        <li><a href="#">Concetti chiave di ESB</a></li>
         <li><a href="#">Java Business Integration (JBI)</a></li>
       </ul>
     </li>
