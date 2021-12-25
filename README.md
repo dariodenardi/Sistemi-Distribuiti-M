@@ -4712,16 +4712,15 @@ MapReduce è modello di programmazione e un framework software sviluppato origin
 
 L'architettura di riferimento è quella master/slave. Il master contiene:
 
-- Job tracker (MapReduce –responsabile scheduling dei job task,
-monitoraggio slave, ri-esecuzione job con fallimenti)
-- Task tracker (MapReduce)
-- NameNode (HDFS)
-- DataNode (HDFS)
+- **Job tracker**: responsabile scheduling dei job task che eseguono MapReduce, monitoraggio slave, ri-esecuzione job con fallimenti.
+- **Task tracker**: eseguono MapReduce.
+- **NameNode** (HDFS).
+- **DataNode** (HDFS).
 
 I nodi slave includono:
 
-- Nodo Task tracker (MapReduce – esegue i task sotto coordinamento del master)
-- DataNode (HDFS)
+- **Task tracker**: eseguono MapReduce e sono sotto il coordinamento del master.
+- **DataNode** (HDFS).
 
 ![single tier](./img/img86.png)
 
@@ -4730,18 +4729,54 @@ L'idea alla base si basa sul _divide et impera_ cioè prendere un problema e sco
 - **Map step**: il nodo master riceve l'input del problema e lo divide in sotto-problemi più piccoli, distribuiti verso i nodi worker. I nodi worker possono farlo a loro volta (struttura gerarchica ad albero multi-livello). Un worker risolve un problema piccolo e riporta il sotto-risultato al master.
 - **Reduce Step**: un nodo master raccoglie le risposte ai sottoproblemi e li combina in modo predefinito per ottenere la risposta complessiva.
 
-L'input reader divide input in chunk di misura appropriata, che
-vengono assegnati a una funzione Map.
+L'input viene diviso in chunk di misura appropriata, che vengono assegnati a una funzione Map. Si consideri il seguente esempio: si vuole contare le occorrenze di ogni parola su un set di file di ingresso. Ci sono 2 file di ingresso:
 
-Un Job MapReduce controlla l’esecuzione:
+- file1 = `hello world hello moon`
+- file2 = `goodbye world goodnight moon`
 
-- Divide dataset di input in chunk indipendenti.
-- Chunk indipendenti sono processati da task Map in parallelo.
+A un nodo viene assegnata la funzione di Map del primo file:
+```
+<hello, 1>
+<world, 1>
+<hello, 1>
+<moon, 1>
+```
 
-Sia gli input che gli output del job sono memorizzati nel file system integrato in Hadoop.
+Mentre a un altro nodo viene assegnata la funzione di Map del secondo file:
+```
+<goodbye, 1>
+<world, 1>
+<goodnight, 1>
+<moon, 1>
+```
 
-Il framework gestisce tutte le problematiche di scheduling, monitora e riesegue i task con fallimenti/guasti.
+Per ottimizzare i trasferimenti da un nodo ad un altro, viene eseguita un'altra funzione che prende il nome di funzione di Combine che aggrega i risultati parziali dei nodi. Il primo nodo avrà le seguenti coppie chiave-valore:
 
-Si consideri il seguente esempio: si vuole contare le occorrenze di ogni parola su un set di file di ingresso.
+```
+<moon, 1>
+<world, 1>
+<hello, 2>
+```
+
+Invece, il secondo:
+
+```
+<goodbyte, 1>
+<world, 1>
+<goodnight, 1>
+<moon, 1>
+```
+
+I risultati parziali vengono raccolti ottenendo il risultato finale:
+
+```
+<goodbyte, 1>
+<goodnight, 1>
+<moon, 2>
+<world, 2>
+<hello, 2>
+```
+
+Un task esegue la funzione di Map, raccoglie l’output e svolge il ruolo di Reduce&Combine. Sia gli input che gli output dei job sono memorizzati nel file system integrato in Hadoop. Il framework gestisce tutte le problematiche di scheduling, monitora e riesegue i task con fallimenti/guasti.
 
 Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, per evitare i rallentamenti causati dalle letture e scritture su disco.
