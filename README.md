@@ -215,6 +215,16 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#applicationcontext">ApplicationContext</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#">Big Data</a>
+      <ul>
+        <li><a href="#">Definizione</a></li>
+        <li><a href="#">Stream-processing</a></li>
+        <li><a href="#">Batch Processing</a></li>
+        <li><a href="#">Hadoop Distributed File System (HDFS)</a></li>
+        <li><a href="#">Map-Reduce</a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -4678,14 +4688,41 @@ Il processamento dei Big Data può avvenire in due modi: o tramite stream-proces
 
 ### Stream-processing
 
+Questo tipo di processamento è orientato ad applicazioni che richiedono on-the-fly processing, filtering e analisi di flussi di dati come ad esempio l'uso di sensori (ambientali, industriali, video sorveglianza, GPS, etc), log di file di server network/Web/application, dati di transazioni ad alto rate (transazioni finanziarie, chiamate telefoniche) etc. Un sistema stream processing famoso è InfoSphere Streams sviluppato da IBM.
 
+![single tier](./img/img90.png)
 
-Ad esempio, InfoSphereSistemi Streams.
+Il modello di programmazione è basato su grafi dataflow costituiti da datasource (input), operatori e sink (output). Gli operatori vengono raggrupati in Processing Element (PE) che è l'elemento minimo della computazione.
+
+![single tier](./img/img88.png)
+
+I cerchi rappresentano i PE, i quadratini piccoli sono i singoli pezzettini di informazione mentre in grigio sono riportati i nodi. Il deployment e il supporto runtime sui nodi viene garantito dall'infrastruttura. Come si può vedere dalla figura i PE vengono replicati per garantire scalabilità, fault tollerant etc.
+
+![single tier](./img/img89.png)
+
+Un'applicazione Streams non è altro che un grafo diretto (eventualmente anche ciclico) costituito da operatori PE i quali processano dati chiamati Streams.
+
+Un'istanza di InfoSphere Streams è un ambiente runtime costituito da un set di risorse su cui è possibile eseguire una collezione di job. Il job è un'applicazione InfoSphere Streams di cui è fatto il deployment su una istanza ed è costituito da uno o più PE.
+
+I job vengono inviati a una singola istanza e nessun'altra istanza è a conoscenza dei job. Ad esempio, si installa InfoSphere Streams su un set di risorse `A`, `B`, `C` e `D`. Si può configurare `istanza1` per utilizzare le risorse `A` e `B` e configurare `istanza2` per utilizzare le risorse `B`, `C` e `D`. I job che si inviano a `istanza1` non sono a conoscenza dei job che si inviano a `instance2`, anche se condividono una risorsa comune `B`.
+
+Anche se le istanze possono condividere le risorse, non vi è alcuna interferenza logica con altre istanze. Per evitare qualsiasi interferenza fisica, ad esempio legata alla competizione per i cicli della CPU, è possibile allocare risorse esclusivamente alle istanze.
+
+Un PE è l'unità di esecuzione fondamentale che è eseguita da una istanza. Può incapsulare un singolo operatore o diversi operatori.
+
+Il programmatore, quindi, deve scrivere solo la logica applicativa dei PE perchè a tutto il resto ci pensa il framework.
+
+![single tier](./img/img91.png)
+
+Un operatore è un blocco fondamentale per Streams Processing Language. Gli operatori processano dati chiamati Streams e possono generare nuovi Streams di output.
+
+Uno Stream è una sequenza infinita di tuple strutturate. Possono essere consumate da operatori o in modo singolo o attraverso la definizione di una finestra. La tupla è una lista strutturata di attributi e dei lori tipi.
+
+Invece, la finestra è un gruppo finito e sequenziale di tuple in un flusso. La finestra è basata su contatori, tempo, valore di attributi, punctuation mark etc. Ogni operatore, ad esempio, potrebbe lavorare su una finestra di tre tuple e quindi le operazioni vengono eseguite su tre tuple alla volta.
 
 ### Batch Processing
 
-Probabilmente il padre storico di impatto industriale è il progetto Apache Hadoop. È un framework open source che vede Yahoo come principale
-contributor. Il progetto si suddivide in tre sottoprogetti:
+Probabilmente il padre storico di impatto industriale è il progetto Apache Hadoop. È un framework open source che vede Yahoo come principale contributor. Il progetto si suddivide in tre sottoprogetti:
 
 - **Hadoop Common**: package di facilities comuni.
 - **Hadoop Distributed File System (HDFS)**: file system distribuito.
@@ -4696,14 +4733,14 @@ dati su cluster.
 
 Prende ispirazione da Google file system. È un file system scalabile, distribuito, portabile, scritto in Java per framework Hadoop. HDFS può essere parte di Hadoop o un file system distribuito stand-alone general-purpose. HDFS è costituito da:
 
-- **NameNode** che gestisce i metadata del file system cioè in quale nodo viene salvato un dato.
+- **NameNode** che gestisce i metadata del file system cioè in quale nodo o nodi vengono salvati i dati.
 - **DataNode** che memorizzano i veri dati.
 
 HDFS memorizza file di grandi dimensioni in blocchi distribuiti sul cluster, garantisce affidabilità e fault-tolerance tramite replicazione su nodi multipli ed è progettato specificamente per deployment su hardware low-cost.
 
 Hadoop può lavorare su qualsiasi file system distribuito ma sfrutta conoscenza di località per ottimizzazione, quindi HDFS particolarmente adatto.
 
-### Map-Reduce
+### MapReduce
 
 MapReduce è modello di programmazione e un framework software sviluppato originariamente da Google. Questo modello è stato implementato anche nel framework open source da parte di Yahoo. L'obiettivo è quello di semplificare il processamento di enormi moli di dati in parallelo su cluster di grandi dimensioni usando hardware low-cost, in modo affidabile e fault-tolerant. Il processamento deve avvenire su:
 
@@ -4712,7 +4749,7 @@ MapReduce è modello di programmazione e un framework software sviluppato origin
 
 L'architettura di riferimento è quella master/slave. Il master contiene:
 
-- **Job tracker**: responsabile scheduling dei job task che eseguono MapReduce, monitoraggio slave, ri-esecuzione job con fallimenti.
+- **Job tracker**: responsabile dello scheduling dei job task che eseguono MapReduce, monitora gli slave e riesegue i job con fallimenti.
 - **Task tracker**: eseguono MapReduce.
 - **NameNode** (HDFS).
 - **DataNode** (HDFS).
@@ -4726,15 +4763,16 @@ I nodi slave includono:
 
 L'idea alla base si basa sul _divide et impera_ cioè prendere un problema e scomporlo in sotto-problemi. Ci sono due passi fondamentali:
 
-- **Map step**: il nodo master riceve l'input del problema e lo divide in sotto-problemi più piccoli, distribuiti verso i nodi worker. I nodi worker possono farlo a loro volta (struttura gerarchica ad albero multi-livello). Un worker risolve un problema piccolo e riporta il sotto-risultato al master.
-- **Reduce Step**: un nodo master raccoglie le risposte ai sottoproblemi e li combina in modo predefinito per ottenere la risposta complessiva.
+- **Map step**: il nodo master riceve l'input del problema e lo suddivide e lo divide in sotto-problemi più piccoli, distribuiti verso i nodi worker. In poche parole, l'input viene diviso in chunk (blocchi) di misura appropriata, che vengono assegnati a nodi worker. I nodi worker possono farlo a loro volta (struttura gerarchica ad albero multi-livello). Un worker risolve un problema piccolo e riporta il sotto-risultato al master. La funzione di Map, _mappa_ il file di input in coppie `<key, value>` più piccole e di utilizzo intermedio.
+- **Reduce Step**: un nodo master raccoglie le risposte ai sottoproblemi e li combina in modo predefinito per ottenere la risposta complessiva. Prende i valori intermedi dei nodi di Map e li processa restituendo il risultato complessivo.
 
-L'input viene diviso in chunk di misura appropriata, che vengono assegnati a una funzione Map. Si consideri il seguente esempio: si vuole contare le occorrenze di ogni parola su un set di file di ingresso. Ci sono 2 file di ingresso:
+Si consideri il seguente esempio: si vuole contare le occorrenze di ogni parola su un set di file di ingresso. Ci sono 2 file di ingresso:
 
 - file1 = `hello world hello moon`
 - file2 = `goodbye world goodnight moon`
 
-A un nodo viene assegnata la funzione di Map del primo file:
+A un nodo viene assegnata la funzione di Map del primo file ottenedo i seguenti risultati parziali:
+
 ```
 <hello, 1>
 <world, 1>
@@ -4742,7 +4780,8 @@ A un nodo viene assegnata la funzione di Map del primo file:
 <moon, 1>
 ```
 
-Mentre a un altro nodo viene assegnata la funzione di Map del secondo file:
+Mentre a un altro nodo viene assegnata la funzione di Map del secondo file ottenedo i seguenti risultati parziali:
+
 ```
 <goodbye, 1>
 <world, 1>
@@ -4750,7 +4789,7 @@ Mentre a un altro nodo viene assegnata la funzione di Map del secondo file:
 <moon, 1>
 ```
 
-Per ottimizzare i trasferimenti da un nodo ad un altro, viene eseguita un'altra funzione che prende il nome di funzione di Combine che aggrega i risultati parziali dei nodi. Il primo nodo avrà le seguenti coppie chiave-valore:
+Per ottimizzare i trasferimenti da un nodo ad un altro, in realtà viene eseguita un'altra funzione che prende il nome di funzione di Combine e aggrega i risultati parziali dei nodi. Il primo nodo avrà le seguenti coppie chiave-valore:
 
 ```
 <moon, 1>
@@ -4767,7 +4806,7 @@ Invece, il secondo:
 <moon, 1>
 ```
 
-I risultati parziali vengono raccolti ottenendo il risultato finale:
+Prima di passare alla funzione di Reduce, Il framework raccoglie queste coppie e riordina gli output dei Map. Questa fase prende il nome di shuffle and sort. A questo punto, i risultati parziali vengono inviati alla funzione di Reduce ottenendo il risultato finale:
 
 ```
 <goodbyte, 1>
@@ -4777,6 +4816,18 @@ I risultati parziali vengono raccolti ottenendo il risultato finale:
 <hello, 2>
 ```
 
-Un task esegue la funzione di Map, raccoglie l’output e svolge il ruolo di Reduce&Combine. Sia gli input che gli output dei job sono memorizzati nel file system integrato in Hadoop. Il framework gestisce tutte le problematiche di scheduling, monitora e riesegue i task con fallimenti/guasti.
+Sia gli input che gli output dei job sono memorizzati nel file system integrato in Hadoop. Il framework gestisce tutte le problematiche di scheduling, monitora e riesegue i task con fallimenti/guasti.
+
+Quello che il programmatore deve scrivere sono tre funzioni:
+
+- Map.
+- Combine.
+- Reduce.
+
+Al resto ci pensa il framework.
+
+Un secondo esempio per chiarire tutti i concetti visti è il seguente:
+
+![single tier](./img/img87.png)
 
 Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, per evitare i rallentamenti causati dalle letture e scritture su disco.
