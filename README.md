@@ -1285,7 +1285,7 @@ ShoppingCart myCart;
 
 ...
 
-Collection widgets = myCart.startToShop(“widgets”);
+Collection widgets = myCart.startToShop("widgets");
 
 ...
 ```
@@ -1408,7 +1408,7 @@ Anche i nuovi bean conformi a EJB 3.X possono essere utilizzati sulle vecchie ap
 // Vista cliente da EJB 2.X di un bean conforme a EJB 3.X
 
 Context initialContext = new InitialContext();
-ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup(“java:comp/env/ejb/cart”);
+ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup("java:comp/env/ejb/cart");
 ShoppingCart cart = myCartHome.create();
 cart.addItem(...);
 cart.remove();
@@ -1703,7 +1703,7 @@ public PayrollBean implements Payroll {
     public double getSalary(int empid) { ... }
 
     // setting del salario ha un accesso più restrittivo
-    @RolesAllowed(“HR_PayrollAdministrator”)
+    @RolesAllowed("HR_PayrollAdministrator")
     public void setSalary(int empId, double salary) { ... }
 }
 ```
@@ -3102,7 +3102,7 @@ Definizione delle porte che sono i punti di contatto tra i vari componenti. In p
 
 Il CORBA Component Model si occupa di gestire il ciclo di vita dei componenti, tale gestione è integrata e standardizzata nel supporto. Possiamo definire diverse Home per definire diverse strategie di management. Grazie all’interfaccia Home possiamo definire varie strategie e applicare diversi tipi di strategie per il lifecycle management dei componenti, questa interfaccia Home è un metatype che ha riferimenti a interfacce e oggetti e va a gestire una famiglia di componenti attraverso quel tipo di lifecycle management, ogni istanza di un oggetto è gestita da una sola istanza di Home, l’operazione base che si trova sempre nella Home è quella per la creazione dell’oggetto ovvero create(), il tutto in IDL 3 può essere riassunto con questa chiamata. Inoltre, tale interfaccia Home può ospitare operazioni addizionali user-defined.
 
-I diversi componenti possono avere la necessita di collaborare fra loro, per questo ciascun componente offre viste diverse. Con CORBA 2 era difficile fare una gestione avanzata del componente e la parte relativa di gestione dinamica, con il CORBA Component Model, il tutto è strutturato in un modello ben fatto, anche grazie alle Facet, che sono chiamate “top of the lego”, che significa che le funzionalità che offre al mondo esterno e la gestione di eventi stanno sopra e sotto “bottom of the lego” si trova ciò che ci si aspetta per legarsi al mondo sottostante, ovvero i Receptable e i Sink. Le Facet sono le interfacce delle operazioni che i componenti offrono. Dal punto di vista logico, sono i servizi che il componente offre e il tutto da modo di avere internamente componenti che realizzano diverse possibili interfacce. Le Facet definiscono interfacce con operazioni offerte che sono specificate tramite keyword provides() e rappresentano logicamente il componente stesso, non è un’entità separata contenuta nel componente. Le Facet hanno riferimenti a oggetti indipendenti ottenuti tramite operazione provide_*() da una Factory e possono essere usati per implementare Extension Interface pattern. In IDL 2 il tutto deve essere fatto ragionando solo sui componenti di base.
+I diversi componenti possono avere la necessita di collaborare fra loro, per questo ciascun componente offre viste diverse. Con CORBA 2 era difficile fare una gestione avanzata del componente e la parte relativa di gestione dinamica, con il CORBA Component Model, il tutto è strutturato in un modello ben fatto, anche grazie alle Facet, che sono chiamate "top of the lego", che significa che le funzionalità che offre al mondo esterno e la gestione di eventi stanno sopra e sotto "bottom of the lego" si trova ciò che ci si aspetta per legarsi al mondo sottostante, ovvero i Receptable e i Sink. Le Facet sono le interfacce delle operazioni che i componenti offrono. Dal punto di vista logico, sono i servizi che il componente offre e il tutto da modo di avere internamente componenti che realizzano diverse possibili interfacce. Le Facet definiscono interfacce con operazioni offerte che sono specificate tramite keyword provides() e rappresentano logicamente il componente stesso, non è un’entità separata contenuta nel componente. Le Facet hanno riferimenti a oggetti indipendenti ottenuti tramite operazione provide_*() da una Factory e possono essere usati per implementare Extension Interface pattern. In IDL 2 il tutto deve essere fatto ragionando solo sui componenti di base.
 
 Per quanto riguarda la definizione dei Receptable attraverso l’uso della keyword uses() viene definito il Receptable che si aspetta una Facet, si può connettere il componente con un altro componente, grazie alle parole chiave uses. Le connessioni sono effettuate staticamente durante la fase di deployment o dinamicamente gestite dai container che supportano interazione con clienti o altri componenti via callback. Inoltre, CCM supporta connection establishment a runtime.
 
@@ -3112,7 +3112,7 @@ Per connettersi al Sink di eventi può essere realizzata una comunicazione diret
 
 Il Sink Refresh, definito con la parola consumes, riceve i tick.  Si possono avere connessioni named a cui inviare eventi solo di specifiche tipologie.  Event sink multipli dello stesso tipo possono essere subscriber della stessa sorgente, non vi è distinzione fra emitter & publisher, rende possibile connessi a sorgenti via object reference ottenuta tramite operazione get_consumer_*() su factory.
 
-Componenti hanno bisogno di essere “aggregati” per formare applicazioni complete, vi sono però alcuni problemi: i componenti possono avere porte multiple con diversi nomi e tipi, diventa dispendioso scrivere manualmente il codice necessario per collegare un insieme di componenti per una applicazione specifica. Per cui in CCM è stata implementata tale soluzione: vi sono interfacce per l’introspezione che consentono la scoperta dinamica delle capacità dei componenti, e generiche operazioni sulle porte per connettere componenti tramite strumenti esterni di deployment e configuration, questo rappresenta la capacità di mettere insieme i lego.
+Componenti hanno bisogno di essere "aggregati" per formare applicazioni complete, vi sono però alcuni problemi: i componenti possono avere porte multiple con diversi nomi e tipi, diventa dispendioso scrivere manualmente il codice necessario per collegare un insieme di componenti per una applicazione specifica. Per cui in CCM è stata implementata tale soluzione: vi sono interfacce per l’introspezione che consentono la scoperta dinamica delle capacità dei componenti, e generiche operazioni sulle porte per connettere componenti tramite strumenti esterni di deployment e configuration, questo rappresenta la capacità di mettere insieme i lego.
 
 Capacità di navigation e introspection realizzate da CCMObject, che offre le seguenti interfacce: interfaccia Navigation per facet, interfaccia Receptacles per receptacle e interfaccia Events per porte per eventi Navigation da modo dal riferimento base di un componente a ogni sua facet via operazioni facet-specific automaticamente generate e supportate di richiedere tali facet. Con il metodo provide si può restringere la visibilità (narrowing) all’interfaccia che ci interessa e restituirà poi il riferimento a cui si è interessati, ad es. Components::CCMObject::get_all_facets() & Components::CCMObject::provide(). Navigation opposta da ogni facet al riferimento base di un componente tramite CORBA::Object::_get_component().
 
@@ -3470,7 +3470,7 @@ public class StandardOutMessageRenderer implements MessageRenderer {
 
     public void render() {
         if (messageProvider == null) {
-            throw new RuntimeException( "You must set the property messageProvider of class:“ + StandardOutMessageRenderer.class. getName()); 
+            throw new RuntimeException( "You must set the property messageProvider of class:" + StandardOutMessageRenderer.class. getName()); 
         }
 
         System.out.println(messageProvider.getMessage());
@@ -4089,7 +4089,7 @@ Il livello di agente è costituito da un server MBean e da un insieme di servizi
 
 ![single tier](./img/img72.png)
 
-Il server MBean è uno dei componenti chiave dell’architettura di management, esso opera come un canale di comunicazione che smista e delega tutte le invocazioni fra applicazioni di management e risorse gestite. Espone metodi per la creazione ed effettuazione di query, per invocare operazioni e per manipolare attributi su MBean. Il tipo di implementazione dei componenti MBean (Standard, Dynamic, Model, …) è totalmente trasparente alle applicazioni client-side di gestione, l’Mbean Server nascondendo tale implementazione semplifica anche le cose lato client.
+Il server MBean è uno dei componenti chiave dell’architettura di management, esso opera come un canale di comunicazione che smista e delega tutte le invocazioni fra applicazioni di management e risorse gestite. Espone metodi per la creazione ed effettuazione di query, per invocare operazioni e per manipolare attributi su MBean. Il tipo di implementazione dei componenti MBean (Standard, Dynamic, Model, etc) è totalmente trasparente alle applicazioni client-side di gestione, l’Mbean Server nascondendo tale implementazione semplifica anche le cose lato client.
 
 MBeanServer è un oggetto locale alla JVM dei componenti gestiti e non offre particolare supporto alla connessione remota verso di sé. Per questo servono connettori JMX o adattatori di protocollo per accettare chiamate provenienti dall’esterno della JVM. Questi componenti (connettori/adattatori) sono spesso essi stessi degli MBean, registrati sull’agente, e forniscono una pluralità di differenti forme di connettività.
 
@@ -4110,15 +4110,24 @@ MBean sono stati progettati per essere flessibili, semplici e facili da implemen
 Lo standard MBean è il modo più semplice per rendere JMX-managed nuove classi Java. Interfaccia statically-typed dichiara esplicitamente gli attributi tramite metodi getter e setter e le operazioni di gestione. Convenzione sui nomi: quando un managed object viene registrato, l’agente cerca una interfaccia di management con lo stesso nome classe dell’oggetto + suffisso MBean, nel caso, navigando l’albero di ereditarietà della classe.
 
 ```
-public interface UserMBean{ 
-public long getId(); 
-public void setId(long id); 
-public boolean isActive(); 
-public void setActive(boolean active); 
-public String printInfo(); 
-} 
-public class User implements UserMBean { ... } 
-public class Student extends User { /* anche questa classe può essere registrata come un UserMBean */ ... }
+public interface UserMBean{
+
+    public long getId();
+    public void setId(long id);
+    public boolean isActive();
+    public void setActive(boolean active);
+    public String printInfo();
+}
+
+public class User implements UserMBean { ... }
+
+public class Student extends User {
+
+    /* anche questa classe può essere registrata come un UserMBean */
+    
+    ...
+
+}
 ```
 
 ### MBean Server registrazione
@@ -4126,10 +4135,15 @@ public class Student extends User { /* anche questa classe può essere registrat
 Per registrare un manageable object come un MBean è necessario creare prima ObjectName. Il riferimento all’agente può essere ottenuto da una lista di implementazioni disponibili di MBeanServer o creandolo da zero. La registrazione di MBean consiste semplicemente nell’associare il manageable object con il suo nome di oggetto, una volta trovato l’MBean server.
 
 ```
-ObjectName username = new ObjectName( “example:name=user1”); 
-List serverList = MBeanServerFactory. findMBeanServer(null); 
-MBeanServer server = (MBeanServer)serverList. iterator().next(); 
-/* oppure per la creazione… MBeanServer server = MBeanServerFactory. createMBeanServer(); */ server.registerMBean( new User(), username);
+ObjectName username = new ObjectName("example:name=user1");
+
+List serverList = MBeanServerFactory. findMBeanServer(null);
+MBeanServer server = (MBeanServer)serverList.iterator().next();
+
+/* oppure per la creazione...
+MBeanServer server = MBeanServerFactory.createMBeanServer();*/
+
+server.registerMBean(new User(), username);
 ```
 
 ### Invocazione servizi di gestione
@@ -4137,11 +4151,13 @@ MBeanServer server = (MBeanServer)serverList. iterator().next();
 L’applicazione di management riferisce MBean passando un riferimento a object name all’agente, per ogni operazione invocata. Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tuto questo nascondendo le operazioni al cliente.
 
 ```
-ObjectName username = new ObjectName( “example:name=user1”); 
-Object result = server.invoke( username, // nome MBean 
-“printInfo”, // nome operaz 
-null, // no param 
-null); // void signature
+ObjectName username = new ObjectName("example:name=user1");
+
+Object result = server.invoke(
+    username, // nome MBean
+    "printInfo", // nome operazione
+    null, // no param
+    null); // void signature
 ```
 
 ### Meccanismo di notifica
@@ -4151,11 +4167,14 @@ L’architettura JMX definisce un meccanismo di notifica per MBean che consente 
 La classe JMX Notification estende EventObject introducendo campi per il tipo di evento, numero di sequenza, timestamp, messaggio e dati utente opzionali, perciò le notifiche possono essere filtrate, grazie all’implementazione dell’interfaccia NotificationFilter è subscribed presso broadcaster MBean, insieme con il listener con il metodo addNotificationListener(), il broadcaster deve controllare se la notifica supera il filtro prima di inviarla.
 
 ```
-public interface NotificationFilter { 
-public boolean isNotificationEnabled( Notification notification); 
-} 
-public interface NotificationBroadcaster { 
-public void addNotificationListener( NotificationListener listener, NotificationFilter filter, Object handback) throws IllegalArgumentException; 
+public interface NotificationFilter {
+
+    public boolean isNotificationEnabled(Notification notification);
+}
+
+public interface NotificationBroadcaster {
+
+    public void addNotificationListener(NotificationListener listener, NotificationFilter filter, Object handback) throws IllegalArgumentException;
 }
 ```
 
@@ -4169,33 +4188,48 @@ In MBean dinamici, l’interfaccia di management viene esposta tramite le classi
 
 ```
 public class DynamicUser extends NotificationBroadcasterSupport implements DynamicMbean {
-// Attributi
-final static String ID = “id”;
-private long id = System.currentTimeMillis();
-public Object getAttribute(String attribute) throws
-AttributeNotFoundException, MBeanException, ReflectionException {
-if (attribute.equals(ID)) return new Long(id);
-throw new AttributeNotFoundException(“Missing attribute ” + attribute);
-}
-// Operazioni
-final static String PRINT = “printInfo”;
-public String printInfo() { return “Sono un MBean dinamico”; }
-public Object invoke(String actionName, Object[] params, String[]
-signature) throws … {
-if ( actionName.equals(PRINT)) return printInfo(); )
-throw new UnsupportedOperationException(“Unknown operation “ + actionName);
-}
 
-public MBeanInfo getMBeanInfo() {
-final boolean READABLE = true; final boolean WRITABLE = true;
-final boolean IS_GETTERFORM = true;
-String classname = getClass().getName();
-String description = “Sono un MBean dinamico”;
-MBeanAttributeInfo id = new MBeanAttributeInfo(ID,long.class.getName(), ”id”, READABLE, !WRITABLE, !IS_GETTERFORM);
-MBeanConstructorInfo defcon = new MBeanConstructorInfo(“Default”,”Creates”,null);
-MBeanOperationInfo print = new MBeanOperationInfo(PRINT, ”Prints info”, null, String.class.getName(), MBeanOperationInfo.INFO);
-return new MBeanInfo(classname,description, new MBeanAttributeInfo[] { id }, new MBeanConstructorInfo[] { defcon }, new MBeanOperationInfo[] { print }, null);
-}
+    // Attributi
+    final static String ID = "id";
+    private long id = System.currentTimeMillis();
+    public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException, ReflectionException {
+        if (attribute.equals(ID))
+            return new Long(id);
+            throw new AttributeNotFoundException("Missing attribute " + attribute);
+    }
+
+    // Operazioni
+    final static String PRINT = "printInfo";
+
+    public String printInfo() {
+        return "Sono un MBean dinamico";
+    }
+
+    public Object invoke(String actionName, Object[] params, String[] signature) throws ... {
+        
+        if (actionName.equals(PRINT))
+            return printInfo();
+            throw new UnsupportedOperationException("Unknown operation" + actionName);
+    }
+
+    public MBeanInfo getMBeanInfo() {
+
+        final boolean READABLE = true;
+        final boolean WRITABLE = true;
+        final boolean IS_GETTERFORM = true;
+        String classname = getClass().getName();
+        String description = "Sono un MBean dinamico";
+
+        MBeanAttributeInfo id = new MBeanAttributeInfo(ID,long.class.getName(), "id", READABLE, !WRITABLE, !IS_GETTERFORM);
+        MBeanConstructorInfo defcon = new MBeanConstructorInfo("Default","Creates",null);
+        MBeanOperationInfo print = new MBeanOperationInfo(PRINT, "Prints info", null, String.class.getName(), MBeanOperationInfo.INFO);
+
+        return new MBeanInfo(classname,description, 
+        new MBeanAttributeInfo[] { id }, 
+        new MBeanConstructorInfo[] { defcon }, 
+        new MBeanOperationInfo[] { print }, 
+        null);
+    }
 }
 ```
 
@@ -4228,7 +4262,7 @@ Il servizio di Timer è basato sul meccanismo di notifica di JMX, TimerMBean è 
 
 Un insieme di MBean che possono essere utilizzati per effettuare il monitoring degli attributi di risorse gestite. Le notifiche dei monitor differiscono dalle usuali notifiche di modifica di attributi perché si possono introdurre threshold e periodi di granularità. Vi sono tre implementazioni differenti: counter monitor traccia le variazioni di attributi che si comportano come contatori con variazioni discrete, gauge monitor per attributi integer e float, ad intervalli di granularità configurabile, con threshold, string monitor per informare in relazione a string matching/dismatching rispetto a valori attes, si fissano dei valori o delle stringhe, le notifiche vengono scatenate in caso di matching o dismatching.
 
-Problema se vi sono attributi “rumorosi” è impensabile ad ogni variazione di segnarla al listener, per questo si cercano di fare monitoring con delle isteresi di tempo o di confidenza sugli attributi. Gli eventi sono sollevati solo quando vi sono variazioni significative. Le notifiche partono o dopo un periodo ti tempo o al superamento di una certa soglia. Queste threshold servono per evitare un overhead del sistema di monitoraggio, deve occupare il 10% del carico del sistema, così si vogliono evitare effetti di schizofrenia nelle azioni di gestioni dipendenti dal monitoraggio.
+Problema se vi sono attributi "rumorosi" è impensabile ad ogni variazione di segnarla al listener, per questo si cercano di fare monitoring con delle isteresi di tempo o di confidenza sugli attributi. Gli eventi sono sollevati solo quando vi sono variazioni significative. Le notifiche partono o dopo un periodo ti tempo o al superamento di una certa soglia. Queste threshold servono per evitare un overhead del sistema di monitoraggio, deve occupare il 10% del carico del sistema, così si vogliono evitare effetti di schizofrenia nelle azioni di gestioni dipendenti dal monitoraggio.
 
 ![single tier](./img/img74.png)
 
@@ -4243,9 +4277,9 @@ Permette di definire relazioni fra MBean e di reagire a modifiche (per esempio n
 
 ### JMX remote API
 
-Dall’architettura iniziale ci si ricorda che c’è una parte client e server con disaccoppiamento forte per ottenere la massima flessibilità delle interazioni dei client con Mbean che siano compliant JMX.  Esistono connettori offerti da RMI che offrono uno stub ovvero end-point che può essere interrogato dal client. Inoltre, è disponibile un Regestry RMI dove reperire l’istanza dello stato. Per effettuare operazioni remote su MBean, un server per connettori RMI è a disposizione lato server: tramite chiamata alla classe JMXServiceURL si crea un nuovo URL di servizio (indirizzo per il server di connector). Il server di connector RMI è creato via JMXConnectorServerFactory, con parametri URL di servizio e MBeanServer, Il server di connector deve essere messo in esecuzione. URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore (tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP): il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 su local host, e l’indirizzo del server è registrato al nome “server”.
+Dall’architettura iniziale ci si ricorda che c’è una parte client e server con disaccoppiamento forte per ottenere la massima flessibilità delle interazioni dei client con Mbean che siano compliant JMX.  Esistono connettori offerti da RMI che offrono uno stub ovvero end-point che può essere interrogato dal client. Inoltre, è disponibile un Regestry RMI dove reperire l’istanza dello stato. Per effettuare operazioni remote su MBean, un server per connettori RMI è a disposizione lato server: tramite chiamata alla classe JMXServiceURL si crea un nuovo URL di servizio (indirizzo per il server di connector). Il server di connector RMI è creato via JMXConnectorServerFactory, con parametri URL di servizio e MBeanServer, Il server di connector deve essere messo in esecuzione. URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore (tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP): il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 su local host, e l’indirizzo del server è registrato al nome "server".
 
-URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore, tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP: il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 (arbitraria) su local host, mentre l’indirizzo del server è registrato al nome “server”
+URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore, tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP: il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 (arbitraria) su local host, mentre l’indirizzo del server è registrato al nome "server"
 
 Il cliente crea un RMI Connector Client configurato per connettersi al server RMI connector creato lato server: URL di servizio utilizzato deve fare match con quello usato alla registrazione del servizio di connector. Il connector client è restituito come risultato della connessione al connector server, il cliente ora può registrare MBean ed effettuare operazioni su di essi tramite MBeanServer remoto in modo trasparente alla distribuzione.
 
@@ -4253,128 +4287,149 @@ Piccola nota aggiuntiva, oltre agli usuali connettori standard RMI e RMI/IIOP, s
 
 ### Esempio utilizzo degli MBean
 
+Hello.java implementa l'interfaccia HelloMBean:
+
 ```
 package com.example.mbeans;
+
 public class Hello implements HelloMBean {
-public void sayHello() {
-System.out.println("hello, world");
-}
-public int add(int x, int y) {
-return x + y;
-}
-/* metodo getter per l’attributo Name. Spesso gli attributi sono
-utilizzati per fornire indicatori di monitoraggio come uptime o
-utilizzo di memoria. Spesso sono read-only. In questo caso l’attributo è una stringa */
 
-public String getName() {
-return this.name;
+    public void sayHello() {
+        System.out.println("hello, world");
+    }
+
+    public int add(int x, int y) {
+        return x + y;
+    }
+
+    /* metodo getter per l’attributo Name. Spesso gli attributi sono utilizzati per fornire indicatori di monitoraggio come uptime o utilizzo di memoria. Spesso sono read-only. In questo caso l’attributo è una stringa */
+
+    public String getName() {
+        return this.name;
+    }
+
+    /* invece anche metodi getter e setter */
+    /* invece anche metodi getter e setter */
+    public int getCacheSize() {
+        return this.cacheSize;
+    }
+
+    /* perché synchronized? Mantenere uno stato consistente per evitare modifiche concorrenti. No notifiche concorrenti, non ci sono container che si occupano della sincronizzazione quindi serve sychronized, prima non necessario con i container si occupano internamente della sincronizzazione */
+    public synchronized void setCacheSize(int size) {
+        this.cacheSize = size;
+        System.out.println("Cache size now " + this.cacheSize);
+    }
+
+    private final String name = "My First MBean";
+    private int cacheSize = DEFAULT_CACHE_SIZE;
+    private static final int DEFAULT_CACHE_SIZE = 200;
 }
-/* invece anche metodi getter e setter */
-/* invece anche metodi getter e setter */
-public int getCacheSize() {
-return this.cacheSize;
-}
-/* perché synchronized? Mantenere uno stato consistente per evitare modifiche concorrenti. No notifiche concorrenti, non ci sono container che si occupano della sincronizzazione quindi serve sychronized, prima non necessario con i container si occupano internamente della sincronizzazione */
-public synchronized void setCacheSize(int size) {
-this.cacheSize = size;
-System.out.println("Cache size now " + this.cacheSize);
-}
-private final String name = “My First MBean";
-private int cacheSize = DEFAULT_CACHE_SIZE;
-private static final int DEFAULT_CACHE_SIZE = 200;
-}
-/* HelloMBean.java - interfaccia MBean che descrive le operazioni
+```
+
+HelloMBean.java: interfaccia MBean che descrive le operazioni
 e gli attributi di management: 2 operazioni (sayHello e add) e
-2 attributi (Name e CacheSize) */
+2 attributi (Name e CacheSize):
 
+```
 package com.example.mbeans;
-public interface HelloMBean {
-// operazioni
-public void sayHello();
-public int add(int x, int y);
-// attributi
-public String getName();
-public int getCacheSize();
-public void setCacheSize(int size);
-}
-/* Main.java deve semplicemente istanziareHelloWorld MBean, registrarlo e
-attendere */
 
+public interface HelloMBean {
+
+    // operazioni
+    public void sayHello();
+    public int add(int x, int y);
+
+    // attributi
+    public String getName();
+    public int getCacheSize();
+    public void setCacheSize(int size);
+}
+```
+
+Main.java deve semplicemente istanziareHelloWorld MBean, registrarlo e attendere:
+
+```
 package com.example.mbeans;
 import java.lang.management.*;
 import javax.management.*;
-public class Main {
-public static void main(String[] args) throws Exception {
-// Ottiene il server MBean
-MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-// Costruisce ObjectName per MBean da registrare
-ObjectName name = new ObjectName("com.example.mbeans:
-type=Hello");
-// Crea istanza di HelloWorld MBean
-Hello mbean = new Hello();
-// Registra l’istanza
-mbs.registerMBean(mbean, name);
-System.out.println("Waiting forever...");
-Thread.sleep(Long.MAX_VALUE); 
-} 
-}
 
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // Ottiene il server MBean
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        // Costruisce ObjectName per MBean da registrare
+        ObjectName name = new ObjectName("com.example.mbeans:type=Hello");
+        // Crea istanza di HelloWorld MBean
+        Hello mbean = new Hello();
+        // Registra l’istanza
+        mbs.registerMBean(mbean, name);
+        System.out.println("Waiting forever...");
+        Thread.sleep(Long.MAX_VALUE); 
+    }
+}
+```
+
+Esempio con uso di Notification:
+
+```
 package com.example.mbeans;
 import javax.management.*;
-public class Hello extends NotificationBroadcasterSupport implements HelloMBean {
-public void sayHello() {
-System.out.println("hello, world");
-}
-public int add(int x, int y) {
-return x + y;
-}
-public String getName() {
-return this.name;
-}
-public int getCacheSize() {
-return this.cacheSize;
-}
-public synchronized void setCacheSize(int size) {
-int oldSize = this.cacheSize;
-this.cacheSize = size;
-/* In applicazioni reali il cambiamento di un attributo di solito
-produce effetti di gestione. Ad esempio, cambiamento di
-dimensione della cache può generare eliminazione o allocazione
-di entry */
-System.out.println("Cache size now " + this.cacheSize);
-/* Per costruire una notifica che descrive il cambiamento
-avvenuto: "source" è ObjectName di MBean che emette la notifica
-(MBean server sostituisce "this“ con il nome dell’oggetto);
-mantenuto un numero di sequenza */
-Notification n = new AttributeChangeNotification( this,
-sequenceNumber++, System.currentTimeMillis(),
-“CacheSize changed", "CacheSize", "int", oldSize,
-this.cacheSize);
-/* Invio della notifica usando il metodo sendNotification()
-ereditato dalla superclasse */
-sendNotification(n);
-} …
 
-@Override
-/* metadescrizione */
-public MBeanNotificationInfo[] getNotificationInfo() {
-String[] types = new String[] { AttributeChangeNotification.ATTRIBUTE_CHANGE };
-String name = AttributeChangeNotification.class.getName();
-String description = “è stato cambiato un attributo!";
-MBeanNotificationInfo info =
-new MBeanNotificationInfo(types, name, description);
-return new MBeanNotificationInfo[] {info};
-}
-private final String name = “My first MBean";
-private int cacheSize = DEFAULT_CACHE_SIZE;
-private static final int DEFAULT_CACHE_SIZE = 200;
-private long sequenceNumber = 1;
+public class Hello extends NotificationBroadcasterSupport implements HelloMBean {
+
+    public void sayHello() {
+        System.out.println("hello, world");
+    }
+
+    public int add(int x, int y) {
+        return x + y;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getCacheSize() {
+        return this.cacheSize;
+    }
+
+    public synchronized void setCacheSize(int size) {
+        int oldSize = this.cacheSize;
+        this.cacheSize = size;
+        
+        /* In applicazioni reali il cambiamento di un attributo di solito produce effetti di gestione. Ad esempio, cambiamento di dimensione della cache può generare eliminazione o allocazione di entry */
+        System.out.println("Cache size now " + this.cacheSize);
+        /* Per costruire una notifica che descrive il cambiamento avvenuto: "source" è ObjectName di MBean che emette la notifica (MBean server sostituisce "this" con il nome dell’oggetto);
+        mantenuto un numero di sequenza */
+        Notification n = new AttributeChangeNotification( this, sequenceNumber++, System.currentTimeMillis(), "CacheSize changed", "CacheSize", "int", oldSize, this.cacheSize);
+        /* Invio della notifica usando il metodo sendNotification() ereditato dalla superclasse */sendNotification(n);
+    }
+
+    ...
+
+    @Override
+    /* metadescrizione */
+    public MBeanNotificationInfo[] getNotificationInfo() {
+    
+        String[] types = new String[] { AttributeChangeNotification.ATTRIBUTE_CHANGE };
+        String name = AttributeChangeNotification.class.getName();
+        String description = "è stato cambiato un attributo!";
+        MBeanNotificationInfo info = new MBeanNotificationInfo(types, name, description);
+
+        return new MBeanNotificationInfo[] {info};
+    }
+    
+    private final String name = "My first MBean";
+    private int cacheSize = DEFAULT_CACHE_SIZE;
+    private static final int DEFAULT_CACHE_SIZE = 200;
+    private long sequenceNumber = 1;
 }
 ```
 
 ### JMX at work in Application Server JBoss
 
-Application server JBoss è stato costruito on top dell’infrastruttura JMX, questo è molto visibile in versione JBoss AS 4.3.*.  poiché a partire da questa versione JBoss utilizza un’architettura a microkernel basata su componenti MBean (application server non-monolitico). Sia le applicazioni realizzate su JBoss che l’application server sono facilmente manageable. La configurazione del server altamente flessibile, infatti è possibile scegliere fra differenti implementazioni di servizio (ad es. JMS) , si può fare l’embedding di differenti container nell’application server, anche a runtime (ad es. servlet container come Tomcat, Jetty, …). Inoltre Se un’implementazione di servizio non offre una funzionalità richiesta da un’applicazione (ad es. transaction manager, un determinato datasource, …), se ne può scegliere un’altra, i servizi non necessari possono essere disattivati (shut down)
+Application server JBoss è stato costruito on top dell’infrastruttura JMX, questo è molto visibile in versione JBoss AS 4.3.*.  poiché a partire da questa versione JBoss utilizza un’architettura a microkernel basata su componenti MBean (application server non-monolitico). Sia le applicazioni realizzate su JBoss che l’application server sono facilmente manageable. La configurazione del server altamente flessibile, infatti è possibile scegliere fra differenti implementazioni di servizio (ad es. JMS) , si può fare l’embedding di differenti container nell’application server, anche a runtime (ad es. servlet container come Tomcat, Jetty, etc). Inoltre Se un’implementazione di servizio non offre una funzionalità richiesta da un’applicazione (ad es. transaction manager, un determinato datasource, etc), se ne può scegliere un’altra, i servizi non necessari possono essere disattivati (shut down)
 Il nucleo dell’application server JBoss è JMX MBean server: questo rende application server estremamente semplice da estendere con nuove funzionalità. Aggiungere nuovi servizi o componenti application-specific si traduce nella creazione di nuovi MBean e nella loro registrazione al server MBean. Grazie ad JMX questi componenti possono essere gestiti come MBean. Inoltre queste implementazioni non essendo più  monolitiche ma a microkernel consentono di aggiungere nuove funzionalità a runtime.
 
 ![single tier](./img/img76.png)
@@ -4426,11 +4481,11 @@ Jboss cache= infinispan che supera ala tecnologia precendete ema stessi concetti
 
 ### Clustering Service
 
-L’abilitazione del clustering service è possibile con la configurazione dell’application server, lo si lancia con tutte le configurazioni necessarie, utilizzando la configurazione “all” di JBoss
+L’abilitazione del clustering service è possibile con la configurazione dell’application server, lo si lancia con tutte le configurazioni necessarie, utilizzando la configurazione _all_ di JBoss
 
 ```
- run.bat -c all
- ./run.sh -c all
+run.bat -c all
+./run.sh -c all
 ```
 
 Abilita tutte le librerie necessarie al clustering, come JGroups.jar per il multicast di grruppo affidabile, jbosscache.jar e la cache distribuita
@@ -4439,7 +4494,7 @@ Abilita tutte le librerie necessarie al clustering, come JGroups.jar per il mult
 
 Cache memoria tabellare per la memorizzazione di risorse. Le cache distribuite sono cache non più residente su una sola macchina, ma distribuita su più macchine del clustering, è una risorsa vista come memoria a cui possono accedere una serie di istanze dell’application server, è una sorta di stato distribuito dell’application server. La memoria distribuita sarà accessibile da più parti del cluster. L’importanza della cache distribuita risiede nella volontà di far fronte ai guasti, per questo è necessario per i fail over delle macchine accedere allo stato di ciascuna macchina quando si lavora in high avaiability. Questo consente alla macchina che sostituisce quella fallita di recuperare lo  stato  applicativo attraverso la cache distribuita e quindi riprendere l’esecuzione dalla dove era stata lasciata.
 
-Un cluster (o Partition) JBoss è semplicemente un insieme di nodi ed ogni nodo JBoss è definito come una istanza del server JBoss. Ovviamente ci sono più nodi “logici” su una stessa macchina, con differenti porte associate, e allo stesso tempo possono esserci più risorse fisiche. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non possiamo fare il deployment di tutti i nodi llogici sulla stessa macchina fisica, ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
+Un cluster (o Partition) JBoss è semplicemente un insieme di nodi ed ogni nodo JBoss è definito come una istanza del server JBoss. Ovviamente ci sono più nodi "logici" su una stessa macchina, con differenti porte associate, e allo stesso tempo possono esserci più risorse fisiche. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non possiamo fare il deployment di tutti i nodi llogici sulla stessa macchina fisica, ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
 
 Una volta stabilito il livello di replicazione è necessario un sistema di comunicazione per coordinare le copie. JGroups è lo strumento che consente la comunicazione multicast in JBoss. JGroups utilizza canali di comnicazione  e tiene traccia automaticamente di chi fa parte del cluster sulla base di configurazione e nome del canale JGroups utilizzato, una volta creato questo gruppo dinamico, JGroups supporta scambio affidabile di messaggi all’interno del cluster, a default la comunicazione multicast avviene con il protocollo UDP, ma è data anche la possibilità di utilizzare TCP con connessioni punto-punto costose. UDP è ottimo per connessioni multicast locali, quando invece si vuole lavorare con multicast remoti si può scegliere anche TCP per una maggiore portabilità, pagata però con un costo maggiore della comunicazione. A default JBoss utilizza 4 canali JGroups separati: un canale usato dal servizio general-purpose di High Avaiability partition HAPartition e tre canali creati da JBoss Cache, anche per supportare replicazione dello stato.
 
@@ -4448,26 +4503,42 @@ La configurazione della comunicazione in JGroups avviene con il file cluster-ser
 ```
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
 name="jboss:service={jboss.partition.name:DefaultPartition}">
-…
+
+...
+
 <attribute name="PartitionConfig">
 <Config>
 <UDP mcast_addr="${jboss.partition.udpGroup:228.1.2.3}"
-mcast_port="${jboss.hapartition.mcast_port:45566}”
-tos="8”
-<PING timeout="2000"				//intervalli per determinati msg
-down_thread="false" up_thread="false"	//ping per scoprire I membri
+mcast_port="${jboss.hapartition.mcast_port:45566}"
+tos="8"
+
+...
+
+<! -- intervalli per determinati msg -->
+<! -- ping per scoprire I membri -->
+<PING timeout="2000"
+down_thread="false" up_thread="false"
 num_initial_members="3"/>
 
-<MERGE2 max_interval="100000”			//per fondere gruppi già scoperti
+...
+
+<! -- per fondere gruppi già scoperti -->
+<MERGE2 max_interval="100000"
 down_thread="false" up_thread="false"
 min_interval="20000"/>
-…
-<FD timeout="10000" max_tries="5"			//timeout per Failure detection
+
+...
+
+<! -- timeout per Failure detection -->
+<FD timeout="10000" max_tries="5"
 down_thread="false" up_thread="false" shun="true"/>
 
+<! -- imeout se il nodo sospetto torna con tempi accettabili di timeout -->
 <VERIFY_SUSPECT timeout="1500" down_thread="false" //ritardi nella risposta 
-up_thread="false"/>				//timeout se il nodo sospetto torna con tempi accettabili di timeout 
-…
+up_thread="false"/>
+
+...
+
 <pbcast.STATE_TRANSFER down_thread="false" up_thread="false"/>
 ```
 
@@ -4482,21 +4553,19 @@ Esempio di configurazione HA Partition
 ```
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
 name="jboss:service=DefaultPartition">
-<attribute name="PartitionName">
-${jboss.partition.name:DefaultPartition}</attribute>
-<! – Indirizzo usato per determinare il nome del nodo -->
-<attribute name="NodeAddress">${jboss.bind.address}</attribute>
-<! -- deadlock detection abilitata o no -->
-<attribute name="DeadlockDetection">False</attribute>
-<! -- Max time (in ms) di attesa per il completamento del trasferimento di
-stato -->
-<attribute name="StateTransferTimeout">30000</attribute>
-<! – configurazione protocolli JGroups -->
-<attribute name="PartitionConfig”>... ... </attribute>
+    <attribute name="PartitionName">${jboss.partition.name:DefaultPartition}</attribute>
+    <! – Indirizzo usato per determinare il nome del nodo -->
+    <attribute name="NodeAddress">${jboss.bind.address}</attribute>
+    <! -- deadlock detection abilitata o no -->
+    <attribute name="DeadlockDetection">False</attribute>
+    <! -- Max time (in ms) di attesa per il completamento del trasferimento di stato -->
+    <attribute name="StateTransferTimeout">30000</attribute>
+    <! -- configurazione protocolli JGroups -->
+    <attribute name="PartitionConfig">...</attribute>
 </mbean>
 ```
 
-Parametri che lavorano più in alto come “state transfer timeout”.
+Parametri che lavorano più in alto come "state transfer timeout".
 Per fare parte dello stesso cluster, i nodi devono semplicemente avere lo stesso PartitionName e gli stessi elementi PartitionConfig. Necessità di configurare i protocolli JGroups e la definizione di timeout ad alto livello per gestire la replicazione, per esempio il tempo massimo per sincronizzare lo stato tra diversi nodi.
 
 Il deployment può avvenire in due modi, vi è la possibilità di deployment omogeneo in cui avviene la replica su tutti i nodi logici del cluster, questo facilita la gestione ed evita diversi possibili porblemi ed è reso automatico attraverso farming, oppure deployment disomogeneo generalmente sconsigliato dagli sviluppatori JBoss, per diverse ragioni, tra cui la mancanza di supporto a transazioni distribuite sul cluster. Il clustering omogeno è quello più utilizzato.
@@ -4524,7 +4593,7 @@ JBoss Cache è un framework per il supporto a cache distribuita, che può essere
 
 ### Failover e Load Balancing di sessioni http
 
-La replicazione dello stato della sessione è gestita da JBoss, la configurazione “all” di JBoss include session state replication. Occorre configurare session state replication da gestire tramite JBoss Cache. Il  load balancing è invece gestito usualmente da un software esterno o a livello hardware:  Ad es., suggeriti da JBoss Apache mod_jk o più recentemente Apache mod_cluster. In questo caso si parla di replicazione dello stato in caso di thin client (non cambia nel fat client ma invece di avere solo http abbiamo lo smart proxy in più lato client).
+La replicazione dello stato della sessione è gestita da JBoss, la configurazione _all_ di JBoss include session state replication. Occorre configurare session state replication da gestire tramite JBoss Cache. Il  load balancing è invece gestito usualmente da un software esterno o a livello hardware:  Ad es., suggeriti da JBoss Apache mod_jk o più recentemente Apache mod_cluster. In questo caso si parla di replicazione dello stato in caso di thin client (non cambia nel fat client ma invece di avere solo http abbiamo lo smart proxy in più lato client).
 
 ### Proxy mod-cluster apache differenza dal proxy tradizionale mod-jk
 
@@ -4574,10 +4643,10 @@ Per qunto riguarda il load balancer devono essere configurate le parti di gestio
 ### Configurazioni di Management
 
 ```
-<security-realms>…</security-realms>
-<audit-log>…</audit-log>
-<management-interfaces>…</management-interfaces>
-<access-control provider="simple">…</access-control>
+<security-realms>...</security-realms>
+<audit-log>...</audit-log>
+<management-interfaces>...</management-interfaces>
+<access-control provider="simple">...</access-control>
 ```
 
 ![single tier](./img/img84.png)
@@ -4603,10 +4672,12 @@ Configurazioni di interfaccia in particolare gli indirizzi in cui viene reso dip
 
 ```
 <interfaces>
-<interface name="public">
-<inet-address value="${jboss.bind.address:127.0.0.1}"/>
-</interface>
-...
+    <interface name="public">
+    <inet-address value="${jboss.bind.address:127.0.0.1}"/>
+    </interface>
+
+    ...
+
 </interfaces>
 ```
 
@@ -4615,9 +4686,11 @@ Configurazioni Socket-Binding-Group
 Gruppo dove si inoltrano tutte le richieste per la gestione, qua si definisce l’indirizzo di multicast dove lavorare.
 
 ```
-<socket-binding-group name="standard-sockets" defaultinterface="public" port-offset="${jboss.socket.binding.port-offset:0}"> …
-<socket-binding name="modcluster" interface="private"
-multicastaddress="${jboss.modcluster.multicast.address:224.0.1.105}" multicastport="23364"/> 3…
+<socket-binding-group name="standard-sockets" defaultinterface="public" port-offset="${jboss.socket.binding.port-offset:0}">
+
+...
+
+    <socket-binding name="modcluster" interface="private" multicastaddress="${jboss.modcluster.multicast.address:224.0.1.105}" multicastport="23364"/>3</socket-binding>
 </socket-binding-group>
 ```
 
