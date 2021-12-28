@@ -219,10 +219,10 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       <a href="#">Big Data</a>
       <ul>
         <li><a href="#">Definizione</a></li>
-        <li><a href="#">Stream-processing</a></li>
+        <li><a href="#">Stream Processing</a></li>
         <li><a href="#">Batch Processing</a></li>
         <li><a href="#">Hadoop Distributed File System (HDFS)</a></li>
-        <li><a href="#">Map-Reduce</a></li>
+        <li><a href="#">MapReduce</a></li>
       </ul>
     </li>
   </ol>
@@ -4684,9 +4684,9 @@ Altre definizioni di Big Data includono anche un'altra V cioè la **variabilità
 
 ![single tier](./img/img85.png)
 
-Il processamento dei Big Data può avvenire in due modi: o tramite stream-processing o tramite batch processing.
+Il processamento dei Big Data può avvenire in due modi: o tramite Stream Processing o tramite Batch Processing.
 
-### Stream-processing
+### Stream Processing
 
 Questo tipo di processamento è orientato ad applicazioni che richiedono on-the-fly processing, filtering e analisi di flussi di dati come ad esempio l'uso di sensori (ambientali, industriali, video sorveglianza, GPS, etc), log di file di server network/Web/application, dati di transazioni ad alto rate (transazioni finanziarie, chiamate telefoniche) etc. Un sistema stream processing famoso è InfoSphere Streams sviluppato da IBM.
 
