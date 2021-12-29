@@ -5103,4 +5103,350 @@ var server=app.listen(3000,function() {
 
 Codice per attivare il server web e restituisce un `helloworld` relativo alla pagina di ingresso.
 
+## Docker
 
+### Container, microservizi e DevOps
+
+Il tutto si basa su container, non più applicativi, ma che diventano strumenti di virtualizzazione che nascono sui sistemi operativi, in particolare Linux, che consentono in un unico punto di avere la parte di applicazione e quindi stack software applicativo, sia tutte le configurazioni necessarie. Docker è un’evoluzione verso una grana più grossa e leggera dei framework analizzati fino ad ora.
+
+Per avere applicazioni molto portabili e scalabili è molto importante esprimerle in termini di micro-servizi, ovvero piccoli componenti che compongono un’applicazione distribuita costituita da servizi deploiabili separatamente che eseguono funzioni specifiche di business e comunicano con interfacce web. I micro-servizi sono piccoli blocchi di codice riutilizzabili che compongono l’applicazione. L’obiettivo è quello di rendere l’applicazione scalabile e meno sottoposta all’incremento del tempo necessario al deployment nell’ambiente dei DevOps.
+
+I micro-servizi sono un cambio di paradigma rispetto le applicazioni monolitiche che hanno un codice organizzato in un unico blocco, poiché portano all’isolamento e separazione di quelle funzionalità di base che composte insieme danno le stesse risposte dell’applicazione monolitica iniziale. Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile in termini di scalabilità dell’applicazione e relative performance, in termini di fault tolerance e manutenibilità dell’applicazione stessa. Al contrario in una applicazione monolitica è necessario replicare tutta l’applicazione quando magari solo una funzionalità di questa è un collo di bottiglia per le performance. Con la suddivisione e in micro-servizi si può replicare solo il micro-servizio collo di bottiglia, questo è molto interessante in un’architettura orizzontale dove si replicano sui vari host solo i servizi più richiesti.
+
+![single tier](./img/img98.png)
+
+Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database, vi è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB nei database in cui i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio si può avere la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali eccetera.
+
+![single tier](./img/img99.png)
+
+Legato al mondo dei micro-servizi vi è quello dei DevOps. I DevOps garantiscono uno sviluppo agile dell’applicazione consentendo di unire la parte applicativa a quella infrastrutturale, velocizzando il processo di cambiamento e correzione delle applicazioni. L’idea di mettere insieme micro-servizi e DevOps sopraggiunge per la necessità di preparare l’ambiente per controllare le nuove realise, installarle, verificarle e poter facilmente tornare indietro, garantendo QoS consistenza ed evitando crash e altri problemi.
+
+I DevOps vanno nella direzione del continuo ciclo di sviluppo, seguendo le fasi di Design Build Deploy teste e Release senza mai fermarsi in un ciclo infinito. Per questo un’applicazione può continuamente essere aggiornata durante la sua esecuzione senza la necessità di interrompere o interferire con l’attuale versione. Il continuo processo di test e rilascio è per struttura più semplice da utilizzare in un’applicazione a micro-servizi.
+
+Il container è la piattaforma per il micro-servizio. Il container è un artefatto che si porta dietro tutto il necessario per l’esecuzione del micro-servizio, non sono necessari altri supporti esterni. I micro-servizi possono essere contenuti in un container che diventa un modo per trasportare il micro-servizio da una parte ad un’altra. Un’altra caratteristica fondamentale è che sia auto contenuto ovvero contiene la logica applicativa, tutta a parte di deployment e operation garantendo la correttezza dell’esecuzione. Il container richiama sia il concetto sia auto contenimento che di standardizzazione.  Il container, quindi, è in grado di contenere il micro-servizio e tutto il suo supporto dato dai DevOps.
+
+Da un punto di vista tecnico si possono mettere a confronto i container con le macchine virtuali. I container al contrario delle macchine virtuali consentono di non avere più il sistema operativo guest in ciascuna virtualizzazione, ma tale sistema operativo si trova al di sopra dell’infrastruttura. Per la gestione dei container vi è un container engine che poggia sul sistema operativo e garantisce l’isolamento dei container e da la visione al container di avere accesso diretto alle chiamate del sistema operativo e alle risorse. Quindi il container engine crea spazi isolati per i container dandogli l’astrazione necessaria rispetto al sistema operativo. Dal punto di vista delle performance i container sono molto più veloci per l’avvio di un container si parla di centesimi di secondi/secondi, mentre per una virtual machine di grosse dimensioni di minuti. L’isolamento del container a livello di SO garantisce l’isolamento delle risorse, poiché il container vede il SO come se fosse suo e della sicurezza. Dal punto di vista delle risorse i container le percepiscono isolate anche se alcune risorse come networking memoria eccetera non sono semplici da isolare.
+
+Nel senso della process isolation si è iniziato dall’isolamento dei processi arrivando ai container attuali. Vi è poi un problema parallelo che è quello del supporto ai container che invece ha visto la sua massima evoluzione con Docker. Quindi serve il meccanismo di sistema per isolare il container, mentre dal punto di vista dello sviluppo e dei DevOps il tema è la gestione dei container e la gestione delle relative immagini.
+
+![single tier](./img/img100.png)
+
+Dal punto di vista del marketing la containerizzazione ha avuto un grande successo poiché risolve a tutti gli effetti il problema “non funziona su questa macchina”, poiché il container risolve tutte le dipendenze oltre che a fornire il servizio preposto, è leggero perché condivide il kernel con altri container ed esegue come processo isolato. Inoltre, ha una maggiore efficienza rispetto alla virtual machine nei processi di lettura e scrittura, inoltre con l’utilizzo di immagini si hanno servizi facilmente riproducibili e scalabili.
+
+I container sono la giusta piattaforma per un micro-servizio, poiché sono soluzioni leggere e virtualizzate oltre ad essere corretti, auto contenuti e ben isolati, sono in grado allo stesso tempo di condividere le parti di supporto interne al kernel del sistema operativo e non sono specifici per una piattaforma per questo sono estremamente portabili. Infine, possono ospitare i micro-servizi e le loro applicazioni con tutte le loro parti e le loro dipendenze.
+
+### Docker
+
+Docker è un insieme di tool che facilita la gestione di container, inizialmente lavorava solo su Linux al momento funziona anche su Windows, è molto diffuso a partire dal 2013 anno di creazione del progetto.
+
+Docker offre molti strumenti non solo per ospitare container ma anche per gestirli, controllare le migrazioni dei componenti e le loro immagini, infatti, è molto utile per indicare cosa installare e i componenti da utilizzare. I micro-servizi possono essere ospitati e controllati dal container facilmente, inoltre, Docker può consigliare come progettare e pacchettizzare componenti autonomi. Inoltre, i container offrono la possibilità di accedere con funzioni web ai micro-servizi ospitati, instandoli e reinstallandoli facilmente. Per Docker basta utilizzare una piattaforma hardware, il sistema operativo, le librerie di sistema e le dipendenze dei processi durante la fase di sviluppo test e produzione del software. Dal punto di vista dell’ingegneria del software in cui si è passati da un concetto di applicazione a quello di servizio, il processo di creazione viene basato nella realizzazione sui container e sullo sviluppo con i DevOps.
+
+Docker è organizzato in un registri-repository da cui scaricare i componenti ovvero le immagini, un cliente che comanda l’intero deployment ovvero richiede all’host certe operazioni e un host che consente di scaricare l’immagini dal registry e adoperarle sul container dove eseguire l’applicazione.
+
+![single tier](./img/img101.png)
+
+Docker per la configurazione dinamica e statica utilizza orchestratori, che servono per gestire al meglio i micro-servizi in base al loro utilizzo e la loro richiesta.
+
+Docker consente la configurazione, il deployment, e la gestione del ciclo di vita dei container. L’architettura è client-server, il docker daemon realizza i servizi per gestire il ciclo di vita dei container, poi vi sono diverse API rest e Docker CLI.
+
+Il Docker daemon ascolta le richieste delle Docker API e gestisce i componenti Docker come immagini, network e volumes. Il Docker Client è la parte utilizzata dagli utenti per interagire con Docker, in particolare può utilizzare comandi, come Docker run che avvia il container, il cliente li invia al dockerd che li porta fuori. I Docker registry salvano le immagini mentre Docker Hub e Docker Cloud sono registri pubblici, a default Docker cerca immagini su Docker Hub si può eventualmente anche eseguire un registry personale. I registry sono i componenti di distribuzione per Docker.
+
+Le immagini Docker sono organizzate per layer, sono componenti read-only per questo ad ogni nuova immagine si va ad aggiungere una nuova parte, lavorando per differenze, aggiungendo solo le modifiche rispetto all’immagine precedente. Le immagini sono identificate da Hash con convenzioni per il naming. Le immagini Docker sono utilizzate per creare container e sono definite come _build components_ di Docker stesso.
+
+I Docker container contengono tutto ciò che è necessario ad un’applicazione per eseguire e l’applicazione stessa, sono simili a una directory in quanto il container in esecuzione vede un file system proprio e isolato risptto al resto, dove sono presenti tutti i componenti necessari ad eseguire l’applicazione. e sono creati a partire da un’immagine Docker. Gli stati possibili per un container Docker sono: run, started, stopped, moved, e deleted. I container sono i _run components_ di Docker.
+
+Si possono usare registry pubblici o locali, i registry pubblici contengono tantissime immagini già pronte, il Docker CLI interagendo con il Docker Daemon può scaricare le immagini e a partire da quelle può istanziare i vari container, ciò può essere fatto sulla macchina locale in locale, oppure su un host remoto utilizzando un registry pubblico, tipicamente Docker Hub, oppure utilizzando dei propri registry privati.
+
+### Passi della gestione del ciclo di vita del container
+
+Registry locale o remoto da cui richiedere e scaricare immagini con operazione di pull, oppure inviare aggiornamenti delle immagini presenti con l’operazione di push. Inoltre, è presente un backup locale in cui salvare immagini con save o caricarle con load. Le immagini possono essere istanziate sul container con il comando di run, di seguito il container può essere avviato con start, fermato con stop oppure riavvito con restart. Se vengono effettuati cambiamenti di configurazioni aggiunta di librerie nel filesystem con la commit si può aggiornare l’immagine ed eventualmente aggiungere nuove informazioni attraverso tag. Il DockerFile in modo assertivo enuncia delle direttive che attraverso l’operazione di build consentono di creare nuove immagini.
+
+![single tier](./img/img102.png)
+
+### Immagini Docker
+
+La gestione delle immagini in Docker è automatizzata e ottimizzata, le immagini create sono organizzate su layer poiché si utilizza una logica di composizione, che consente una volta creata un’immagine di accedervi in sola lettura, ogni immagine è read-only per ogni modifica in scrittura viene aggiunto un nuovo layer all’immagine senza modificare il layer precedente questo approccio è detto copy-on-write. In sintesi, si lavora per differenze ogni nuovo layer aggiunge le differenze rispetto al layer precedente l’immagine finale è la somma di tutti i layer creati per quell’immagine. Ogni layer è univocamente identificato da un hash con l’algoritmo sha-256 crittograficamente sicuro per l’identificazione dell’immagine. Se sono già stati scaricati layer per un’immagine non sarà necessario scaricarli nuovamente, dovranno essere scaricati unicamente i layer mancanti per una determinata immagine, nel Docker Daemon viene fatto caching di layer e questo evita di scaricare nuovamente gli stessi layer garantendo un grande vantaggio in termini di efficienza nell’utilizzo del disco e facilità nella modifica.
+
+![single tier](./img/img103.png)
+
+Convenzioni per il naming delle immagini, devono essere indicati il nome dell’host nei registry e la porta, username, reponame ed eventuali tag.
+
+Il Docker file serve per definire e creare nuove immagini, il run nel docker file è una direttiva per lanciare le configurazioni e il software. Facilita la configurazione dell’immagine e la crea. Il Docker file presente parte da due immagini preesistenti che vengono modificate, con l’aggiunta di layer software vengono aggiunti layer all’immagine stessa.
+
+![single tier](./img/img104.png)
+
+Docker non è solo un insieme di strumenti ma una piattaforma può lavorare ad eventi nella gestione dei container in esecuzione. Docker offre la possibilità di utilizzare volumi, connettere tra loro i container, e la possibilità di gestire le autorizzazioni e la sicurezza dei container.
+
+![single tier](./img/img105.png)
+
+Docker possiede molti plugin tra questi sono molto importanti i plugin di rete e per questo Docker consente di connettere risorse e container all’esterno e all’interno, offre anche virtualizzazioni in un certo senso è un Network as a Service. Un’altra parte importante è la persistenza prevede diverse modalità, come montare un’area di memoria come un file system ovvero uno storage persistente, che sarà quindi realizzato in memory, dà la possibilità di vedere il file system locale ospitante, oppure di avere una sandbox detta Docker area che limita lo spazio di visibilità per il container.
+
+Dal punto di vista della configurazione si possono configurare le esecuzioni dei container. Docker compose parte da immagini su cui si è già lavorato e andarle a comporre in un nuovo container, questo può essere utile per mantenere separato in un’applicazione la parte di stato, dalla logica applicativa, dal punto di vista del compose container diversi vengono visti come un unico container il tutto, il tutto può essere scorporato ed eseguito separatamente oppure interamente. Con il Docker Compose si agisce solo in locale quindi possono essere utilizzate immagini remote, ma prima devono essere scaricate in locale.
+
+Esempio applicazione a tre livelli per la gestione della collezione di libri
+
+Applicazione a tre livelli con client tier, application tier e database tier. L’applicaztion tier utilizza Spring Boot per sviluppare un’applicazione con una configurazione minima, con Spring boot è possibile utilizzare Tomcat come server embedded. Per quanto riguarda la persistenza si può utilizzare JPA sempre nell’application tier che grazie alle annotazioni risulta semplice da configurare, l’unico file da specificare è application.yml dove scrivere l’URL per accedere al database, username, password ed eventuali parametri aggiuntivi.
+
+´´´
+spring:
+    profiles: container
+        datasource:
+        driverClassName: ${DATABASE_DRIVER}
+        url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useSSL=false&allowPublicKeyRetrieval=true
+        username: ${DATABASE_USER}
+        password: ${DATABASE_PASSWORD}
+        tomcat:
+            test-while-idle: true
+            time-between-eviction-runs-millis: 60000
+            validation-query: SELECT 1
+    jpa:
+        hibernate.ddl-auto: create-drop
+        properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+´´´
+
+L’applicazione può essere organizzata creando un container per Spring e un container per MySQL e i volumi. Il primo passo per definire l’immagine per ciascun container è scrivere il DockerFile per definire i passaggi di creazione dell’immagine e metterla in esecuzione. Una volta definito il dockerfile dove viene scaricata la jdk e vengono aggiunte le parti che servono a configurare l’applicazione da distribuire. Per quanto riguarda invece l‘immagine di MySQL si utilizza l’immagine di MySQL presente nel DockerHub. Rispetto al database va scritto uno script che verifichi che la connessione funzione e che si connetta correttamente al database. I comandi per fare l’upload dell’immagine sono molto semplici. Infine, notare come immagine pesi solo 116 MB, molto più leggera rispetto all’immagine di una Virtual Machine.
+
+```
+1 FROM openjdk:8-jre-alpine
+2 MAINTAINER Dmitrij David Padalino Montenero
+3
+5 VOLUME /tmp
+4 EXPOSE 8080
+6
+7 ARG JAR_FILE
+8 ADD target/${JAR_FILE} app.jar
+9 ADD wrapper.sh wrapper.sh
+10
+11 RUN apk add --update bash && rm -rf /var/cache/apk/*
+12 RUN bash -c 'chmod +x /wrapper.sh'
+13 RUN bash -c 'touch /app.jar'
+14
+15 ENTRYPOINT ["/bin/bash", "/wrapper.sh"]
+
+1 #!/bin/bash
+2 while ! exec 6<>/dev/tcp/${DATABASE_HOST}/${DATABASE_PORT}; do
+3 echo "Trying to connect to MySQL at ${DATABASE_PORT}..."
+4 sleep 10
+5 done
+6
+7 java -Djava.security.egd=file:/dev/./urandom-Dspring.profiles.active=container -jar /app.jar
+
+$ docker build –t librarydemo
+$ docker login
+$ docker tag librarydemo davidmonnuar/springbootlibrarydemo:1.0
+$ docker push davidmonnuar/springbootlibrarydemo:1.0
+```
+
+### Docker SWARM
+
+Swarm è un orchestratore di risorse container, è un engine che elabora degli script di configurazione di un cluster ed esegue in continuazione garantendo che ciò che viene scritto nello script sia realizzato nel sistema che sta eseguendo. Nella terminologia di Docker e Swarm si utilizza il termine servizio che sta ad indicare i container di produzione che istanziano un servizio concettuale. Un altro termine importante è Stack che sta ad indicare un gruppo di servizi in relazione tra di loro che condividono dipendenze e possono essere orchestrati e scalati insieme.
+
+Swarm è un gruppo di macchine fisiche o virtuali che eseguono Docker all’interno di un cluster. Le macchine su cui Docker viene eseguito possono essere fisiche o a loro volta virtual machine. Nell’esempio sottostante viene mostrata l’inizializzazione di un nodo master e un nodo worker.
+
+Virtual machines creation
+
+```
+$ docker-machine create –driver virtualbox myvm1
+$ docker-machine create –driver virtualbox myvm2
+$ docker-machine ls
+NAME 	ACTIVE 		DRIVER 		STATE 		URL 			SWARM DOCKER ERRORS
+myvm1 	- 		virtualbox 	Running 	tcp://192.168.99.100:2376 v18.06.1-ce
+myvm2 	- 		virtualbox 	Running 	tcp://192.168.99.101:2376 v18.06.1-ce
+```
+
+Cluster initialization
+
+```
+$ docker-machine ssh myvm1 "docker swarm init --advertise-addr 192.168.99.100:2377
+Swarm initialized: current node 0unmutpbeeeytxpquhiy1b6ok is now a manager.
+To add a worker to this swarm, run the following command:
+docker swarm join \
+--token SWMTKN-1-4y8bpxyrbno89dapkkwyjdw3268qfzp128tpf5hecjdti5hb1k-00oatopl9dzw3jejbietxa9vp 192.168.99.100:2377
+
+$ docker-machine ssh myvm2 "docker swarm join --token SWMTKN-1-4y8bpxyrbno89dapkkwyjdw3268qfzp128tpf5hecjdti5hb1k00oatopl9dzw3jejbietxa9vp 192.168.99.100:2377"
+
+$ docker-machine ssh myvm1 "docker node ls"
+ID HOSTNAME STATUS AVAILABILITY MANAGER STATUS ENGINE VERSION
+0unmutpbeeeytxpquhiy1b6ok * myvm1 Ready Active Leader 18.06.1-ce
+ktvyi0nypz31l645iej8torkx myvm2 Ready Active 18.06.1-ce
+```
+
+Nel caso dell’esempio proposto i servizi presenti sono un database SQL mysqldb, un servizio spring, un virtualizer, poi vi sono il volume per la persistenza e la rete per interconnetterei i container. Effettuare un comando di Docker Stack vuol dire dispiegare l’applicazione con tutte le sue dipendenze.
+
+File di deployment letto da Docker Swarm, inizialmente si definiscono i servizi, che sono il servizio del database mysqldb a cui richiediamo l’ultima versione dell’immagine disponibile nel Docker Hub, il Docker file non è necessario perché si utilizza l’immagine di un Docker Hub pubblico.  Poi è necessario prendere i volumi, necessaria per salvare il tutto in maiera persistente. Dal punto di vista del deployment con placement mettiamo un vincolo sul fatto che i servizi mysqldb e il visualizer dovranno trovarsi sulla stessa macchina ovvero il nodo con il ruolo di manager. Poi vi sono alcune configurazioni di ambiente, infine dichiariamo che il network deve essere gestito con il modulo webnet. Per la parte di application server si definisce il servizio Spring. In primo luogo, si richiama l’immagine creata in precedenza per Spring, qui è possibile dichiarare delle dipendenze, in questo caso rispetto al servizio mysqldb. Deploy replicas consente di dire quante repliche si desiderano per il deployment, oltre ad indicare la politica sul restart a seguito di un fallimento del container, infine è possibile limitare la quantità di risorse da allocare, vi sono poi alcuni parametri di configurazione, come le porte, l’ambiente di configurazione per mysqldb e la rete a cui collegarsi webnet. Per il volume e il network si utilizza il default, ovvero quello locale, a questo punto questo è il deployment è terminato.
+
+Vi sono due macchine virtuali del cluster dette master e worker, MySQL e Visualizer sono sulla stessa macchina, mentre i cinque container Spring replicati sono distribuiti sulle due macchine, di come distribuirli tra le due macchine se ne occupa Swarm. Il visualizzatore consente di mostrare il deployment di Docker Swarm. Per la gestione delle richieste che arrivano ai cinque container vi è Swarm load-balancer, può risiedere sulle macchine dell cluster e all’arrivo delle richieste le smista sui nodi in cui si trova l’application server Spring, in questo modo si può realizzare il loadbalancing e scalare l’applicazione. Swarm però non consente di monitorare in continuazione il funzionamento e scalare dinamicamente i container, permette però cambiando il file di deployment Docker Compose file è possibile indicare un numero diverso di repliche, istanziarne di nuove e quindi scalare l’applicazione quando Swarm va nuovamente a consumare il file di depoyment modificato, questo avviene però in modo statico non dinamico.
+
+```
+$ docker-machine ssh myvm1 "docker stack deploy -c docker-compose.yml librarywebapp"
+```
+
+## Kubernetes
+
+Kubernetes è un orchestratore di container compatibile con Docker, la gestione dei container è dinamica e non statica, questo gli consente di offrire molte più funzionalità rispetto a Docker Swarm. Kubernetes è pensato per lavorare in ambienti cloud, infatti da una parte, quella interna, è un orchestratore di container dall’altra parte esternamente si interfaccia con i Virtual Infrastructure Manager, ovvero con i controllori di API Rest, che dispongono i cloud provider per poter andare prendere le risorse che servono per formare l’infrastruttura fisica su cui distribuire i container. Questo strumento facilita molto la migrazione dei container da un’ambiente locale a uno più largo come il cloud. I benefici sono la gestione fine grained e dinamica rispetto a tutte l problematiche di management come scaling e automatizzazione del rollout e del rollback, una volta sviluppata una nuova versione è possibile mandare ovunque in produzione e tornare indietro senza problemi in caso di bug o errori. Kubernetes consente di effettuare il rollback facilmente. Poi vi è la gestione dello scaling con la possibilità di scaling intelligente fine grained e definibile dal programmatore e non solo con round robin, poi vi è tutta la parte di fault tolerance e la possibilità di portare i carichi su cloud diversi.
+
+L’obiettivo principale di Kubernetes è nascondere la complessità di gestione di grandi quantità di container fornendo agli utilizzatori un set di API Rest. Kubernetes è estremamente protabile, infatti, si interfaccia con tutte le principali Cloud Platform private o pubbliche come Amazon AWS, Azure, Openstack, o resource manager come Apache Mesos. Per un orchestratore del genere è fondamentale fornire il deployment di applicazioni multi-container, garantire la continuità dei servizi grazie alla sua gestione di fault tolerance, rollback e rollout, scalare autonomamente e dinamicamente le applicazioni e rendere tutta l’architettura indipendente dall’infrastruttura sottostante.
+
+### Architettura
+
+L’architettura di Kubernetes è abbastanza complessa, prevede di avere una serie di nodi worker chiamati Node all’interno dei quali sono istanziati i container, questi nodi sono controllati da diversi componenti di controllo racchiusi nel Control Plane, ognuno di loro è dotato di un agente locale Kubelet per interagire con il Control Plane e una parte per la comunicazione detto kube-proxy. L’architettura ha componenti tipici del cloud come il componente API, oppure gli agenti locali su tutti i nodi presenti che consentono di gestire il ciclo di vita dei container. La parte di controllo attraverso il cloud controller manager parla con un cloud provider pubblico attraverso le Cloud Provider API.
+
+![single tier](./img/img106.png)
+
+### Deployment
+
+L’architettura è di tipo master-slave. Il nodo master può essere uno o più di uno, poiché viene replicato al fine della fault tolerance, le repliche però agiscono come un componente solo. L’Etcd rappresentato come un database è l’unico componete che mantiene lo stato dell’infrastruttura, lo stato è mantenuto il più locale possibile e auto contenuto per evitare di creare delle dipendenze nel distribuito fra le varie macchine, in questo modo tutte le macchine worker possono agire anche nel caso in cui momentaneamente perdano la connettività con il controller per garantire il massimo disaccoppiamento e asincronicità possibile. Infine, vi è il client che può richiedere le funzionalità di Kubernetes per effettuare il deployment delle applicazioni.
+
+![single tier](./img/img107.png)
+
+### ETCD
+
+ETCD è un archivio chiave-valore distribuito fortemente consistente che fornisce un modo affidabile per memorizzare i dati a cui è necessario accedere da a sistema distribuito o cluster di macchine. Gestisce le elezioni dei leader durante le partizioni di rete e può tollerare il guasto della macchina, anche nel nodo master.
+
+### Controller
+
+Il controller manager Kubernetes è un demone che incorpora i loop di controllo principali gestiti con Kubernetes. In Kubernetes, un controller è un loop di controllo che osserva lo stato condiviso del cluster attraverso l'API server e apporta modifiche tentando di spostare lo stato corrente verso lo stato desiderato. Esempi di controller forniti oggi con Kubernetes sono il controller di replica, controller degli endpoint, controller dello spazio dei nomi e controller degli account di servizio.
+
+### Cloud Controller Manager
+
+Il cloud-controller-manager è un componente del control plane di Kubernetes che incorpora la logica di controllo specifica del cloud. Il cloud-controller-manager consente di fra interagire il cluster a quello del provider cloud API e separa i componenti che interagiscono con quella piattaforma cloud da componenti che interagiscono solo con il cluster. Disaccoppiando la logica di interoperabilità tra Kubernetes e l’infrastruttura cloud sottostante il componente cloud-controller-manager abilita il cloud provider a rilasciare funzionalità a un ritmo diverso rispetto al progetto Kubernetes. Il cloud-controller-manager è strutturato utilizzando un meccanismo di plug-in che consente l’integrazione delle piattaforme di diversi provider cloud con Kubernetes.
+
+### Kubelet
+
+Il kubelet è il principale node agent che esegue su ogni nodo, questo componente logico può registrare il nodo con l'APIserver. Il kubelet funziona in termini di PodSpec, un PodSpec è un oggetto YAML o JSON che descrive un pod. Di conseguenza il kubelet accetta una serie di PodSpec forniti attraverso vari meccanismi (principalmente tramite l'apiserver) e assicura che i container descritti in quelle PodSpecs siano running e in salute.
+
+### Pod
+
+Un Pod è un'astrazione Kubernetes che rappresenta un gruppo di uno o più application container (come Docker) e alcune risorse condivise per quei container. Tali risorse includono: archiviazione condivisa, come volumi, networking, come indirizzo IP cluster univoco ed informazioni su come eseguire ciascun contenitore, come la versione dell'immagine del contenitore o specifiche porte da usare. Un pod modella un host logico specifico dell'applicazione e può contenere diverse application container che sono strettamente accoppiati.
+
+Per esempio, il pod potrebbe includere sia il contenitore che il Node.js e un container diverso che alimenta i dati da pubblicare dal Node.js web server. I container in un pod condividono l’indirizzo IP e lo spazio delle porte, sono sempre co-localizzati e co-schedulati, ed eseguiti in un contesto condiviso sullo stesso nodo.
+
+I pod sono l'unità atomica sulla piattaforma Kubernetes: quando creiamo una distribuzione su Kubernetes, che la distribuzione crea pod con container al loro interno (invece di creare direttamente i container). Ogni Pod è legato al nodo in cui è programmato e vi rimane fino alla cessazione o cancellazione. In caso di guasto di un nodo, i Pod identici sono schedulati su altri nodi disponibili nel cluster.
+
+### Service
+
+I service sono un modo astratto per esporre un'applicazione in esecuzione su un set di podin comunicazione uno con l’altro per erogare il service. I pod vengono creati e distrutti per corrispondere allo stato del cluster. Ogni Pod ottiene il proprio indirizzo IP, tuttavia il set di pod in esecuzione in un momento specifico può essere diverso. I service sono astrazioni che definiscono un insieme logico di pod e una policy con cui accedervi.
+
+### Kube proxy
+
+Il proxy di rete Kubernetes viene eseguito su ciascun nodo worker. Espone i service definiti come indicato nell’API Kubernetes su ogni nodo e fa un semplice inoltro di flusso TCP, UDP e SCTP o round Robin TCP, UDP e inoltro SCTP attraverso un insieme di backend.  Gli IP e le porte del cluster di servizio sono ritrovati attraverso un ambiente compatibile con i Docker-links, variabili che specificano le porte aperte dal proxy service. C'è un componente aggiuntivo opzionale che fornisce DNS cluster per questi IP cluster. L'utente deve creare un servizio con l'apiserver API per configurare il proxy.
+
+### Scheduler
+
+Lo scheduler è la parte del controllo che si occupa dello scheduling, controlla la creazione dei Pod e trova il nodo migliore per ospitare quel Pod. Filtra i nodi per verificare quale soddisfi i requisiti di programmazione specifici per quel Pod. Se non ci sono nodi adatti, il Pod rimane non schedulabile. Per ogni nodo adatto e utilizzabile, lo Scheduler stima un punteggio eseguendo una serie di funzioni, il Pod è schedulato sul nodo adatto con il più alto punteggio, lo scheduler quindi notifica al server API questa decisione in un processo chiamato binding.
+
+### Volumi
+
+Kubernetes supporta diversi tipi di volumi. Due tipi principali sono: i tipi di volume effimero, questi hanno la durata di un Pod, quando un Pod cessa di esistere, Kubernetes distrugge i volumi effimeri. I volumi persistenti che esistono oltre la durata di un Pod, Kubernetes non distrugge i volumi persistenti. Per qualsiasi tipo di volume in un dato Pod, i dati vengono conservati durante i riavvii del contenitore. Al suo interno, un volume è una directory accessibile ai container in un Pod. Massima interoperabilità con gli strumenti preesistenti quindi con tutti gli storage anche cloud.
+
+### Network
+
+Non andando nel dettaglio sulla rete, si ricorda che la gestione della rete può essere anche piuttosto complessa in Kubernetes, poiché vi sono i Pod che si mostrano internamente con indirizzi privati, che però utilizzando indirizzi di rete possono essere messi in comunicazione con altre macchine, anch’esse con una interfaccia di rete. Tutti i mapping per far comunicare le macchine sono gestite dal networking di Kubernetes.
+
+### Modello dichiarativo
+
+In Kubernetes, il modello dichiarativo funziona in questo modo:
+
+- Dichiarare lo stato (dal punto di vista del deployment) desiderato delle applicazioni (microservizi) in un file manifest.
+- Pubblicare lo stato sul server API Kubernetes.
+- Kubernetes memorizza lo stato nell'etcd (cluster store) come stato desiderato dall'applicazione.
+- Kubernetes implementa lo stato desiderato sul cluster.
+- Kubernetes implementa i loop, attraverso il kube-controller-manager, per assicurarsi che lo stato attuale dell'applicazione non vari dallo stato desiderato.
+
+### Concetti di base di Kubernetes
+
+### Pod
+
+Nel mondo Kubernetes, l'unità atomica di programmazione è il Pod. Non è possibile eseguire un container direttamente su un Kubernetes cluster come in Docker, il container deve sempre essere eseguito all'interno di Pods. Anche se è possibile eseguire più contenitori all'interno dello stesso Pod, ogni Pod ospita solitamente un contenitore. I Pod sono anche l'unità minima di ridimensionamento, se fosse necessario ridimensionare un’app, si aggiungono o si rimuovono Pod. Non si scala l’applicazione aggiungendo più contenitori a un Pod esistente. I Pod sono mortali e quindi sono inaffidabili. Quando un Pod si interrompe in modo imprevisto, Kuberntes non lo riporterà in vita, ma ne inizializza uno nuovo al suo posto.
+
+### Service
+
+Per superare l'inaffidabilità dei Pod entrano in gioco i Servizi. I servizi forniscono una rete affidabile per una serie di Pod. I servizi hanno un front-end che consiste in un nome DNS stabile, un indirizzo IP e una porta. Sul back-end viene eseguito il bilanciamento dinamico su un set di Pod. I Pod vanno e vengono, il Service osserva i cicli di vita dei Pod e si aggiorna automaticamente, nel frattempo continua a fornire l'endpoint di rete stabile. La mappatura tra Service e Pod viene eseguita tramite label e selettori di label.
+
+### Deployment
+
+I Pod non si auto-riparano, non si ridimensionano e non consentono facili aggiornamenti o rollback. I deployment si occupano di tutto questo, perciò i Pod sono eseguiti e gestiti grazie al deployment. Un unico deployment può gestire solo un singolo tipo di Pod. Ad esempio, se è presente un'app con un Pod per il frontend web e un altro Pod per il backend, ci sarà bisogno bisogno di due implementazioni. Dietro le quinte, i deployment sfruttano un altro oggetto chiamato set di repliche. Le distribuzioni utilizzano i set di repliche per fornire self-healing e scalabilità.
+
+### Kubernetes Storage
+
+Kubernetes ha un sottosistema di archiviazione ricco di funzionalità. Indipendentemente dal tipo di spazio di archiviazione di cui si dispone e da dove proviene, quando questo viene esposto nel cluster è detto Volume. Il sottosistema di volumes persistenti di Kubernetes è un insieme di oggetti API che consentono alle app di utilizzare spazio di archiviazione. Ad alto livello, i Persistent Volumes (PV) sono il modo utilizzato per mappare lo storage esterno sul cluster, le Persistent Volume Claims (PVC) sono come i biglietti che autorizzano le applicazioni (Pod) a utilizzare un PV.
+
+### Daemons set
+
+Sono utili quando è necessaria una replica di un particolare Pod in esecuzione su ogni nodo del cluster. Alcuni esempi includono i Pod di monitoraggio e la registrazione dei Pod.
+
+### Jobs and Cronjobs
+
+Sono utili quando è necessario eseguire un determinato numero di un particolare Pod e bisogna garantire che andranno a buon fine.
+
+### Spazio dei nomi
+
+Un cluster virtuale (un singolo cluster fisico può eseguire più cluster virtuali) destinato ad ambienti con molti utenti si diffonde in più team o progetti, per isolare i problemi. Inoltre, a uno spazio dei nomi può essere assegnata una quota di risorse per evitare di consumare più delle risorse complessive  presenti nel cluster fisico.
+
+Per vedere in piccolo il funzionamento di Kubernetes si può utilizzare Minicube. Minicube è uno strumento che semplifica l’esecuzione di Kubernetes in locale, è un cluster con un singolo nodo all’interno di una Virtual Machine.
+
+### Cluster initialization
+
+```
+$ minikube start 
+$ kubectl cluster-info
+Kubernetes master is running at https://192.168.99.100:8443 CoreDNS is running at https://192.168.99.100:8443/api/v1/namespaces/kubesystem/services/kube-dns:dns/proxy 
+```
+
+```
+$ kubectl get nodes
+NAME STATUS ROLES AGE VERSION
+minikube Ready master 40d v.1.10.0
+```
+
+Launch Dashboard
+
+```
+$ minikube dashboard
+```
+
+### OPENFAAS
+
+Così come l’internet wireless ha dei cavi da qualche parte, le architetture serverless continuano ad avere dei server da qualche parte. Come sviluppatore, non bisogna pensare a questi server, focalizzandosi solo sul codice. Il serverless consente di costruire ed eseguire applicazioni e servizi senza preoccuparsi di procurarsi o di scalare i server. Ciò che serve all’esecuzione è gestito implicitamente.
+
+In un’applicazione serverless il supporto lavora e a callback ci dice quando la computazione può proseguire eliminando la sincronicità forte che va contro la scalabilità del sistema. Il programmatore non deve gestire con degli strumenti il deployment delle applicazioni. Utilizzando questo modello per alcune tipologie di applicazioni per cui può valer la pena rendere più semplice l’applicazione stessa e rimuovere il carico del deployment, si può definire unicamente la logica applicativa, il programmatore carica l’applicazione su una piattaforma e non deve fare altro. In questo senso è simile a map-reduce poiché il programmatore implementa unicamnte le funzioni di map e reduce. Si elimina interamente l’attesa e non esistono processi idle, la parte di risorse è gestita in automatico dalla piattaforma. Tutto il focus è sulla business logic e non sulla gestione o sull’approvvigionamento dell’infrastruttura, non vi è alcun costo relativo al controllo attivo di risorse e alla scalabilità.
+
+Analizzando le possibili soluzioni nel cloud FaaS si trova tra piattaforma PaaS e software SaaS, quindi come un Back-end as a Service e Function as a Service, BaaS + FaaS. Ci si trova in questa zona perché l’idea è quella di avere una serie di servizi di back-end e ci sia modo di concentrarsi solo sulla logica applicativa senza una conoscenza forte pregressa dei servizi di sistema.
+
+![single tier](./img/img108.png)
+
+Back-end as a Service significa fare outsourcing di tutti i servizi di sistema, con la logica di utilizzo di questi servizi molto semplice e messa a disposizione API per questi servizi come autneticazione, database e notifiche.
+
+FaaS consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare.  Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
+
+L’architettura di riferimento per piattaforma FaaS
+
+![single tier](./img/img109.png)
+
+Alla piattaforma FaaS arrivano eventi da diverse fonti e attraverso diverse richieste, il dispacher fa dispach presso i worker dell’evento, i worker eseguono la logica applicativa e restituiscono una risposta a seguito della computazione. Alla piattaforma arrivano delle richieste, per esempio HTTP request, a questo punto l’API gateway consente di dirigere le richieste presso una coda di eventi a cui devono registrarsi, successivamente il dispacher in base agli eventi da gestire carica le funzioni necessarie per la computazione sui worker. Il vantaggio dal punto di vista del programmatore è che non deve avere conoscenza dell’architettura, dal punto di vista del cloud abbiamo massima portabilità e leggerezza. Il problema però, sono i vincoli legati alla piattaforma stessa poiché se una funzione utilizza una quantità eccessiva di risorse e la sua computazione impiega troppo tempo, fa crollare le prestazioni del sistema. Per questo Amazon e altri provider hanno dato limitazioni in termini di risorse (memoria) e tempo di utilizzo, quindi, ci sono vincoli temporali sulle esecuzioni oltre che sulle risorse che se non vengono rispettati portano alla uccisione di quella funzione che non causa problemi in quanto effimera.
+
+Principali piattaforme FaaS sul cloud vanno nel senso dell’edge computing, le risorse cloud oggi non sono più unicamente disponibili in un punto geograficamente molto distante, ma sono distribuite in punti molto vicini a noi in micro-datacenter, quindi, con l’edge computing riduciamo la latenza. Pensando in questo caso al cloud computing come batch e dividendo in task molto piccoli il lavoro, se non vi sonovincoli stringenti di QoS si possono sfruttare le FaaS e pagare meno.
+
+Tra le piatatforme emergenti opensource per FaaS vi sono OpenFaaS, Openwhisk, Fission e Knative.
+
+### Openwhisk, architettura interna
+
+ L’API gateway NGINX espone le API, è un punto di accesso e consente di eseguire nuove FaaS. Il controller, gestisce le richieste ed effettua il loadbalancing. Apache Kafka è un middleware MOM pub-sub che permette le comunicazioni asincrone ad eventi per massima asincronicità e disaccoppiamento forte delle richieste in arrivo rispetto all’esecuzione delle funzioni. Invoker esegue le funzioni (action). Couch DB viene utilizzato per il salvataggio di funzioni parametri e risultati, è molto scalabile in modo orizzontale. Kafka facilita la gestione a eventi, da notare come nelle nuove piattaforme si utilizzino sempre gli stessi modelli architetturali e strumenti già ben noti nel cloud.
+
+![single tier](./img/img110.png)
+
+### Kantive
+
+Knative è legato a Kubernetes, nasce con l’idea di avere la possibilità di spalmare i carichi di lavoro in workload che possono essere messi in esecuzione su Kubernetes su container che siano stateless, con il deploy e il management, non è propriamente una piattaforma FaaS, bensì trasforma le risorse Kubernetes in workload serverless.
+
+![single tier](./img/img111.png)
+
+L’idea è che Knative faciliti un deployment veloce di container serverless con scaling automatico. Per il networking e il routing si usa Istio che serve a gestire la comunicazione tra Pod Kubernetes. Sono possibili snapshot di configurazioni a runtime.
+
+![single tier](./img/img112.png)
+
+Dal punto di vista del disaccoppiamento dei servizi, i servizi vengono eseguiti runtime questi generano eventi che fungono da trigger per i servizi. Si ripensa completamente alla computazione, infatti, vi è totale indipendenza tra consumatori e produttori, i nuovi servizi vengono eseguiti a runtime. CloudEvents come standard per la descrizione di eventi.
+
+![single tier](./img/img113.png)
+
+Dal punto di viste delle performance non lavorano benissimo, su applicazioni FaaS intensive ci si rende conto che non stanno utilizzando macchine di qualità, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
