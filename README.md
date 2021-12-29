@@ -216,6 +216,12 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       </ul>
     </li>
     <li>
+      <a href="#">JBoss Clustering</a>
+      <ul>
+        <li><a href="#"></a></li>
+      </ul>
+    </li>
+    <li>
       <a href="#">Big Data</a>
       <ul>
         <li><a href="#">Definizione</a></li>
@@ -2360,13 +2366,19 @@ L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostant
 
 `SessionFactory` é l'equivalente all'`EntityManagerFactory` di JPA. Consente di creare oggetti `Session` e mantiene le risorse necessarie per cache di primo e secondo livello. Di solito si crea una `SessionFactory` per ogni DB ma niente vieta di creare più `SessionFactory` per un singolo DB.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Interfaccia Session
 
 La `Session` è l'analogo dell'`EntityManager` in JPA. Va a gestire il ciclo di vita degli oggetti persistenti e opera da factory per gli oggetti `Transaction` cioè ogni volta che si vuole lavorare sui dati con semantica transazionale serve ottenere questo oggetto.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Transazioni
 
 Gli oggetti `Transaction` sono oggetti single-therad che servono ad aprire, chiudere e fare il rollback di una transazione unità atomiche astraendo dai dettagli delle librerie e dei framework che si usano. Le transazioni in Hibernate non sono eseguiti, a default, con semantica transazionale quindi ogni volta è necessario crearsi un oggetto `Transaction`.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Ciclo di Vita
 
@@ -2446,6 +2458,8 @@ Per fare fetching (cioè caricare i dati dal DB alla memoria) si possono usare v
 - `FetchMode.SELECT `: Hibernate effettua una seconda select separata per recuperare le entity o collection associate. Lazy fetching è il default: la seconda select viene eseguita solo quando l’applicazione accede veramente ai dati associati.
 
 Usare una strategia di fetching rispetto ad un'altra ha ovviamente impatto sulle performance ottenibili.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Query By Examples (QBE)
 
@@ -4465,40 +4479,40 @@ Esistono tantissime implementazioni dello standard java enterprise edition qui s
 
 ## JBoss Clustering
 
-Clustering: insieme di macchine tendenzialmente vicine che lavorano insieme con la necessità di alto coordinamento.  La distinzione tra logico e fisico dipende da come avviene il coordinamento. Cluster fisico significa che il supporto alla clusterizzazione è nel modo hw con controlli e schede ad hoc oppure se avviene logicamente via software è il caso di cluster logico. Si può dire che il clustering logico riguarda il coordinamento a livello software.
+Con il termine clustering, si intende un insieme di macchine tendenzialmente vicine che lavorano insieme con la necessità di alto coordinamento. La distinzione tra logico e fisico dipende da come avviene il coordinamento. Se il cluster è fisico significa che il supporto alla clusterizzazione è nel modo hardware con controlli e schede ad hoc oppure se avviene logicamente è tramite software. Si può dire che il clustering logico riguarda il coordinamento a livello software.
 
-Sino ad ora ci si è concentrati sull’infrastruttura di base sulla quale possiamo avere il deployment dei componenti e infine dell’applicazione. La clusterizzazione riguarda la distribuzione dei componenti e delle azioni da performare in caso di guasti. Questo è importante perché è necessario spesso utilizzare un pool di macchine quando si hanno molte richieste e si vuole essere scalabili oltre che a garantire la fault tolerance.
+Sino ad ora ci si è concentrati sull’infrastruttura di base sulla quale si può avere il deployment dei componenti e infine dell’applicazione. La clusterizzazione riguarda la distribuzione dei componenti e delle azioni da performare in caso di guasti. Questo è importante perché è necessario spesso utilizzare un pool di macchine quando si hanno molte richieste e si vuole essere scalabili oltre che a garantire la fault tolerance.
 
-Load sharing: meno potente del load balancing meno intervento
+Il load sharing è meno potente del load balancing perchè c'è meno intervento.
 
-Clustering è utile l’per esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi (ad es. motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, etc)  cruciale per: tolleranza ai guasti e disponibilità, load Balancing, e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing). JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e opensource.
+Il clustering è utile per l'esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi. Ad esempio, viene usato dai motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, etc. È cruciale per la tolleranza ai guasti e disponibilità, load balancing e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing).
 
-Dalla versione 7 di JBoss c’è una novità più rilevante: il servizio Infinispan per la gestione della replicazione stato applicativo (invece di JBoss Cache, indicata nei lucidi successivi). Cambiano i nomi dei file di configurazione: standalone-ha.xml o standalone-full-ha.xml
-
-![single tier](./img/img81.png)
-
-Jboss cache= infinispan che supera ala tecnologia precendete ema stessi concetti
+JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e open-source.
 
 ### Clustering Service
 
-L’abilitazione del clustering service è possibile con la configurazione dell’application server, lo si lancia con tutte le configurazioni necessarie, utilizzando la configurazione _all_ di JBoss
+Dalla versione 7 di JBoss si usa il servizio Infinispan per la gestione della replicazione dello stato applicativo al posto di JBoss Cache. Cambiano i nomi dei file di configurazione: `standalone-ha.xml` o `standalone-full-ha.xml`.
+
+![single tier](./img/img81.png)
+
+L’abilitazione del clustering service è possibile con la configurazione dell’application server, lo si lancia con tutte le configurazioni necessarie, utilizzando la configurazione _all_ di JBoss:
 
 ```
 run.bat -c all
 ./run.sh -c all
 ```
 
-Abilita tutte le librerie necessarie al clustering, come JGroups.jar per il multicast di grruppo affidabile, jbosscache.jar e la cache distribuita
+Abilita tutte le librerie necessarie al clustering, come `JGroups.jar` per il multicast di gruppo affidabile, `jbosscache.jar` per la cache distribuita etc.
 
 ![single tier](./img/img82.png)
 
-Cache memoria tabellare per la memorizzazione di risorse. Le cache distribuite sono cache non più residente su una sola macchina, ma distribuita su più macchine del clustering, è una risorsa vista come memoria a cui possono accedere una serie di istanze dell’application server, è una sorta di stato distribuito dell’application server. La memoria distribuita sarà accessibile da più parti del cluster. L’importanza della cache distribuita risiede nella volontà di far fronte ai guasti, per questo è necessario per i fail over delle macchine accedere allo stato di ciascuna macchina quando si lavora in high avaiability. Questo consente alla macchina che sostituisce quella fallita di recuperare lo  stato  applicativo attraverso la cache distribuita e quindi riprendere l’esecuzione dalla dove era stata lasciata.
+Si usa una cache memoria tabellare per la memorizzazione di risorse. Le cache distribuite sono cache non più residenti su una sola macchina, ma distribuita su più macchine del clustering. È una risorsa vista come memoria a cui possono accedere una serie di istanze dell’application server, è una sorta di stato distribuito dell’application server. La memoria distribuita sarà accessibile da più parti del cluster. L’importanza della cache distribuita risiede nella volontà di far fronte ai guasti, per questo è necessario per i fail over delle macchine accedere allo stato di ciascuna macchina quando si lavora in high avaiability. Questo consente alla macchina che sostituisce quella fallita di recuperare lo stato applicativo attraverso la cache distribuita e quindi riprendere l’esecuzione da dove era stata lasciata.
 
-Un cluster (o Partition) JBoss è semplicemente un insieme di nodi ed ogni nodo JBoss è definito come una istanza del server JBoss. Ovviamente ci sono più nodi "logici" su una stessa macchina, con differenti porte associate, e allo stesso tempo possono esserci più risorse fisiche. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non possiamo fare il deployment di tutti i nodi llogici sulla stessa macchina fisica, ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
+Un cluster (o partizione) JBoss è semplicemente un insieme di nodi ed ogni nodo JBoss è definito come una istanza del server JBoss. Ovviamente ci sono più nodi logici su una stessa macchina, con differenti porte associate, e allo stesso tempo possono esserci più risorse fisiche. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non si può fare il deployment di tutti i nodi logici sulla stessa macchina fisica, ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
 
-Una volta stabilito il livello di replicazione è necessario un sistema di comunicazione per coordinare le copie. JGroups è lo strumento che consente la comunicazione multicast in JBoss. JGroups utilizza canali di comnicazione  e tiene traccia automaticamente di chi fa parte del cluster sulla base di configurazione e nome del canale JGroups utilizzato, una volta creato questo gruppo dinamico, JGroups supporta scambio affidabile di messaggi all’interno del cluster, a default la comunicazione multicast avviene con il protocollo UDP, ma è data anche la possibilità di utilizzare TCP con connessioni punto-punto costose. UDP è ottimo per connessioni multicast locali, quando invece si vuole lavorare con multicast remoti si può scegliere anche TCP per una maggiore portabilità, pagata però con un costo maggiore della comunicazione. A default JBoss utilizza 4 canali JGroups separati: un canale usato dal servizio general-purpose di High Avaiability partition HAPartition e tre canali creati da JBoss Cache, anche per supportare replicazione dello stato.
+Una volta stabilito il livello di replicazione è necessario un sistema di comunicazione per coordinare le copie. JGroups è lo strumento che consente la comunicazione multicast in JBoss. JGroups utilizza canali di comnicazione e tiene traccia automaticamente di chi fa parte del cluster sulla base di configurazione e nome del canale JGroups utilizzato, una volta creato questo gruppo dinamico, JGroups supporta scambio affidabile di messaggi all’interno del cluster, a default la comunicazione multicast avviene con il protocollo UDP, ma è data anche la possibilità di utilizzare TCP con connessioni punto-punto costose. UDP è ottimo per connessioni multicast locali, quando invece si vuole lavorare con multicast remoti si può scegliere anche TCP per una maggiore portabilità, pagata però con un costo maggiore della comunicazione. A default JBoss utilizza 4 canali JGroups separati: un canale usato dal servizio general-purpose di High Avaiability partition HAPartition e tre canali creati da JBoss Cache, anche per supportare replicazione dello stato.
 
-La configurazione della comunicazione in JGroups avviene con il file cluster-service.xml nella directory /deploy, descrive la configurazione per la partizione di default del cluster.  Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’ attributo PartitionConfig di MBean ClusterPartition descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast.
+La configurazione della comunicazione in JGroups avviene con il file `cluster-service.xml` nella directory `/deploy`. Esso descrive la configurazione per la partizione di default del cluster. Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’attributo PartitionConfig di MBean ClusterPartition descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast:
 
 ```
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
@@ -4546,9 +4560,9 @@ PING è il protocollo per la scoperta iniziale dei membri del cluster, MERGE2 è
 
 Il clustering lavora a livello software, la failure detection è tra gli application server. In high avaiability per cambiare versione a volte si uccidono webserver e quando questo accade il clustering lo replica con una versione già aggiornata.
 
-High Avaiability(HA) Partition  e un servizio general-purpose di alta disponibilità (High Availability) costruita utilzzando JGroups, utilizzato per diversi compiti in JBoss AS clustering. L’astrazione è costruita sulla base dei canali JGroups, e fornisce inoltre un supporto per effettuare e ricevere invocazioni RPC/RMI da e verso nodi cluster. In questo caso vi è la necessità di supportare un registry distribuito, perché vi sono una serie di nodi; quindi, deve essere disponibile localmente a tutti i nodi del cluster tale servizio.  Si utilizzano notifiche a listener per modifiche nell’appartenenza al cluster o per cambiamenti di servizi nel registry. Questo è il nucleo di molti altri servizi di clustering, come smart proxy lato cliente, il farming e HA-JNDI.
+High Avaiability (HA) Partition e un servizio general-purpose di alta disponibilità (High Availability) costruita utilzzando JGroups, utilizzato per diversi compiti in JBoss AS clustering. L’astrazione è costruita sulla base dei canali JGroups, e fornisce inoltre un supporto per effettuare e ricevere invocazioni RPC/RMI da e verso nodi cluster. In questo caso vi è la necessità di supportare un registry distribuito, perché vi sono una serie di nodi; quindi, deve essere disponibile localmente a tutti i nodi del cluster tale servizio.  Si utilizzano notifiche a listener per modifiche nell’appartenenza al cluster o per cambiamenti di servizi nel registry. Questo è il nucleo di molti altri servizi di clustering, come smart proxy lato cliente, il farming e HA-JNDI.
 
-Esempio di configurazione HA Partition
+Esempio di configurazione HA Partition:
 
 ```
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
@@ -4591,7 +4605,7 @@ Il fat cleint e una sorta di grande stub RMi detto HA-RMI, che contiene al suo i
 
 JBoss Cache è un framework per il supporto a cache distribuita, che può essere utilizzato anche in altri ambienti AS, essa realizza il caching di oggetti Java acceduti frequentemente. Per motivi di performance In JBoss, fornisce servizi di caching per sessioni http, per stati di session bean EJB 3.0, per entity EJB 3.0. Ogni servizio di cache è definito in un Mbean separato con il suo canale JGroups. JBoss Cache è cluster-aware: lo stato è mantenuto consistente fra i vari nodi nel cluster , per questo vi è tolleranza ai guasti in caso di server crash, con necessità di invalidazione e/o aggiornamento dello stato nella cache
 
-### Failover e Load Balancing di sessioni http
+### Failover e Load Balancing di sessioni HTTP
 
 La replicazione dello stato della sessione è gestita da JBoss, la configurazione _all_ di JBoss include session state replication. Occorre configurare session state replication da gestire tramite JBoss Cache. Il  load balancing è invece gestito usualmente da un software esterno o a livello hardware:  Ad es., suggeriti da JBoss Apache mod_jk o più recentemente Apache mod_cluster. In questo caso si parla di replicazione dello stato in caso di thin client (non cambia nel fat client ma invece di avere solo http abbiamo lo smart proxy in più lato client).
 
@@ -4728,7 +4742,7 @@ standalone.sh -c standalone-ha.xml -Djboss.node.name=server
 
 Come deve essere organizzato in questo caso HA smart proxy rispetto i diversi casi di, Stateless Session Bean, Stateful Session Bean, MessageDriven Bean, Entity Bean.
 
-Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprietaria di JBoss, per informare il container EJB di JBoss che il componente considerato deve essere clustered. Annotazione @Clustered. applicabile a:
+Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprietaria di JBoss, per informare il container EJB di JBoss che il componente considerato deve essere clustered. Annotazione `@Clustered` applicabile a:
 
 - Stateless session Bean con smart proxy a cui sono applicabili diverse politiche di load balancing, come RoundRobin (default), FirstAvailable, FirstAvailableIdenticalAllProxies (tutti smart proxy per un bean verso stesso nodo), RandomRobin. 
 - Statefull Session Bean con smart proxy, con diverse politiche di load balancing  FirstAvailable (senza abilitazione esplicita replicazione stato).
