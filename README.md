@@ -249,9 +249,19 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       </ul>
     </li>
     <li>
-      <a href="#">Node.js</a>
+      <a href="#nodejs">Node.js</a>
       <ul>
-        <li><a href="#"></a></li>
+        <li><a href="#utilizzo-di-javascript">Utilizzo di Javascript</a></li>
+        <li><a href="#event-loop">Event Loop</a></li>
+        <li><a href="#thread-vs-asynchronous-event-driven">Thread vs Asynchronous Event Driven</a></li>
+        <li><a href="#thread-vs-event">Thread vs Event</a></li>
+        <li><a href="#moduli">Moduli</a></li>
+        <li><a href="#modulo-http">Modulo HTTP</a></li>
+        <li><a href="#npm">NPM</a></li>
+        <li><a href="#modulo-fs">Modulo FS</a></li>
+        <li><a href="#modulo-stream">Modulo Stream</a></li>
+        <li><a href="#modulo-net">Modulo Net</a></li>
+        <li><a href="#modulo-express">Modulo Express</a></li>
       </ul>
     </li>
     <li>
@@ -5053,6 +5063,8 @@ Node.js è una tecnologia Javascript che si usa lato server-side, supporta effic
 
 In particolare, Node.js è molto utilizzato nella programmazione web per la scrittura di applicazioni web, è possibile usarlo sia per chiamare le funzioni core su file system e networking ma vi sono anche framework più larghi per facilitare lo sviluppo delle applicazioni web stesse, associabile anche a DevOps e tecnologie front-end.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Utilizzo di JavaScript
 
 L’uso di JavaScript sia lato cliente che lato servitore ha alcuni vantaggi tra cui il non uso del context switch. Se si sta programmando lato client side si utilizza il DOM e non si accede al persistent storage mentre lato server si è più interessanti a lavorare con lo storage.
@@ -5067,11 +5079,15 @@ L’idea di base è gestire tutto con l’event loop: un ciclo infinito di elabo
 
 Ha senso utilizzare questa strategia perché a seconda del tipo di operazione, come l’accesso alle cache di primo o secondo livello, alla memoria, al disco o alla rete, sono richiesti molti più cicli di CPU per effettuare queste operazioni. Se ci si blocca in attesa di queste risorse per certe operazioni, rimangono ferme delle risorse attive come i thread. Se questo è vero bisogna strutturare l’applicazione sfruttando il parallelismo e quindi generando nuove richieste di risorse al sistema poiché con il parallelismo si creano nuovi thread e processi. A livello di sistema si utilizza la `select` che consente di gestire le operazioni non bloccanti a evento. In questo modo, è possibile realizzare dei servitori anche mono-processo (nel caso estremo) che concorretemene gestiscono la molteplicità di richieste senza doversi bloccare su operazioni di lettura in genere più fastidiose da questo punto di vista.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Thread vs Asynchronous Event Driven
 
 Nelle applicazioni event-driven vi è un solo processo che fa fetching di eventi da una coda, li estrae e li processa. Per quanto riguarda un’applicazione multi-threaded tipicamente questo lavora bloccando il chiamante in attesa che arrivi del lavoro da smaltire da un thread listener che poi delega la computazione a un pool di thread. Il modello di base è quello di incoming request cioè si aspettano richieste, mentre nel caso event-driven vi è una serie di eventi da processare in una coda che vengono processati dal singolo processo dell’event-loop. Se un’applicazione multi-thearded nell’operazione di lettura generalmente si blocca, nel paradigma event-driven la stessa lettura sarà un evento che dovrà essere processato e ciò accadrà solo quando il dato che si vuole leggere sarà disponibile, utilizzando callback che notificano l’aver completato l’esecuzione dell'evento. In un server multithead se una richiesta prevede diverse operazioni questi thread si bloccheranno per molto tempo nell’attesa che tutte le operazioni vengano effettuate. Nel caso event-driven, l’idea è quella di mantenere uno stato aggiornato man mano che arrivano nuovi dati per capire quando è il momento di processare l’evento. Per quanto riguarda l’applicazione multi-threaded vi è context swiching per passare da un thread bloccato in attesa di una risorsa ad un altro, ciò causa un notevole overhead, mentre nel caso dell’event-driven non c’è context switch e non c’è content della CPU che è sempre detenuta dall’event loop. Questo in termini di scalabilità ha un grosso vantaggio relativo all’overhead creato dal cambio di contesto dal caricamento del processo e dallo scheduling di quello successivo relativo al context switch. Nei sistemi multithread a causa degli accessi concorrenti a uno stato condiviso vi è anche il problema della sincronizzazione in accesso, quindi locking delle risorse. Nel caso nell’event-driven asincrono non esiste per costruzione questo tipo di problema essendovi un unico processo. Quando l’applicazione è event-driven si necessita di un supporto diverso che possiede primitive asincrone e non bloccanti.
 
 ![single tier](./img/img92.png)
+
+<a href="#indice">Torna all'indice</a>
 
 ### Thread vs Event
 
@@ -5144,9 +5160,13 @@ Per eseguire operazioni come il processamento di DB, letture di file da file sys
 
 Viene esasperato il concetto di _server stateless_ perchè il server non mantiene stato. Ogni evento viene messo sulla coda e l'event loop processa un evento indipendentemente dal precedente. Dato che è costoso adottarlo in questo modello, se ci fosse bisogno di stato bisognerebbe usare i cookie e quindi lo si mantiene lato client side.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Moduli
 
 Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e logica applicativa consentendo di non scrivere sempre lo stesso codice per la gestione delle callback e degli eventi. Il core di Node.js consiste di circa una ventina di moduli, alcuni di più basso livello come per la gestione di eventi e stream, altri di più alto livello come HTTP.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Modulo HTTP
 
@@ -5168,11 +5188,15 @@ console.log("Server running at http://127.0.0.1:8000/");
 
 Si può richiedere la creazione di un HTTP server che sia in grado di rispondere con un `Hello World` e si può invocare questo server, il tutto è gestito con funzioni non bloccanti ed è in grado di reagire generando una richiesta HTTP quando riceve una richiesta. A questo punto si può mettere in ascolto il servitore sulla posta 8000 che è pronto a rispondere.
 
+<a href="#indice">Torna all'indice</a>
+
 ### NPM
 
 Il core di Node.js è stato progettato per essere piccolo e snello, i moduli che fanno parte del core si focalizzano su protocolli e formati di uso comune. Per ogni altra cosa, si usa NPM: chiunque può creare un modulo Node con funzionalità aggiuntive e pubblicarlo in NPM.
 
-NPM è un package manager di grande successo e in forte crescita, che semplifica sharing e riuso di codice JavaScript in forma di moduli. In generale è preinstallato con distribuzione Node, esegue tramite linea di comando e permette di ritrovare moduli dal registry pubblico in http://npmjs.org
+NPM è un package manager di grande successo e in forte crescita, che semplifica sharing e riuso di codice JavaScript in forma di moduli. In generale è preinstallato con distribuzione Node, esegue tramite linea di comando e permette di ritrovare moduli dal registry pubblico in http://npmjs.org.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Modulo FS
 
@@ -5193,6 +5217,8 @@ function readDoneCallback(error, dataBuffer) {
     }
 }
 ```
+
+<a href="#indice">Torna all'indice</a>
 
 ### Modulo Stream
 
@@ -5229,6 +5255,8 @@ writableStreamEvent.on('finish', function () {
 writableStreamEvent.write('Hello world!\n');
 writableStreamEvent.end();
 ```
+
+<a href="#indice">Torna all'indice</a>
 
 ### Modulo Net
 
@@ -5273,6 +5301,8 @@ function broadcast(message, sender) {
 
 La funzione `processTCPConnection` aggiunge la lista di clienti connessi alla socket. Dopo di che all’arrivo dei dati questi possono essere elaborati. In questo caso all’arrivo di un nuovo dato viene invocata la funzione di callback function, successivamente vengono inviati in broadcast tutti i dati ricevuti. Infine, con il broadcast tutti i dati vengono inviati ai vari clienti con la funzione broadcast. L’altro evento importante è la fine della connessione per rimuovere la connessione dalla lista dei client una volta terminata la connessione stessa, ancora una volta tutto è gestito in callback.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Modulo Express
 
 Express.js è il framework più utilizzato oggi per lo sviluppo di applicazioni Web su Node.js, molto flessibile e con ottime performance e consente di utilizzare diverse opzioni e motori di templating. Mette a disposizione eseguibili per rapida generazione di applicazioni ed è ispirato e basato sul precedente `Sinatra`:
@@ -5289,6 +5319,8 @@ var server=app.listen(3000,function() {
 ```
 
 Codice per attivare il server web e restituisce un `helloworld` relativo alla pagina di ingresso.
+
+<a href="#indice">Torna all'indice</a>
 
 ## Docker
 
