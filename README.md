@@ -5049,15 +5049,21 @@ Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, 
 
 ## Node.js
 
-Node.js è una tecnologia server-side, supporta efficientemente l'I/O in modo asincrono non-bloccante, **non** utilizza thread/processi dedicati, garantisce scalabilità, ed esaspera il concetto di _server stateless_.
+Node.js è una tecnologia Javascript che si usa lato server-side, supporta efficientemente l'I/O in modo asincrono non-bloccante, **non** utilizza thread/processi dedicati, garantisce scalabilità, ed esaspera il concetto di _server stateless_.
 
-Node.js è utilizzato lato server-side, per questo per renderlo fruibile è necessario appoggiarsi ad un run-time enviroment del linguaggio JavaScript supportato da Google Chrome V8 engine. Il codice JavaScript viene compilato con una buona efficienza a run-time. Vi è la massima concorrenza e scalabilità per questo di solito si evita di utilizzare più thread dedicati e concorrenti. Il funzionamento è sempre non bloccante, persino per chiamate I/O-oriented.
+In particolare, Node.js è molto utilizzato nella programmazione web per la scrittura di applicazioni web, è possibile usarlo sia per chiamare le funzioni core su file system e networking ma vi sono anche framework più larghi per facilitare lo sviluppo delle applicazioni web stesse, associabile anche a DevOps e tecnologie front-end.
+
+### Utilizzo di JavaScript
+
+L’uso di JavaScript sia lato cliente che lato servitore ha alcuni vantaggi tra cui il non uso del context switch. Se si sta programmando lato client side si utilizza il DOM e non si accede al persistent storage mentre lato server si è più interessanti a lavorare con lo storage.
+
+Per usare Node.js è necessario renderlo fruibile è necessario appoggiarsi ad un run-time enviroment del linguaggio JavaScript supportato da Google Chrome V8 engine. Il codice JavaScript viene compilato con una buona efficienza a run-time. Vi è la massima concorrenza e scalabilità per questo di solito si evita di utilizzare più thread dedicati e concorrenti. Il funzionamento è sempre non bloccante, persino per chiamate I/O-oriented.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Event Loop
 
-L’idea di base è gestire tutto con l’event loop: un ciclo infinito di elaborazione che si appoggia sull’utilizzo di uno stack. Sullo stack sono depositate le operazioni da eseguire, che puoi vengono processate e di conseguenza una volta eseguite vengono rimosse dallo stack e si procede con la valutazione. In questo modo, è possibile la valutazione di alcune funzioni che possono essere accodate e mano a mano smaltite dall’event-loop. In sintesi, al posto di thread, si usa un event loop con stack che riduce fortemente overhead di context switching. L’event loop utilizza il framework CommonJS, leggermente più _simile_ a un vero linguaggio di programmazione OO.
+L’idea di base è gestire tutto con l’event loop: un ciclo infinito di elaborazione che si appoggia sull’utilizzo di uno stack o coda (dipende dall'implementazione). Sullo stack sono depositate le operazioni da eseguire, che puoi vengono processate e di conseguenza una volta eseguite vengono rimosse dallo stack e si procede con la valutazione. In questo modo, è possibile la valutazione di alcune funzioni che possono essere accodate e mano a mano smaltite dall’event-loop. In sintesi, al posto di thread, si usa un event loop con stack che riduce fortemente overhead di context switching. L’event loop utilizza il framework CommonJS, leggermente più _simile_ a un vero linguaggio di programmazione OO.
 
 Ha senso utilizzare questa strategia perché a seconda del tipo di operazione, come l’accesso alle cache di primo o secondo livello, alla memoria, al disco o alla rete, sono richiesti molti più cicli di CPU per effettuare queste operazioni. Se ci si blocca in attesa di queste risorse per certe operazioni, rimangono ferme delle risorse attive come i thread. Se questo è vero bisogna strutturare l’applicazione sfruttando il parallelismo e quindi generando nuove richieste di risorse al sistema poiché con il parallelismo si creano nuovi thread e processi. A livello di sistema si utilizza la `select` che consente di gestire le operazioni non bloccanti a evento. In questo modo, è possibile realizzare dei servitori anche mono-processo (nel caso estremo) che concorretemene gestiscono la molteplicità di richieste senza doversi bloccare su operazioni di lettura in genere più fastidiose da questo punto di vista.
 
@@ -5102,9 +5108,9 @@ Di seguito è riportato un esempio di stack con event loop, idea e che sullo sta
 
 ![single tier](./img/img93.png)
 
-Sullo stack vengono caricate le funzioni che si vogliono eseguire, per esempio volendo servire una richiesta `index.html`, vi è sempre un evento di base che è l’event loop che è idle in attesa di eventi da processare. Quando arriva l’evento di socket readable si crea un evento per il parsing della richiesta, per farlo ci si rende conto che è necessario caricare il file, quando il caricamento è avvenuto vengono gestite le richieste con la callback fino a rivuotare la coda.
+Sullo stack vengono caricate le funzioni che si vogliono eseguire, per esempio volendo servire una richiesta `index.html`, vi è sempre un evento di base che è l’event loop che è idle cioè in attesa di eventi da processare. Quando arriva una richiesta HTTP, l’evento di `socket_readable` viene caricato sulla coda, si crea un nuovo un evento per il parsing della richiesta, per farlo ci si rende conto che è necessario caricare il file `index.html`. Quando il caricamento è avvenuto vengono gestite le richieste con la callback fino a risvuotare la coda.
 
-L’event loop è costituito da un `while` infinito che effettua la `pop()` e la `call()` all’arrivo di una richiesta:
+L’event loop è costituito da un `while` infinito che effettua la `pop()` (estrae dallo stack l'evento) e la `call()` all’arrivo di una richiesta:
 
 ```
 while(true) {
@@ -5114,7 +5120,7 @@ while(true) {
 }
 ```
 
-Si effettua la richiesta di read sulla socket che da risposta immediatamente, perché aggiunge l’evento sullo stack e poi quando la lettura è terminata (gestita in modo asincrono) allora sulla coda viene effettuata una `push()` dell’handler dell’evento read che è terminato sullo stack. A questo punto, il listener riceve la notifica che la read è terminata e può procedere a gestire altri eventi nella coda. In questo modo si ottiene la massima sincronicità e non serve più effettuare context switching.
+Se un'operazione di `call()` dura molto tempo è necessario che venga restituito subito il controllo. Quando, l'operazione che ha richiesto molto tempo termina (es. lettura su DB), questo provoca un `push()` di un evento sullo stack. In questo modo si ottiene la massima sincronicità e non serve più effettuare context switching.
 
 In caso di operazione sincrona si ha un'attesa molto lunga, e si inizia a eseguire solo da quel momento in cui è presente il risultato e solo a questo punto si effettua il processing del risultato stesso:
 
@@ -5124,31 +5130,27 @@ Nel caso asincrono con thread in parallelo si ha lo stesso problema cioè vi è 
 
 ![single tier](./img/img95.png)
 
-Se si gestisce tutto in modo asincrono non bloccante, l’approccio diventa single-thread. Quando si interoga il db si passa la query e un function e nella function stessa si definisce la callback da invocare nel momento in cui arriva il risultato, la chiamata non diventa bloccante poiché nel momento in cui il risultato è disponibile invoca la `doSomething` per gestire l’evento, la chiamata non è bloccante e il processo può subito fare qualcos’altro. La CPU in questo modo è sempre occupata a fare qualcosa. In questo caso non si paga l’overhead del context switch:
+Se si gestisce tutto in modo asincrono non bloccante l’approccio diventa single-thread:
 
 ![single tier](./img/img96.png)
 
-Cosa accade su una callback richiede molto tempo per l’esecuzione? Questo è un tasto dolente di questo paradigma, i task CPU intensive vanno contro al modello stesso e possono portare a ritardi consistenti e blocchi, non garantisce più la concorrenza. Il tutto funziona bene dal momento che la computazione è parcellizzata in modo corretto, con task che eseguono concorrentemente, senza che nessuno di questi si appropri per troppo tempo della risorsa e ritardi l’esecuzione di tutti gli altri.
+Quando si interoga il DB, si passa la query e si definisce la funzione di callback da invocare nel momento in cui arriva il risultato. La chiamata non diventa bloccante poiché la query verrà eseguita in background e nel momento in cui il risultato è disponibile invoca la `doSomething` per gestire l’evento e verrà inserito l'evento nello stack. La chiamata non è bloccante e il processo può subito fare qualcos’altro. La CPU in questo modo è sempre occupata a fare qualcosa. In questo caso non si paga l’overhead del context switch.
+
+È importante che la funzione di callback non richieda molto tempo per l’esecuzione. I task CPU intensive vanno contro al modello stesso e possono portare a ritardi consistenti e blocchi, non garantendo più la concorrenza. Il tutto funziona bene dal momento che la computazione è parcellizzata in modo corretto, con task che eseguono concorrentemente, senza che nessuno di questi si appropri per troppo tempo della risorsa e ritardi l’esecuzione di tutti gli altri.
 
 ![single tier](./img/img97.png)
 
-Gestendo in questo modo gli eventi si possono associare alle operazioni di input output delle callback, così da rendere il servitore maggiormente scalabile non pagare il context switch, quando il servitore è in attesa di eventi di input output non ci sono problemi, poiché tutto è gestito in modo automatico dagli eventi, dal punto di vista dello stack.
+Per eseguire operazioni come il processamento di DB, letture di file da file system, ci sono dei thread dedicati ma il suo numero è molto inferiore a quello che si avrebbe adottando un approccio basato su thread. Infatti, applicazioni JavaScript (di scripting in generale) in attesa su richieste I/O tendono a degradare significativamente performance. Per evitare blocking, Node.js utilizza la stessa natura event driven di JavaScript, associando callback alla ricezione di richieste I/O. Gli script Node.js in attesa su I/O **non** sprecano molte risorse (popped off dallo stack automaticamente quando il loro codice non-I/O related termina la sua esecuzione).
 
-Il servitore non compie nessuna altra operazione se non di I/O. Infatti, applicazioni JavaScript (di scripting in generale) in attesa su richieste I/O tendono a degradare significativamente performance, per evitare blocking, Node.js utilizza stessa natura event driven di JavaScript, associando callback alla ricezione di richieste I/O. Script Node.js in attesa su I/O NON sprecano molte risorse (popped off dallo stack automaticamente quando il loro codice non-I/O related termina la sua esecuzione).
+Viene esasperato il concetto di _server stateless_ perchè il server non mantiene stato. Ogni evento viene messo sulla coda e l'event loop processa un evento indipendentemente dal precedente. Dato che è costoso adottarlo in questo modello, se ci fosse bisogno di stato bisognerebbe usare i cookie e quindi lo si mantiene lato client side.
 
-I vantaggi sono l’utilizzo dello stesso JavaScript engine sia lato browser che servitore, senza bisogno di DOM lato server. La gestione eventi avviene su una coda degli eventi. Ogni operazione esegue come una chiamata dall’event loop, viene utilizzata l’interfaccia ad eventi per ogni operazione di SO. Wrapping di tutte le chiamate bloccanti di SO (I/O su file e socket/network). Node.js usa un sistema di moduli (import/export). I moduli specializzati per il supporto a data management efficiente.
+### Moduli
 
-In particolare, Node.js è molto utilizzato nella programmazione web per la scrittura di applicazioni web, è possibile usarlo sia per chiamare le funzioni core su file system e networking ma vi sono anche framework più larghi per facilitare lo sviluppo delle applicazioni web stesse, associabile anche a devops e tecnologie frontend.
+Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e logica applicativa consentendo di non scrivere sempre lo stesso codice per la gestione delle callback e degli eventi. Il core di Node.js consiste di circa una ventina di moduli, alcuni di più basso livello come per la gestione di eventi e stream, altri di più alto livello come HTTP.
 
-### Thread vs Callback
+### Modulo HTTP
 
-I thread se la logica eseguita da un thread è sequenziale; quindi, al termine di tutti gli step e viene stampato il risultato. Nel caso degli eventi si invoca lo step 1 che inserisce sulla coda una funzione da valutare che è r1, questa funzione è invocata in call back quando è disponibile l’evento r1, successivamente si passa a r2 che a sua volta recupererà il risultato r2  e il tutto funziona ancora avendo un’esecuzione sequenziale dei vari step avendo tale esecuzione, questo pezzo di codice è gestito in modo asincrono e quindi la logica applicativa procederà con la valutazione degli step quando disponibili, il processo non viene bloccato, il processo continua la computazione di altri eventi dopo. All-done viene eseguito quando siamo riusciti a mettere nello stack la richiesta di valutazione della prima funzione, non quando abbiamo completato tutto. Se spostato dentro step3 invece è corretto.
-
-### Utilizzo di JavaScript
-
-L’uso di JavaScript sia lato cliente che lato servitore e ha alcuni vantaggi, tra cui il no context switch. Bisogna stare attenti però se si sta programmando lato client side quindi si utilizza il DOM e non si accede al persistent storage, lato server si è più interessanti a lavorare con lo storage.
-
-Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e logica applicativa e logica applicativa, consentono di non scrivere sempre lo stesso codice per la gestione delle callback e degli eventi la logica applicativa. Il core di Node.js consiste di circa una ventina di moduli, alcuni di più basso livello come per la gestione di eventi e stream, altri di più alto livello come http. Il modulo più usato è http con l’operazione una volta creato il modulo con la require, si può richiedere a creazione di un http server che sia in grado di rispondere con un hello world e si può invocare questo server, il tutto è gestito con funzioni non bloccanti ed è in grado di reagire generando una richiesta http quando riceve una richiesta. A questo punto si può mettere in ascolto il servitore sulla posta 8000 che è pronto a rispondere.
+Il modulo più usato è HTTP. Il modulo viene caricato tramite la `require`:
 
 ```
 // carica il modulo http per creare un http server
@@ -5164,11 +5166,17 @@ server.listen(8000);
 console.log("Server running at http://127.0.0.1:8000/");
 ```
 
-Il core di Node.js è stato progettato per essere piccolo e snello, i moduli che fanno parte del core si focalizzano su protocolli e formati di uso comune. Per ogni altra cosa, si usa npm: chiunque può creare un modulo Node con funzionalità aggiuntive e pubblicarlo in npm.
+Si può richiedere la creazione di un HTTP server che sia in grado di rispondere con un `Hello World` e si può invocare questo server, il tutto è gestito con funzioni non bloccanti ed è in grado di reagire generando una richiesta HTTP quando riceve una richiesta. A questo punto si può mettere in ascolto il servitore sulla posta 8000 che è pronto a rispondere.
+
+### NPM
+
+Il core di Node.js è stato progettato per essere piccolo e snello, i moduli che fanno parte del core si focalizzano su protocolli e formati di uso comune. Per ogni altra cosa, si usa NPM: chiunque può creare un modulo Node con funzionalità aggiuntive e pubblicarlo in NPM.
 
 NPM è un package manager di grande successo e in forte crescita, che semplifica sharing e riuso di codice JavaScript in forma di moduli. In generale è preinstallato con distribuzione Node, esegue tramite linea di comando e permette di ritrovare moduli dal registry pubblico in http://npmjs.org
 
-Modulo di gestione dei file, FS per file piccoli che possono stare il memoria, una volta caricato il modulo con la require si può effettuare la read file, questo scatena la lettura e passiamo la funzione che dovrà essere scatenata e per leggere il file. Notare che in Node.js il primo parametro è sempre quello di errore il secondo è il contenuto del file. Il file deve essere piccolo perché altrimenti l’operazione di console diventerebbe troppo lunga e bloccherebbe l’event loop.
+### Modulo FS
+
+Il modulo di gestione dei file si chiama FS. Una volta caricato il modulo con la `require` si può effettuare la `read`, questo scatena la lettura e si passa la funzione che dovrà essere scatenata e per leggere il file. Notare che in Node.js il primo parametro è sempre quello di errore il secondo è il contenuto del file. Il file deve essere piccolo perché altrimenti l’operazione di console diventerebbe troppo lunga e bloccherebbe l’event loop.
 
 ```
 var fs = require("fs");
@@ -5186,13 +5194,11 @@ function readDoneCallback(error, dataBuffer) {
 }
 ```
 
-Listener è la funzione da chiamare quando evento associato viene lanciato, mentre Emitter è il segnale che un evento è accaduto. L’emissione di un evento causa invocazione di TUTTE le funzioni listener. In seguito a emit, i listener sono invocati in modo sincrono-bloccante e nell’ordine con cui sono stati registrati. Senza listener non sono possibili operazioni.
+### Modulo Stream
 
-### Stream
+Node.js contiene moduli che producono/consumano flussi di dati (stream), questo può essere modo utile per strutturare server, per elaborare contenuti di grosse dimensioni e spezzare il carico in arrivo, per il modello concorrente è importante che non vi siano task pensanti. Stream supporta la gestione di flussi di dati utile per lavorare con file di grosse dimensioni, stream a livello di rete. Questi stream possono essere elaborati e trasformati dinamicamente. Si possono costruire stream anche dinamicamente e aggiungere moduli sul flusso. Ad esempio stream.push(Encryption). Vi sono diversi tipi di stream: Readable stream (es: fs.createReadStream), Writable stream (es. fs.createWriteStream), Duplex stream (es. net.createConnection), Transform stream (es. zlib, crypto).
 
-Node contiene moduli che producono/consumano flussi di dati (stream), questo può essere modo utile per strutturare server, per elaborare contenuti di grosse dimensioni e spezzare il carico in arrivo, per il modello concorrente è importante che non vi siano task pensanti. Stream supporta la gestione di flussi di dati utile per lavorare con file di grosse dimensioni, stream a livello di rete. Questi stream possono essere elaborati e trasformati dinamicamente.  Si possono costruire stream anche dinamicamente e aggiungere moduli sul flusso.  Ad esempio stream.push(Encryption). Vi sono diversi tipi di stream: Readable stream (es: fs.createReadStream), Writable stream (es. fs.createWriteStream), Duplex stream (es. net.createConnection), Transform stream (es. zlib, crypto).
-
-Per la lettura nel caso di stream si lavora con file di grandi dimensioni. Si crea un read-stream e si lavora ad evento sul quale possiamo registrare un listener che viene invocato all’arrivo di ciascun chunk di file.
+Per la lettura nel caso di stream si lavora con file di grandi dimensioni. Si crea un read stream e si lavora ad evento sul quale possiamo registrare un listener che viene invocato all’arrivo di ciascun chunk di file:
 
 ```
 var readableStreamEvent = fs.createReadStream("bigFile"); 
@@ -5210,16 +5216,21 @@ readableStreamEvent.on('error', function (err) {
 //gestione a evento dell’errore
 ```
 
-Per quanto riguarda la scrittura è possibile creare uno stream output-file. Quando viene terminata l’operazione di scrittura viene emesso l’evento di fine end. Una volta invocata l’operazione di scrittura sarà anche emesso un evento di fine della scrittura che può essere recuperato e aggiunto al log-file per capire se la scrittura è andata a buon fine.
+Listener è la funzione da chiamare quando l'evento associato viene lanciato, mentre Emitter è il segnale che un evento è accaduto. L’emissione di un evento causa invocazione di TUTTE le funzioni listener. In seguito a emit, i listener sono invocati in modo sincrono-bloccante e nell’ordine con cui sono stati registrati. Senza listener non sono possibili operazioni.
+
+Per quanto riguarda la scrittura è possibile creare uno stream output. Quando viene terminata l’operazione di scrittura viene emesso l’evento di fine end. Una volta invocata l’operazione di scrittura sarà anche emesso un evento di fine della scrittura che può essere recuperato e aggiunto al log-file per capire se la scrittura è andata a buon fine:
 
 ```
 var writableStreamEvent = fs.createWriteStream('outputFile’);
 writableStreamEvent.on('finish', function () {
     console.log('file has been written!');
 });
+
 writableStreamEvent.write('Hello world!\n');
 writableStreamEvent.end();
 ```
+
+### Modulo Net
 
 Esiste un modulo di rete Node.js, chiamato Net, che fa da wrapper per le chiamate di rete di SO, include anche funzionalità di alto livello, come:
 
@@ -5228,31 +5239,43 @@ var net = require('net’);
 net.createServer(processTCPconnection).listen(4000); 
 ```
 
-Crea una socket per una connessione TCP, fa binding del server su una porta (4000 in questo caso) e si mette in stato di listen per connessioni, per ogni connessione TCP, invoca la funzione processTCPconnection.
+Crea una socket per una connessione TCP, fa binding del server su una porta (4000 in questo caso) e si mette in stato di listen per connessioni, per ogni connessione TCP, invoca la funzione processTCPconnection:
 
 ```
-var clients = []; // Lista di client connessi 
+// lista di client connessi
+var clients = [];
 function processTCPconnection(socket) {
-clients.push(socket); // Aggiunge il cliente alla lista
-socket.on('data', function (data) {
-broadcast("> " + data, socket); // invia a tutti i dati ricevuti 
-});
-socket.on('end', function () {
-clients.splice(clients.indexOf(socket), 1); // remove socket 
-});
-} // invia messaggio a tutti i clienti
+
+    // aggiunge il cliente alla lista
+    clients.push(socket);
+    socket.on('data', function (data) {
+        // invia a tutti i dati ricevuti
+        broadcast("> " + data, socket);
+    });
+
+    socket.on('end', function () {
+        // remove socket
+        clients.splice(clients.indexOf(socket), 1);
+    });
+
+}
+
+// invia messaggio a tutti i clienti
 function broadcast(message, sender) {
-clients.forEach(function (client) {
-if (client === sender)
-return;
-client.write(message); 
-}); 
+
+    clients.forEach(function (client) {
+        if (client === sender)
+        return;
+        client.write(message); 
+    });
 }
 ```
 
-La funzione processTCPConnection aggiunge la lista di clienti connessi alla socket. Dopo di che all’arrivo dei dati questi possono essere elaborati. In questo caso all’arrivo di un nuovo dato viene invocata la funzione di callback function, successivamente vengono inviati in broadcast tutti i dati ricevuti. Infine, con il broadcast tutti i dati vengono inviati ai vari clienti con la funzione broadcast. L’altro evento importante è la fine della connessione per rimuovere la connessione dalla lista dei client una volta terminata la connessione stessa, ancora una volta tutto è gestito in callback.
+La funzione `processTCPConnection` aggiunge la lista di clienti connessi alla socket. Dopo di che all’arrivo dei dati questi possono essere elaborati. In questo caso all’arrivo di un nuovo dato viene invocata la funzione di callback function, successivamente vengono inviati in broadcast tutti i dati ricevuti. Infine, con il broadcast tutti i dati vengono inviati ai vari clienti con la funzione broadcast. L’altro evento importante è la fine della connessione per rimuovere la connessione dalla lista dei client una volta terminata la connessione stessa, ancora una volta tutto è gestito in callback.
 
-Express.js è il framework più utilizzato oggi per lo sviluppo di applicazioni Web su Node.js molto flessibile e con ottime performance e consente di utilizzare diverse opzioni e motori di templating. Mette a disposizione eseguibili per rapida generazione di applicazioni ed è ispirato e basato sul precedente Sinatra:
+### Modulo Express
+
+Express.js è il framework più utilizzato oggi per lo sviluppo di applicazioni Web su Node.js, molto flessibile e con ottime performance e consente di utilizzare diverse opzioni e motori di templating. Mette a disposizione eseguibili per rapida generazione di applicazioni ed è ispirato e basato sul precedente `Sinatra`:
 
 ```
 var express=require('express’);
