@@ -174,6 +174,7 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#">Java Business Integration (JBI)</a></li>
       </ul>
     </li>
+    <li><a href="#">Esercitazione EJB</a></li>
     <li>
       <a href="#">CORBA</a>
       <ul>
@@ -254,6 +255,12 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#"></a></li>
       </ul>
     </li>
+    <li>
+      <a href="#">Docker</a>
+      <ul>
+        <li><a href="#"></a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -266,6 +273,8 @@ Nella vita professione, è molto difficile che si scriva un software da zero per
 - Il tempo di sviluppo è molto limitato e ci sono vincoli nella consegna dell'applicazione finale.
 
 Per questo motivo è fondamentale usare un approccio basato su componenti e il trand attuale si sposta verso questo tipo di soluzione.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Componente
 
@@ -412,6 +421,8 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei `Capitoli 2` e `Capito
 È una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
 
 Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, non sempre essi si prestano ad essere la soluzione migliore. Il trend attuale si sposta verso altri tipi di tecnologie che verranno approfondite nei capitoli successivi. Ciò nonostante, tutte queste soluzioni di livello enterprise, cioè un sistema che deve scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile, sono esagerate quando bisogna progettare delle semplici applicazioni low-cost o delle pagine Web dinamiche.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Scenari applicativi
 
@@ -1195,6 +1206,8 @@ Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle pr
 
 A seguito dei problemi elencati nel `Capitolo 2` e per contrastare la tecnologia Spring che stava prendendo piede molto in fretta, è stata rilasciata una nuova versione.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Annotazioni e Descrittori di Deployment
 
 A partire da EJB 3.X si possono usare le annotazioni al posto del file descriptor e gli sviluppatori le preferiscono decisamente. Tuttavia, si possono continuare ad usare i descrittori.
@@ -1780,6 +1793,8 @@ public Objecty m1(...) throws ... { ... }
 ## JPA
 
 Una parte rilevante nello sviluppo di ogni applicazione distribuita di livello enterprise si concentra sul layer di persistenza. È importante poter accedere, manipolare, gestire dati persistenti che tipicamente sono mantenuti in un DB relazionale.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Object/Relational Mapping (ORM)
 
@@ -3062,6 +3077,76 @@ JBI supporta quattro possibili pattern di scambio messaggi:
 
 <a href="#indice">Torna all'indice</a>
 
+## Esercitazione EJB
+
+Si consiglia di installare le versioni dei programmi suggerite di seguito altrimenti non è detto che funzioni tutto correttamente. Lo startkit **corretto** di trova nella pagina Releases, quello fornito a lezione è rotto e non funzionante!
+
+### Tool da usare
+
+- [Eclipse Enterprise Edition](https://www.eclipse.org/downloads/packages/release/2021-09/r/eclipse-ide-enterprise-java-and-web-developers)
+- [Wildfly 25.0.1](https://www.wildfly.org/)
+
+È importante usare Eclipse e non IDE come Intellij perchè non supportano JSP e Servlet!
+
+### Cosa controllare prima di importare lo startkit
+
+- [Java 8](https://www.oracle.com/it/java/technologies/javase/javase8-archive-downloads.html)
+- [MySQL](https://dev.mysql.com/downloads/)
+
+### Configurazione Eclipse
+
+Per prima cosa bisogna installare il plugin Gradle. Andare, quindi, su `Help` -- `Eclipse Marketspace` e cercare _gradle_.
+
+![gradle](./img/img119.png)
+
+Alla fine dell'installazione, l'IDE si riavvia.
+
+### Importare il progetto su Eclipse
+
+Andare su `File` -- `Import` -- `Gradle` -- `Existing Gradle Project`, dopo cliccare su `Next`, selezionare la cartella in cui si trova il progetto, cliccare di nuovo `Next` e selezionare le voci della figura seguente:
+
+![gradle](./img/img120.png)
+
+Cliccare `Next` e infine su `Finish`.
+
+Bisogna aspettare che si scarichino tutte le dipendenze, ci vuole un pò di tempo!
+
+Bene, adesso il progetto è importato! Anche se appare rosso è tutto normale...il problema è di Eclipse e non nostro! Quindi se viene riportato il seguente errore va tutto bene:
+
+![gradle](./img/img121.png)
+
+Anche se appare rosso in corrispondenza dell'icona `root` e del file `build.gradle` è sempre tutto normale...
+
+![gradle](./img/img122.png)
+
+### Configurazione di MySQL
+
+Per l'installazione seguire la guida ufficiale che è possibile consultare al seguente [link](https://dev.mysql.com/doc/refman/8.0/en/installing.html).
+
+Una volta installato il db si suggerisce di cambiare la password di default. Si suggerisce di seguire la discussione che si trova al seguente [link](https://stackoverflow.com/questions/7534056/mysql-root-password-change). In ogni caso, bisogna aggiornare la password che si trova nel seguente file: 
+
+`src/main/application/META-INF/persistence.xmls`
+
+### Deploy dell'applicazione su WildFly
+
+Prima cosa, bisogna fare doppio click sul file `build.gradle` e specificare dove c'è scritto `wildfly_home` il percorso del pc in cui è possibile trovare WildFly.
+
+Per eseguire il deploy bisogna andare nella sezione `Gradle Tasks` ed eseguire i seguenti task:
+
+- Clean
+- Build
+- Ear
+
+![gradle](./img/img123.png)
+
+### Eseguire WildFly
+
+A questo punto manca solo il server! I comandi cambiano da sistema operativo quindi non li riporto. L'applicazione è possibile trovarla al seguente indirizzo:
+
+`localhost:8080/demo`
+
+Buon Lavoro!
+
 ## CORBA
 
 EJB 3.X non è un unico modello a componenti distribuiti basato sull’approccio a container pesante ma esiste CORBA come potente container per oggetti distribuiti.
@@ -3069,6 +3154,8 @@ EJB 3.X non è un unico modello a componenti distribuiti basato sull’approccio
 Si immagini di voler realizzare un sistema distribuito che funzioni derivando dall’interazione sincrona bloccante fra pezzi di codice che non hanno il vincolo di essere scritti nello stesso linguaggio di programmazione. Con Java RMI si può fare un’applicazione che faccia invocazione di metodi remoti. Si vuole realizzare con CORBA la stessa cosa ma si vuole anche che cliente e servitore possano essere scritti in qualsiasi linguaggio di programmazione. CORBA è una specifica e chi lo implementa può decidere di supportarlo o meno.
 
 L'obiettivo di CORBA è lavorare per dispositivi molto leggeri e con poche risorse quindi GIOP (General Inter-ORB Protocol) è messo a disposizione per comunicare a byte. CORBA è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo CORBA.
+
+<a href="#indice">Torna all'indice</a>
 
 ### CORBA 2.X
 
@@ -4166,6 +4253,8 @@ Come già detto più volte, siamo interessati non solo alla fase di sviluppo, ma
 
 Protocollo SNMP per la gestione e il management del mondo del networking. SNMP rappresenta uno standard, allo stesso modo si vogliono avere standard per il monitoraggio nel mondo distribuito in ambienti aperti e interoperabili. Per fare un esempio, Distributed Management Task Force (DMTF) è un’organizzazione per la standardizzazione per IT system management in ambienti industriali e in Internet. Gli standard DMTF permettono la costruzione di componenti per system management indipendenti dalla piattaforma e technology-neutral, abilitando così interoperabilità fra prodotti per la gestione di sistemi di diversi vendor, alcuni elementi fondamentali in DMTF sono: Common Information Model (CIM), Common Diagnostic Model (CDM), Web-Based Enterprise Management (WBEM). Common Information Model (CIM) è un modello astratto per la rappresentazione degli elementi gestiti (ad esempio, computer o storage area network) come insieme di oggetti e relazioni. CIM è estensibile per consentire l’introduzione di estensioni product-specific e svolge la stessa funzione del CMIB per SNMP. Common Diagnostic Model (CDM) è un modello di diagnostica e definizione di come questo debba essere incorporato nell’infrastruttura di management, infine Web-Based Enterprise Management (WBEM) è un insieme di protocolli per l’interazione fra componenti di system management (conformi a CIM e ai suoi profili) e la loro interrogazione. I rpofili in genr sono utilizzati in data-model molto estesi con diversi diritti e operazioni.
 
+<a href="#indice">Torna all'indice</a>
+
 ### JMX
 
 Il contesto nel quale si è inserita la specifica Java è quella del monitoraggio nell’ambiente distribuito, prima del framework Java Management Extensions (JMX) non vi era nessun approccio standardizzato in Java per far partire, gestire, monitorare e fermare l’esecuzione di componenti software. I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean, questi MBean sono gestiti attraverso un agente: che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti Mbean e cliente; quindi, l’agente in un certo senso rende trasparenti gli MBean, in questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi managed bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
@@ -4585,6 +4674,8 @@ Il clustering è utile per l'esecuzione su server multipli in parallelo fornendo
 
 JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e open-source.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Clustering Service
 
 Dalla versione 7 di JBoss si usa il servizio Infinispan per la gestione della replicazione dello stato applicativo al posto di JBoss Cache. Cambiano i nomi dei file di configurazione: `standalone-ha.xml` o `standalone-full-ha.xml`.
@@ -4849,6 +4940,8 @@ Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprie
 
 Al giorno d'oggi, sempre più sistemi sono costituiti e caratterizzati da enormi moli di dati da gestire, originati da sorgenti altamente eterogenee e con formati altamente differenziati, oltre a una qualità estremamente eterogenea (fonte dei dati).
 
+<a href="#indice">Torna all'indice</a>
+
 ### Definizione
 
 In letteratura, esistono molte definizioni di Big Data. La definizione seguente si basa sulla regole delle 5V cioè un sistema per essere definito Big Data deve rispettare tutti questi punti:
@@ -4867,7 +4960,9 @@ Altre definizioni di Big Data includono anche un'altra V cioè la **variabilità
 
 ![single tier](./img/img85.png)
 
-Il processamento dei Big Data può avvenire in due modi: o tramite Stream Processing o tramite Batch Processing.
+Il processamento dei Big Data può avvenire in due modi: o tramite stream processing o tramite batch processing.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Stream Processing
 
@@ -4903,6 +4998,8 @@ Uno Stream è una sequenza infinita di tuple strutturate. Possono essere consuma
 
 Invece, la finestra è un gruppo finito e sequenziale di tuple in un flusso. La finestra è basata su contatori, tempo, valore di attributi, punctuation mark etc. Ogni operatore, ad esempio, potrebbe lavorare su una finestra di tre tuple e quindi le operazioni vengono eseguite su tre tuple alla volta.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Batch Processing
 
 Probabilmente il padre storico di impatto industriale è il progetto Apache Hadoop. È un framework open source che vede Yahoo come principale contributor. Il progetto si suddivide in tre sottoprogetti:
@@ -4922,6 +5019,8 @@ Prende ispirazione da Google file system. È un file system scalabile, distribui
 HDFS memorizza file di grandi dimensioni in blocchi distribuiti sul cluster, garantisce affidabilità e fault-tolerance tramite replicazione su nodi multipli ed è progettato specificamente per deployment su hardware low-cost.
 
 Hadoop può lavorare su qualsiasi file system distribuito ma sfrutta conoscenza di località per ottimizzazione, quindi HDFS particolarmente adatto.
+
+<a href="#indice">Torna all'indice</a>
 
 ### MapReduce
 
@@ -5015,27 +5114,31 @@ Un secondo esempio per chiarire tutti i concetti visti è il seguente:
 
 Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, per evitare i rallentamenti causati dalle letture e scritture su disco.
 
+<a href="#indice">Torna all'indice</a>
+
 ## Node.js
 
-Node.js è una tecnologia server-side, supporta efficientemente l'I/O in modo asincrono non-bloccante, **non** utilizza thread/processi dedicati, garantisce scalabilità, e l’esaspera il concetto di _server stateless_.
-
-### Introduzione
+Node.js è una tecnologia server-side, supporta efficientemente l'I/O in modo asincrono non-bloccante, **non** utilizza thread/processi dedicati, garantisce scalabilità, ed esaspera il concetto di _server stateless_.
 
 Node.js è utilizzato lato server-side, per questo per renderlo fruibile è necessario appoggiarsi ad un run-time enviroment del linguaggio JavaScript supportato da Google Chrome V8 engine. Il codice JavaScript viene compilato con una buona efficienza a run-time. Vi è la massima concorrenza e scalabilità per questo di solito si evita di utilizzare più thread dedicati e concorrenti. Il funzionamento è sempre non bloccante, persino per chiamate I/O-oriented.
 
-L’idea di base è gestire tutto con l’event loop: un ciclo infinito di elaborazione che si appoggia sull’utilizzo di uno stack, sullo stack sono depositate le operazioni da eseguire, che puoi vengono processate e di conseguenza una volta eseguite vengono rimosse dallo stack e si procede con la valutazione. In questo modo è possibile la valutazione di alcune funzioni che possono essere accodate e mano a mano smaltite dall’event-loop. In sintesi, al posto di thread, si usa un event loop con stack che riduce fortemente overhead di context switching. L’event loop utilizza il framework CommonJS, leggermente più _simile_ a un vero linguaggio di programmazione OO.
+<a href="#indice">Torna all'indice</a>
+
+### Event Loop
+
+L’idea di base è gestire tutto con l’event loop: un ciclo infinito di elaborazione che si appoggia sull’utilizzo di uno stack. Sullo stack sono depositate le operazioni da eseguire, che puoi vengono processate e di conseguenza una volta eseguite vengono rimosse dallo stack e si procede con la valutazione. In questo modo, è possibile la valutazione di alcune funzioni che possono essere accodate e mano a mano smaltite dall’event-loop. In sintesi, al posto di thread, si usa un event loop con stack che riduce fortemente overhead di context switching. L’event loop utilizza il framework CommonJS, leggermente più _simile_ a un vero linguaggio di programmazione OO.
 
 Ha senso utilizzare questa strategia perché a seconda del tipo di operazione, come l’accesso alle cache di primo o secondo livello, alla memoria, al disco o alla rete, sono richiesti molti più cicli di CPU per effettuare queste operazioni. Se ci si blocca in attesa di queste risorse per certe operazioni, rimangono ferme delle risorse attive come i thread. Se questo è vero bisogna strutturare l’applicazione sfruttando il parallelismo e quindi generando nuove richieste di risorse al sistema poiché con il parallelismo si creano nuovi thread e processi. A livello di sistema si utilizza la `select` che consente di gestire le operazioni non bloccanti a evento. In questo modo, è possibile realizzare dei servitori anche mono-processo (nel caso estremo) che concorretemene gestiscono la molteplicità di richieste senza doversi bloccare su operazioni di lettura in genere più fastidiose da questo punto di vista.
 
 ### Thread vs Asynchronous Event Driven
 
-Nelle applicazioni event-driven vi è un solo processo che fa fetching di eventi da una coda, li estrae e li processa. Per quanto riguarda un’applicazione multi-threaded tipicamente questo lavora bloccando il chiamante in attesa che arrivi del lavoro da smaltire da un thread listener che poi delega la computazione a un pool di thread. Il modello di base è quello di incoming request, mentre nel caso event-driven vi è una serie di eventi da processare in una coda che vengono processati dal singolo processo dell’event-loop. Se un’applicazione multi-thearded nell’operazione di lettura generalmente si blocca, nel paradigma event-driven la stessa lettura sarà un evento che dovrà essere processato e ciò accadrà solo quando il dato che si vuole leggere sarà disponibile, utilizzando callback che notificano l’aver completato l’esecuzione dell'evento. In un server multithead se una richiesta prevede diverse operazioni questi thread si bloccheranno per molto tempo nell’attesa che tutte le operazioni vengano effettuate. Nel caso event-driven l’idea è quella di mantenere uno stato aggiornato man mano che arrivano nuovi dati per capire quando è il momento di processare l’evento. Per quanto riguarda l’applicazione multi-threaded vi è context swiching per passare da un thread bloccato in attesa di una risorsa ad un altro, ciò causa un notevole overhead, mentre nel caso dell’event-driven non c’è context switch e non c’è content della CPU che è sempre detenuta dall’event loop. Questo in termini di scalabilità ha un grosso vantaggio relativo all’overhead creato dal cambio di contesto dal caricamento del processo e dallo scheduling di quello successivo relativo al context switch.  Nei sistemi multithread a causa degli accessi concorrenti a uno stato condiviso vi è anche il problema della sincronizzazione in accesso, quindi locking delle risorse. Nel caso nell’event-driven asincrono non esiste per costruzione questo tipo di problema essendovi un unico processo. Quando l’applicazione è event-driven si necessita di un supporto diverso che possiede primitive asincrone e non bloccanti.
+Nelle applicazioni event-driven vi è un solo processo che fa fetching di eventi da una coda, li estrae e li processa. Per quanto riguarda un’applicazione multi-threaded tipicamente questo lavora bloccando il chiamante in attesa che arrivi del lavoro da smaltire da un thread listener che poi delega la computazione a un pool di thread. Il modello di base è quello di incoming request cioè si aspettano richieste, mentre nel caso event-driven vi è una serie di eventi da processare in una coda che vengono processati dal singolo processo dell’event-loop. Se un’applicazione multi-thearded nell’operazione di lettura generalmente si blocca, nel paradigma event-driven la stessa lettura sarà un evento che dovrà essere processato e ciò accadrà solo quando il dato che si vuole leggere sarà disponibile, utilizzando callback che notificano l’aver completato l’esecuzione dell'evento. In un server multithead se una richiesta prevede diverse operazioni questi thread si bloccheranno per molto tempo nell’attesa che tutte le operazioni vengano effettuate. Nel caso event-driven, l’idea è quella di mantenere uno stato aggiornato man mano che arrivano nuovi dati per capire quando è il momento di processare l’evento. Per quanto riguarda l’applicazione multi-threaded vi è context swiching per passare da un thread bloccato in attesa di una risorsa ad un altro, ciò causa un notevole overhead, mentre nel caso dell’event-driven non c’è context switch e non c’è content della CPU che è sempre detenuta dall’event loop. Questo in termini di scalabilità ha un grosso vantaggio relativo all’overhead creato dal cambio di contesto dal caricamento del processo e dallo scheduling di quello successivo relativo al context switch. Nei sistemi multithread a causa degli accessi concorrenti a uno stato condiviso vi è anche il problema della sincronizzazione in accesso, quindi locking delle risorse. Nel caso nell’event-driven asincrono non esiste per costruzione questo tipo di problema essendovi un unico processo. Quando l’applicazione è event-driven si necessita di un supporto diverso che possiede primitive asincrone e non bloccanti.
 
 ![single tier](./img/img92.png)
 
 ### Thread vs Event
 
-Per gestire una richiesta a un server web, nel multithread si ha l’invocazione di una read request letta dalla socket, poi si processa la richiesta e si manda una risposta send reply, che rappresenta l’operazione di scrittura.
+Per gestire una richiesta a un server web, nel multithread si ha l’invocazione di una read request letta dalla socket, poi si processa la richiesta e si manda una risposta send reply, che rappresenta l’operazione di scrittura:
 
 ```
 request = readRequest(socket);
@@ -5043,7 +5146,7 @@ reply = processRequest(request);
 sendReply(socket, reply);
 ```
 
-La prima operazione bloccante è la read su cui si blocca il thread in attesa, il blocco è sulla read a livello di sistema. Sull’operazione di lettura il processo si sospende e quindi avviene il context switching.
+La prima operazione bloccante è la `readRequest` su cui si blocca il thread in attesa, il blocco è sulla read a livello di sistema. Sull’operazione di lettura il processo si sospende e quindi avviene il context switching.
 
 ```
 startRequest(socket);
@@ -5051,33 +5154,50 @@ listen("requestAvail", processRequest);
 listen("processDone", sendReplyToSock);
 ```
 
-La prima invocazione del modello a eventi è una start-request sulla socket, quindi, la lettura è gestita ad evento, si vuole iniziare la ricezione di una richiesta da un potenziale cliente. La parte successiva è un metodo di callback che si vuole attivare quando la richiesta è disponibile, il modello lavora a callback il sistema chiama quando l’evento si verifica, quando la richiesta è arrivata inizia il processamento. Per questo motivo di passa a una programmazione funzionale. In modo simile si ha una listen che aspetta la callback dell’evento di processing terminato ovvero process-done, quando arriva si può proseguire e si può richiedere la valutazione di un nuovo evento send reply Socket per verrà processato e gestito, infatti, anche la write viene gestita a evento. In questa implementazione non c’è context swithing, ma vi è un event loop che consuma le operazioni richieste e le va ad eseguire utilizzando le callback, una volta eseguita passerà alla successiva.
+La prima invocazione del modello a eventi è una `startRequest` sulla socket, quindi, la lettura è gestita ad evento, si vuole iniziare la ricezione di una richiesta da un potenziale cliente. La parte successiva è un metodo di callback che si vuole attivare quando la richiesta è disponibile. Il modello lavora a callback e il sistema chiama quando l’evento si verifica. Quando la richiesta è arrivata inizia il processamento. Per questo motivo si passa a una programmazione funzionale. In modo simile si ha una `listen` che aspetta la callback dell’evento di processing terminato ovvero `processDone`. Infatti, anche la write viene gestita ad evento. In questa implementazione non c’è context swithing, ma vi è un event loop che consuma le operazioni richieste e le va ad eseguire utilizzando le callback, una volta eseguita passerà alla successiva.
 
-Il tutto si può organizzare con una read request che legga dalla socket che accetta come argomenti, una socket e un’invocazione di una funzione, al momento della disponibilità dell’evento di lettura e a quel punto il supporto passa la richiesta letta, la funzione esegue il codice e processa la richiesta, la process request riceverà la richiesta che riceve come secondo parametro un’invocazione di funzione. All’interno della stessa annidiamo una funzione per la senreply().
+```
+readRequest(socket, function(request) {
+    processRequest(request,
+        function (reply) {
+            sendReply(socket, reply);
+        });
+}
+```
 
-Esempio di stack con event loop, idea e che sullo stack sono caricate man mano le richieste che si vogliono eseguire con le funzioni readrequest e processrequest.
+Il tutto si può organizzare con una `readRequest` che accetta come argomenti, una socket e un’invocazione di una funzione. Al momento della disponibilità dell’evento di lettura, il supporto passa la richiesta letta, la funzione esegue il codice e processa la richiesta, la `processRequest` riceverà la richiesta che riceve come secondo parametro un’invocazione di funzione. All’interno della stessa si annida una funzione per la `sendReply()`.
+
+Di seguito è riportato un esempio di stack con event loop, idea e che sullo stack sono caricate man mano le richieste che si vogliono eseguire con le funzioni `readRequest` e `processRequest`:
 
 ![single tier](./img/img93.png)
 
-Per una richiesta a `index.html`, si ha un processo event-loop che è idle cioè in attesa di eventi da processare, quando arriva una socket readable si può andare a effettuare il parsing della richiesta e per questo è necessario andare a caricare il file `index.html`. A quel punto si parte con il caricamento, quando il caricamento è avvento si può creare l’evento di creazione della risposta, una volta effettuata si può passare a svuotare lo stack e all’evento successivo.
+Sullo stack vengono caricate le funzioni che si vogliono eseguire, per esempio volendo servire una richiesta `index.html`, vi è sempre un evento di base che è l’event loop che è idle in attesa di eventi da processare. Quando arriva l’evento di socket readable si crea un evento per il parsing della richiesta, per farlo ci si rende conto che è necessario caricare il file, quando il caricamento è avvenuto vengono gestite le richieste con la callback fino a rivuotare la coda.
 
-Sullo stack vengono caricate le funzioni che si vogliono eseguire, per esempio volendo servire una richiesta `index.html`, vi è sempre un evento di base che è l’event loop che è idle in attesa di eventi da processare. Quando arriva l’evento di socket readable si crea un vento per il parsing della richiesta, per farlo ci si rende conto che è necessario caricare il file, quando il caricamento è avvenuto vengono gestite le richieste con la callback fino a rivuotare la coda.
+L’event loop è costituito da un `while` infinito che effettua la `pop()` e la `call()` all’arrivo di una richiesta:
 
-L’event loop è costituito da un while infinito che effettua la pop e la call all’arrivo di una richiesta, il concetto di base e che non ci sono più blocchi quindi se si vuole organizzare la event read, si effettua la richiesta di read sulla socket che da risposta immediatamente, perché aggiunge l’evento sullo stack e poi quando la lettura è terminata (gestita in modo asincrono) allora sull’event.queue viene effettuata una push dell’handler dell’evento read che è terminato sullo stack.  A questo unto il listener riceve la notifica che la read è terminata e può procedere a gestire altri eventi nella coda. In questo modo si ottiene la massima sincronicità non serve più effettuare context switching.
+```
+while(true) {
+    if (!eventQueue.notEmpty()) {
+        eventQueue.pop().call();
+    }
+}
+```
 
-In caso di operazione sincrona si ha una attesa molto lunga, fino al punto evidenziato in giallo e si inizia a eseguire solo da quel momento in cui è presente il risultato e solo a questo punto si effettua il processing del risultato stesso.
+Si effettua la richiesta di read sulla socket che da risposta immediatamente, perché aggiunge l’evento sullo stack e poi quando la lettura è terminata (gestita in modo asincrono) allora sulla coda viene effettuata una `push()` dell’handler dell’evento read che è terminato sullo stack. A questo punto, il listener riceve la notifica che la read è terminata e può procedere a gestire altri eventi nella coda. In questo modo si ottiene la massima sincronicità e non serve più effettuare context switching.
+
+In caso di operazione sincrona si ha un'attesa molto lunga, e si inizia a eseguire solo da quel momento in cui è presente il risultato e solo a questo punto si effettua il processing del risultato stesso:
 
 ![single tier](./img/img94.png)
 
-Nel caso asincrono con thread in parallelo si ha lo stesso problema cioè vi è sempre molto attesa. Inoltre, creare nuovi thread ha in sé un costo.
+Nel caso asincrono con thread in parallelo si ha lo stesso problema cioè vi è sempre molto attesa. Inoltre, creare nuovi thread ha in sé un costo:
 
 ![single tier](./img/img95.png)
 
-Se si gestisce tutto in modo asincrono non bloccante, l’approccio diventa single thread. Quando si interoga il db si passa la query e un function e nella function stessa si definisce la callback da invocare nel momento in cui arriva il risultato, la chiamata non diventa bloccante poiché nel momento in cui il risultato è disponibile invoca la doSomething per gestire l’evento, la chiamata non è bloccante e il processo può subito fare qualcos’altro. La cpu in questo modo è sempre occupata a fare qualcosa. In questo caso non si paga l’overhead del context switch.
+Se si gestisce tutto in modo asincrono non bloccante, l’approccio diventa single-thread. Quando si interoga il db si passa la query e un function e nella function stessa si definisce la callback da invocare nel momento in cui arriva il risultato, la chiamata non diventa bloccante poiché nel momento in cui il risultato è disponibile invoca la `doSomething` per gestire l’evento, la chiamata non è bloccante e il processo può subito fare qualcos’altro. La CPU in questo modo è sempre occupata a fare qualcosa. In questo caso non si paga l’overhead del context switch:
 
 ![single tier](./img/img96.png)
 
-Cosa accade su una callback richiede molto tempo per l’esecuzione? Questo è un tasto dolente di questo paradigma, i task cpu intensive vanno contro al modello stesso e possono portare a ritardi consistenti e blocchi, non garantisce più la concorrenza. Il tutto funziona bene dal momento che la computazione è parcellizzata in modo corretto, con task che eseguono concorrentemente, senza che nessuno di questi si appropri per troppo tempo della risorsa e ritardi l’esecuzione di tutti gli altri.
+Cosa accade su una callback richiede molto tempo per l’esecuzione? Questo è un tasto dolente di questo paradigma, i task CPU intensive vanno contro al modello stesso e possono portare a ritardi consistenti e blocchi, non garantisce più la concorrenza. Il tutto funziona bene dal momento che la computazione è parcellizzata in modo corretto, con task che eseguono concorrentemente, senza che nessuno di questi si appropri per troppo tempo della risorsa e ritardi l’esecuzione di tutti gli altri.
 
 ![single tier](./img/img97.png)
 
@@ -5095,9 +5215,9 @@ I thread se la logica eseguita da un thread è sequenziale; quindi, al termine d
 
 ### Utilizzo di JavaScript
 
-L’uso di JavaScript sia lato cliente che lato servitore e ha alcuni vantaggi, tra cui no context switch, bisogna stare attenti però se stiamo programmando client side quindi si utilizza il DOM e non si accede al persistent storage, lato server siamo più interessanti a lavorare con lo storage.
+L’uso di JavaScript sia lato cliente che lato servitore e ha alcuni vantaggi, tra cui il no context switch. Bisogna stare attenti però se si sta programmando lato client side quindi si utilizza il DOM e non si accede al persistent storage, lato server si è più interessanti a lavorare con lo storage.
 
-Con Node.js si può lavorare a moduli, questi moduli realizzano funzionalità e logica applicativa e logica applicativa, consentono di non scrivere sempre lo stesso codice per la gestione delle callback e degli eventi la logica applicativa. Il core di Node consiste di circa una ventina di moduli, alcuni di più basso livello come per la gestione di eventi e stream, altri di più alto livello come http. Il modulo più usato è http con l’operazione una volta creato il modulo con la require, si può richiedere a creazione di un http server che sia in grado di rispondere con un hello world e si può invocare questo server, il tutto è gestito con funzioni non bloccanti ed è in grado di reagire generando una richiesta http quando riceve una richiesta. A questo punto si può mettere in ascolto il servitore sulla posta 8000 che è pronto a rispondere.
+Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e logica applicativa e logica applicativa, consentono di non scrivere sempre lo stesso codice per la gestione delle callback e degli eventi la logica applicativa. Il core di Node.js consiste di circa una ventina di moduli, alcuni di più basso livello come per la gestione di eventi e stream, altri di più alto livello come http. Il modulo più usato è http con l’operazione una volta creato il modulo con la require, si può richiedere a creazione di un http server che sia in grado di rispondere con un hello world e si può invocare questo server, il tutto è gestito con funzioni non bloccanti ed è in grado di reagire generando una richiesta http quando riceve una richiesta. A questo punto si può mettere in ascolto il servitore sulla posta 8000 che è pronto a rispondere.
 
 ```
 // carica il modulo http per creare un http server
@@ -5115,7 +5235,7 @@ console.log("Server running at http://127.0.0.1:8000/");
 
 Il core di Node.js è stato progettato per essere piccolo e snello, i moduli che fanno parte del core si focalizzano su protocolli e formati di uso comune. Per ogni altra cosa, si usa npm: chiunque può creare un modulo Node con funzionalità aggiuntive e pubblicarlo in npm.
 
-NPM  è un package manager di grande successo e in forte crescita, che semplifica sharing e riuso di codice JavaScript in forma di moduli. In generale è preinstallato con distribuzione Node, esegue tramite linea di comando e permette di ritrovare moduli dal registry pubblico in http://npmjs.org
+NPM è un package manager di grande successo e in forte crescita, che semplifica sharing e riuso di codice JavaScript in forma di moduli. In generale è preinstallato con distribuzione Node, esegue tramite linea di comando e permette di ritrovare moduli dal registry pubblico in http://npmjs.org
 
 Modulo di gestione dei file, FS per file piccoli che possono stare il memoria, una volta caricato il modulo con la require si può effettuare la read file, questo scatena la lettura e passiamo la funzione che dovrà essere scatenata e per leggere il file. Notare che in Node.js il primo parametro è sempre quello di errore il secondo è il contenuto del file. Il file deve essere piccolo perché altrimenti l’operazione di console diventerebbe troppo lunga e bloccherebbe l’event loop.
 
@@ -5149,25 +5269,28 @@ readableStreamEvent.on('data', function (chunkBuffer) { console.log('got chunk o
 //operazione eseguita ogni volta che arriva un chunck di dati
 
 readableStreamEvent.on('end', function() { 
-// Lanciato dopo che sono stati letti tutti i datachunk fine dello stream
-console.log('got all the data'); }); 
+    // Lanciato dopo che sono stati letti tutti i datachunk fine dello stream
+    console.log('got all the data');
+}); 
 
 readableStreamEvent.on('error', function (err) { 
-console.error('got error', err); });
+    console.error('got error', err);
+});
 //gestione a evento dell’errore
 ```
 
 Per quanto riguarda la scrittura è possibile creare uno stream output-file. Quando viene terminata l’operazione di scrittura viene emesso l’evento di fine end. Una volta invocata l’operazione di scrittura sarà anche emesso un evento di fine della scrittura che può essere recuperato e aggiunto al log-file per capire se la scrittura è andata a buon fine.
 
 ```
-var writableStreamEvent = fs.createWriteStream('outputFile’); 
-writableStreamEvent.on('finish', function () { 
-console.log('file has been written!'); }); 
-writableStreamEvent.write('Hello world!\n'); 
+var writableStreamEvent = fs.createWriteStream('outputFile’);
+writableStreamEvent.on('finish', function () {
+    console.log('file has been written!');
+});
+writableStreamEvent.write('Hello world!\n');
 writableStreamEvent.end();
 ```
 
-Esiste un modulo di rete Node, chiamato Net, che fa da wrapper per le chiamate di rete di SO, include anche funzionalità di alto livello, come:
+Esiste un modulo di rete Node.js, chiamato Net, che fa da wrapper per le chiamate di rete di SO, include anche funzionalità di alto livello, come:
 
 ```
 var net = require('net’); 
@@ -5178,19 +5301,19 @@ Crea una socket per una connessione TCP, fa binding del server su una porta (400
 
 ```
 var clients = []; // Lista di client connessi 
-function processTCPconnection(socket) { 
+function processTCPconnection(socket) {
 clients.push(socket); // Aggiunge il cliente alla lista
-socket.on('data', function (data) { 
+socket.on('data', function (data) {
 broadcast("> " + data, socket); // invia a tutti i dati ricevuti 
-}); 
-socket.on('end', function () { 
+});
+socket.on('end', function () {
 clients.splice(clients.indexOf(socket), 1); // remove socket 
-}); 
-} // invia messaggio a tutti i clienti 
-function broadcast(message, sender) { 
-clients.forEach(function (client) { 
-if (client === sender) 
-return; 
+});
+} // invia messaggio a tutti i clienti
+function broadcast(message, sender) {
+clients.forEach(function (client) {
+if (client === sender)
+return;
 client.write(message); 
 }); 
 }
