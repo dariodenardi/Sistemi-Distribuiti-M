@@ -174,7 +174,6 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#">Java Business Integration (JBI)</a></li>
       </ul>
     </li>
-    <li><a href="#">Esercitazione EJB</a></li>
     <li>
       <a href="#">CORBA</a>
       <ul>
@@ -3077,77 +3076,9 @@ JBI supporta quattro possibili pattern di scambio messaggi:
 
 <a href="#indice">Torna all'indice</a>
 
-## Esercitazione EJB
-
-Si consiglia di installare le versioni dei programmi suggerite di seguito altrimenti non è detto che funzioni tutto correttamente. Lo startkit **corretto** di trova nella pagina Releases, quello fornito a lezione è rotto e non funzionante!
-
-### Tool da usare
-
-- [Eclipse Enterprise Edition](https://www.eclipse.org/downloads/packages/release/2021-09/r/eclipse-ide-enterprise-java-and-web-developers)
-- [Wildfly 25.0.1](https://www.wildfly.org/)
-
-È importante usare Eclipse e non IDE come Intellij perchè non supportano JSP e Servlet!
-
-### Cosa controllare prima di importare lo startkit
-
-- [Java 8](https://www.oracle.com/it/java/technologies/javase/javase8-archive-downloads.html)
-- [MySQL](https://dev.mysql.com/downloads/)
-
-### Configurazione Eclipse
-
-Per prima cosa bisogna installare il plugin Gradle. Andare, quindi, su `Help` -- `Eclipse Marketspace` e cercare _gradle_.
-
-![gradle](./img/img119.png)
-
-Alla fine dell'installazione, l'IDE si riavvia.
-
-### Importare il progetto su Eclipse
-
-Andare su `File` -- `Import` -- `Gradle` -- `Existing Gradle Project`, dopo cliccare su `Next`, selezionare la cartella in cui si trova il progetto, cliccare di nuovo `Next` e selezionare le voci della figura seguente:
-
-![gradle](./img/img120.png)
-
-Cliccare `Next` e infine su `Finish`.
-
-Bisogna aspettare che si scarichino tutte le dipendenze, ci vuole un pò di tempo!
-
-Bene, adesso il progetto è importato! Anche se appare rosso è tutto normale...il problema è di Eclipse e non nostro! Quindi se viene riportato il seguente errore va tutto bene:
-
-![gradle](./img/img121.png)
-
-Anche se appare rosso in corrispondenza dell'icona `root` e del file `build.gradle` è sempre tutto normale...
-
-![gradle](./img/img122.png)
-
-### Configurazione di MySQL
-
-Per l'installazione seguire la guida ufficiale che è possibile consultare al seguente [link](https://dev.mysql.com/doc/refman/8.0/en/installing.html).
-
-Una volta installato il db si suggerisce di cambiare la password di default. Si suggerisce di seguire la discussione che si trova al seguente [link](https://stackoverflow.com/questions/7534056/mysql-root-password-change). In ogni caso, bisogna aggiornare la password che si trova nel seguente file: 
-
-`src/main/application/META-INF/persistence.xmls`
-
-### Deploy dell'applicazione su WildFly
-
-Prima cosa, bisogna fare doppio click sul file `build.gradle` e specificare dove c'è scritto `wildfly_home` il percorso del pc in cui è possibile trovare WildFly.
-
-Per eseguire il deploy bisogna andare nella sezione `Gradle Tasks` ed eseguire i seguenti task:
-
-- Clean
-- Build
-- Ear
-
-![gradle](./img/img123.png)
-
-### Eseguire WildFly
-
-A questo punto manca solo il server! I comandi cambiano da sistema operativo quindi non li riporto. L'applicazione è possibile trovarla al seguente indirizzo:
-
-`localhost:8080/demo`
-
-Buon Lavoro!
-
 ## CORBA
+
+Prima di iniziare questo nuovo capitolo, per fissare meglio i concetti, si consiglia di eseguire l'esercitazione su EJB. Lo startkit **corretto** si trova nella pagina `Releases`, quello fornito a lezione è rotto e non funzionante!
 
 EJB 3.X non è un unico modello a componenti distribuiti basato sull’approccio a container pesante ma esiste CORBA come potente container per oggetti distribuiti.
 
