@@ -187,7 +187,7 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         <li><a href="#">CORBA Home</a></li>
         <li><a href="#">Viste di Componenti CCM</a></li>
         <li><a href="#">Configurazione dinamica dei componenti</a></li>
-        <li><a href="#">Implementazione dinamica dei componenti e supporto runtime</a></li>
+        <li><a href="#">Supporto Runtime: Funzionalità Component Server</a></li>
         <li><a href="#">Executor</a></li>
       </ul>
     </li>
@@ -3127,6 +3127,8 @@ L’interface repository permette di registrare le interfacce CORBA, non le impl
 
 Uno dei problemi aperti di CORBA è il fatto che non c’è nulla per la gestione dell’impacchettamento e del deployment del software ma tutto questo deve essere fatto a mano, quindi una volta fatta l’interfaccia poi bisogna a mano mettere insieme tutti i vari pacchetti. Questo causa molti problemi per le infrastrutture perché si deve lavorare in modo diverso ogni volta e non ci sono tool automatici, nella specifica CORBA non ci sono strumenti per gestire tutti componenti e metterli nel punto giusto. Le conseguenze sono una scarsa manutenibilità e una scarsa penetrazione nel mercato.
 
+<a href="#indice">Torna all'indice</a>
+
 ### CORBA Component Model (CCM)
 
 Per andare oltre a questi limiti è stato proposto il CORBA Component Model per far si, che sia possibile creare dei component server che possano ospitare container e componenti, ovvero un’interfaccia home e una parte di componente che permette l’esecuzione.
@@ -3144,9 +3146,13 @@ Component Implementation Framework (CIF) è l'insieme di strumenti di sviluppo c
 - Altri file di interfaccia per executor.
 - Pezzi di codice che aiutano esecuzione runtime dell'Object Servant.
 
+<a href="#indice">Torna all'indice</a>
+
 ![single tier](./img/img27.png)
 
 In CCM vengono aggiunti anche gli strumenti di deployment: automatizzano la distribuzione del package sui nodi. Automatizzano il deployment di Component Assembly verso component server. Il component packaging ha funzionalità per fare packaging dei componenti in una applicazione. In CORBA 2 non c'è la possibilità di preparare oggetti CORBA e poi ci si arrangia per il deployment. In CCM si può assemblare l’applicazione nel suo insieme mettendo dentro i vari componenti CCM che servono e i vari file di metalivello che descrivono le loro configurazioni e i loro vincoli di deployment. Assomiglia all’idea di fare un EAR di EJB3.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Implementazioni CCM disponibili
 
@@ -3155,6 +3161,8 @@ Le principali standardizzazioni sono le seguenti:
 ![single tier](./img/img28.png)
 
 Le tecnologie CORBA sono datate, CORBA ha avuto grande successo negli anni '80/'90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi CORBA non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i Web Services (quindi i motivi sono commerciali).
+
+<a href="#indice">Torna all'indice</a>
 
 ### Comparazione CCM vs. EJB e .NET
 
@@ -3168,6 +3176,8 @@ Rispetto ad altri framework le principali caratteristiche:
 
 In sintesi, CORBA 3 ha preso le tecnologie presenti sul mercato al momento della creazione della specifica cercando di prendere il meglio da tutte. Ci ha messo dentro veramente tantissima roba tanto non la implementavano loro dato che è una specifica.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Running Example
 
 C'è un component server che ospita dei componenti. Ce ne sono 3: componente `Rate Generator`, componente di calcolo della posizione `GPS` e un componente di display che mostra la mappa con la posizione corretta `NavDisplay`. Insieme formano un’applicazione con un determinato flusso di esecuzione.
@@ -3175,6 +3185,8 @@ C'è un component server che ospita dei componenti. Ce ne sono 3: componente `Ra
 ![single tier](./img/img29.png)
 
 Il `Rate Generator` emette un impulso e ha una porta `Rate` che è un parametro di configurazione definito a livello di deployment. `Pulse` è un impulso generato ed è un evento. `GPS` è un ricevitore per quell’evento. Tutte le volte che `GPS` riceve l'evento `Pulse`, riaggiorna il calcolo della posizione corrente del dispositivo: la posizione è interrogabile dall’esterno (pallino di fianco a `MyLocation`). `GPS` è esso stesso emettitore di eventi `Ready` che vengono consumati da `NavDisplay`: lui riceve eventi `Refresh` e in risposta va ad invocare `MyLocation`. La mezzaluna rappresenta il fatto che il componente si aspetti di interagire con un altro componente che esponga la stessa interfaccia di `GPSLocation`.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Componente CCM
 
@@ -3204,9 +3216,13 @@ In CCM, ci sono 5 tipi porte che un componente può specificare e utilizzare. Le
 - **Event Sink**: con questa porta si specifica che il componente consuma eventi. La parola riservata è `consumes`. Vale sia per eventi prodotti da un publisher sia per eventi prodotti da un emitter. Non ci sono differenze.
 - **Attributes**: particolari proprietà che possono essere configurate dall’esterno, tipicamente dal container, in base alle informazioni che si passano sui file di deployment descriptor. La parola chiave è `attribute`. Il discorso da aprire è: come è importante nei sistemi industriali distribuiti poter definire a livello di deployment delle proprietà configurabili esternamente. È un discorso che si conosce molto bene, quindi non lo si apre. Questi attributi vengono definiti, viene dato loro valore, a tempo di deployment tramite file di configurazione esterni: dei descriptor di tipo XML, e la cosa non sconvolge perché è stata già vista anche in EJB.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Gestione Lifecycle CCM
 
 La gestione automatica del ciclo di vita non c’è in CORBA 2. Per gestione automatica si intende quella di EJB: ci sono componenti che magari è giusto gestire con una determinata strategia (magari sono componenti di sessione), altri in un altro perché sono componenti senza stato. Questa cosa la si vuole in CCM. Il concetto fondamentale per aiutare la struttura CORBA a gestire il ciclo di vita delle istanze dei componenti è quello di passare attraverso le Home. Queste Home sono l’aggancio per gestire il ciclo di vita dei componenti in modo differenziato a seconda delle tipologie di componenti.
+
+<a href="#indice">Torna all'indice</a>
 
 ### CORBA Home
 
@@ -3218,6 +3234,8 @@ Nel caso di `RateGen` qua di fianco si possono vedere come lui
 sia bello runnato dalla sua Home, ma nulla vieta di
 istanziarne altri 10 assegnarli ad altre 10 Home tutte diverse
 con diverse istruzioni per il lifecycle e che quindi gestiranno in modo diverso il ciclo di vita di quel componente. Le Home fanno da _guscio_ per l’esecuzione delle singole istanze di componenti.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Configurazione dinamica dei componenti
 
@@ -3252,6 +3270,8 @@ main (int argc, char *argv[])
 ```
 
 Sin questo esempio si vuole andare a recuperare una certa facet e invocare un metodo di tale interfaccia. Si parte dall’ORB che è un servizio di nomi che dà la possibilità di recuperare i servizi di base come il servizio di naming (come RMI Registry). Una volta recuperato il servizio di nomi si possono andare ad invocare dei servizi di lookup, in particolare in questo caso si fa il lookup della ComponentHome registrata come MyHelloHome, attraverso il narrowing si può recuperare un oggetto tipato Home, su quell’oggetto si applica la create che crea il componente, a questo punto è interrogabile e può restituire una descrizione di tutte le facet offerte da quel compente, si può poi con il receptable effettuare l’introspezione, con il metodo provide possiamo chiedere il recupero del riferimento all’implementazione di quella interfaccia, una volta ottenuto si può fare il narrowing e a quel punto effettuare la chiamata a un metodo che ci interessa. Le interfacce in CORBA non vengono mantenute insieme alle implementazioni ma in un repository che si chiama Interface Repository. Quindi le informazioni dell’interfaccia non sono insieme agli altri dati questo genera overhead quando bisogna recuperare molte interfacce diverse.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Supporto Runtime: Funzionalità Component Server
 
@@ -3293,12 +3313,16 @@ configurazione (come devo fare il deployment, come devo creare le istanze, mette
 
 Esistono container transazionali, sui quali le invocazioni sono transazionali, oppure container stateless. Questo permette di gestire in modo articolato e differenziato come si gestisce il ciclo di vita, le transazioni, la gestione eventi e la sicurezza, che, a questo punto, sono servizi corba messi a disposizione. Molte delle configurazioni dei servizi di sistema in CCM si fanno tramite file XML. Esistono anche direttive dentro i file IDL che altrimenti mettiamo nel deployment descriptor. L’importante da sapere è che queste funzionalità vengono implementate dai container e non dai componenti dato che l’invocazione passa sempre per il container: passando sempre di lì, per esempio, è il container che può avviare la transazione! Modello a container pesante.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Exectutor
 
 ![single tier](./img/img128.png)
 
 Ultima cosa, ma è proprio un dettaglio. Se noi andiamo a vedere com’è realizzato il modello ci sono anche degli Executor in CCM, e in particolare un executor per la Home e uno per il servant (la logica di business per il componente CORBA). Questi exectutor ci sono per supportare mismatch fra linguaggi di programmazione differenti, sono indispensabili per realizzare il modello a componenti e devono essere scritti dal programmatore. Il CIDL compiler scrive solo uno scheletro di queste cose, che va poi integrato. La buccia esterna di Servant, sia per la Home che per la logica di business invece viene generata completamente dal CIDL compiler. La figura finale è quindi questa, dove abbiamo il container, il CORBA component (costituito da un main executor e da altri executor) e infine un gestore del contesto di esecuzione del componente che interagisce con il POA. La cosa importante è che nel suo insieme il component CORBA espone le sue porte come descritto. In particolare le facets vengono gestite direttamente dal main component executor, mentre quelle di componenti e di receptacles dal CCMContext.
 È ovvio che questo è un modello a container pensante dove ogni volta qualcuno che invoca qualcosa lo fa passando attraverso intermediari.
+
+<a href="#indice">Torna all'indice</a>
 
 ## Spring
 
