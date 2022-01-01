@@ -107,71 +107,71 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       </ul>
     </li>
     <li>
-      <a href="#">JPA</a>
+      <a href="#jpa">JPA</a>
       <ul>
-        <li><a href="#">Object/Relational Mapping (ORM)</a></li>
-        <li><a href="#">Java Persistence API (JPA)</a></li>
-        <li><a href="#">Perchè usare JPA</a></li>
-        <li><a href="#">Entity</a></li>
-        <li><a href="#">Ereditarietà e Polimorfismo</a></li>
-        <li><a href="#">Strategie di Mapping</a></li>
-        <li><a href="#">Molteplicità nelle Relazioni</a></li>
-        <li><a href="#">Direzionalità delle relazioni</a></li>
-        <li><a href="#">Gestione a runtime di Entity</a></li>
-        <li><a href="#">Container-managed EntityManager</a></li>
-        <li><a href="#">Application-managed EntityManager</a></li>
-        <li><a href="#">Entity Manager singoli vs multipli</a></li>
-        <li><a href="#">Ciclo di Vita</a></li>
-        <li><a href="#">Unità di Persistenza</a></li>
-        <li><a href="#">Creazione di Query</a></li>
-        <li><a href="#">Loading Lazy/Eager</a></li>
-        <li><a href="#">Listener di Entity</a></li>
-        <li><a href="#">Hibernate</a></li>
-        <li><a href="#">Interfaccia SessionFactory</a></li>
-        <li><a href="#">Interfaccia Session</a></li>
-        <li><a href="#">Transazioni</a></li>
-        <li><a href="#">Ciclo di Vita</a></li>
-        <li><a href="#">Il caching in Hibernate</a></li>
-        <li><a href="#">Fetching dei dati</a></li>
-        <li><a href="#">Query By Examples (QBE)</a></li>
+        <li><a href="#objectrelational-mapping-orm">Object/Relational Mapping (ORM)</a></li>
+        <li><a href="#java-persistence-api-jpa">Java Persistence API (JPA)</a></li>
+        <li><a href="#perchè-usare-jpa">Perchè usare JPA</a></li>
+        <li><a href="#entity">Entity</a></li>
+        <li><a href="#ereditarietà-e-polimorfismo">Ereditarietà e Polimorfismo</a></li>
+        <li><a href="#strategie-di-mapping">Strategie di Mapping</a></li>
+        <li><a href="#molteplicità-nelle-relazioni">Molteplicità nelle Relazioni</a></li>
+        <li><a href="#direzionalità-delle-relazioni">Direzionalità delle relazioni</a></li>
+        <li><a href="#gestione-a-runtime-di-entity">Gestione a runtime di Entity</a></li>
+        <li><a href="#container-managed-entitymanager">Container-managed EntityManager</a></li>
+        <li><a href="#application-managed-entitymanager">Application-managed EntityManager</a></li>
+        <li><a href="#entity-manager-singoli-vs-multipli">Entity Manager singoli vs multipli</a></li>
+        <li><a href="#ciclo-di-vita">Ciclo di Vita</a></li>
+        <li><a href="#unità-di-persistenza">Unità di Persistenza</a></li>
+        <li><a href="#creazione-di-query">Creazione di Query</a></li>
+        <li><a href="#loading-lazyeager">Loading Lazy/Eager</a></li>
+        <li><a href="#listener-di-entity">Listener di Entity</a></li>
+        <li><a href="#hibernate">Hibernate</a></li>
+        <li><a href="#interfaccia-sessionfactory">Interfaccia SessionFactory</a></li>
+        <li><a href="#interfaccia-session">Interfaccia Session</a></li>
+        <li><a href="#transazioni">Transazioni</a></li>
+        <li><a href="#ciclo-di-vita-1">Ciclo di Vita</a></li>
+        <li><a href="#il-caching-in-hibernate">Il caching in Hibernate</a></li>
+        <li><a href="#fetching-dei-dati">Fetching dei dati</a></li>
+        <li><a href="#query-by-examples-qbe">Query By Examples (QBE)</a></li>
       </ul>
     </li>
     <li>
-      <a href="#">JMS</a>
+      <a href="#jms">JMS</a>
       <ul>
-        <li><a href="#">Perchè usare un servizio di messagistica</a></li>
-        <li><a href="#">Modello point-to-point</a></li>
-        <li><a href="#">Modello publish/subscriber</a></li>
-        <li><a href="#">Affidabilità nello scambio di messaggi</a></li>
-        <li><a href="#">Transazionalità</a></li>
-        <li><a href="#">Sicurezza</a></li>
-        <li><a href="#">Java Messaging Service (JMS)</a></li>
-        <li><a href="#">Tipi di comunicazioni</a></li>
-        <li><a href="#">Messaggi JMS</a></li>
-        <li><a href="#">Interfaccia Destination</a></li>
-        <li><a href="#">Interfaccia ConnectionFactory</a></li>
-        <li><a href="#">Interfaccia Connection</a></li>
-        <li><a href="#">Interfaccia Session</a></li>
-        <li><a href="#">Interfacce Message Consumer e Message Producer</a></li>
-        <li><a href="#">Riassunto API JMS</a></li>
-        <li><a href="#">Uso di JMS</a></li>
-        <li><a href="#">Affidabilità dei messaggi</a></li>
-        <li><a href="#">ACK</a></li>
-        <li><a href="#">Priorità</a></li>
-        <li><a href="#">Affidabilità</a></li>
-        <li><a href="#">Durable Subscription</a></li>
-        <li><a href="#">Gestione delle transazioni di JMS</a></li>
-        <li><a href="#">Selettori di messaggi</a></li>
-        <li><a href="#">JMS in EJB</a></li>
-        <li><a href="#">Enterprise Service Bus (ESB)</a></li>
-        <li><a href="#">Service Oriented Architecture (SOA)</a></li>
-        <li><a href="#">Web Services</a></li>
-        <li><a href="#">Web Service Description Language (WSDL)</a></li>
-        <li><a href="#">Enterprise Application Integration (EAI)</a></li>
-        <li><a href="#">Hub-and-Spoke</a></li>
-        <li><a href="#">Bus di Interconnessione</a></li>
-        <li><a href="#">Concetti chiave di ESB</a></li>
-        <li><a href="#">Java Business Integration (JBI)</a></li>
+        <li><a href="#perchè-usare-un-servizio-di-messagistica">Perchè usare un servizio di messagistica</a></li>
+        <li><a href="#modello-point-to-point">Modello point-to-point</a></li>
+        <li><a href="#modello-publishsubscriber">Modello publish/subscriber</a></li>
+        <li><a href="#affidabilità-nello-scambio-di-messaggi">Affidabilità nello scambio di messaggi</a></li>
+        <li><a href="#transazionalità-1">Transazionalità</a></li>
+        <li><a href="#sicurezza-1">Sicurezza</a></li>
+        <li><a href="#java-messaging-service-jms">Java Messaging Service (JMS)</a></li>
+        <li><a href="#tipi-di-comunicazioni">Tipi di comunicazioni</a></li>
+        <li><a href="#messaggi-jms">Messaggi JMS</a></li>
+        <li><a href="#interfaccia-destination">Interfaccia Destination</a></li>
+        <li><a href="#interfaccia-connectionfactory">Interfaccia ConnectionFactory</a></li>
+        <li><a href="#interfaccia-connection">Interfaccia Connection</a></li>
+        <li><a href="#interfaccia-session-1">Interfaccia Session</a></li>
+        <li><a href="#interfacce-message-consumer-e-message-producer">Interfacce Message Consumer e Message Producer</a></li>
+        <li><a href="#riassunto-api-jms">Riassunto API JMS</a></li>
+        <li><a href="#uso-di-jms">Uso di JMS</a></li>
+        <li><a href="#affidabilità-dei-messaggi">Affidabilità dei messaggi</a></li>
+        <li><a href="#ack">ACK</a></li>
+        <li><a href="#priorità">Priorità</a></li>
+        <li><a href="#affidabilità">Affidabilità</a></li>
+        <li><a href="#durable-subscription">Durable Subscription</a></li>
+        <li><a href="#gestione-delle-transazioni-di-jms">Gestione delle transazioni di JMS</a></li>
+        <li><a href="#selettori-di-messaggi">Selettori di messaggi</a></li>
+        <li><a href="#jms-in-ejb">JMS in EJB</a></li>
+        <li><a href="#enterprise-service-bus-esb">Enterprise Service Bus (ESB)</a></li>
+        <li><a href="#service-oriented-architecture-soa">Service Oriented Architecture (SOA)</a></li>
+        <li><a href="#web-services">Web Services</a></li>
+        <li><a href="#web-service-description-language-wsdl">Web Service Description Language (WSDL)</a></li>
+        <li><a href="#enterprise-application-integration-eai">Enterprise Application Integration (EAI)</a></li>
+        <li><a href="#hub-and-spoke">Hub-and-Spoke</a></li>
+        <li><a href="#bus-di-interconnessione">Bus di Interconnessione</a></li>
+        <li><a href="#concetti-chiave-di-esb">Concetti chiave di ESB</a></li>
+        <li><a href="#java-business-integration-jbi">Java Business Integration (JBI)</a></li>
       </ul>
     </li>
     <li>
@@ -233,9 +233,18 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       </ul>
     </li>
     <li>
-      <a href="#">JBoss Clustering</a>
+      <a href="#">JBoss/WildFly Clustering</a>
       <ul>
-        <li><a href="#"></a></li>
+        <li><a href="#">Architettura JBoss</a></li>
+        <li><a href="#">JGroups</a></li>
+        <li><a href="#">HA Partition</a></li>
+        <li><a href="#">Load-Balancing</a></li>
+        <li><a href="#">JBoss Cache</a></li>
+        <li><a href="#">Infinispan</a></li>
+        <li><a href="#">Replicazione Stato HTTP</a></li>
+        <li><a href="#">Replicazione Stato EJB</a></li>
+        <li><a href="#">Clustering di Componenti EJB</a></li>
+        <li><a href="#">Configurazione di JBoss/WildFly</a></li>
       </ul>
     </li>
     <li>
@@ -3094,19 +3103,19 @@ EJB 3.X non è un unico modello a componenti distribuiti basato sull’approccio
 
 Si immagini di voler realizzare un sistema distribuito che funzioni derivando dall’interazione sincrona bloccante fra pezzi di codice che non hanno il vincolo di essere scritti nello stesso linguaggio di programmazione. Con Java RMI si può fare un’applicazione che faccia invocazione di metodi remoti. Si vuole realizzare con CORBA la stessa cosa ma si vuole anche che cliente e servitore possano essere scritti in qualsiasi linguaggio di programmazione. CORBA è una specifica e chi lo implementa può decidere di supportarlo o meno.
 
-L'obiettivo di CORBA è lavorare per dispositivi molto leggeri e con poche risorse quindi GIOP (General Inter-ORB Protocol) è messo a disposizione per comunicare a byte. CORBA è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo CORBA.
+L'obiettivo di CORBA è lavorare con dispositivi molto leggeri e con poche risorse quindi si usa il protocollo GIOP (General Inter-ORB Protocol) per comunicare a byte. CORBA è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo CORBA.
 
 <a href="#indice">Torna all'indice</a>
 
 ### CORBA 2.X
 
-Si parte dalla figura seguente che descrive CORBA ad oggetti (o Corba 2.X):
+Si parte dalla figura seguente che descrive CORBA ad oggetti (o CORBA 2.X):
 
 ![single tier](./img/img115.png)
 
-Si ipotizzi di avere a disposizione un codice Pascal e si vuole che sia mostrato all’esterno come qualcosa ad oggetti. Il programmatore scrive quella che deve essere l’interfaccia che deve esporre come oggetto CORBA. Il linguaggio per farlo è CORBA IDL ed è un semplice file piccolo che dice qual è l’interfaccia del software originale. A partire da questo file di interfaccia, l’infrastruttura CORBA deve essere in grado di generare IDL Stub e IDL Skeleton. Questi si occupano dell’integrazione del codice iniziale con CORBA e in particolare del marshalling/unmarshalling dei dati in ingresso e in uscita. Questo perché molto probabilmente si passerà a quel pezzo di codice dei dati in un formato che lui non capirebbe. Lo stub (che sta sempre vicino al cliente) prende i dati in ingresso generati dal cliente (che li rappresenta a modo suo) e li trasforma in un formato universale comprensibile da tutti. Lo skeleton fa la cosa inversa! Prende i dati in ingresso in formato universale e li converte nel linguaggio specifico del servitore, che magari è in C. Per la risposta stessa cosa: lo skeleton la converte in formato universale e poi lo stub la riconverte in linguaggio-client. I due componenti stub e skeleton dipendono fortemente dalla conoscenza IDL di interfaccia. IDL compiler parte da interfaccia IDL e genera stub e skeleton. Se si vuole prescindere completamente da linguaggio utilizzato non è detto che l’attivazione di un servitore si faccia allo stesso modo. Ad esempio, ci sono linguaggi in cui se si fa il servitore e lo si lancia, lui è attivo con i suoi thread. Altri in cui lui è solo attivo, ma ci sono altri che gli danno i thread per eseguire le richieste. L’object adapter fa questo: gestisce l’attivazione del servitore. Con poca sorpresa ci si ricorda che in EJB era roba del container.
+Si ipotizzi di avere a disposizione un codice Pascal e si vuole che sia mostrato all’esterno come qualcosa ad oggetti. Il programmatore scrive quella che deve essere l’interfaccia che deve esporre come oggetto CORBA. Il linguaggio per farlo è CORBA IDL ed è un semplice file piccolo che dice qual è l’interfaccia del software originale. A partire da questo file di interfaccia, l’infrastruttura CORBA deve essere in grado di generare IDL Stub e IDL Skeleton. Questi si occupano dell’integrazione del codice iniziale con CORBA e in particolare del marshalling/unmarshalling dei dati in ingresso e in uscita. Questo perché molto probabilmente si passerà a quel pezzo di codice dei dati in un formato che lui non capirebbe. Lo Stub (che sta sempre vicino al cliente) prende i dati in ingresso generati dal cliente (che li rappresenta a modo suo) e li trasforma in un formato universale comprensibile da tutti. Lo Skeleton fa la cosa inversa! Prende i dati in ingresso in formato universale e li converte nel linguaggio specifico del servitore, che magari è in C. Per la risposta stessa cosa: lo Skeleton la converte in formato universale e poi lo Stub la riconverte in linguaggio-client. I due componenti Stub e Skeleton dipendono fortemente dalla conoscenza IDL di interfaccia. IDL compiler parte da interfaccia IDL e genera Stub e Skeleton. Se si vuole prescindere completamente da linguaggio utilizzato non è detto che l’attivazione di un servitore si faccia allo stesso modo. Ad esempio, ci sono linguaggi in cui se si fa il servitore e lo si lancia, lui è attivo con i suoi thread. Altri in cui lui è solo attivo, ma ci sono altri che gli danno i thread per eseguire le richieste. L’object adapter fa questo: gestisce l’attivazione del servitore. Con poca sorpresa ci si ricorda che in EJB era roba del container.
 
-Tutto quello appena descritto è CORBA ad invocazione statica. Questo perché la generazione di stub e skeleton si fa staticamente in fase di sviluppo. Se l’invocazione statica ci sta _stretta_ allora si fa altro usando DII e DSI.
+Tutto quello appena descritto è CORBA ad invocazione statica. Questo perché la generazione di Stub e Skeleton si fa staticamente in fase di sviluppo. Se l’invocazione statica ci sta _stretta_ allora si fa altro usando DII e DSI.
 
 ![single tier](./img/img116.png)
 
@@ -3129,23 +3138,23 @@ ad una struttura fatta a componenti! È un pò quello a cui assomiglia l’appli
 
 ![single tier](./img/img117.png)
 
-Component Implementation Framework (CIF) è l'insieme di strumenti di sviluppo che permettono di automatizzare la generazione del codice per realizzare le funzionalità aggiuntive che ci sono in CORBA 3 e non c’erano in CORBA 2. Da CORBA 2 si è visto che chi mette a disposizione Object Servant deve scrivere il file IDL da dare in pasto a IDL compiler per generare in modo statico Stub e Skeleton. Qui continua ad esserci l’IDL compiler, ma è arricchito da un altro compilatore che è Component IDL Compiler (che è parte del CIF). Grazie a questo ulteriore compilatore non si genera solo Stub e Skeleton, ma tutta una serie di altre cose:
+Component Implementation Framework (CIF) è l'insieme di strumenti di sviluppo che permettono di automatizzare la generazione del codice per realizzare le funzionalità aggiuntive che ci sono in CCM e non c’erano in CORBA 2. Da CORBA 2 si è visto che chi mette a disposizione Object Servant deve scrivere il file IDL da dare in pasto a IDL compiler per generare in modo statico Stub e Skeleton. Qui continua ad esserci l’IDL compiler, ma è arricchito da un altro compilatore che è Component IDL (CIDL) Compiler (che è parte del CIF). Grazie a questo ulteriore compilatore non si genera solo Stub e Skeleton, ma tutta una serie di altre cose:
 
 - Descrittori di deploymentin XML.
 - Altri file di interfaccia per executor.
-- Pezzi di codice che aiutano esecuzione runtime.
+- Pezzi di codice che aiutano esecuzione runtime dell'Object Servant.
 
 ![single tier](./img/img27.png)
 
-In CORBA 3 vengono aggiunti anche gli strumenti di deployment: automatizzano la distribuzione del package sui nodi. Automatizzano il deployment di component assembly verso component server. Il component packaging ha funzionalità per fare packaging dei componenti in una applicazione. In CORBA 2 non c'è la possibilità di preparare oggetti CORBA e poi ci si arrangia per il deployment. In CORBA 3 si può assemblare l’applicazione nel suo insieme mettendo dentro i vari componenti CORBA 3 che servono e i vari file di metalivello che descrivono le loro configurazioni e i loro vincoli di deployment. Assomiglia all’idea di fare un EAR di EJB3.
+In CCM vengono aggiunti anche gli strumenti di deployment: automatizzano la distribuzione del package sui nodi. Automatizzano il deployment di Component Assembly verso component server. Il component packaging ha funzionalità per fare packaging dei componenti in una applicazione. In CORBA 2 non c'è la possibilità di preparare oggetti CORBA e poi ci si arrangia per il deployment. In CCM si può assemblare l’applicazione nel suo insieme mettendo dentro i vari componenti CCM che servono e i vari file di metalivello che descrivono le loro configurazioni e i loro vincoli di deployment. Assomiglia all’idea di fare un EAR di EJB3.
 
 ### Implementazioni CCM disponibili
-
-Le tecnologie CORBA sono datate, CORBA ha avuto grande successo negli anni '80/'90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi CORBA non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i Web Services (quindi i motivi sono commerciali).
 
 Le principali standardizzazioni sono le seguenti:
 
 ![single tier](./img/img28.png)
+
+Le tecnologie CORBA sono datate, CORBA ha avuto grande successo negli anni '80/'90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi CORBA non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i Web Services (quindi i motivi sono commerciali).
 
 ### Comparazione CCM vs. EJB e .NET
 
@@ -3165,9 +3174,7 @@ C'è un component server che ospita dei componenti. Ce ne sono 3: componente `Ra
 
 ![single tier](./img/img29.png)
 
-Il `Rate Generator` emette un impulso e ha una porta `Rate` che è un parametro di configurazione. `Pulse` è un impulso generato ed è un evento. `GPS` è un ricevitore per quell’evento. Tutte le volte che `GPS` riceve l'evento `Pulse` riaggiorna il calcolo della posizione corrente del dispositivo: la posizione è interrogabile dall’esterno (pallino di fianco a `MyLocation`). `GPS` è esso stesso emettitore di eventi `Ready` che vengono consumati da `NavDisplay`: lui riceve eventi `Refresh` e in risposta va ad invocare `MyLocation`.
-
-Le freccette di fianco ai componenti, servono per scambio di eventi e quindi gestione di scambio a eventi tipicamente sincrona non bloccante e sono detti facet, ovvero rappresentano le comunicazioni sincrone non bloccanti. Il cerchio giallo rappresenta un’interfaccia con cui lavorare, la mezzaluna rappresenta il fatto che il componente si aspetti di interagire con un altro componente che esponga la stessa tipologia di servizio/dato. Il navigator si aspetta da una parte di ricevere eventi dall’altra si aspetta di poter interagire con il `GPS` andando a richiedere la location, queste sono comunicazioni tra componenti a eventi. Il cerchio bianco invece dà la possibilità di configurare il componente.
+Il `Rate Generator` emette un impulso e ha una porta `Rate` che è un parametro di configurazione definito a livello di deployment. `Pulse` è un impulso generato ed è un evento. `GPS` è un ricevitore per quell’evento. Tutte le volte che `GPS` riceve l'evento `Pulse`, riaggiorna il calcolo della posizione corrente del dispositivo: la posizione è interrogabile dall’esterno (pallino di fianco a `MyLocation`). `GPS` è esso stesso emettitore di eventi `Ready` che vengono consumati da `NavDisplay`: lui riceve eventi `Refresh` e in risposta va ad invocare `MyLocation`. La mezzaluna rappresenta il fatto che il componente si aspetti di interagire con un altro componente che esponga la stessa interfaccia di `GPSLocation`.
 
 ### Componente CCM
 
@@ -3175,108 +3182,123 @@ Un componente CCM, banalmente, deve essere dichiarato come un componente e non c
 
 ![single tier](./img/img30.png)
 
-Per definire `RateGen` lo si definisce con la parolina `component` e poi dice che supporta l’interfaccia `rate_control`. Esattamente come gli oggetti CORBA, anche i componenti CORBA possono sfruttare ereditarietà e implementare interfacce. Ereditarietà singola (figlio di un solo componente), ma implementazione multipla. Il componente offre una facet e questa dà modo di attivare o disattivare il `RateGen` con il metodo di `start()` e `stop()`.
+Per definire `RateGen` lo si definisce con la parolina `component` e poi dice che supporta l’interfaccia `rate_control`. Esattamente come gli oggetti CORBA, anche i componenti CORBA possono sfruttare ereditarietà e implementare interfacce. Ereditarietà singola (figlio di un solo componente), ma implementazione multipla.
 
 A livello di modellazione del singolo componente si hanno a disposizione le porte. Si possono definire quali porte usa.
 
 ![single tier](./img/img31.png)
 
-In CORBA 3, ci sono 5 tipi porte che un componente può specificare e utilizzare. Le porte sono, sinteticamente, proprietà di un componente:
+In CCM, ci sono 5 tipi porte che un componente può specificare e utilizzare. Le porte sono, sinteticamente, proprietà di un componente:
 
-- **Facet**: queste sono le interfacce che il componente espone verso l’esterno. Non è una normale interfaccia: le facet possono essere multiple. Un componente può esporre interfacce diverse a clienti diversi. Si possono definire nel linguaggio IDL con la parola chiave provides. Se vogliamo fare il paragone con i lego rappresentano la parte sopra con i pallini.
-- **Receptacles**: più inusuale. Specifica a livello di
-definizione che quel componente, per lavorare
-correttamente, ha bisogno di facet esposte da altri.
-Può avere bisogno di più facets. Questa è una cosa
-a cui non siamo abituati: in EJB non diciamo “questo ha bisogno di un entity bean fatto così”. La parola chiave IDL è uses. Nel paragone con i lego è il sotto del blocchetto: definisce quali sono le interfacce richieste per lavorare. Anche lui non esiste in Corba 2. Specificato con uses, tipo del receptacles, nome dell’interfaccia di cui ha bisogno. Si può chiedere che durante il deployment vengano controllati i vincoli di receptacles di cui un componente ha bisogno, controllare che vengano rispettati. Si può sempre chiedere in fase di deployment di decidere quale binding andare ad associare nel caso ci siano più vincoli di receptacles. Quindi può servire:
+- **Facet**: queste sono le interfacce che il componente espone verso l’esterno. Non è una normale interfaccia: le facet possono essere multiple. Un componente può esporre interfacce diverse a clienti diversi. Si possono definire nel linguaggio IDL con la parola chiave `provides`. Possono essere modificate runtime. Se si vuole fare il paragone con i lego rappresentano la parte sopra con i pallini.
+- **Receptacles**: specifica a livello di definizione che quel componente, per lavorare correttamente, ha bisogno di facet esposte da altri. Può avere bisogno di più facets. Questa è una cosa a cui non si è abituati: in EJB non si dice che questo ha bisogno di un Entity Bean fatto così. La parola chiave IDL è `uses`. Nel paragone con i lego è il sotto del blocchetto: definisce quali sono le interfacce richieste per lavorare. Anche questo componente non esiste in CORBA 2. Si può chiedere che durante il deployment vengano controllati i vincoli di Receptacles di cui un componente ha bisogno, controllare che vengano rispettati. Si può sempre chiedere in fase di deployment di decidere quale binding andare ad associare nel caso ci siano più vincoli di Receptacles. Quindi può servire:
+
     - Staticamente per capire se un deployment è completo e ci sono tutte le dipendenze.
-    - Dinamicamente per cercare un altro componente che faccia match con il receptacles specificato. Si parla in corba 3 di possibilità di connessione a tempo di deployment e a tempo di runtime.
-- **Event Sources**: i componenti Corba 3 possono essere produttori o consumatori di eventi. I componenti possono comunicare per scambio di eventi: la cosa non ci sconvolge, ma all’epoca era una cosa abbastanza nuova. In Corba 2 gli eventi vengono aggiunti come servizio esterno, mentre in Corba 3 fanno parte del modello. Questa porta dice che questo componente è un produttore di eventi. Gli eventi prodotti possono essere di due tipi:
-    - Ci possono essere sorgenti Publisher: la parola chiave è publishes (invia un evento destinato ad una molteplicità di consumatori).
-    - Ci possono essere sorgenti Emits (le vedremo più avanti): la parola riservata è emits per eventi destinazione singola.\
+    - Dinamicamente per cercare un altro componente che faccia match con il Receptacles specificato. Si parla in CCM di possibilità di connessione a tempo di deployment e a tempo di runtime.
+- **Event Sources**: i componenti CCM possono essere produttori o consumatori di eventi. I componenti possono comunicare per scambio di eventi. In CORBA 2 gli eventi vengono aggiunti come servizio esterno, mentre in CCM fanno parte del modello. Questa porta dice che questo componente è un produttore di eventi. Gli eventi prodotti possono essere di due tipi:
 
-    Chi riceve eventi può decidere di consumarli direttamente oppure può usare un broker, cioè un distributore di eventi! Non dissimile da un distributore di messaggi come può essere JMS. In corba ce ne sono alcuni già notificati come Corba Object Service Notification.
-- **Event Sink**: con questa porta si specifica che il componente EJB consuma eventi. Ne ha bisogno per l’esecuzione. La parola riservata è consumes. Vale sia per eventi prodotti da un publisher sia per eventi prodotti da un emitter. Non ci sono differenze.
-- **Attributes**: particolari proprietà che possono essere configurate dall’esterno, tipicamente dal container, in base alle informazioni che passiamo sui file di deployment descriptor. La parola chiave è attribute. Il discorso da aprire è: come è importante nei sistemi industriali distribuiti poter definire a livello di deployment delle proprietà configurabili esternamente. È un discorso che conosciamo molto bene, quindi non lo apriamo. Questi attributi vengono definiti, viene dato loro valore, a tempo di deployment tramite file di configurazione esterni: dei descriptor di tipo XML, e la cosa non ci sconvolge perché l’abbiamo vista anche in EJB.
+    - Ci possono essere sorgenti Publisher: la parola chiave è `publishes` (invia un evento destinato ad una molteplicità di consumatori).
+    - Ci possono essere sorgenti Emits: la parola riservata è `emits` (invia un evento destinato ad un solo consumatore).
+
+    Chi riceve eventi può decidere di consumarli direttamente oppure può usare un broker, cioè un distributore di eventi! Non dissimile da un distributore di messaggi come può essere JMS. In CORBA ce ne sono alcuni già notificati come Corba Object Service Notification.
+- **Event Sink**: con questa porta si specifica che il componente consuma eventi. La parola riservata è `consumes`. Vale sia per eventi prodotti da un publisher sia per eventi prodotti da un emitter. Non ci sono differenze.
+- **Attributes**: particolari proprietà che possono essere configurate dall’esterno, tipicamente dal container, in base alle informazioni che si passano sui file di deployment descriptor. La parola chiave è `attribute`. Il discorso da aprire è: come è importante nei sistemi industriali distribuiti poter definire a livello di deployment delle proprietà configurabili esternamente. È un discorso che si conosce molto bene, quindi non lo si apre. Questi attributi vengono definiti, viene dato loro valore, a tempo di deployment tramite file di configurazione esterni: dei descriptor di tipo XML, e la cosa non sconvolge perché è stata già vista anche in EJB.
 
 ### Gestione Lifecycle CCM
 
-La gestione automatica del ciclo di vita non c’è in CORBA 2. Per gestione automatica si intende quella di EJB: ci sono componenti che magari è giusto gestire con una determinata strategia (magari sono componenti di sessione), altri in un altro perché sono componenti senza stato. Questa cosa la vogliamo in CCM. Il concetto fondamentale per aiutare la struttura Corba a gestire il ciclo di vita delle istanze dei componenti è quello di passare attraverso le Home. Queste home sono l’aggancio per gestire il ciclo di vita dei componenti in modo differenziato a seconda delle tipologie di componenti.
+La gestione automatica del ciclo di vita non c’è in CORBA 2. Per gestione automatica si intende quella di EJB: ci sono componenti che magari è giusto gestire con una determinata strategia (magari sono componenti di sessione), altri in un altro perché sono componenti senza stato. Questa cosa la si vuole in CCM. Il concetto fondamentale per aiutare la struttura CORBA a gestire il ciclo di vita delle istanze dei componenti è quello di passare attraverso le Home. Queste Home sono l’aggancio per gestire il ciclo di vita dei componenti in modo differenziato a seconda delle tipologie di componenti.
 
 ### CORBA Home
 
-Con la parola riservata home abbiamo la possibilità di definire una o più home per i nostri componenti CORBA. La home ingloba il componente ed è in grado di crearlo secondo quella che sarà la specifica del ciclo di vita che desidereremo. In particolare, si dice che in CCM una home mantiene riferimenti sia agli oggetti/componenti Corba che contiene sia alle loro interfacce. Una home è in grado di gestire una famiglia di componenti. Una istanza di componente, comunque, è gestita sempre e solo da una home.
+Con la parola riservata `home` si ha la possibilità di definire una o più Home per i componenti CORBA. La Home ingloba il componente ed è in grado di crearlo secondo quella che sarà la specifica del ciclo di vita che desidereremo. Una Home è in grado di gestire una famiglia di componenti: diverse Home possono gestire lo stesso componente generando comportamenti diversi a seconda del tipo di Home. Una istanza di componente, comunque, è gestita sempre e solo da una Home.
 
 ![single tier](./img/img118.png)
 
-Nel caso di RateGen qua di fianco possiamo vedere come lui
-sia bello runnato dalla sua home, ma nulla ci vieta di
-istanziarne altri 10 assegnarli ad altre 10 home tutte diverse
-con diverse istruzioni per il lifecycle e che quindi gestiranno in modo diverso il ciclo di vita di quel componente. Le home fanno da guscio per l’esecuzione delle singole istanze di componenti.
-
-### Viste di Componenti CCM
-
-I diversi componenti possono avere la necessita di collaborare fra loro, per questo ciascun componente offre viste diverse. Con CORBA 2 era difficile fare una gestione avanzata del componente e la parte relativa di gestione dinamica, con il CORBA Component Model, il tutto è strutturato in un modello ben fatto, anche grazie alle Facet, che sono chiamate _top of the lego_, che significa che le funzionalità che offre al mondo esterno e la gestione di eventi stanno sopra e sotto _bottom of the lego_ si trova ciò che ci si aspetta per legarsi al mondo sottostante, ovvero i Receptable e i Sink
-
-I componenti hanno bisogno di essere _aggregati_ per formare applicazioni complete, vi sono però alcuni problemi: i componenti possono avere porte multiple con diversi nomi e tipi, diventa dispendioso scrivere manualmente il codice necessario per collegare un insieme di componenti per una applicazione specifica. Per cui in CCM è stata implementata tale soluzione: vi sono interfacce per l’introspezione che consentono la scoperta dinamica delle capacità dei componenti, e generiche operazioni sulle porte per connettere componenti tramite strumenti esterni di deployment e configuration, questo rappresenta la capacità di mettere insieme i lego.
+Nel caso di `RateGen` qua di fianco si possono vedere come lui
+sia bello runnato dalla sua Home, ma nulla vieta di
+istanziarne altri 10 assegnarli ad altre 10 Home tutte diverse
+con diverse istruzioni per il lifecycle e che quindi gestiranno in modo diverso il ciclo di vita di quel componente. Le Home fanno da _guscio_ per l’esecuzione delle singole istanze di componenti.
 
 ### Configurazione dinamica dei componenti
 
-Di solito quando abbiamo un modello a componenti, ci viene comodo avere la possibilità di andare a vedere cosa un componente sa fare dinamicamente senza conoscere le caratteristiche a priori a tempo di sviluppo. Portato sul modello Corba 3 che abbiamo appena definito questo significa essere in grado dinamicamente andare a vedere le porte che questo componente implementa e quali sono le loro caratteristiche! Per esempio, per una determinata facet vedere quali operazioni ci sono dentro e con quali parametri. Vedere se ci sono dei receptacles che costituiscono vincoli di deployment (come spiegato prima).
+Di solito quando si ha un modello a componenti, viene comodo avere la possibilità di andare a vedere cosa un componente sa fare dinamicamente senza conoscere le caratteristiche a priori a tempo di sviluppo. Portato sul modello CCM questo significa essere in grado dinamicamente andare a vedere le porte che questo componente implementa e quali sono le loro caratteristiche! Per esempio, per una determinata Facet vedere quali operazioni ci sono dentro e con quali parametri. Vedere se ci sono dei Receptacles che costituiscono vincoli di deployment (come spiegato prima).
 
-Per fare questo in Corba 3 introducono delle operazioni di introspezione. Sono analoghe alla reflection Java per scoprire funzionalità dei componenti in modo dinamico. Occhio che qua lavoriamo con Corba, per cui il linguaggio
-utilizzato potrebbe non avere questa
-funzionalità! Dobbiamo quindi fare dei metadati descrittivi a livello corba di come sono fatte le porte del componente indipendentemente dal fatto che poi il linguaggio sottostante permetta di accedere dinamicamente alle descrizioni delle interfacce. In Corba 3, comunque, sono messe a disposizione delle funzionalità di navigazione delle descrizioni delle porte. La chiamata getAllFacets(), per esempio, permette di vedere runtime le caratteristiche di tutte le sue facets. La chiamata getComponent() permette di vedere da ogni facet a quale riferimento base è questa collegata.
+Per fare questo in CCM si introducono delle operazioni di introspezione. Sono analoghe alla reflection Java per scoprire funzionalità dei componenti in modo dinamico. Occhio che qua si lavora con CORBA, per cui il linguaggio
+utilizzato potrebbe non avere questa funzionalità! Si devono, quindi, fare dei metadati descrittivi a livello CORBA di come sono fatte le porte del componente indipendentemente dal fatto che poi il linguaggio sottostante permetta di accedere dinamicamente alle descrizioni delle interfacce. In CCM, comunque, sono messe a disposizione delle funzionalità di navigazione delle descrizioni delle porte. La chiamata `getAllFacets()`, per esempio, permette di vedere runtime le caratteristiche di tutte le sue facets. La chiamata `getComponent()` permette di vedere da ogni facet a quale riferimento base è questa collegata.
 
-
-Questo codice di navigation si può usare dentro i componenti, dentro la home... ma ad ogni modo è generato automaticamente dal complilatore per componenti corba, cioè il CIDL, per aiutare la realizzazione del component servant.
+Questo codice di navigation si può usare dentro i componenti, dentro la Home etc ma ad ogni modo è generato automaticamente dal complilatore per componenti CORBA, cioè il CIDL, per aiutare la realizzazione del component servant.
 
 ```
 int
 main (int argc, char *argv[])
 {
-CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
+    CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
 
-// Get the NameService reference...
-CORBA::Object_var o = ns->resolve_str (“myHelloHome");HelloHome_var hh = HelloHome::_narrow (o.in ());HelloWorld_var hw = hh->create ();
+    // Get the NameService reference...
+    CORBA::Object_var o = ns->resolve_str (“myHelloHome");HelloHome_var hh = HelloHome::_narrow (o.in ());HelloWorld_var hw = hh->create ();
 
-// Get all facets & receptacles
-Components::FacetDescriptions_var fd = hw->get_all_facets (); Components::ReceptacleDescriptions_var rd = hw->get_all_receptacles ();
+    // Get all facets & receptacles
+    Components::FacetDescriptions_var fd = hw->get_all_facets (); Components::ReceptacleDescriptions_var rd = hw->get_all_receptacles ();
 
-// Get a named facet with a name "Farewell" CORBA::Object_var fobj = hw->provide ("Farewell");
+    // Get a named facet with a name "Farewell" CORBA::Object_var fobj = hw->provide ("Farewell");
 
-// Can invoke sayGoodbye() operation on Farewell after
-// narrowing to the Goodbye interface.
+    // Can invoke sayGoodbye() operation on Farewell after
+    // narrowing to the Goodbye interface.
 
-...
+    ...
 
-return 0;
+    return 0;
 }
 ```
 
 Sin questo esempio si vuole andare a recuperare una certa facet e invocare un metodo di tale interfaccia. Si parte dall’ORB che è un servizio di nomi che dà la possibilità di recuperare i servizi di base come il servizio di naming (come RMI Registry). Una volta recuperato il servizio di nomi si possono andare ad invocare dei servizi di lookup, in particolare in questo caso si fa il lookup della ComponentHome registrata come MyHelloHome, attraverso il narrowing si può recuperare un oggetto tipato Home, su quell’oggetto si applica la create che crea il componente, a questo punto è interrogabile e può restituire una descrizione di tutte le facet offerte da quel compente, si può poi con il receptable effettuare l’introspezione, con il metodo provide possiamo chiedere il recupero del riferimento all’implementazione di quella interfaccia, una volta ottenuto si può fare il narrowing e a quel punto effettuare la chiamata a un metodo che ci interessa. Le interfacce in CORBA non vengono mantenute insieme alle implementazioni ma in un repository che si chiama Interface Repository. Quindi le informazioni dell’interfaccia non sono insieme agli altri dati questo genera overhead quando bisogna recuperare molte interfacce diverse.
 
-Riassumendo le principali caratteristiche di CCM per il supporto cliente si può dire che CCM definisce operazioni per life-cycle management (home), definisce che cosa un componente offre agli altri componenti, definisce che cosa un componente richiede da altri componenti, definisce quali modalità di collaborazione sono usate fra componenti. Le operazioni possono essere di tipo Point-to-point via operation invocation o Publish/subscribe via event notification, definisce quali attributi dei componenti sono configurabili.
+### Supporto Runtime: Funzionalità Component Server
 
-### Implementazione dinamica dei componenti e supporto runtime
+Una volta capito cos’hanno in più i componenti CCM rispetto agli oggetti CORBA 2, bisogna cercare adesso capire come vengono messi in esecuzione.
 
-Per rendere le implementazioni dei componenti più adattabili e flessibili, le proprietà dei componenti dovrebbero essere ri-configurabili. Questo presenta diversi problemi: le applicazioni non dovrebbero legarsi a una specifica configurazione troppo presto,  non ci sono  standard per specificare parametri configurabili per componenti in CORBA 2.x, vi è il bisogno di meccanismi standard per configurazione. La soluzione CCM è quella di configurare componenti con attributi di assembly/deployment, via home o nella fase di inizializzazione.
+Un punto focale è quello che CCM 3, oltre ai classici componenti di CORBA 2 (stub, skeleton, IDL compiler, interface
+repository, object adapter etc), aggiunge il Component Server e prevede che i componenti eseguano dentro ad un Component Server:
 
-Il supporto run-time dei componenti è possibile grazie al Component Server che facilita il deployment della configurazione delle applicazioni. Questo avviene perché CORBA mette a punto astrazioni di alto livello per la gestione del Servant e una serie di tool che facilitano la configurazione attraverso tecniche di meta-programming con anche la possibilità di effettuare l’introspezione, ma anche grazie all’introduzione di una serie di parole chiave gestite dall’IDL compiler.  Questo supporto a runtime facilita la gestione del ciclo di vita di questi componenti.
+![single tier](./img/img84.png)
 
-Il CCM attraverso questa definizione del container va ad estendere l’object adapter di base di CORBA (che si occupa della gestione del ciclo di vita degli oggetti), il container va oltre l’object adapter nella gestione del loro ciclo di vita, indirizzandosi verso l’obiettivo della facilitazione dell’uso delle risorse. Ci sono poi i naming services la gestione della sicurezza, delle transazioni eccetera. Questi servizi esistevano ma dovevano essere utilizzati solo con oggetti a grana fine quindi oggetti che facevano molto poco, invece con l’introduzione dei container abbiamo servizi di più alto livello che con file di configurazione e deployment, automatizzano molti servizi che prima erano programmatici. Inoltre, vi è una gestione a call back su cui si può lavorare per capire come funzionano le cose e prendere misure dove necessario.
+Component Server fornisce l’application server unico di esecuzione dei container. È un processo pesante che quindi già realizza un ambiente di esecuzione attivo dentro cui andranno ad eseguire i componenti. Però non è sufficiente avere Component Server: i componenti devono essere contenuti dentro ad un ulteriore supporto vivo che è realizzato in termini di Container. L’idea è che un Component Server possa ospitare più container contemporaneamente. Perché? Perché diversi container possono avere diversi comportamenti. Dentro al container poi si ha, per ogni componente, la sua Home e il componente vero e proprio. È dall’interazione del container con la Home che scaturisce come viene gestito il ciclo di vita del componente in CCM. Ovviamente ci sono parti del codice dei Corba Component che sono invocabili solo dalla Home e altre che sono invocabili dall’esterno (le facets). Il cliente, prima di invocare le facets, ha bisogno di passare dalla Home, come visto in EJB2. Si fa dare un’istanza logica del componente e poi inizia ad invocare le facets. La Home fa da factory, crea un’istanza logica per il cliente il quale poi invoca le funzionalità. Però attenzione che lo fa **sempre** passando per il guscio del container ed è per questo che si parla di modello a container pesante. Il cliente non ha mai un riferimento diretto all’istanza
+dell’oggetto CORBA: ha sempre un riferimento che passa attraverso al container. O passa dal container per arrivare alla Home (prima invocazione) o passa per il container per arrivare all’invocazione dell’operazione esposta dalla facet (dalla seconda interazione in poi). Si ricorda che anche qui il modello di invocazione è sincrono bloccante.
 
-Anche nel modello CCM si possono definire categorie di componenti a seconda del tipo di implementazione di container, vi sono i Service che sono componenti senza stato, per la rappresentazione di una sessione si può avere un componente Session con una stato di tipo soft (stateful sessione bean), poi vi  sono Process  e Entity entrambi durable con la possibilità di essere invocati dall’esterno con chiavi o per riferimento. Queste categorie ossono essere specificate dichiarativamente tramite il CIDL file oppure programmate imperativamente.
+L’immagine di prima era una piccola semplificazione di come in realtà stanno le cose in CCM, perché oltre al discorso del component server e dei container, si hanno anche degli Executor a livello di Home e di component che incapsulano a loro volta la Home generica e il component che è stato scritto. Sono necessari per gestire alcuni mismatch fra quello che si può fare in un linguaggio di implementazione veramente utilizzato rispetto al modello CORBA e poi serve anche questo Component Context che gestisce le informazioni del componente e che rappresenta un’estensione di quello che si fa in CORBA 2 con il CORBA Object Adapter (uso risorse, attiva/disattiva in modo automatico il componente, ecc).
+
+La cosa più interessante è vedere che in CCM hanno deciso che i componenti CORBA sono specificabili come 4 categorie principali:
 
 ![single tier](./img/img32.png)
 
-Il container offre interfacce verso l’interno e verso l’esterno, le interfacce verso l’esterno sono invocabili dai clienti, per interagire e configurare il container, quelle rivolte verso l’interno invece sono interfacce con il quale il container può offrire ai componenti possibilità di dialogo con il contesto del container stesso, e per le quali attraverso l’implementazione delle callback è possibile l’interazione con il container.
+È un pò l’analogo di quello fatto in EJB 2.X dove esistono i Session Bean, Entity Bean e Message-Driven Bean. Qui ci sono 4 categorie di base prefabbricate:
 
-Ci sono diverse politiche di gestione, le strategie container managed cercano di disaccoppiare in modo forte la parte di gestione dalla parte di implementazione del container, il container si fa carico della gestione dei servizi di sistema, ciò avviene preparando metadati xml o direttive da dare al Component IDL Compiler che dichiara la gestione dei servizi di sistema come transazioni eventi eccetera. In particolare, lato server ci sono degli excecutor che possono andare a realizzare la business logic, vi è una suddivisione tra Component del business model e Home che realizza la gestione e la creazione dei componenti con la possibilità di avere lifecycle diversi. Le Home Executor sono monolitiche mentre i Component Executor possono essere sia monolitici con tutte le porte implementate dalla stessa classe, oppure le porte sono suddivise tra le varie classi che lo implementano. Lo sviluppatore partendo da file definiti dell’IDL nel Component IDL di CCM genera una serie di scatole vuote pronte ad accogliere la logica applicativa. Il programmatore deve solo aggiungere la propria logica applicativa.
+- **Service**: pensa di esporre tramite le sue facets servizi che eseguono processamento (analogo a session bean). Qui nei service non si può accumulare stato di sessione, quindi sono l’analogo di Session Bean Stateless. Le invocazioni sono statiche, senza stato tra un’invocazione e l’altra.
+- **Session**: servizi di processamento che mantengono stato per un singolo cliente. Service e session, quindi, sono il parallelo dei session bean, ma il Session è l’analogo dello stateful.
+- **Process**: componente CCM che serve a mantenere dati durevoli (che non si vogliono perdere) che non si salvano su database relazionale, ma che si salvano su memoria persistente gestita in maniera meno strutturata (tipo senza identificatori univoci per i nostri dati).
+- **Entity**: come process, solo che si salvano su database con chiave identitaria unica. Analogo degli Entity Bean in tecnologia Java.
+
+Osservazione: non ci sono i Message-Driven Bean. Non esiste comunicazione asincrona, quindi, con poco stupore: già in CORBA 2 si prevede che il modello sia sincrono bloccante. Seconda osservazione: ho capito che ci sono 4 categorie, ma come faccio a dire in CCM che il mio componente è di tipo Service? Non lo faccio nell’IDL, ma prendendo il mio componente e mettendolo in esecuzione dentro ad un container di tipo Session con container implementation type di tipo stateless. Sostanzialmente il comportamento e la gestione del tipo di vita di un componente non sono derivati da come si scrive il componente, ma da dove lo si mette in esecuzione. In particolare, in termini di container type e container implementation type. Ed è per questo che esistono più container in CORBA.
+
+L’ultima colonna dice semplicemente se i componenti hanno chiavi oppure no. L’unico tipo di componente identificato con identificatore univoco è Entity, che è quello che usiamo per mantenere stato persistente che poi mappiamo su database. Ed è l’identificatore unico di persistenza come l’abbiamo visto in layer di persistenza.
+
+Il comportamento runtime di una istanza di componente, in CCM, discende da quello che noi vogliamo fare (e abbiamo 4 possibilità di default). Il fatto che la gestione del ciclo di vita corrispondente dipende dal container dentro cui andiamo a mettere il componente. Come facciamo a specificarlo in modo esplicito? Dentro all’IDL del componente in modo dichiarativo (non dentro implementazione). Questo significa che a tempo di sviluppo il compilatore CIDL andrà a realizzare dei servant e a richiamare a tempo di deployment dei container con particolare type e implementation type che realizzano quel modello di gestione del ciclo di vita. Ed è per questo che in un component server possono esistere più container: magari vogliamo far eseguire lo stesso Corba Component una volta stateful una volta stateless.
+
+![single tier](./img/img127.png)
+
+Ricorda che abbiamo la possibilità di esporre delle operazioni, ma anche di avere delle interfacce interne, cioè metodi che appartengono al corba component ma non sono parte delle facets, ma anche metodi configurabili all’interno tramite setter/getter.
+
+Facendo così noi riusciamo a disaccoppiare le politiche di
+configurazione (come devo fare il deployment, come devo creare le istanze, metterle sui vari nodi, gestire il ciclo di vita) dall’implementazione dei componenti. Importante se veniamo da CORBA 2 (lì non lo possiamo fare), ma che non sconvolge noi se veniamo da EJB perché lì si fa.
+
+Esistono container transazionali, sui quali le invocazioni sono transazionali, oppure container stateless. Questo permette di gestire in modo articolato e differenziato come si gestisce il ciclo di vita, le transazioni, la gestione eventi e la sicurezza, che, a questo punto, sono servizi corba messi a disposizione. Molte delle configurazioni dei servizi di sistema in CCM si fanno tramite file XML. Esistono anche direttive dentro i file IDL che altrimenti mettiamo nel deployment descriptor. L’importante da sapere è che queste funzionalità vengono implementate dai container e non dai componenti dato che l’invocazione passa sempre per il container: passando sempre di lì, per esempio, è il container che può avviare la transazione! Modello a container pesante.
 
 ### Exectutor
 
-Nel mondo CORBA quando parliamo di tutte queste funzionalità siamo nel mondo delle interfacce, CORBA predispone tutto per il linguaggio target per sollevarci dalla gestione di tutti i problemi legati alla gestione dei servizi di sistema, poi il programmatore si deve occupare di implementare le varie cose. Ma tutto si riferisce a interfacce in prima battuta. Gli Executor vanno a eseguire nel container, il modello è un container pesante EJB con differenze, ma con un’idea di container pesante in cui i vari Executor vanno a interagire. Gli Executor dei componenti devono implementare un’interfaccia locale per callback lifecycle ad uso del container, vi sono SessionComponent per componenti transienti, ed EntityComponent per componenti persistenti. Gli Executor dei componenti possono interagire con container e componenti connessi via context interface. L’interazione avvien attraverso un contesto che viene esposto attraverso un container.
+![single tier](./img/img128.png)
+
+Ultima cosa, ma è proprio un dettaglio. Se noi andiamo a vedere com’è realizzato il modello ci sono anche degli Executor in CCM, e in particolare un executor per la Home e uno per il servant (la logica di business per il componente CORBA). Questi exectutor ci sono per supportare mismatch fra linguaggi di programmazione differenti, sono indispensabili per realizzare il modello a componenti e devono essere scritti dal programmatore. Il CIDL compiler scrive solo uno scheletro di queste cose, che va poi integrato. La buccia esterna di Servant, sia per la Home che per la logica di business invece viene generata completamente dal CIDL compiler. La figura finale è quindi questa, dove abbiamo il container, il CORBA component (costituito da un main executor e da altri executor) e infine un gestore del contesto di esecuzione del componente che interagisce con il POA. La cosa importante è che nel suo insieme il component CORBA espone le sue porte come descritto. In particolare le facets vengono gestite direttamente dal main component executor, mentre quelle di componenti e di receptacles dal CCMContext.
+È ovvio che questo è un modello a container pensante dove ogni volta qualcuno che invoca qualcosa lo fa passando attraverso intermediari.
 
 ## Spring
 
@@ -4190,38 +4212,52 @@ public class BlackListNotifier implement ApplicationListener {
 
 ## JMX
 
-Come già detto più volte, siamo interessati non solo alla fase di sviluppo, ma anche alla fase di deployment, configurazione ed esecuzione in ambiente reale dell’architettura enterprise.  In questo caso siamo particolarmente interessati al monitoraggio del sistema vi è quindi la necessità di controllo on-line e conseguenti azioni di gestione, non solo di network equipment, ma anche di componenti applicativi e di servizio.  Gli obiettivi del monitoraggio sono: la fault detection, misura di performance e riconfigurazione/re-deployment, identificazione dei colli di bottiglia. I modelli utilizzati nel monitoraggio sono i seguenti: push vs. pull, azioni reattive vs. proattive, approccio ottimistico vs. pessimistico, con manager centralizzato vs. parzialmente distribuito vs. completamente distribuito. È importante avere protocolli e api standard per misurare le performance trattando in un certo senso il software come l’hardware dal punto di vista del monitoraggio e della misurazione.
+Come già detto più volte, si è interessati non solo alla fase di sviluppo, ma anche all'esecuzione in ambiente reale dell’architettura enterprise. In questo caso, si è particolarmente interessati al monitoraggio del sistema, quindi, vi è la necessità di controllo on-line e conseguenti azioni di gestione, non solo di network equipment, ma anche di componenti applicativi e di servizio. Gli obiettivi del monitoraggio sono: la fault detection, misura di performance e riconfigurazione/re-deployment, identificazione dei colli di bottiglia. I modelli utilizzati nel monitoraggio sono i seguenti: push vs. pull, azioni reattive vs. proattive, approccio ottimistico vs. pessimistico, con manager centralizzato vs. parzialmente distribuito vs. completamente distribuito. È importante avere protocolli e API standard per misurare le performance trattando in un certo senso il software come l’hardware dal punto di vista del monitoraggio e della misurazione.
 
 Protocollo SNMP per la gestione e il management del mondo del networking. SNMP rappresenta uno standard, allo stesso modo si vogliono avere standard per il monitoraggio nel mondo distribuito in ambienti aperti e interoperabili. Per fare un esempio, Distributed Management Task Force (DMTF) è un’organizzazione per la standardizzazione per IT system management in ambienti industriali e in Internet. Gli standard DMTF permettono la costruzione di componenti per system management indipendenti dalla piattaforma e technology-neutral, abilitando così interoperabilità fra prodotti per la gestione di sistemi di diversi vendor, alcuni elementi fondamentali in DMTF sono: Common Information Model (CIM), Common Diagnostic Model (CDM), Web-Based Enterprise Management (WBEM). Common Information Model (CIM) è un modello astratto per la rappresentazione degli elementi gestiti (ad esempio, computer o storage area network) come insieme di oggetti e relazioni. CIM è estensibile per consentire l’introduzione di estensioni product-specific e svolge la stessa funzione del CMIB per SNMP. Common Diagnostic Model (CDM) è un modello di diagnostica e definizione di come questo debba essere incorporato nell’infrastruttura di management, infine Web-Based Enterprise Management (WBEM) è un insieme di protocolli per l’interazione fra componenti di system management (conformi a CIM e ai suoi profili) e la loro interrogazione. I rpofili in genr sono utilizzati in data-model molto estesi con diversi diritti e operazioni.
 
 <a href="#indice">Torna all'indice</a>
 
-### JMX
+### Java Management Extensions (JMX)
 
-Il contesto nel quale si è inserita la specifica Java è quella del monitoraggio nell’ambiente distribuito, prima del framework Java Management Extensions (JMX) non vi era nessun approccio standardizzato in Java per far partire, gestire, monitorare e fermare l’esecuzione di componenti software. I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean, questi MBean sono gestiti attraverso un agente: che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti Mbean e cliente; quindi, l’agente in un certo senso rende trasparenti gli MBean, in questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi managed bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
+Il contesto nel quale si è inserita la specifica Java è quella del monitoraggio nell’ambiente distribuito, prima del framework Java Management Extensions (JMX) non vi era nessun approccio standardizzato in Java per far partire, gestire, monitorare e fermare l’esecuzione di componenti software.
+
+![single tier](./img/img124.png)
+
+I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean. Questi MBean sono gestiti attraverso un agente che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti Mbean e cliente, quindi, l’agente in un certo senso rende trasparenti gli MBean, in questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi managed bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
 
 ### Architettura
 
-JMX è organizzato secondo un’architettura a tre livelli: 
-
-- I componenti gestiti appartengono al livello instrumentation.
-- Il livello agente è costituito dal registro per gli MBean (MBeanServer) e da alcuni servizi standard addizionali questo perché non c’è mai un collegamento diretto tra cliente ed MBean.
-- Il livello dei servizi distribuiti è costituito da adattatori e connettori (adaptor e connector), necessari per supportare l’accesso remoto al livello agente, verso web-server o altre interazioni.
+JMX realizza e sfrutta, ancora una volta, il ben noto
+principio di decoupling. Tutte le comunicazioni fra clienti e MBean avvengono attraverso il livello intermedio dell’agente.
 
 ![single tier](./img/img71.png)
 
+JMX è organizzato secondo un’architettura a tre livelli: 
+
+- I componenti gestiti appartengono al livello Instrumentation.
+- Il livello agente è costituito dal registro per gli MBean (MBeanServer) e da alcuni servizi standard addizionali questo perché non c’è mai un collegamento diretto tra cliente ed MBean.
+- Il livello dei servizi distribuiti è costituito da adattatori e connettori (adaptor e connector), necessari per supportare l’accesso remoto al livello agente, verso web-server o altre interazioni.
+
 ### Livello instrumentation
 
-Il livello instrumentation definisce come creare risorse gestibili tramite JMX (MBeans), ovvero oggetti che offrono metodi per interagire attraverso dei metodi per la: gestione di un’applicazione, gestione di un componente software, gestione di un servizio, gestione di un dispositivo. MBean non è altro che un componente che implementa una interfaccia di gestione, staticamente o dinamicamente. Nel primo caso, implementa un’interfaccia Java standard e l’agente ne fa inspection tramite tecniche di reflection e convenzioni sui nomi, in queto modo è possibile interrogare l’Mbean. Nel secondo caso, offre un insieme di oggetti metadata attraverso i quali l’agente riesce a scoprire i metodi di management esposti. Le interazioni dinamiche sono simili a quelle presenti in CORBA. Questi metadati consentono di recuperare i metodi di management. I metadati risultano essere più dinamici rispetto alle interfacce perché queste non sono modificabili.
+Il livello instrumentation definisce come creare risorse gestibili tramite JMX (MBeans), ovvero oggetti che offrono metodi per interagire attraverso dei metodi per:
+
+- La gestione di un’applicazione.
+- La gestione di un componente software.s
+- La gestione di un servizio.
+- La gestione di un dispositivo.
+
+MBean non è altro che un componente che implementa una interfaccia di gestione, staticamente o dinamicamente. Nel primo caso, implementa un’interfaccia Java standard e l’agente ne fa inspection tramite tecniche di reflection e convenzioni sui nomi, in queto modo è possibile interrogare l’Mbean. Nel secondo caso, offre un insieme di oggetti metadata attraverso i quali l’agente riesce a scoprire i metodi di management esposti. Le interazioni dinamiche sono simili a quelle presenti in CORBA. Questi metadati consentono di recuperare i metodi di management. I metadati risultano essere più dinamici rispetto alle interfacce perché queste non sono modificabili.
 
 JMX definisce quattro tipi di componenti MBean:
 
-- Standard MBean, è un Mbean statico, creato dichiarando esplicitamente una interfaccia Java con l’informazione di management che l’oggetto gestito implementa.
-- Dynamic MBean, più dinamico, è un oggetto che implementa l’interfaccia DynamicMBean e offre la descrizione dei suoi veri metodi di management attraverso un insieme di oggetti metadata che tale interfaccia richiede di fornire.
-- Model MBean è un DynamicMBean esteso con descrittori addizionali che definiscono proprietà aggiuntive come behavioral properties, funzionalità orizzontali di persistenza, sicurezza, eccetera.
-- Open MBean (non di implementazione obbligatoria per essere conformi alla specifica) è un MBean in cui i tipi utilizzati nei metodi di management hanno il vincolo ulteriore di essere inclusi in un set predefinito di classi e tipi di base, sottoinsieme di funzionalità standardizzate.
+- **Standard MBean**: è un Mbean statico, creato dichiarando esplicitamente un'interfaccia Java con l’informazione di management che l’oggetto gestito implementa.
+- **Dynamic MBean**: più dinamico, è un oggetto che implementa l’interfaccia DynamicMBean e offre la descrizione dei suoi veri metodi di management attraverso un insieme di oggetti metadata che tale interfaccia richiede di fornire.
+- **Model MBean**: è un DynamicMBean esteso con descrittori addizionali che definiscono proprietà aggiuntive come behavioral properties, funzionalità orizzontali di persistenza, sicurezza, eccetera.
+- **Open MBean**: (non di implementazione obbligatoria per essere conformi alla specifica) è un MBean in cui i tipi utilizzati nei metodi di management hanno il vincolo ulteriore di essere inclusi in un set predefinito di classi e tipi di base, sottoinsieme di funzionalità standardizzate.
 
-Il supporto ai primi tre tipi di MBean è mandatory a partire dalla specifica JMX1.0, si ricorda che JMX è una specifica, con diverse implementazioni possibili, come quella di Sun o IBM Tivoli).
+Il supporto ai primi tre tipi di MBean è mandatory a partire dalla specifica JMX 1.0, si ricorda che JMX è una specifica, con diverse implementazioni possibili, come quella di Sun o IBM Tivoli.
 
 ### Livello Agente
 
@@ -4603,44 +4639,43 @@ Esistono tantissime implementazioni dello standard java enterprise edition qui s
 
 ![single tier](./img/img80.png)
 
-## JBoss Clustering
+## JBoss/WildFly Clustering
 
-Con il termine clustering, si intende un insieme di macchine tendenzialmente vicine che lavorano insieme con la necessità di alto coordinamento. La distinzione tra logico e fisico dipende da come avviene il coordinamento. Se il cluster è fisico significa che il supporto alla clusterizzazione è nel modo hardware con controlli e schede ad hoc oppure se avviene logicamente è tramite software. Si può dire che il clustering logico riguarda il coordinamento a livello software.
+Con il termine clustering, si intende un insieme di macchine tipicamente vicine che lavorano insieme con la necessità di alto coordinamento. In poche parole, sono armadi al cui interno ci sono molte macchine interconnesse tra di loro. Il clustering è utile per l'esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi. Ad esempio, viene usato dai motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, etc. È cruciale per la tolleranza ai guasti e disponibilità, load balancing e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing).
 
-Sino ad ora ci si è concentrati sull’infrastruttura di base sulla quale si può avere il deployment dei componenti e infine dell’applicazione. La clusterizzazione riguarda la distribuzione dei componenti e delle azioni da performare in caso di guasti. Questo è importante perché è necessario spesso utilizzare un pool di macchine quando si hanno molte richieste e si vuole essere scalabili oltre che a garantire la fault tolerance.
+Il cluster è una soluzione potente ma allo stesso tempo difficile da gestire a mano. Se si ha un'applicazione web e si vuole installare un sito e-commerce, non si può installare su tutte le macchine del cluster il sito web perchè URL ha l'indirizzo fisico di una sola macchina, in caso di stato le macchine devono condividerlo etc.
 
-Il load sharing è meno potente del load balancing perchè c'è meno intervento.
-
-Il clustering è utile per l'esecuzione su server multipli in parallelo fornendo una visione singola ai clienti applicativi. Ad esempio, viene usato dai motori di ricerca, siti di e-commerce articolati e ad alto carico di utenti, etc. È cruciale per la tolleranza ai guasti e disponibilità, load balancing e scalabilità (miglioramento di performance tramite semplice aggiunta di nuovi nodi al cluster e load balancing).
-
-JBoss Clustering è una soluzione con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e open-source.
+JBoss Application Server (AS) Clustering è una soluzione commerciale con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e open-source.
 
 <a href="#indice">Torna all'indice</a>
 
-### Clustering Service
+### Architettura JBoss
 
-Dalla versione 7 di JBoss si usa il servizio Infinispan per la gestione della replicazione dello stato applicativo al posto di JBoss Cache. Cambiano i nomi dei file di configurazione: `standalone-ha.xml` o `standalone-full-ha.xml`.
+Dalla versione 7 di JBoss si usa il servizio Infinispan per la gestione della replicazione dello stato applicativo al posto di JBoss Cache. L'architettura di JBoss si può sintetizzare nella seguente figura:
 
 ![single tier](./img/img81.png)
 
-L’abilitazione del clustering service è possibile con la configurazione dell’application server, lo si lancia con tutte le configurazioni necessarie, utilizzando la configurazione _all_ di JBoss:
+JBoss è un'implementazione, altri vendor potrebbero avere un'architettura diversa.
+
+L’abilitazione del clustering service avviene lanciando semplicemente da linea di comando usando la configurazione _all_ di JBoss:
 
 ```
 run.bat -c all
 ./run.sh -c all
 ```
 
-Abilita tutte le librerie necessarie al clustering, come `JGroups.jar` per il multicast di gruppo affidabile, `jbosscache.jar` per la cache distribuita etc.
+In questo modo vengono abilite tutte le librerie necessarie al clustering, come `JGroups.jar` per il multicast di gruppo affidabile, `jbosscache.jar` per la cache distribuita etc.
 
-![single tier](./img/img82.png)
+### JGroups
 
-Si usa una cache memoria tabellare per la memorizzazione di risorse. Le cache distribuite sono cache non più residenti su una sola macchina, ma distribuita su più macchine del clustering. È una risorsa vista come memoria a cui possono accedere una serie di istanze dell’application server, è una sorta di stato distribuito dell’application server. La memoria distribuita sarà accessibile da più parti del cluster. L’importanza della cache distribuita risiede nella volontà di far fronte ai guasti, per questo è necessario per i fail over delle macchine accedere allo stato di ciascuna macchina quando si lavora in high avaiability. Questo consente alla macchina che sostituisce quella fallita di recuperare lo stato applicativo attraverso la cache distribuita e quindi riprendere l’esecuzione da dove era stata lasciata.
+JGroups è lo strumento indispensabile che consente la comunicazione multicast in JBoss. JGroups utilizza canali di comunicazione e tiene traccia automaticamente di chi fa parte del cluster sulla base di configurazione e nome del canale JGroups utilizzato. JGroups supporta lo scambio **affidabile** di messaggi all’interno del cluster. A default, la comunicazione multicast avviene con il protocollo UDP, ma è data anche la possibilità di utilizzare TCP con connessioni punto-punto costose. UDP è ottimo per connessioni multicast locali, quando invece si vuole lavorare con multicast remoti si può scegliere anche TCP per una maggiore affidabilità, pagata però con un costo maggiore della comunicazione. A default JBoss utilizza 4 canali JGroups separati:
 
-Un cluster (o partizione) JBoss è semplicemente un insieme di nodi ed ogni nodo JBoss è definito come una istanza del server JBoss. Ovviamente ci sono più nodi logici su una stessa macchina, con differenti porte associate, e allo stesso tempo possono esserci più risorse fisiche. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non si può fare il deployment di tutti i nodi logici sulla stessa macchina fisica, ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
+- Un canale usato dal servizio general-purpose di High Avaiability partition HAPartition.
+- Tre canali creati da JBoss Cache, anche per supportare replicazione dello stato.
 
-Una volta stabilito il livello di replicazione è necessario un sistema di comunicazione per coordinare le copie. JGroups è lo strumento che consente la comunicazione multicast in JBoss. JGroups utilizza canali di comnicazione e tiene traccia automaticamente di chi fa parte del cluster sulla base di configurazione e nome del canale JGroups utilizzato, una volta creato questo gruppo dinamico, JGroups supporta scambio affidabile di messaggi all’interno del cluster, a default la comunicazione multicast avviene con il protocollo UDP, ma è data anche la possibilità di utilizzare TCP con connessioni punto-punto costose. UDP è ottimo per connessioni multicast locali, quando invece si vuole lavorare con multicast remoti si può scegliere anche TCP per una maggiore portabilità, pagata però con un costo maggiore della comunicazione. A default JBoss utilizza 4 canali JGroups separati: un canale usato dal servizio general-purpose di High Avaiability partition HAPartition e tre canali creati da JBoss Cache, anche per supportare replicazione dello stato.
+Un cluster logico (o partizione) JBoss non è altro che l'insieme dei nodi fisici che hanno attiva un'istanza del server JBoss che sta in ascolto sullo stesso indirizzo multicast e porta degli altri nodi (condividono la stessa configurazione JGroups). Se c'è un cluster fisico a sei nodi, si possono messere tutti i sei nodi in un cluster logico JBoss oppure prendere quattro nodi e metterli in un cluster logico e gli altri due in un altro cluster logico. Si potrebbe anche far partecipare uno stesso nodo fisico a più cluster logici. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non si può fare il deployment di tutti i nodi logici sulla stessa macchina fisica perchè ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
 
-La configurazione della comunicazione in JGroups avviene con il file `cluster-service.xml` nella directory `/deploy`. Esso descrive la configurazione per la partizione di default del cluster. Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’attributo PartitionConfig di MBean ClusterPartition descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast:
+La configurazione della comunicazione in JGroups avviene con il file `cluster-service.xml` nella directory `/deploy`. Esso descrive la configurazione per la partizione di default del cluster. Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’attributo `PartitionConfig` di MBean `ClusterPartition` descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast:
 
 ```
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
@@ -4656,8 +4691,7 @@ tos="8"
 
 ...
 
-<! -- intervalli per determinati msg -->
-<! -- ping per scoprire I membri -->
+<! -- ping per scoprire i membri che appartengono al cluster-->
 <PING timeout="2000"
 down_thread="false" up_thread="false"
 num_initial_members="3"/>
@@ -4671,12 +4705,12 @@ min_interval="20000"/>
 
 ...
 
-<! -- timeout per Failure detection -->
+<! -- timeout per failure detection -->
 <FD timeout="10000" max_tries="5"
 down_thread="false" up_thread="false" shun="true"/>
 
-<! -- imeout se il nodo sospetto torna con tempi accettabili di timeout -->
-<VERIFY_SUSPECT timeout="1500" down_thread="false" //ritardi nella risposta 
+<! -- questo protocollo verifica se un membro sospetto è realmente morto eseguendo nuovamente il ping di quel membro. -->
+<VERIFY_SUSPECT timeout="1500" down_thread="false"
 up_thread="false"/>
 
 ...
@@ -4684,11 +4718,13 @@ up_thread="false"/>
 <pbcast.STATE_TRANSFER down_thread="false" up_thread="false"/>
 ```
 
-PING è il protocollo per la scoperta iniziale dei membri del cluster, MERGE2 è il protocollo per la fusione di nuovi sottogruppi già discovered per una gestione dinamica dei gruppi, FD è invece il protocollo per failure detection, verifica ogni X secondi con tentatici il funzionamento del server.
+`PING` è il protocollo per la scoperta iniziale dei membri del cluster, `MERGE2` è il protocollo per la fusione di nuovi sottogruppi già discovered per una gestione dinamica dei gruppi, `FD` è invece il protocollo per failure detection, verifica ogni X secondi il funzionamento del server.
 
 Il clustering lavora a livello software, la failure detection è tra gli application server. In high avaiability per cambiare versione a volte si uccidono webserver e quando questo accade il clustering lo replica con una versione già aggiornata.
 
-High Avaiability (HA) Partition e un servizio general-purpose di alta disponibilità (High Availability) costruita utilzzando JGroups, utilizzato per diversi compiti in JBoss AS clustering. L’astrazione è costruita sulla base dei canali JGroups, e fornisce inoltre un supporto per effettuare e ricevere invocazioni RPC/RMI da e verso nodi cluster. In questo caso vi è la necessità di supportare un registry distribuito, perché vi sono una serie di nodi; quindi, deve essere disponibile localmente a tutti i nodi del cluster tale servizio.  Si utilizzano notifiche a listener per modifiche nell’appartenenza al cluster o per cambiamenti di servizi nel registry. Questo è il nucleo di molti altri servizi di clustering, come smart proxy lato cliente, il farming e HA-JNDI.
+### HA Partition
+
+High Avaiability (HA) Partition è un servizio general-purpose di alta disponibilità (High Availability) costruita utilzzando JGroups, utilizzato per diversi compiti in JBoss AS Clustering. Fornisce un supporto per molti servizi di clustering come smart proxy lato cliente, il farming e HA-JNDI.
 
 Esempio di configurazione HA Partition:
 
@@ -4707,175 +4743,88 @@ name="jboss:service=DefaultPartition">
 </mbean>
 ```
 
-Parametri che lavorano più in alto come "state transfer timeout".
-Per fare parte dello stesso cluster, i nodi devono semplicemente avere lo stesso PartitionName e gli stessi elementi PartitionConfig. Necessità di configurare i protocolli JGroups e la definizione di timeout ad alto livello per gestire la replicazione, per esempio il tempo massimo per sincronizzare lo stato tra diversi nodi.
+Per fare parte dello stesso cluster, i nodi devono semplicemente avere lo stesso `PartitionName` e gli stessi elementi `PartitionConfig`. Necessità di configurare i protocolli JGroups e la definizione di timeout ad alto livello per gestire la replicazione, per esempio il tempo massimo per sincronizzare lo stato tra diversi nodi.
 
-Il deployment può avvenire in due modi, vi è la possibilità di deployment omogeneo in cui avviene la replica su tutti i nodi logici del cluster, questo facilita la gestione ed evita diversi possibili porblemi ed è reso automatico attraverso farming, oppure deployment disomogeneo generalmente sconsigliato dagli sviluppatori JBoss, per diverse ragioni, tra cui la mancanza di supporto a transazioni distribuite sul cluster. Il clustering omogeno è quello più utilizzato.
+Il deployment può avvenire in due modi: vi è la possibilità di deployment omogeneo in cui avviene la replica su tutti i nodi logici del cluster, questo facilita la gestione ed evita diversi possibili porblemi ed è reso automatico attraverso farming, oppure deployment disomogeneo generalmente sconsigliato dagli sviluppatori JBoss, per diverse ragioni, come avere dei componenti solo in alcuni nodi del cluster. Il clustering omogeno è quello più utilizzato.
 
-### Servizio di naming in high avaibility-Clustering JNDI
+Uno dei problemi da risolvere quando si porta EJB su un cluster è quello di decidere dove eseguire il servizio JNDI ( su un nodo o più nodi, nel secondo caso bisogna tenere aggiornate tutte le entry).
 
-Il cliente non usa più JNDI centralizzato, ma utilizza un proxy HA-JNDI per invocare la JNDI lookup lato server. dal punto di vista del server si ha un servizio HA-JNDI che mantiene un albero JNDI (context tree) sul cluster, tale albero è sempre disponibile fino a che almeno è presente almeno un nodo nel cluster. Ogni nodo ha sua copia locale di parte dell’albero JNDI, spazio di nomi parzialmente replicato e partizionato, e oltre a ciò il servizio HA-JNDI su di un nodo può effettuare binding di oggetti presenti nella sua copia locale JNDI. All’atto del lookup:  se binding non è nell’albero del nodo interrogato, delega a JNDI locale,  se non trovato, avviene il coordinamento fra componenti HA-JNDI nel cluster, se qui non viene trovato nulla NameNotFoundException poiché a questo punto il nome non è presente in nessun JNDI del cluster. Questa ricerca su più livelli, con un livello locale e un livello distribuito con coordinamento forte, consente di limitare i colli di bottiglia e per diminuire il coordinamento tra i nodi.
+Il cliente non usa più JNDI centralizzato, ma utilizza un proxy HA-JNDI per invocare la JNDI lookup lato server. Ad ogni nodo del cluster, il servizio HA-JNDI mantiene una parte di albero JNDI (context tree). Ogni nodo, quindi, ha sua copia locale di parte dell’albero JNDI. All’atto del lookup: se il nome ricercato è presente nella copia locale viene restituita la risposta. Se il binding non è nella copia locale dell’albero del nodo interrogato, allora il proxy HA-JNDI si coordina con gli altri proxy usando JGroups. Se non viene trovato nulla in nessun JNDI del cluster viene restituito `NameNotFoundException`. Questa ricerca su più livelli, con un livello locale e un livello distribuito con coordinamento forte, consente di limitare i colli di bottiglia e per diminuire il coordinamento tra i nodi.
 
 ![single tier](./img/img83.png)
 
-Per evitare overhead di aggiornamento le visioni locali sono parziali.  Nel clustering JNDI: i componenti HA-JNDI mantengono conoscenza reciproca e copia parziale dell’albero JNDI locale, mentre i componenti JNDI locali possono avere alberi più estesi rispetto ai loro HA-JNDI. In questo modo si ha fault tolerance e basso overhead di gestione nel distribuito.
+Si ipotizzi di avere un Session Bean che deve fare una lookup sul servizio di nomi. La lookup arriva a HA-JNDI proxy che va a vedere se nella sua copia parziale JNDI è presente il binding richiesto. Lo spazio di nomi JNDI è parzialmente replicato e partizionato cioè non è detto che un'entry sia presente in tutti i nodi ma neanche in nessuno. Se il binding non è presente, il proxy HA-JNDI fa richieste in contemporanea, tramite una richiesta multicast, agli altri nodi. Tutti i nodi che presentano quel nome rispondono alla richiesta del `Nodo 1` e verrà aggiunta una nuova entry alla copia locale. Per questo motivo, i componenti locali JNDI possono avere alberi più estesi rispetto ai loro HA-JNDI.
 
-### Comunicazione
+La fault tollerant viene garantita nel seguente modo: si ipotizzi che il grado di replicazione sia due. Questo vuol dire che un nome sarà presente in due tabelle JNDI. Se il nome è presente nel `Nodo 1` e `Nodo 2` e il `Nodo 1` va down, allora il nome, dato che è presente solo su un nodo, verrà replicato anche sul `Nodo 3`.
 
-Vi sono due tipi di configurazione per la comunicazione client to cluster: 
+### Load-Balancing
 
-- JBoss fat client, i clienti usano HA smart proxy che contengono logica di load balancing (ad es. Round Robin) e capacità di resilienza failover in caso di guasti. La logica di HA smart proxy, che è una sorta di stub molto pesante, può essere modificata e plugged-in da parte del programmatore, che può implementare differenti politiche di failover e load balancing basate su pesi differenziati e carico.  Clienti EJB usano necessariamente HA Smart Proxy, che realizza uno stub RMI significativamente accresciuto. 
-- JBoss thin client, in questo caso lato cliente non vi è più intelligenza tuto è gestito lato server utilizzando un proxy locale. Tutta la logica di load-balancing + failover è lasciata al proxy locale quindi il client non ha compiti, la logica è lasciata allo sviluppatore che può adottare soluzioni hardware o software (ad es. Apache mod_jk/mod_cluster + Tomcat) i  clienti Web principalmente accedono trasparentemente attraverso Apache mod_jk/mod_cluster.
+Vi sono due tipi di configurazione per la comunicazione client-to-cluster: 
 
-### Fat client
+- **JBoss fat client**: i clienti usano HA smart proxy che contengono logica di load balancing (ad es. Round Robin) e capacità di resilienza (failover) in caso di guasti. La logica di HA smart proxy, che è una sorta di stub molto pesante, può essere modificata e plugged-in da parte del programmatore, che può implementare differenti politiche di failover e load balancing basate su pesi differenziati e carico. I clienti EJB usano necessariamente HA Smart Proxy, che realizza uno stub RMI significativamente accresciuto.
+![single tier](./img/img126-light.png)
+Il fat client è una sorta di grande stub RMI detto HA-RMI, che contiene al suo interno la lista dei nodi disponibili e le varie politiche di load balancing che si possono attuare tra cui sono disponibili Random Robin, Round Robin, First Available e First Available All Identical Proxies. Se avviene una modifica nella composizione del cluster, all'invocazione seguente il server fa piggybacking con un protocollo dedicato della lista aggiornata, la lista dei nodi è mantenuta automaticamente lato server tramite JGroups cioè quando viene fatta una richiesta da parte del cliente, nella risposta viene restituita anche la lista dei nodi disponibili. Per ottenere la lista dei nodi la prima volta, il cliente o fa una richiesta multicast oppure è stata distribuita in modo statico. Dal lato client side, le comunicazioni sono intercettate tramite meccanismi trasparenti che si occupano di load balancing e failover all’invocazione di metodi nell’interfaccia dello stub.
+- **JBoss thin client**: tutto è gestito lato server utilizzando un proxy locale e la logica di load-balancing + failover è lasciata allo sviluppatore che può adottare soluzioni hardware o software già esistenti come Apache mod_jk oppure Apache mod_cluster. I clienti principalmente sono clienti Web che accedono trasparentemente attraverso Apache mod_jk/mod_cluster.
+![single tier](./img/img125-light.png)
 
-Il fat cleint e una sorta di grande stub RMi detto HA-RMI, che contiene al suo interno l lista dei nodi disponibili e le varie politiche che possiamo attuare. Nel caso semplice e specifico di invocazioni RMI: la logica di clustering viene messa in atto dagli stub cliente (HA-RMI). Lo  stub contiene la lista dei nodi disponibili nel cluster e la politica di load balancing da adottare, tra cui sono disponibili Random Robin, Round Robin, First Available, First Available All Identical Proxies. Se avviene una modifica nella composizione del cluster, alla invocazione seguente il server fa piggybacking con un protocollo dedicato della lista aggiornata,  la lista dei nodi è mantenuta automaticamente lato server tramite JGroups, vi è un piano di comunicazione interno a JGroups e un protocollo di comunicazione client to cluster. Client side le comunicazioni sono intercettate tramite meccanismi trasparenti di intercettazione client-side che si occupano di load balancing e failover all’invocazione di metodi nell’interfaccia dello stub.
+### JBoss Cache
 
-JBoss Cache è un framework per il supporto a cache distribuita, che può essere utilizzato anche in altri ambienti AS, essa realizza il caching di oggetti Java acceduti frequentemente. Per motivi di performance In JBoss, fornisce servizi di caching per sessioni http, per stati di session bean EJB 3.0, per entity EJB 3.0. Ogni servizio di cache è definito in un Mbean separato con il suo canale JGroups. JBoss Cache è cluster-aware: lo stato è mantenuto consistente fra i vari nodi nel cluster , per questo vi è tolleranza ai guasti in caso di server crash, con necessità di invalidazione e/o aggiornamento dello stato nella cache
-
-### Failover e Load Balancing di sessioni HTTP
-
-La replicazione dello stato della sessione è gestita da JBoss, la configurazione _all_ di JBoss include session state replication. Occorre configurare session state replication da gestire tramite JBoss Cache. Il  load balancing è invece gestito usualmente da un software esterno o a livello hardware:  Ad es., suggeriti da JBoss Apache mod_jk o più recentemente Apache mod_cluster. In questo caso si parla di replicazione dello stato in caso di thin client (non cambia nel fat client ma invece di avere solo http abbiamo lo smart proxy in più lato client).
-
-### Proxy mod-cluster apache differenza dal proxy tradizionale mod-jk
-
-Mod-cluster ha maggiore conoscenza del cluster, partecipa a tutte i protocolli di coordinamento all’interno del cluster stesso. Rispetto al più semplice e «tradizionale» Apache mod_jk vi è una configurazione dinamica cluster, è integrato con meccanismi di advertising su JGroups basati su multicast UDP, con costo basso per aggiornare la situazione,  i nodi cluster fanno discovery automatico di uno o più nodi load balancer disponibili , la cosa vale in entrambi i sensi.  Il monitoraggio delle prestazioni attraverso multicast mette a disposizione diverse metriche per la misurazione del carico, numero di cpu, memoriautilizzata, numero di connessioni. Inoltre si possono avere informazioni a livello applicativo utilizzando notifiche per intercettare eventi di re-deploy/un-deploy/... delle applicazioni presenti su un certo nodo del cluster e prendere decisioni di management conseguenti. Avvengono ricezioni di eventi nel momento di deploy o undeploy di una certa applicazione.
-
-Queste funzionalità non erano presenti su mod-jk, ovviamente questi scambi hanno un costo, ma il proxy è locale lato server quindi il costo è limitato poiché queste informazioni all’interno del cluster circolano e il proxy si fa intercettore e riconoscitore di queste informazioni.
+JBoss Cache è un framework per il supporto a cache distribuita, che può essere utilizzato anche in altri ambienti AS. Essa realizza il caching di oggetti Java acceduti frequentemente per motivi di performance. In JBoss, fornisce servizi di caching per sessioni HTTP, per stati di session bean EJB 3.X, per Entity EJB 3.X. Ogni servizio di cache è definito in un Mbean separato con il suo canale JGroups. JBoss Cache è cluster-aware: lo stato è mantenuto consistente fra i vari nodi nel cluster, per questo vi è tolleranza ai guasti in caso di server crash, con necessità di invalidazione e/o aggiornamento dello stato nella cache.
 
 ### Infinispan
 
-Infinispan sostituisce JBoss Cache. Infinispan è un framework open-source basato su JGroups come supporto di comunicazione utilizzabile anche al difuori di JBoss, anche utilizzabile al di fuori di JBoss. Svolge il ruolo di infrastruttura di caching e replicazione per sessione HTTP, stato di stateful session bean, nomi JNDI e replicazioni e secondo livello di Hibernate. Infinispan ha quattro strategie di caching:
+Infinispan sostituisce JBoss Cache. Infinispan è un framework open-source basato su JGroups come supporto di comunicazione utilizzabile anche al difuori di JBoss. Svolge il ruolo di infrastruttura di caching e replicazione per sessione HTTP, stato di stateful Session Bean, nomi JNDI e replicazioni e secondo livello di Hibernate. Infinispan ha quattro strategie di caching:
 
-- Locale utilizzata tipicamente per secondo livello di Hibernate. 
-- Replicazione strategia più onerosa perché con questa strategia Infinispan va a replicare tutti gli oggetti in cache su tutti i nodi del cluster. Tipicamente è adatta per piccoli cluster, perché il carico di rete necessario per tenere informati i nodi è alto di conseguenza è scarsamente scalabile.
-- Distribuzione strategia che prevede che il dato sia salvato in un sottoinsieme dei nodi del cluster, se il nome è trovato nel nodo attraverso get non sono necessarie altre azioni, altrimenti va cercato negli altri nodi del cluster in questo caso vi sono tempi di risposta più lunghi. Tutti gli oggetti in cache  sono replicati solo su sottoinsieme fisso (configurabile) di nodi del cluster. Ovviamente vi sono minori performance quando oggetti non disponibili localmente ma in generale, migliore scalabilità. Vi è un trade-off tra grado di replicazione e tempo di risposta, inoltre bisogna tenere conto della dimensione della cache che deve contenere questi dati.
-- Invalidazione strategia utilizzata quando si aggiornano stati della cache, nella fase di scrittura put si va a invalidare copie di quello stato disponibili in altri nodi del cluster, per non avere read inconsistenti. Non vi è replicazione, ma rimozione di entry non valide. Tipicamente è utilizzata per dati comunque disponibili su datastore persistente. Replicazione e invalidazione possono avvenire in modo bloccante o non-bloccante, nel caso non-bloccante si ha una coda con modifiche invalidazioni multiple, questa strategia garantisce migliori performance, ma possono esservi errori riportati in log ed eventualmente utilizzati in rollback se si trattano transazioni. Quando si agistce in modo non bloccante si mantiene il log delle operazioni da effettuare quindi è possibile in caso di fault rendere consistente la situazione su altri nodi.
+- **Locale**: l'oggetto è mantenuto solo in copia locale al nodo. Non c'è replicazione sul claster. 
+- **Replicazione**: strategia più onerosa perché con questa strategia Infinispan va a replicare tutti gli oggetti in cache su tutti i nodi del cluster. Tipicamente è adatta per piccoli cluster, perché il carico di rete necessario per tenere informati i nodi è alto di conseguenza è scarsamente scalabile.
+- **Distribuzione** strategia che prevede che il dato sia salvato in un sottoinsieme dei nodi del cluster. Tutti gli oggetti in cache sono replicati solo su sottoinsieme fisso (configurabile) di nodi del cluster. Ovviamente vi sono minori performance quando oggetti non disponibili localmente ma in generale ma migliore scalabilità. Vi è un trade-off tra grado di replicazione e tempo di risposta, inoltre bisogna tenere conto della dimensione della cache che deve contenere questi dati.
+- **Invalidazione** strategia utilizzata quando nella fase di scrittura si va a invalidare copie di quello stato disponibili in altri nodi del cluster, per non avere letture inconsistenti. Non vi è replicazione, ma rimozione di entry non valide. Tipicamente è utilizzata per dati comunque disponibili su datastore persistente.
 
-Per quanto riguarda la gestione locale della cache e le strategie di rimozioni delle entry non più utilizzate detta eviction, abbiamo varie strategie unordered, FIFO, LRU last recent used.
+Replicazione e invalidazione possono avvenire in modo bloccante o non-bloccante. Nel caso non-bloccante si ha una coda con modifiche/invalidazioni multiple. Questa strategia garantisce migliori performance perchè le modifiche avvengono in batch, ma possono esservi errori riportati in log ed eventualmente utilizzati in rollback se si trattano transazioni. Quando si agisce in modo non bloccante si mantiene il log delle operazioni da effettuare, quindi, è possibile in caso di fault rendere consistente la situazione su altri nodi.
 
-Cache Loader, connessione fra Infinispan come servizio e versione su memoria persistente, ad esempio file system, DB, cloud store come AmazonS3, della cache estesa. Se la passivazione è abilitata la scrittura in datastore avviene solo in caso di eviction.
+Quando la cache si riempe, bisogna scegliere che oggetto rimuovere. Il processo di rimozione delle entry non più utilizzate è detto eviction. In Infinispan la rimozione è solo locale. Esistono varie strategie come unordered (random), FIFO, LRU (last recent used).
 
-Vi sono diversi livelli di isolation e locking delle risorse:
+Il cache loader è il caricamento in anticipo di oggetti nella cache tramite la connessione fra Infinispan come servizio e versione su memoria persistente, ad esempio file system, DB, cloud store come AmazonS3. Se la passivazione è abilitata, la scrittura in datastore avviene solo in caso di eviction.
 
-- REPEATABLE_READ sono possibili phantom read 
-- READ_COMMITTED possibili non repeatable read ma maggiori performance 
+Anche nelle cache come nei DB, vi sono diversi livelli di isolation e locking delle risorse:
+
+- REPEATABLE_READ sono possibili phantom read. 
+- READ_COMMITTED possibili non repeatable read ma maggiori performance.
 - Optimistic locking e verifiche a posteriori in fase di commit.
 
-### Replicazione dello stato
+### Replicazione Stato HTTP
 
-Con sticky session si può gestire lo stato mantenendolo in un solo nodo del cluster, quindi, non vi è replicazione questo porta numerosi vantaggi in termini di performance di utilizzo delle risorse ma di contro la caduta del server produce la perdita dello stato di sessione. Si può chiedere un clustering con sticky session (nessuna replicazione di sessioni HTTP) di inviare tutte le richieste dello stesso cliente vengono allo stesso nodo del cluster.
+La replicazione dello stato HTTP di sessione è gestita da JBoss, la configurazione all di JBoss include session state replication. Occorre configurare session state replication in modo opportuno. Lo stato di sessione HTTP viene replicato automaticamente su tutti i nodi del cluster.
 
-La replicazione dello stato per i diversi bean EJB assume livelli di difficoltà differenti.
+In alternativa, per applicazioni Web è possibile configurare il cluster in modalità sticky session. Si può gestire lo stato mantenendolo in un solo nodo del cluster, quindi, non vi è replicazione questo porta numerosi vantaggi in termini di performance di utilizzo delle risorse ma di contro la caduta del server produce la perdita dello stato di sessione. Si può chiedere un clustering con sticky session (nessuna replicazione di sessioni HTTP) di inviare tutte le richieste dello stesso cliente vengono allo stesso nodo del cluster.
 
-Per Stateless Session Bean, data la mancanza di stato, le chiamate possono essere bilanciate su ogni nodo del cluster, si guadagna molto in scalabilità in questo caso. Nel caso di Stateful Session Bean lo stato replicato e sincronizzato sul cluster, quindi ad ogni modifica sullo stato di uno di questi bean, entra in azione session state replication di JBoss Cache o di Infinispan, questo ovvamente ha un costo. Per gli Entity Bean, non si prevede il supporto al clustering, non sono interrogabili da remoto e quindi non prevista abilitazione clustering, solo per secondo livello Hibernate vi è la possibilità di utilizzare Infinispan. Infine, per MessageDriven Bean, vi è l’utilizzo di HornetQ un supporto MOM creato da JBoss.
+Il modulo di JBoss che si occupa di gestire lo stato di sessione (non solo HTTP) è JBoss Cache/Infinispan.
 
-Opzioni di configurazione di WildFly ovvero dell’application server
+### Replicazione Stato EJB
 
-La configurazione standalone.xml è la default configuration file per standalone server, contiene tutti i metadati di configuration, inclusi per subsystem, networking, deployment, socket binding .Usata automaticamente quando si fa partire standalone server. Offre il  supporto di Java EE Web-Profile ed alcune estensioni come RESTFul Web Services e invocazioni remote EJB3.
+Per Stateless Session Bean, data la mancanza di stato, le chiamate possono essere bilanciate su ogni nodo del cluster, si guadagna molto in scalabilità in questo caso. Nel caso di Stateful Session Bean, lo stato replicato e sincronizzato sul cluster, quindi ad ogni modifica sullo stato di uno di questi bean, entra in azione Session State replication di JBoss Cache o di Infinispan, questo ovvamente ha un costo. Dipende dalla strategia di Cache adottata (locale, replicazione e distribuzione). Per gli Entity Bean, non si prevede il supporto al clustering perchè non sono interrogabili da remoto dai clienti e quindi non prevista abilitazione clustering. Si può decidere di replicare solo la cache di secondo livello Hibernate con Infinispan. Infine, per i Message Driven Bean, la gestione è uguale ai Stateless Session Bean. Si usa HornetQ che è un supporto MOM creato da JBoss.
 
-La configurazione standalone-full.xml fornisce il supporto per tutti subsystem eccetto high availability Supporto di Java EE Full-Profile e tutte funzionalità server standalone-ha.xml, include tutti i subsystem di default più l’aggiunta mod_cluster per il supporto al thin client e JGroups per standalone server, così che possa partecipare in un cluster high-availability. Questo è il profilo di default per funzionalità di clustering
+Il modulo di JBoss che si occupa di gestire lo stato di sessione (non solo EJB) è JBoss Cache/Infinispan.
 
-La configurazione standalone-full-ha.xml include supporto per ogni subsystem, inclusi quelli richiesti per high availability.
+### Clustering di Componenti EJB
 
-La configurazione standalone-load-balancer.xml configura automaticamente l’uso di proxy Undertow (Web server) per lavorare da load balancer. Undertow si connetterà ai nodi server veri e propri usando le sue richieste built-in per clienti e proxy protocolli supportati: http, ajp, http2, h2c (clear text HTTP2)
+Come deve essere organizzato in questo caso HA smart proxy rispetto i diversi casi di Stateless Session Bean, Stateful Session Bean, MessageDriven Bean ed Entity Bean.
 
-Per qunto riguarda il load balancer devono essere configurate le parti di gestione
+Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprietaria di JBoss, per informare il container EJB di JBoss che il componente considerato deve essere clustered. L'annotazione `@Clustered` applicabile a:
 
-### Configurazioni di Management
+- Stateless Session Bean con smart proxy a cui sono applicabili diverse politiche di load balancing, come RoundRobin (default), FirstAvailable, FirstAvailableIdenticalAllProxies (tutti smart proxy per un bean verso stesso nodo), RandomRobin.
+- Statefull Session Bean con smart proxy, con diverse politiche di load balancing FirstAvailable (senza abilitazione esplicita replicazione stato).
+- Message Driven Bean le politiche di load balancing sono RoundRobin, Random, Custom (tramite implementazione interfaccia ConnectionLoadBalancingPolicy).
+- Entity Bean non hanno problemi perché sono gestiti internamente quindi non possono essere gestiti dallo smart proxy lato client.
 
-```
-<security-realms>...</security-realms>
-<audit-log>...</audit-log>
-<management-interfaces>...</management-interfaces>
-<access-control provider="simple">...</access-control>
-```
+### Configurazione di JBoss/WildFly
 
-![single tier](./img/img84.png)
+Le opzioni di configurazione di JBoss/WildFly ovvero dell’application server:
 
-Il proxy undertow ha un unto di ingresso che consnete di interagire con i vari cluster del server
-
-### Configurazioni di profilo
-
-```
-<subsystem xmlns="urn:jboss:domain:undertow:9.0" defaultserver="default-server" default-virtual-host="default-host" default-servletcontainer="default" statistics-enabled="${wildfly.undertow.statisticsenabled:${wildfly.statistics-enabled:false}}">
-<server name="default-server">
-<http-listener name="default" socket-binding="http" redirectsocket="https" enable-http2="true"/>
-<http-listener name="management" socket-binding="mcmpmanagement" enable-http2="true"/>
-<host name="default-host" alias="localhost">
-<filter-ref name="load-balancer"/> </host> </server>
-<servlet-container name="default"/> <filters>
-<mod-cluster name="load-balancer" management-socketbinding="mcmp-management" advertise-socket-binding="modcluster"
-enable-http2="true" max-retries="3"/> </filters>
-</subsystem>
-```
-
-Configurazioni di interfaccia in particolare gli indirizzi in cui viene reso diponibile il tutto
-
-```
-<interfaces>
-    <interface name="public">
-    <inet-address value="${jboss.bind.address:127.0.0.1}"/>
-    </interface>
-
-    ...
-
-</interfaces>
-```
-
-Configurazioni Socket-Binding-Group
-
-Gruppo dove si inoltrano tutte le richieste per la gestione, qua si definisce l’indirizzo di multicast dove lavorare.
-
-```
-<socket-binding-group name="standard-sockets" defaultinterface="public" port-offset="${jboss.socket.binding.port-offset:0}">
-
-    ...
-
-    <socket-binding name="modcluster" interface="private" multicastaddress="${jboss.modcluster.multicast.address:224.0.1.105}" multicastport="23364"/>3</socket-binding>
-</socket-binding-group>
-```
-
-### Linee guida di setup per jboss-cli
-
-LOAD BALANCER
-
-Informare la socket dell’uso di mod-cluster: creare un filtro nella config di undertow in cui si specifica la socket modcluster e aggiungerla alla configurazione server:
-
-```
-./jboss-cli.sh --connect --controller=127.0.0.1:9990
-/subsystem=undertow/configuration=filter/modcluster=modcluster:add(advertise-socketbinding=modcluster,management-socket-binding=http)
-/subsystem=undertow/server=default-server/host=default-host/filterref=modcluster:add
-```
-
-Per lanciare load balancer:
-
-```
-standalone.sh -c standalone-ha.xml -Djboss.node.name=load-balancer
-```
-
-Connettere la socket destinazione dell’istanza remota alla socket, precedentemente esposta dal load balancer, ovvero in sostanza creare un proxy per l’istanza serverX:
-
-```
-./jboss-cli.sh --connect --controller=127.0.0.1:999X
-/socket-binding-group=standard-sockets/remote-destination-outboundsocket-binding=lb:add(host=127.0.0.1,port=8080)
-/subsystem=modcluster/proxy=default:writeattribute(name=proxies,value=[lb])
-```
-
-Per lanciare load balancer:
-
-```
-standalone.sh -c standalone-ha.xml -Djboss.node.name=server
-```
-
-Come deve essere organizzato in questo caso HA smart proxy rispetto i diversi casi di, Stateless Session Bean, Stateful Session Bean, MessageDriven Bean, Entity Bean.
-
-Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprietaria di JBoss, per informare il container EJB di JBoss che il componente considerato deve essere clustered. Annotazione `@Clustered` applicabile a:
-
-- Stateless session Bean con smart proxy a cui sono applicabili diverse politiche di load balancing, come RoundRobin (default), FirstAvailable, FirstAvailableIdenticalAllProxies (tutti smart proxy per un bean verso stesso nodo), RandomRobin. 
-- Statefull Session Bean con smart proxy, con diverse politiche di load balancing  FirstAvailable (senza abilitazione esplicita replicazione stato).
-- Message DrivenBean le politiche di load balancing sono RoundRobin, Random, Custom (tramite implementazione interfaccia ConnectionLoadBalancingPolicy).
-- Entity bean non hanno problemi perché sono gestiti internamente quindi non possono essere gestiti dallo smart proxy lato client.
+- La configurazione `standalone.xml` è la default configuration file per standalone server. Contiene tutti i metadati di configuration, inclusi per subsystem, networking, deployment, socket binding. Usata automaticamente quando si fa partire standalone server. Offre il supporto di Java EE Web-Profile ed alcune estensioni come RESTFul Web Services e invocazioni remote EJB 3.X.
+- La configurazione `standalone-full.xml` fornisce il supporto per tutti subsystem eccetto high availability (HA)Supporto di Java EE Full-Profile e tutte funzionalità server. - La configurazione `standalone-ha.xml` include tutti i subsystem di default più l’aggiunta mod_cluster per il supporto al thin client e JGroups per standalone server, così che possa partecipare in un cluster high-availability. Questo è il profilo di default per funzionalità di clustering.
+- La configurazione `standalone-full-ha.xml` include supporto per ogni subsystem, inclusi quelli richiesti per high availability (HA).
+- La configurazione `standalone-load-balancer.xml` configura automaticamente l’uso di proxy front-end Undertow (Web server) per lavorare da load balancer. Undertow si connetterà ai nodi server veri e propri usando le sue richieste built-in per clienti e proxy protocolli supportati: HTTP, AJP, HTTP2, H2C (clear text HTTP2).
 
 ## Big Data
 
@@ -5324,25 +5273,27 @@ Codice per attivare il server web e restituisce un `helloworld` relativo alla pa
 
 ## Docker
 
-### Container, microservizi e DevOps
+Microservizi e container costituiscono un’alternativa più moderna al tradizionale modello software basato sull’architettura monolitica.
 
-Il tutto si basa su container, non più applicativi, ma che diventano strumenti di virtualizzazione che nascono sui sistemi operativi, in particolare Linux, che consentono in un unico punto di avere la parte di applicazione e quindi stack software applicativo, sia tutte le configurazioni necessarie. Docker è un’evoluzione verso una grana più grossa e leggera dei framework analizzati fino ad ora.
+### Microservizi
 
-Per avere applicazioni molto portabili e scalabili è molto importante esprimerle in termini di micro-servizi, ovvero piccoli componenti che compongono un’applicazione distribuita costituita da servizi deploiabili separatamente che eseguono funzioni specifiche di business e comunicano con interfacce web. I micro-servizi sono piccoli blocchi di codice riutilizzabili che compongono l’applicazione. L’obiettivo è quello di rendere l’applicazione scalabile e meno sottoposta all’incremento del tempo necessario al deployment nell’ambiente dei DevOps.
-
-I micro-servizi sono un cambio di paradigma rispetto le applicazioni monolitiche che hanno un codice organizzato in un unico blocco, poiché portano all’isolamento e separazione di quelle funzionalità di base che composte insieme danno le stesse risposte dell’applicazione monolitica iniziale. Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile in termini di scalabilità dell’applicazione e relative performance, in termini di fault tolerance e manutenibilità dell’applicazione stessa. Al contrario in una applicazione monolitica è necessario replicare tutta l’applicazione quando magari solo una funzionalità di questa è un collo di bottiglia per le performance. Con la suddivisione e in micro-servizi si può replicare solo il micro-servizio collo di bottiglia, questo è molto interessante in un’architettura orizzontale dove si replicano sui vari host solo i servizi più richiesti.
+Per avere applicazioni molto portabili e scalabili è importante esprimerle in termini di micro-servizi, ovvero piccoli componenti che compongono un’applicazione distribuita costituita da servizi deploiabili separatamente che eseguono funzioni specifiche di business e comunicano con interfacce web. I micro-servizi sono piccoli blocchi di codice riutilizzabili che compongono l’applicazione. L’obiettivo è quello di rendere l’applicazione scalabile e meno sottoposta all’incremento del tempo necessario al deployment nell’ambiente dei DevOps.
 
 ![single tier](./img/img98.png)
 
-Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database, vi è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB nei database in cui i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio si può avere la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali eccetera.
+Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile in termini di scalabilità dell’applicazione e relative performance, in termini di fault tolerance e manutenibilità dell’applicazione stessa. Al contrario, in una applicazione monolitica è necessario replicare tutta l’applicazione quando magari solo una funzionalità di questa è un collo di bottiglia per le performance. Con la suddivisione e in micro-servizi si può replicare solo il micro-servizio collo di bottiglia. Questo è molto interessante in un’architettura orizzontale dove si replicano sui vari host solo i servizi più richiesti.
 
 ![single tier](./img/img99.png)
 
-Legato al mondo dei micro-servizi vi è quello dei DevOps. I DevOps garantiscono uno sviluppo agile dell’applicazione consentendo di unire la parte applicativa a quella infrastrutturale, velocizzando il processo di cambiamento e correzione delle applicazioni. L’idea di mettere insieme micro-servizi e DevOps sopraggiunge per la necessità di preparare l’ambiente per controllare le nuove realise, installarle, verificarle e poter facilmente tornare indietro, garantendo QoS consistenza ed evitando crash e altri problemi.
+Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database. Vi è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB dove i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio ha la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali etc.
+
+### DevOps
+
+Legato al mondo dei micro-servizi vi è quello dei DevOps. I DevOps garantiscono uno sviluppo agile dell’applicazione consentendo di unire la parte applicativa a quella infrastrutturale, velocizzando il processo di cambiamento e correzione delle applicazioni. L’idea di mettere insieme micro-servizi e DevOps sopraggiunge per la necessità di preparare l’ambiente per controllare le nuove release, installarle, verificarle e poter facilmente tornare indietro, garantendo QoS consistenza ed evitando crash e altri problemi.
 
 I DevOps vanno nella direzione del continuo ciclo di sviluppo, seguendo le fasi di Design Build Deploy teste e Release senza mai fermarsi in un ciclo infinito. Per questo un’applicazione può continuamente essere aggiornata durante la sua esecuzione senza la necessità di interrompere o interferire con l’attuale versione. Il continuo processo di test e rilascio è per struttura più semplice da utilizzare in un’applicazione a micro-servizi.
 
-Il container è la piattaforma per il micro-servizio. Il container è un artefatto che si porta dietro tutto il necessario per l’esecuzione del micro-servizio, non sono necessari altri supporti esterni. I micro-servizi possono essere contenuti in un container che diventa un modo per trasportare il micro-servizio da una parte ad un’altra. Un’altra caratteristica fondamentale è che sia auto contenuto ovvero contiene la logica applicativa, tutta a parte di deployment e operation garantendo la correttezza dell’esecuzione. Il container richiama sia il concetto sia auto contenimento che di standardizzazione.  Il container, quindi, è in grado di contenere il micro-servizio e tutto il suo supporto dato dai DevOps.
+Il container è la piattaforma per il micro-servizio. Il container è un artefatto che si porta dietro tutto il necessario per l’esecuzione del micro-servizio, non sono necessari altri supporti esterni. I micro-servizi possono essere contenuti in un container che diventa un modo per trasportare il micro-servizio da una parte ad un’altra. Un’altra caratteristica fondamentale è che sia auto-contenuto ovvero contiene la logica applicativa, tutta a parte di deployment e operation garantendo la correttezza dell’esecuzione. Il container richiama sia il concetto sia auto contenimento che di standardizzazione. Il container, quindi, è in grado di contenere il micro-servizio e tutto il suo supporto dato dai DevOps.
 
 Da un punto di vista tecnico si possono mettere a confronto i container con le macchine virtuali. I container al contrario delle macchine virtuali consentono di non avere più il sistema operativo guest in ciascuna virtualizzazione, ma tale sistema operativo si trova al di sopra dell’infrastruttura. Per la gestione dei container vi è un container engine che poggia sul sistema operativo e garantisce l’isolamento dei container e da la visione al container di avere accesso diretto alle chiamate del sistema operativo e alle risorse. Quindi il container engine crea spazi isolati per i container dandogli l’astrazione necessaria rispetto al sistema operativo. Dal punto di vista delle performance i container sono molto più veloci per l’avvio di un container si parla di centesimi di secondi/secondi, mentre per una virtual machine di grosse dimensioni di minuti. L’isolamento del container a livello di SO garantisce l’isolamento delle risorse, poiché il container vede il SO come se fosse suo e della sicurezza. Dal punto di vista delle risorse i container le percepiscono isolate anche se alcune risorse come networking memoria eccetera non sono semplici da isolare.
 
@@ -5356,9 +5307,9 @@ I container sono la giusta piattaforma per un micro-servizio, poiché sono soluz
 
 ### Docker
 
-Docker è un insieme di tool che facilita la gestione di container, inizialmente lavorava solo su Linux al momento funziona anche su Windows, è molto diffuso a partire dal 2013 anno di creazione del progetto.
+Docker è un insieme di tool che facilita la gestione di container, inizialmente lavorava solo su Linux ma al momento funziona anche su Windows, è molto diffuso a partire dal 2013 anno di creazione del progetto.
 
-Docker offre molti strumenti non solo per ospitare container ma anche per gestirli, controllare le migrazioni dei componenti e le loro immagini, infatti, è molto utile per indicare cosa installare e i componenti da utilizzare. I micro-servizi possono essere ospitati e controllati dal container facilmente, inoltre, Docker può consigliare come progettare e pacchettizzare componenti autonomi. Inoltre, i container offrono la possibilità di accedere con funzioni web ai micro-servizi ospitati, instandoli e reinstallandoli facilmente. Per Docker basta utilizzare una piattaforma hardware, il sistema operativo, le librerie di sistema e le dipendenze dei processi durante la fase di sviluppo test e produzione del software. Dal punto di vista dell’ingegneria del software in cui si è passati da un concetto di applicazione a quello di servizio, il processo di creazione viene basato nella realizzazione sui container e sullo sviluppo con i DevOps.
+Docker offre molti strumenti non solo per ospitare container ma anche per gestirli, controllare le migrazioni dei componenti e le loro immagini. Infatti, è molto utile per indicare cosa installare e i componenti da utilizzare. I micro-servizi possono essere ospitati e controllati dal container facilmente, inoltre, Docker può consigliare come progettare e pacchettizzare componenti autonomi. Inoltre, i container offrono la possibilità di accedere con funzioni web ai micro-servizi ospitati, instandoli e reinstallandoli facilmente. Per Docker basta utilizzare una piattaforma hardware, il sistema operativo, le librerie di sistema e le dipendenze dei processi durante la fase di sviluppo test e produzione del software. Dal punto di vista dell’ingegneria del software in cui si è passati da un concetto di applicazione a quello di servizio, il processo di creazione viene basato nella realizzazione sui container e sullo sviluppo con i DevOps.
 
 Docker è organizzato in un registri-repository da cui scaricare i componenti ovvero le immagini, un cliente che comanda l’intero deployment ovvero richiede all’host certe operazioni e un host che consente di scaricare l’immagini dal registry e adoperarle sul container dove eseguire l’applicazione.
 
@@ -5406,7 +5357,7 @@ Esempio applicazione a tre livelli per la gestione della collezione di libri
 
 Applicazione a tre livelli con client tier, application tier e database tier. L’applicaztion tier utilizza Spring Boot per sviluppare un’applicazione con una configurazione minima, con Spring boot è possibile utilizzare Tomcat come server embedded. Per quanto riguarda la persistenza si può utilizzare JPA sempre nell’application tier che grazie alle annotazioni risulta semplice da configurare, l’unico file da specificare è application.yml dove scrivere l’URL per accedere al database, username, password ed eventuali parametri aggiuntivi.
 
-´´´
+```
 spring:
     profiles: container
         datasource:
@@ -5421,7 +5372,7 @@ spring:
     jpa:
         hibernate.ddl-auto: create-drop
         properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-´´´
+```
 
 L’applicazione può essere organizzata creando un container per Spring e un container per MySQL e i volumi. Il primo passo per definire l’immagine per ciascun container è scrivere il DockerFile per definire i passaggi di creazione dell’immagine e metterla in esecuzione. Una volta definito il dockerfile dove viene scaricata la jdk e vengono aggiunte le parti che servono a configurare l’applicazione da distribuire. Per quanto riguarda invece l‘immagine di MySQL si utilizza l’immagine di MySQL presente nel DockerHub. Rispetto al database va scritto uno script che verifichi che la connessione funzione e che si connetta correttamente al database. I comandi per fare l’upload dell’immagine sono molto semplici. Infine, notare come immagine pesi solo 116 MB, molto più leggera rispetto all’immagine di una Virtual Machine.
 
@@ -5669,3 +5620,78 @@ Dal punto di vista del disaccoppiamento dei servizi, i servizi vengono eseguiti 
 ![single tier](./img/img113.png)
 
 Dal punto di viste delle performance non lavorano benissimo, su applicazioni FaaS intensive ci si rende conto che non stanno utilizzando macchine di qualità, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
+
+## Confronto tra Tecnologie
+
+<table>
+  <tr>
+    <th>Caratteristiche</th>
+    <th>EJB 2.X</th>
+    <th>EJB 3.X</th>
+    <th>CCM</th>
+    <th>Spring</th>
+  </tr>
+  <tr>
+    <td>Container</td>
+    <td>Pesante</td>
+    <td>Pesante</td>
+    <td>Pesante</td>
+    <td>Leggero (con ApplicationContext si possono richiamare i metodi del container diventando un container pesante)</td>
+  </tr>
+  <tr>
+    <td>Servizi</td>
+    <td>Transazionalità, Messaggi, Persistenza</td>
+    <td>Transazionalità, Messaggi, Persistenza</td>
+    <td>Transazionalità, Messaggi, Persistenza</td>
+    <td>Transazionalità, Messaggi, Persistenza</td>
+  </tr>
+  <tr>
+    <td>Linguaggio</td>
+    <td>Java</td>
+    <td>Java</td>
+    <td>Lavora con diversi tipi di linguaggi</td>
+    <td>Java</td>
+  </tr>
+  <tr>
+    <td>Componente</td>
+    <td>Session Bean (calcolo computazionale), Message Driven Bean (attivazione per gestire messaggi), Entity Bean (dati del DB)</td>
+    <td>Session Bean (calcolo computazionale), Message Driven Bean (attivazione per gestire messaggi)</td>
+    <td>Rispetto a CORBA i componenti vengono distribuiti, Facet (interfacce offerte), Receptacle (quali interfacce si aspetta), Event Source, Event Sink </td>
+    <td>Componenti non dipendono da Spring, classi POJO che diventano componenti Oggetti POJO </td>
+  </tr>
+  <tr>
+    <td>Creazione nuovi componenti Lifecycle</td>
+    <td>Creazione dell'interfaccia EJBHome (prima richiesta del cliente) e EJBObject (intercetta le chiamate successive) oppure EJBLocalHome e EJBLocalObject</td>
+    <td>Interfaccia POJI, EJB Home e Object sono trasparenti non a carico del programmatore (vista più moderna)</td>
+    <td>Component Home che si fa carico del Lifecycle, contatto tra componente e container (diversi tipi di lifecycle management)</td>
+    <td>Oggetti POJO utilizzabili grazie alla dependency injection (risolta dal container)</td>
+  </tr>
+  <tr>
+    <td>Sviluppatore</td>
+    <td>Conoscenza approfondita di EJB</td>
+    <td>Conoscenza più di alto livello</td>
+    <td>Conoscenza approfondita di CCM</td>
+    <td>Conoscenza più di alto livello</td>
+  </tr>
+  <tr>
+    <td>Intermediario</td>
+    <td>Container nel mezzo</td>
+    <td>Container nel mezzo</td>
+    <td>Container nel mezzo</td>
+    <td>AOP</td>
+  </tr>
+  <tr>
+    <td>Annotazioni</td>
+    <td>No</td>
+    <td>Si</td>
+    <td>No</td>
+    <td>Si</td>
+  </tr>
+  <tr>
+    <td>Deployment</td>
+    <td>File XML</td>
+    <td>Annotazioni e retrocompatibilità con file XML</td>
+    <td>File XML</td>
+    <td>Annotazioni e file XML</td>
+  </tr>
+</table>
