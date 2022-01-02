@@ -5305,11 +5305,11 @@ Per avere applicazioni molto portabili e scalabili è importante esprimerle in t
 
 ![single tier](./img/img98.png)
 
-Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile in termini di scalabilità dell’applicazione e relative performance, in termini di fault tolerance e manutenibilità dell’applicazione stessa. Al contrario, in una applicazione monolitica è necessario replicare tutta l’applicazione quando magari solo una funzionalità di questa è un collo di bottiglia per le performance. Con la suddivisione e in micro-servizi si può replicare solo il micro-servizio collo di bottiglia. Questo è molto interessante in un’architettura orizzontale dove si replicano sui vari host solo i servizi più richiesti.
+Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile in termini di scalabilità dell’applicazione e relative performance, in termini di fault tolerance e manutenibilità dell’applicazione stessa. Al contrario, in una applicazione monolitica è necessario replicare tutta l’applicazione quando magari solo una funzionalità di questa è un collo di bottiglia per le performance. Con la suddivisione e in micro-servizi si può replicare solo il micro-servizio che fa da collo di bottiglia. Questo è molto interessante in un’architettura orizzontale dove si replicano sui vari host solo i servizi più richiesti.
 
 ![single tier](./img/img99.png)
 
-Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database. Vi è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB dove i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio ha la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali etc.
+Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database. VI è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB dove i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio ha la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali etc.
 
 ### DevOps
 
@@ -5317,15 +5317,17 @@ Legato al mondo dei micro-servizi vi è quello dei DevOps. I DevOps garantiscono
 
 I DevOps vanno nella direzione del continuo ciclo di sviluppo, seguendo le fasi di Design Build Deploy teste e Release senza mai fermarsi in un ciclo infinito. Per questo un’applicazione può continuamente essere aggiornata durante la sua esecuzione senza la necessità di interrompere o interferire con l’attuale versione. Il continuo processo di test e rilascio è per struttura più semplice da utilizzare in un’applicazione a micro-servizi.
 
+### Container
+
 Il container è la piattaforma per il micro-servizio. Il container è un artefatto che si porta dietro tutto il necessario per l’esecuzione del micro-servizio, non sono necessari altri supporti esterni. I micro-servizi possono essere contenuti in un container che diventa un modo per trasportare il micro-servizio da una parte ad un’altra. Un’altra caratteristica fondamentale è che sia auto-contenuto ovvero contiene la logica applicativa, tutta a parte di deployment e operation garantendo la correttezza dell’esecuzione. Il container richiama sia il concetto sia auto contenimento che di standardizzazione. Il container, quindi, è in grado di contenere il micro-servizio e tutto il suo supporto dato dai DevOps.
 
-Da un punto di vista tecnico si possono mettere a confronto i container con le macchine virtuali. I container al contrario delle macchine virtuali consentono di non avere più il sistema operativo guest in ciascuna virtualizzazione, ma tale sistema operativo si trova al di sopra dell’infrastruttura. Per la gestione dei container vi è un container engine che poggia sul sistema operativo e garantisce l’isolamento dei container e da la visione al container di avere accesso diretto alle chiamate del sistema operativo e alle risorse. Quindi il container engine crea spazi isolati per i container dandogli l’astrazione necessaria rispetto al sistema operativo. Dal punto di vista delle performance i container sono molto più veloci per l’avvio di un container si parla di centesimi di secondi/secondi, mentre per una virtual machine di grosse dimensioni di minuti. L’isolamento del container a livello di SO garantisce l’isolamento delle risorse, poiché il container vede il SO come se fosse suo e della sicurezza. Dal punto di vista delle risorse i container le percepiscono isolate anche se alcune risorse come networking memoria eccetera non sono semplici da isolare.
+![single tier](./img/img129.png)
 
-Nel senso della process isolation si è iniziato dall’isolamento dei processi arrivando ai container attuali. Vi è poi un problema parallelo che è quello del supporto ai container che invece ha visto la sua massima evoluzione con Docker. Quindi serve il meccanismo di sistema per isolare il container, mentre dal punto di vista dello sviluppo e dei DevOps il tema è la gestione dei container e la gestione delle relative immagini.
+Da un punto di vista tecnico si possono mettere a confronto i container con le macchine virtuali. I container al contrario delle macchine virtuali consentono di non avere più il sistema operativo guest in ciascuna virtualizzazione, ma tale sistema operativo si trova al di sopra dell’infrastruttura. Per la gestione dei container vi è un container engine che poggia sul sistema operativo e garantisce l’isolamento dei container e da la visione al container di avere accesso diretto alle chiamate del sistema operativo e alle risorse. Quindi, il container engine crea spazi isolati per i container dandogli l’astrazione necessaria rispetto al sistema operativo. Dal punto di vista delle performance i container sono molto più veloci per l’avvio di un container si parla di centesimi di secondi/secondi, mentre per una virtual machine di grosse dimensioni di minuti. L’isolamento del container a livello di SO garantisce l’isolamento delle risorse, poiché il container vede il SO come se fosse suo e della sicurezza. Dal punto di vista delle risorse, i container le percepiscono isolate anche se alcune risorse come networking memoria etc non sono semplici da isolare.
 
 ![single tier](./img/img100.png)
 
-Dal punto di vista del marketing la containerizzazione ha avuto un grande successo poiché risolve a tutti gli effetti il problema “non funziona su questa macchina”, poiché il container risolve tutte le dipendenze oltre che a fornire il servizio preposto, è leggero perché condivide il kernel con altri container ed esegue come processo isolato. Inoltre, ha una maggiore efficienza rispetto alla virtual machine nei processi di lettura e scrittura, inoltre con l’utilizzo di immagini si hanno servizi facilmente riproducibili e scalabili.
+Dal punto di vista del marketing la containerizzazione ha avuto un grande successo poiché risolve a tutti gli effetti il problema _non funziona su questa macchina_, poiché il container risolve tutte le dipendenze oltre che a fornire il servizio preposto, è leggero perché condivide il kernel con altri container ed esegue come processo isolato. Inoltre, ha una maggiore efficienza rispetto alla virtual machine nei processi di lettura e scrittura, inoltre con l’utilizzo di immagini si hanno servizi facilmente riproducibili e scalabili.
 
 I container sono la giusta piattaforma per un micro-servizio, poiché sono soluzioni leggere e virtualizzate oltre ad essere corretti, auto contenuti e ben isolati, sono in grado allo stesso tempo di condividere le parti di supporto interne al kernel del sistema operativo e non sono specifici per una piattaforma per questo sono estremamente portabili. Infine, possono ospitare i micro-servizi e le loro applicazioni con tutte le loro parti e le loro dipendenze.
 
@@ -5333,111 +5335,51 @@ I container sono la giusta piattaforma per un micro-servizio, poiché sono soluz
 
 Docker è un insieme di tool che facilita la gestione di container, inizialmente lavorava solo su Linux ma al momento funziona anche su Windows, è molto diffuso a partire dal 2013 anno di creazione del progetto.
 
-Docker offre molti strumenti non solo per ospitare container ma anche per gestirli, controllare le migrazioni dei componenti e le loro immagini. Infatti, è molto utile per indicare cosa installare e i componenti da utilizzare. I micro-servizi possono essere ospitati e controllati dal container facilmente, inoltre, Docker può consigliare come progettare e pacchettizzare componenti autonomi. Inoltre, i container offrono la possibilità di accedere con funzioni web ai micro-servizi ospitati, instandoli e reinstallandoli facilmente. Per Docker basta utilizzare una piattaforma hardware, il sistema operativo, le librerie di sistema e le dipendenze dei processi durante la fase di sviluppo test e produzione del software. Dal punto di vista dell’ingegneria del software in cui si è passati da un concetto di applicazione a quello di servizio, il processo di creazione viene basato nella realizzazione sui container e sullo sviluppo con i DevOps.
-
-Docker è organizzato in un registri-repository da cui scaricare i componenti ovvero le immagini, un cliente che comanda l’intero deployment ovvero richiede all’host certe operazioni e un host che consente di scaricare l’immagini dal registry e adoperarle sul container dove eseguire l’applicazione.
+Docker offre molti strumenti non solo per ospitare container ma anche per gestirli, controllare le migrazioni dei componenti e le loro immagini. Infatti, è molto utile per indicare cosa installare e i componenti da utilizzare. I micro-servizi possono essere ospitati e controllati dal container facilmente. Docker può consigliare come progettare e pacchettizzare componenti autonomi. Inoltre, i container offrono la possibilità di accedere con funzioni web ai micro-servizi ospitati, instandoli e reinstallandoli facilmente. Per Docker basta utilizzare una piattaforma hardware, il sistema operativo, le librerie di sistema e le dipendenze dei processi durante la fase di sviluppo test e produzione del software. Dal punto di vista dell’ingegneria del software, in cui si è passati da un concetto di applicazione a quello di servizio, il processo di creazione viene basato nella realizzazione sui container e sullo sviluppo con i DevOps.
 
 ![single tier](./img/img101.png)
 
-Docker per la configurazione dinamica e statica utilizza orchestratori, che servono per gestire al meglio i micro-servizi in base al loro utilizzo e la loro richiesta.
+Il Docker daemon ascolta le richieste delle Docker API e gestisce i componenti Docker come le immagini. Il Docker Client è la parte utilizzata dagli utenti per interagire con Docker Daemon, in particolare può utilizzare comandi, come `docker run` che avvia il container. I Docker registry salvano le immagini mentre Docker Hub e Docker Cloud sono registri pubblici. A default, Docker cerca immagini su Docker Hub si può eventualmente anche eseguire un registry personale. I registry sono i componenti di distribuzione per Docker.
 
-Docker consente la configurazione, il deployment, e la gestione del ciclo di vita dei container. L’architettura è client-server, il docker daemon realizza i servizi per gestire il ciclo di vita dei container, poi vi sono diverse API rest e Docker CLI.
+I Docker container contengono tutto ciò che è necessario ad un’applicazione per eseguire e l’applicazione stessa, sono simili a una directory in quanto il container in esecuzione vede un file system proprio e isolato risptto al resto, dove sono presenti tutti i componenti necessari ad eseguire l’applicazione e sono creati a partire da un’immagine Docker. Gli stati possibili per un container Docker sono: `run`, `started`, `stopped`, `moved`, e `deleted`. I container sono i _run components_ di Docker.
 
-Il Docker daemon ascolta le richieste delle Docker API e gestisce i componenti Docker come immagini, network e volumes. Il Docker Client è la parte utilizzata dagli utenti per interagire con Docker, in particolare può utilizzare comandi, come Docker run che avvia il container, il cliente li invia al dockerd che li porta fuori. I Docker registry salvano le immagini mentre Docker Hub e Docker Cloud sono registri pubblici, a default Docker cerca immagini su Docker Hub si può eventualmente anche eseguire un registry personale. I registry sono i componenti di distribuzione per Docker.
+### Gestione del ciclo di vita del container
 
-Le immagini Docker sono organizzate per layer, sono componenti read-only per questo ad ogni nuova immagine si va ad aggiungere una nuova parte, lavorando per differenze, aggiungendo solo le modifiche rispetto all’immagine precedente. Le immagini sono identificate da Hash con convenzioni per il naming. Le immagini Docker sono utilizzate per creare container e sono definite come _build components_ di Docker stesso.
-
-I Docker container contengono tutto ciò che è necessario ad un’applicazione per eseguire e l’applicazione stessa, sono simili a una directory in quanto il container in esecuzione vede un file system proprio e isolato risptto al resto, dove sono presenti tutti i componenti necessari ad eseguire l’applicazione. e sono creati a partire da un’immagine Docker. Gli stati possibili per un container Docker sono: run, started, stopped, moved, e deleted. I container sono i _run components_ di Docker.
-
-Si possono usare registry pubblici o locali, i registry pubblici contengono tantissime immagini già pronte, il Docker CLI interagendo con il Docker Daemon può scaricare le immagini e a partire da quelle può istanziare i vari container, ciò può essere fatto sulla macchina locale in locale, oppure su un host remoto utilizzando un registry pubblico, tipicamente Docker Hub, oppure utilizzando dei propri registry privati.
-
-### Passi della gestione del ciclo di vita del container
-
-Registry locale o remoto da cui richiedere e scaricare immagini con operazione di pull, oppure inviare aggiornamenti delle immagini presenti con l’operazione di push. Inoltre, è presente un backup locale in cui salvare immagini con save o caricarle con load. Le immagini possono essere istanziate sul container con il comando di run, di seguito il container può essere avviato con start, fermato con stop oppure riavvito con restart. Se vengono effettuati cambiamenti di configurazioni aggiunta di librerie nel filesystem con la commit si può aggiornare l’immagine ed eventualmente aggiungere nuove informazioni attraverso tag. Il DockerFile in modo assertivo enuncia delle direttive che attraverso l’operazione di build consentono di creare nuove immagini.
+La figura seguente mostra i passi della gestione del ciclo di vita del container:
 
 ![single tier](./img/img102.png)
 
+Registry locale o remoto da cui richiedere e scaricare immagini con operazione di `pull`, oppure inviare aggiornamenti delle immagini presenti con l’operazione di push. Inoltre, è presente un backup locale in cui salvare immagini con `save` o caricarle con `load`. Le immagini possono essere istanziate sul container con il comando di `run`, di seguito il container può essere avviato con `start`, fermato con `stop` oppure riavvito con `restart`. Se vengono effettuati cambiamenti di configurazioni aggiunta di librerie nel filesystem con la `commit` si può aggiornare l’immagine ed eventualmente aggiungere nuove informazioni attraverso tag. Il DockerFile in modo assertivo enuncia delle direttive che attraverso l’operazione di build consentono di creare nuove immagini.
+
 ### Immagini Docker
 
-La gestione delle immagini in Docker è automatizzata e ottimizzata, le immagini create sono organizzate su layer poiché si utilizza una logica di composizione, che consente una volta creata un’immagine di accedervi in sola lettura, ogni immagine è read-only per ogni modifica in scrittura viene aggiunto un nuovo layer all’immagine senza modificare il layer precedente questo approccio è detto copy-on-write. In sintesi, si lavora per differenze ogni nuovo layer aggiunge le differenze rispetto al layer precedente l’immagine finale è la somma di tutti i layer creati per quell’immagine. Ogni layer è univocamente identificato da un hash con l’algoritmo sha-256 crittograficamente sicuro per l’identificazione dell’immagine. Se sono già stati scaricati layer per un’immagine non sarà necessario scaricarli nuovamente, dovranno essere scaricati unicamente i layer mancanti per una determinata immagine, nel Docker Daemon viene fatto caching di layer e questo evita di scaricare nuovamente gli stessi layer garantendo un grande vantaggio in termini di efficienza nell’utilizzo del disco e facilità nella modifica.
+La gestione delle immagini in Docker è automatizzata e ottimizzata. Le immagini create sono organizzate su layer poiché si utilizza una logica di composizione, che consente una volta creata un’immagine di accedervi in sola lettura, ogni immagine è read-only, per ogni modifica in scrittura viene aggiunto un nuovo layer all’immagine senza modificare il layer precedente questo approccio è detto copy-on-write. In sintesi, si lavora per differenze ogni nuovo layer aggiunge le differenze rispetto al layer precedente. L’immagine finale è la somma di tutti i layer creati per quell’immagine. Ogni layer è univocamente identificato da un hash con l’algoritmo SHA-256 crittograficamente sicuro per l’identificazione dell’immagine. Se sono già stati scaricati layer per un’immagine non sarà necessario scaricarli nuovamente, dovranno essere scaricati unicamente i layer mancanti per una determinata immagine. Nel Docker Daemon viene fatto caching di layer e questo evita di scaricare nuovamente gli stessi layer garantendo un grande vantaggio in termini di efficienza nell’utilizzo del disco e facilità nella modifica.
 
 ![single tier](./img/img103.png)
 
-Convenzioni per il naming delle immagini, devono essere indicati il nome dell’host nei registry e la porta, username, reponame ed eventuali tag.
+Convenzioni per il naming delle immagini, devono essere indicati il nome dell’host nei registry e la porta, username, reponame ed eventuali tag:
 
-Il Docker file serve per definire e creare nuove immagini, il run nel docker file è una direttiva per lanciare le configurazioni e il software. Facilita la configurazione dell’immagine e la crea. Il Docker file presente parte da due immagini preesistenti che vengono modificate, con l’aggiunta di layer software vengono aggiunti layer all’immagine stessa.
+```
+[hostname[:port]]/[username]/reponame[:tag]
+```
+
+Il DockerFile serve per definire e creare nuove immagini. Il run nel DockerFile è una direttiva per lanciare le configurazioni e il software. Facilita la configurazione dell’immagine e la crea. Il DockerFile presente parte da due immagini preesistenti che vengono modificate, con l’aggiunta di layer software vengono aggiunti layer all’immagine stessa:
 
 ![single tier](./img/img104.png)
 
-Docker non è solo un insieme di strumenti ma una piattaforma può lavorare ad eventi nella gestione dei container in esecuzione. Docker offre la possibilità di utilizzare volumi, connettere tra loro i container, e la possibilità di gestire le autorizzazioni e la sicurezza dei container.
+Docker non è solo un insieme di strumenti ma una piattaforma che può lavorare ad eventi nella gestione dei container in esecuzione. Docker offre la possibilità di utilizzare volumi, connettere tra loro i container, e la possibilità di gestire le autorizzazioni e la sicurezza dei container:
 
 ![single tier](./img/img105.png)
 
-Docker possiede molti plugin tra questi sono molto importanti i plugin di rete e per questo Docker consente di connettere risorse e container all’esterno e all’interno, offre anche virtualizzazioni in un certo senso è un Network as a Service. Un’altra parte importante è la persistenza prevede diverse modalità, come montare un’area di memoria come un file system ovvero uno storage persistente, che sarà quindi realizzato in memory, dà la possibilità di vedere il file system locale ospitante, oppure di avere una sandbox detta Docker area che limita lo spazio di visibilità per il container.
+Docker possiede molti plugin tra questi sono molto importanti i plugin di rete e per questo Docker consente di connettere risorse e container all’esterno e all’interno. Un’altra parte importante è la persistenza prevede diverse modalità, come montare un’area di memoria come un file system ovvero uno storage persistente, che sarà quindi realizzato in memory, dà la possibilità di vedere il file system locale ospitante, oppure di avere una sandbox detta Docker area che limita lo spazio di visibilità per il container.
 
-Dal punto di vista della configurazione si possono configurare le esecuzioni dei container. Docker compose parte da immagini su cui si è già lavorato e andarle a comporre in un nuovo container, questo può essere utile per mantenere separato in un’applicazione la parte di stato, dalla logica applicativa, dal punto di vista del compose container diversi vengono visti come un unico container il tutto, il tutto può essere scorporato ed eseguito separatamente oppure interamente. Con il Docker Compose si agisce solo in locale quindi possono essere utilizzate immagini remote, ma prima devono essere scaricate in locale.
-
-Esempio applicazione a tre livelli per la gestione della collezione di libri
-
-Applicazione a tre livelli con client tier, application tier e database tier. L’applicaztion tier utilizza Spring Boot per sviluppare un’applicazione con una configurazione minima, con Spring boot è possibile utilizzare Tomcat come server embedded. Per quanto riguarda la persistenza si può utilizzare JPA sempre nell’application tier che grazie alle annotazioni risulta semplice da configurare, l’unico file da specificare è application.yml dove scrivere l’URL per accedere al database, username, password ed eventuali parametri aggiuntivi.
-
-```
-spring:
-    profiles: container
-        datasource:
-        driverClassName: ${DATABASE_DRIVER}
-        url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useSSL=false&allowPublicKeyRetrieval=true
-        username: ${DATABASE_USER}
-        password: ${DATABASE_PASSWORD}
-        tomcat:
-            test-while-idle: true
-            time-between-eviction-runs-millis: 60000
-            validation-query: SELECT 1
-    jpa:
-        hibernate.ddl-auto: create-drop
-        properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-```
-
-L’applicazione può essere organizzata creando un container per Spring e un container per MySQL e i volumi. Il primo passo per definire l’immagine per ciascun container è scrivere il DockerFile per definire i passaggi di creazione dell’immagine e metterla in esecuzione. Una volta definito il dockerfile dove viene scaricata la jdk e vengono aggiunte le parti che servono a configurare l’applicazione da distribuire. Per quanto riguarda invece l‘immagine di MySQL si utilizza l’immagine di MySQL presente nel DockerHub. Rispetto al database va scritto uno script che verifichi che la connessione funzione e che si connetta correttamente al database. I comandi per fare l’upload dell’immagine sono molto semplici. Infine, notare come immagine pesi solo 116 MB, molto più leggera rispetto all’immagine di una Virtual Machine.
-
-```
-1 FROM openjdk:8-jre-alpine
-2 MAINTAINER Dmitrij David Padalino Montenero
-3
-5 VOLUME /tmp
-4 EXPOSE 8080
-6
-7 ARG JAR_FILE
-8 ADD target/${JAR_FILE} app.jar
-9 ADD wrapper.sh wrapper.sh
-10
-11 RUN apk add --update bash && rm -rf /var/cache/apk/*
-12 RUN bash -c 'chmod +x /wrapper.sh'
-13 RUN bash -c 'touch /app.jar'
-14
-15 ENTRYPOINT ["/bin/bash", "/wrapper.sh"]
-
-1 #!/bin/bash
-2 while ! exec 6<>/dev/tcp/${DATABASE_HOST}/${DATABASE_PORT}; do
-3 echo "Trying to connect to MySQL at ${DATABASE_PORT}..."
-4 sleep 10
-5 done
-6
-7 java -Djava.security.egd=file:/dev/./urandom-Dspring.profiles.active=container -jar /app.jar
-
-$ docker build –t librarydemo
-$ docker login
-$ docker tag librarydemo davidmonnuar/springbootlibrarydemo:1.0
-$ docker push davidmonnuar/springbootlibrarydemo:1.0
-```
+Dal punto di vista della configurazione si possono configurare le esecuzioni dei container. Docker compose parte da immagini su cui si è già lavorato e andarle a comporre in un nuovo container, questo può essere utile per mantenere separato in un’applicazione la parte di stato, dalla logica applicativa. Dal punto di vista del compose container diversi vengono visti come un unico container il tutto, il tutto può essere scorporato ed eseguito separatamente oppure interamente. Con il Docker Compose si agisce solo in locale, quindi, possono essere utilizzate immagini remote, ma prima devono essere scaricate in locale.
 
 ### Docker SWARM
 
-Swarm è un orchestratore di risorse container, è un engine che elabora degli script di configurazione di un cluster ed esegue in continuazione garantendo che ciò che viene scritto nello script sia realizzato nel sistema che sta eseguendo. Nella terminologia di Docker e Swarm si utilizza il termine servizio che sta ad indicare i container di produzione che istanziano un servizio concettuale. Un altro termine importante è Stack che sta ad indicare un gruppo di servizi in relazione tra di loro che condividono dipendenze e possono essere orchestrati e scalati insieme.
+Swarm è un orchestratore di risorse container, è un engine che elabora degli script di configurazione ed esegue in continuazione garantendo che ciò che viene scritto nello script sia realizzato nel sistema che sta eseguendo. Nella terminologia di Docker e Swarm si utilizza il termine servizio che sta ad indicare i container di produzione che istanziano un servizio concettuale. Un altro termine importante è Stack che sta ad indicare un gruppo di servizi in relazione tra di loro che condividono dipendenze e possono essere orchestrati e scalati insieme.
 
-Swarm è un gruppo di macchine fisiche o virtuali che eseguono Docker all’interno di un cluster. Le macchine su cui Docker viene eseguito possono essere fisiche o a loro volta virtual machine. Nell’esempio sottostante viene mostrata l’inizializzazione di un nodo master e un nodo worker.
-
-Virtual machines creation
+Swarm è un gruppo di macchine fisiche o virtuali che eseguono Docker all’interno di un cluster. Le macchine su cui Docker viene eseguito possono essere fisiche o a loro volta virtual machine. Nell’esempio sottostante viene mostrata l’inizializzazione di un nodo master e un nodo worker:
 
 ```
 $ docker-machine create –driver virtualbox myvm1
@@ -5465,19 +5407,9 @@ ID HOSTNAME STATUS AVAILABILITY MANAGER STATUS ENGINE VERSION
 ktvyi0nypz31l645iej8torkx myvm2 Ready Active 18.06.1-ce
 ```
 
-Nel caso dell’esempio proposto i servizi presenti sono un database SQL mysqldb, un servizio spring, un virtualizer, poi vi sono il volume per la persistenza e la rete per interconnetterei i container. Effettuare un comando di Docker Stack vuol dire dispiegare l’applicazione con tutte le sue dipendenze.
-
-File di deployment letto da Docker Swarm, inizialmente si definiscono i servizi, che sono il servizio del database mysqldb a cui richiediamo l’ultima versione dell’immagine disponibile nel Docker Hub, il Docker file non è necessario perché si utilizza l’immagine di un Docker Hub pubblico.  Poi è necessario prendere i volumi, necessaria per salvare il tutto in maiera persistente. Dal punto di vista del deployment con placement mettiamo un vincolo sul fatto che i servizi mysqldb e il visualizer dovranno trovarsi sulla stessa macchina ovvero il nodo con il ruolo di manager. Poi vi sono alcune configurazioni di ambiente, infine dichiariamo che il network deve essere gestito con il modulo webnet. Per la parte di application server si definisce il servizio Spring. In primo luogo, si richiama l’immagine creata in precedenza per Spring, qui è possibile dichiarare delle dipendenze, in questo caso rispetto al servizio mysqldb. Deploy replicas consente di dire quante repliche si desiderano per il deployment, oltre ad indicare la politica sul restart a seguito di un fallimento del container, infine è possibile limitare la quantità di risorse da allocare, vi sono poi alcuni parametri di configurazione, come le porte, l’ambiente di configurazione per mysqldb e la rete a cui collegarsi webnet. Per il volume e il network si utilizza il default, ovvero quello locale, a questo punto questo è il deployment è terminato.
-
-Vi sono due macchine virtuali del cluster dette master e worker, MySQL e Visualizer sono sulla stessa macchina, mentre i cinque container Spring replicati sono distribuiti sulle due macchine, di come distribuirli tra le due macchine se ne occupa Swarm. Il visualizzatore consente di mostrare il deployment di Docker Swarm. Per la gestione delle richieste che arrivano ai cinque container vi è Swarm load-balancer, può risiedere sulle macchine dell cluster e all’arrivo delle richieste le smista sui nodi in cui si trova l’application server Spring, in questo modo si può realizzare il loadbalancing e scalare l’applicazione. Swarm però non consente di monitorare in continuazione il funzionamento e scalare dinamicamente i container, permette però cambiando il file di deployment Docker Compose file è possibile indicare un numero diverso di repliche, istanziarne di nuove e quindi scalare l’applicazione quando Swarm va nuovamente a consumare il file di depoyment modificato, questo avviene però in modo statico non dinamico.
-
-```
-$ docker-machine ssh myvm1 "docker stack deploy -c docker-compose.yml librarywebapp"
-```
-
 ## Kubernetes
 
-Kubernetes è un orchestratore di container compatibile con Docker, la gestione dei container è dinamica e non statica, questo gli consente di offrire molte più funzionalità rispetto a Docker Swarm. Kubernetes è pensato per lavorare in ambienti cloud, infatti da una parte, quella interna, è un orchestratore di container dall’altra parte esternamente si interfaccia con i Virtual Infrastructure Manager, ovvero con i controllori di API Rest, che dispongono i cloud provider per poter andare prendere le risorse che servono per formare l’infrastruttura fisica su cui distribuire i container. Questo strumento facilita molto la migrazione dei container da un’ambiente locale a uno più largo come il cloud. I benefici sono la gestione fine grained e dinamica rispetto a tutte l problematiche di management come scaling e automatizzazione del rollout e del rollback, una volta sviluppata una nuova versione è possibile mandare ovunque in produzione e tornare indietro senza problemi in caso di bug o errori. Kubernetes consente di effettuare il rollback facilmente. Poi vi è la gestione dello scaling con la possibilità di scaling intelligente fine grained e definibile dal programmatore e non solo con round robin, poi vi è tutta la parte di fault tolerance e la possibilità di portare i carichi su cloud diversi.
+Kubernetes è un orchestratore di container compatibile con Docker, la gestione dei container è dinamica e non statica, questo gli consente di offrire molte più funzionalità rispetto a Docker Swarm. Kubernetes è pensato per lavorare in ambienti cloud, infatti da una parte, quella interna, è un orchestratore di container dall’altra parte esternamente si interfaccia con i Virtual Infrastructure Manager, ovvero con i controllori di API Rest, che dispongono i cloud provider per poter andare prendere le risorse che servono per formare l’infrastruttura fisica su cui distribuire i container. Questo strumento facilita molto la migrazione dei container da un’ambiente locale a uno più largo come il cloud. I benefici sono la gestione fine grained e dinamica rispetto a tutte le problematiche di management come scaling e automatizzazione del rollout e del rollback, una volta sviluppata una nuova versione è possibile mandare ovunque in produzione e tornare indietro senza problemi in caso di bug o errori. Kubernetes consente di effettuare il rollback facilmente. Poi vi è la gestione dello scaling con la possibilità di scaling intelligente fine grained e definibile dal programmatore e non solo con Round Robin, poi vi è tutta la parte di fault tolerance e la possibilità di portare i carichi su cloud diversi.
 
 L’obiettivo principale di Kubernetes è nascondere la complessità di gestione di grandi quantità di container fornendo agli utilizzatori un set di API Rest. Kubernetes è estremamente protabile, infatti, si interfaccia con tutte le principali Cloud Platform private o pubbliche come Amazon AWS, Azure, Openstack, o resource manager come Apache Mesos. Per un orchestratore del genere è fondamentale fornire il deployment di applicazioni multi-container, garantire la continuità dei servizi grazie alla sua gestione di fault tolerance, rollback e rollout, scalare autonomamente e dinamicamente le applicazioni e rendere tutta l’architettura indipendente dall’infrastruttura sottostante.
 
