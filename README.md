@@ -294,7 +294,27 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     <li>
       <a href="#">Docker</a>
       <ul>
+        <li><a href="#">Microservizi</a></li>
+        <li><a href="#">DevOps</a></li>
+        <li><a href="#">Container</a></li>
+        <li><a href="#">Docker</a></li>
+        <li><a href="#">Gestione del ciclo di vita del container</a></li>
+        <li><a href="#">Immagini Docker</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">Kubernates</a>
+      <ul>
         <li><a href="#"></a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">FaaS</a>
+      <ul>
+        <li><a href="#">Serverless come Baas+FaaS</a></li>
+        <li><a href="#">Architettura</a></li>
+        <li><a href="#">Openwhisk</a></li>
+        <li><a href="#">Kantive</a></li>
       </ul>
     </li>
   </ol>
