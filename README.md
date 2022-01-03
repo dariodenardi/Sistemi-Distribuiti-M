@@ -4238,7 +4238,7 @@ public class BlackListNotifier implement ApplicationListener {
 
 Come già detto più volte, si è interessati non solo alla fase di sviluppo, ma anche all'esecuzione in ambiente reale dell’architettura enterprise. In questo caso, si è particolarmente interessati al monitoraggio del sistema, quindi, vi è la necessità di controllo on-line e conseguenti azioni di gestione, non solo di network equipment, ma anche di componenti applicativi e di servizio. Gli obiettivi del monitoraggio sono: la fault detection, misura di performance e riconfigurazione/re-deployment, identificazione dei colli di bottiglia. I modelli utilizzati nel monitoraggio sono i seguenti: push vs. pull, azioni reattive vs. proattive, approccio ottimistico vs. pessimistico, con manager centralizzato vs. parzialmente distribuito vs. completamente distribuito. È importante avere protocolli e API standard per misurare le performance trattando in un certo senso il software come l’hardware dal punto di vista del monitoraggio e della misurazione.
 
-Protocollo SNMP per la gestione e il management del mondo del networking. SNMP rappresenta uno standard, allo stesso modo si vogliono avere standard per il monitoraggio nel mondo distribuito in ambienti aperti e interoperabili. Per fare un esempio, Distributed Management Task Force (DMTF) è un’organizzazione per la standardizzazione per IT system management in ambienti industriali e in Internet. Gli standard DMTF permettono la costruzione di componenti per system management indipendenti dalla piattaforma e technology-neutral, abilitando così interoperabilità fra prodotti per la gestione di sistemi di diversi vendor, alcuni elementi fondamentali in DMTF sono: Common Information Model (CIM), Common Diagnostic Model (CDM), Web-Based Enterprise Management (WBEM). Common Information Model (CIM) è un modello astratto per la rappresentazione degli elementi gestiti (ad esempio, computer o storage area network) come insieme di oggetti e relazioni. CIM è estensibile per consentire l’introduzione di estensioni product-specific e svolge la stessa funzione del CMIB per SNMP. Common Diagnostic Model (CDM) è un modello di diagnostica e definizione di come questo debba essere incorporato nell’infrastruttura di management, infine Web-Based Enterprise Management (WBEM) è un insieme di protocolli per l’interazione fra componenti di system management (conformi a CIM e ai suoi profili) e la loro interrogazione. I rpofili in genr sono utilizzati in data-model molto estesi con diversi diritti e operazioni.
+Protocollo SNMP per la gestione e il management del mondo del networking. SNMP rappresenta uno standard, allo stesso modo si vogliono avere standard per il monitoraggio nel mondo distribuito in ambienti aperti e interoperabili. Per fare un esempio, Distributed Management Task Force (DMTF) è un’organizzazione per la standardizzazione per IT system management in ambienti industriali e in Internet. Gli standard DMTF permettono la costruzione di componenti per system management indipendenti dalla piattaforma e technology-neutral, abilitando così interoperabilità fra prodotti per la gestione di sistemi di diversi vendor, alcuni elementi fondamentali in DMTF sono: Common Information Model (CIM), Common Diagnostic Model (CDM), Web-Based Enterprise Management (WBEM). Common Information Model (CIM) è un modello astratto per la rappresentazione degli elementi gestiti (ad esempio, computer o storage area network) come insieme di oggetti e relazioni. CIM è estensibile per consentire l’introduzione di estensioni product-specific e svolge la stessa funzione del CMIB per SNMP. Common Diagnostic Model (CDM) è un modello di diagnostica e definizione di come questo debba essere incorporato nell’infrastruttura di management, infine Web-Based Enterprise Management (WBEM) è un insieme di protocolli per l’interazione fra componenti di system management (conformi a CIM e ai suoi profili) e la loro interrogazione. I profili in generale sono utilizzati in data-model molto estesi con diversi diritti e operazioni.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -4248,7 +4248,7 @@ Il contesto nel quale si è inserita la specifica Java è quella del monitoraggi
 
 ![single tier](./img/img124.png)
 
-I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean. Questi MBean sono gestiti attraverso un agente che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti Mbean e cliente, quindi, l’agente in un certo senso rende trasparenti gli MBean, in questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi managed bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
+I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean. Questi MBean sono gestiti attraverso un agente che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti MBean e cliente, quindi, l’agente in un certo senso rende trasparenti gli MBean. In questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi Managed Bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
 
 ### Architettura
 
@@ -4268,46 +4268,45 @@ JMX è organizzato secondo un’architettura a tre livelli:
 Il livello instrumentation definisce come creare risorse gestibili tramite JMX (MBeans), ovvero oggetti che offrono metodi per interagire attraverso dei metodi per:
 
 - La gestione di un’applicazione.
-- La gestione di un componente software.s
+- La gestione di un componente software.
 - La gestione di un servizio.
 - La gestione di un dispositivo.
 
-MBean non è altro che un componente che implementa una interfaccia di gestione, staticamente o dinamicamente. Nel primo caso, implementa un’interfaccia Java standard e l’agente ne fa inspection tramite tecniche di reflection e convenzioni sui nomi, in queto modo è possibile interrogare l’Mbean. Nel secondo caso, offre un insieme di oggetti metadata attraverso i quali l’agente riesce a scoprire i metodi di management esposti. Le interazioni dinamiche sono simili a quelle presenti in CORBA. Questi metadati consentono di recuperare i metodi di management. I metadati risultano essere più dinamici rispetto alle interfacce perché queste non sono modificabili.
-
 JMX definisce quattro tipi di componenti MBean:
 
-- **Standard MBean**: è un Mbean statico, creato dichiarando esplicitamente un'interfaccia Java con l’informazione di management che l’oggetto gestito implementa.
-- **Dynamic MBean**: più dinamico, è un oggetto che implementa l’interfaccia DynamicMBean e offre la descrizione dei suoi veri metodi di management attraverso un insieme di oggetti metadata che tale interfaccia richiede di fornire.
-- **Model MBean**: è un DynamicMBean esteso con descrittori addizionali che definiscono proprietà aggiuntive come behavioral properties, funzionalità orizzontali di persistenza, sicurezza, eccetera.
+- **Standard MBean**: è un MBean statico, creato dichiarando esplicitamente un'interfaccia Java con l’informazione di management che l’oggetto gestito implementa.
+- **Dynamic MBean**: più dinamico, è un oggetto che implementa l’interfaccia `DynamicMBean` in cui ci sono oggetti di metalivello che specificano tutte le operazioni di management del MBean stesso.
+- **Model MBean**: è un DynamicMBean esteso con descrittori addizionali che definiscono proprietà aggiuntive come behavioral properties, funzionalità orizzontali di persistenza, sicurezza, etc.
 - **Open MBean**: (non di implementazione obbligatoria per essere conformi alla specifica) è un MBean in cui i tipi utilizzati nei metodi di management hanno il vincolo ulteriore di essere inclusi in un set predefinito di classi e tipi di base, sottoinsieme di funzionalità standardizzate.
 
 Il supporto ai primi tre tipi di MBean è mandatory a partire dalla specifica JMX 1.0, si ricorda che JMX è una specifica, con diverse implementazioni possibili, come quella di Sun o IBM Tivoli.
 
 ### Livello Agente
 
-Il livello di agente è costituito da un server MBean e da un insieme di servizi di agente basati sul livello di instrumentation, vi sono quattro servizi di agente definiti nella specifica JMX: M-Let, Timer, Monitoring e Relation. Inoltre, il livello agente introduce il concetto di naming per gli oggetti, nomi che il lato cliente può utilizzare come riferimento indiretto alle risorse gestite.
+Il livello di agente è costituito da un server MBean e da un insieme di servizi di agente basati sul livello di instrumentation. Vi sono quattro servizi di agente definiti nella specifica JMX: M-Let, Timer, Monitoring e Relation. Inoltre, il livello agente introduce il concetto di naming per gli oggetti, nomi che il lato cliente può utilizzare come riferimento indiretto alle risorse gestite.
 
 ![single tier](./img/img72.png)
 
 Il server MBean è uno dei componenti chiave dell’architettura di management, esso opera come un canale di comunicazione che smista e delega tutte le invocazioni fra applicazioni di management e risorse gestite. Espone metodi per la creazione ed effettuazione di query, per invocare operazioni e per manipolare attributi su MBean. Il tipo di implementazione dei componenti MBean (Standard, Dynamic, Model, etc) è totalmente trasparente alle applicazioni client-side di gestione, l’Mbean Server nascondendo tale implementazione semplifica anche le cose lato client.
 
-MBeanServer è un oggetto locale alla JVM dei componenti gestiti e non offre particolare supporto alla connessione remota verso di sé. Per questo servono connettori JMX o adattatori di protocollo per accettare chiamate provenienti dall’esterno della JVM. Questi componenti (connettori/adattatori) sono spesso essi stessi degli MBean, registrati sull’agente, e forniscono una pluralità di differenti forme di connettività.
-
-![single tier](./img/img73.png)
-
-I connettori JMX sono strutturati in due componenti: lato server, l’agente registra un server per le connessioni capace di ricevere invocazioni remote di metodo, il lato cliente, si può utilizzare una vista remota del server MBean per invocare operazioni su di esso.
-
-Gli adattatori di protocollo sono implementati solo lato server Mbean, questi possono adattare operazioni server MBean del mondo JMX per interagire con protocolli preesistenti, o anche verso diversi modelli di informazioni, come SNMP Management Information Base, permettendo ad app di management legacy o a strumenti non-Java di interoperare con JMX.
+MBeanServer è un oggetto locale alla JVM dei componenti gestiti e non offre particolare supporto alla connessione remota. Per questo servono connettori JMX o adattatori di protocollo per accettare chiamate provenienti dall’esterno della JVM. Questi componenti (connettori/adattatori) sono spesso essi stessi degli MBean, registrati sull’agente, e forniscono una pluralità di differenti forme di connettività.
 
 ### Livello servizi distribuiti
 
-La specifica JMX Remote API definisce come si possa fare l’advertising e trovare agenti JMX usando infrastrutture di discovery e lookup esistenti, la specifica NON definisce un ulteriore servizio di discovery e lookup, ma la tecnologia JMX offre una soluzione standard per l’esportazione delle API di JMX instrumentation verso applicazioni remote, basata su RMI. Inoltre, JMX Remote API definisce un protocollo opzionale, non-mandatory e più efficiente, basato direttamente su socket TCP, chiamato JMX Messaging Protocol (JMXMP) per garantire la massima interoperabilità.
+I connettori JMX sono strutturati in due componenti:
 
-MBean sono stati progettati per essere flessibili, semplici e facili da implementare. Gli sviluppatori di applicazioni, servizi di supporto e dispositivi possono rendere i loro prodotti gestibili (manageable) in modo standard, senza necessità di conoscere a fondo e di investire in sistemi complessi di management. Gli oggetti esistenti possono facilmente essere estesi per produrre MBean standard o essere oggetto di wrapping come MBean dinamici, rendendo così le risorse esistenti facilmente manageable a basso costo.
+- Lato server, l’agente registra un server per le connessioni capace di ricevere invocazioni remote di metodo.
+- Lato cliente, si può utilizzare una vista remota del server MBean per invocare operazioni su di esso.
+
+![single tier](./img/img73.png)
+
+Gli adattatori di protocollo sono implementati solo lato server MBean, questi possono adattare operazioni server MBean del mondo JMX per interagire con protocolli preesistenti, o anche verso diversi modelli di informazioni, come SNMP Management Information Base, permettendo ad app di management legacy o a strumenti non-Java di interoperare con JMX.
+
+La specifica JMX Remote API definisce come si possa fare l’advertising e trovare agenti JMX usando infrastrutture di discovery e lookup esistenti, la specifica **non** definisce un ulteriore servizio di discovery e lookup, ma la tecnologia JMX offre una soluzione standard per l’esportazione delle API di JMX instrumentation verso applicazioni remote, basata su RMI. Inoltre, JMX Remote API definisce un protocollo opzionale, non-mandatory e più efficiente, basato direttamente su socket TCP, chiamato JMX Messaging Protocol (JMXMP) per garantire la massima interoperabilità.
 
 ### Standard MBean
 
-Lo standard MBean è il modo più semplice per rendere JMX-managed nuove classi Java. Interfaccia statically-typed dichiara esplicitamente gli attributi tramite metodi getter e setter e le operazioni di gestione. Convenzione sui nomi: quando un managed object viene registrato, l’agente cerca una interfaccia di management con lo stesso nome classe dell’oggetto + suffisso MBean, nel caso, navigando l’albero di ereditarietà della classe.
+Lo standard MBean è il modo più semplice per rendere JMX-managed nuove classi Java. L'interfaccia è statically-typed e dichiara esplicitamente gli attributi tramite metodi getter e setter e le operazioni di gestione. Convenzione sui nomi: quando un managed object viene registrato, l’agente cerca una interfaccia di management con lo stesso nome classe dell’oggetto + suffisso MBean, nel caso, navigando l’albero di ereditarietà della classe:
 
 ```
 public interface UserMBean{
@@ -4330,25 +4329,27 @@ public class Student extends User {
 }
 ```
 
-### MBean Server registrazione
+### Registrazione MBean su Server
 
-Per registrare un manageable object come un MBean è necessario creare prima ObjectName. Il riferimento all’agente può essere ottenuto da una lista di implementazioni disponibili di MBeanServer o creandolo da zero. La registrazione di MBean consiste semplicemente nell’associare il manageable object con il suo nome di oggetto, una volta trovato l’MBean server.
+Per registrare un manageable object come un MBean è necessario creare prima ObjectName. Il riferimento all’agente può essere ottenuto da una lista di implementazioni disponibili di MBeanServer o creandolo da zero:
 
 ```
 ObjectName username = new ObjectName("example:name=user1");
 
-List serverList = MBeanServerFactory. findMBeanServer(null);
+List serverList = MBeanServerFactory.findMBeanServer(null);
 MBeanServer server = (MBeanServer)serverList.iterator().next();
 
-/* oppure per la creazione...
+/* oppure se prima si deve creare il MBeanServer
 MBeanServer server = MBeanServerFactory.createMBeanServer();*/
 
 server.registerMBean(new User(), username);
 ```
 
+La registrazione di MBean consiste semplicemente nell’associare il manageable object con il suo nome di oggetto, una volta trovato l’MBean server.
+
 ### Invocazione servizi di gestione
 
-L’applicazione di management riferisce MBean passando un riferimento a object name all’agente, per ogni operazione invocata. Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tuto questo nascondendo le operazioni al cliente.
+L’applicazione di management riferisce MBean passando un riferimento a object name all’agente, per ogni operazione invocata:
 
 ```
 ObjectName username = new ObjectName("example:name=user1");
@@ -4360,11 +4361,13 @@ Object result = server.invoke(
     null); // void signature
 ```
 
+Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tuto questo nascondendo le operazioni al cliente
+
 ### Meccanismo di notifica
 
-L’architettura JMX definisce un meccanismo di notifica per MBean che consente di inviare eventi verso altri MBean o applicazioni di management. Gli MBean che vogliono emettere eventi di management devono implementare l’interfaccia NotificationBroadcaster, gli oggetti listener per gli eventi devono invece implementare l’interfaccia NotificationListener e devono effettuare loro subscription presso Mbean (locale o remoto) che fa da broadcaster, questa subscription è fatta attraverso il livello di agente. Le operazioni di notifica svolte da broadcaster MBean sono parte della loro interfaccia di management JMX:  le applicazioni possono effettuare query sul livello agent per avere info su quali tipi di notifica gli MBean di interesse possono emettere, a tal fine, MBean broadcaster forniscono oggetti MBeanNotificationInfo.
+L’architettura JMX definisce un meccanismo di notifica per MBean che consente di inviare eventi verso altri MBean o applicazioni di management. Gli MBean che vogliono emettere eventi di management devono implementare l’interfaccia `NotificationBroadcaster`, gli oggetti listener per gli eventi devono invece implementare l’interfaccia `NotificationListener` e devono effettuare loro subscription presso Mbean (locale o remoto) che fa da broadcaster. Questa subscription è fatta attraverso il livello di agente. Le operazioni di notifica svolte da broadcaster MBean sono parte della loro interfaccia di management JMX: le applicazioni possono effettuare query sul livello agent per avere info su quali tipi di notifica gli MBean di interesse possono emettere, a tal fine, MBean broadcaster forniscono oggetti `MBeanNotificationInfo`.
 
-La classe JMX Notification estende EventObject introducendo campi per il tipo di evento, numero di sequenza, timestamp, messaggio e dati utente opzionali, perciò le notifiche possono essere filtrate, grazie all’implementazione dell’interfaccia NotificationFilter è subscribed presso broadcaster MBean, insieme con il listener con il metodo addNotificationListener(), il broadcaster deve controllare se la notifica supera il filtro prima di inviarla.
+La classe JMX `Notification` estende `EventObject` introducendo campi per il tipo di evento, numero di sequenza, timestamp, messaggio e dati utente opzionali, perciò le notifiche possono essere filtrate, grazie all’implementazione dell’interfaccia `NotificationFilter` è subscribed presso broadcaster MBean, insieme con il listener con il metodo `addNotificationListener()`, il broadcaster deve controllare se la notifica supera il filtro prima di inviarla.
 
 ```
 public interface NotificationFilter {
@@ -4378,13 +4381,15 @@ public interface NotificationBroadcaster {
 }
 ```
 
-Poiché l’implementazione di broadcaster MBean può diventare anche piuttosto complessa, è messa a disposizione una classe NotificationBroadcasterSupport che implementa l’interfaccia NotificationBroadcaster. In questo modo i propri broadcaster MBean possono: estendere tale classe per ereditare quella implementazione dei metodi di broadcasting oppure delegare a questa classe il supporto alla gestione delle registrazioni e all’invocazione delle notifiche. Il meccanismo di notifica è generico e adatto a qualsiasi tipo di notifica user-defined. Comunque, JMX definisce la specifica classe AttributeChangeNotification per MBean che vogliano inviare notifiche sul cambiamento dei loro attributi di management, l’idea di questa classe è facilitare la creazione di aventi di notifica per il cambio degli attributi.
+Poiché l’implementazione di broadcaster MBean può diventare anche piuttosto complessa, è messa a disposizione una classe `NotificationBroadcasterSupport` che implementa l’interfaccia `NotificationBroadcaster`. In questo modo i propri broadcaster MBean possono: estendere tale classe per ereditare quella implementazione dei metodi di broadcasting oppure delegare a questa classe il supporto alla gestione delle registrazioni e all’invocazione delle notifiche. Il meccanismo di notifica è generico e adatto a qualsiasi tipo di notifica user-defined. Comunque, JMX definisce la specifica classe `AttributeChangeNotification` per MBean che vogliano inviare notifiche sul cambiamento dei loro attributi di management, l’idea di questa classe è facilitare la creazione di aventi di notifica per il cambio degli attributi.
 
 ### Dynamic MBean
 
-MBean dinamici implementano l’interfaccia generica DynamicMBean che offre metodi all’agente per fare il discovery di metodi e attributi di management (reale interfaccia di gestione), l’agente del server può usare questa interfaccia per recuperare gli attributi degli Mbean. I metadati che descrivono l’interfaccia di management sono completamente sotto la responsabilità dello sviluppatore, mentre nello Standard MBean i metadati vengono generati dall’agente stesso tramite introspezione. Casi possibili di utilizzo di Dynamic MBean sono le situazioni in cui l’interfaccia di management può cambiare spesso, oppure per la necessità di abilitare facilmente il management su risorse esistenti.
+MBean dinamici implementano l’interfaccia generica `DynamicMBean` che offre metodi all’agente per fare il discovery di metodi e attributi di management (reale interfaccia di gestione), l’agente del server può usare questa interfaccia per recuperare gli attributi degli MBean. I metadati che descrivono l’interfaccia di management sono completamente sotto la responsabilità dello sviluppatore, mentre nello Standard MBean i metadati vengono generati dall’agente stesso tramite introspezione. Casi possibili di utilizzo di Dynamic MBean sono le situazioni in cui l’interfaccia di management può cambiare spesso, oppure per la necessità di abilitare facilmente il management su risorse esistenti.
 
-In MBean dinamici, l’interfaccia di management viene esposta tramite le classi di metadata definite in JMX API, i metadata sono ritrovati dinamicamente dall’agente come istanza della classe MBeanInfo, tale classe include tutti gli elementi di metadata, i quali ereditano caratteristiche comuni dalla classe MBeanFeatureInfo.
+![single tier](./img/img130.png)
+
+In MBean dinamici, l’interfaccia di management viene esposta tramite le classi di metadata definite in JMX API, i metadata sono ritrovati dinamicamente dall’agente come istanza della classe `MBeanInfo`, tale classe include tutti gli elementi di metadata, i quali ereditano caratteristiche comuni dalla classe `MBeanFeatureInfo`. Quindi, le informazioni che sono dentro a `MBeanInfo` possono essere modificate anche runtime. Se si ha una classe `Pippo`, e tramite `geBeanInfo()` si ottiene l'oggetto `BeanInfo` per poi andarlo a popolare.
 
 ```
 public class DynamicUser extends NotificationBroadcasterSupport implements DynamicMbean {
@@ -4397,7 +4402,7 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
             return new Long(id);
             throw new AttributeNotFoundException("Missing attribute " + attribute);
     }
-
+    
     // Operazioni
     final static String PRINT = "printInfo";
 
@@ -4412,6 +4417,7 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
             throw new UnsupportedOperationException("Unknown operation" + actionName);
     }
 
+    // da definire all'interno della classe DynamicUser
     public MBeanInfo getMBeanInfo() {
 
         final boolean READABLE = true;
@@ -4421,7 +4427,7 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
         String description = "Sono un MBean dinamico";
 
         MBeanAttributeInfo id = new MBeanAttributeInfo(ID,long.class.getName(), "id", READABLE, !WRITABLE, !IS_GETTERFORM);
-        MBeanConstructorInfo defcon = new MBeanConstructorInfo("Default","Creates",null);
+        MBeanConstructorInfo defcon = new MBeanConstructorInfo("Default", "Creates", null);
         MBeanOperationInfo print = new MBeanOperationInfo(PRINT, "Prints info", null, String.class.getName(), MBeanOperationInfo.INFO);
 
         return new MBeanInfo(classname,description, 
@@ -4433,61 +4439,181 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
 }
 ```
 
+Prima di fare la chiamata al metodo `invoke`, `MBeanInfo()` e va a leggere i metadati che corrispondono all'operazione. Se c'è un match con la richiesta, si può procedere ad eseguirla altrimenti no. I controlli vengono eseguiti tramite esplorazione dei metadati contenuti dentro a `MBeanInfo()` e vanno scritti dal programmatore.
+
 ### ModelMBean
 
-Model MBean sono estensioni di MBean dinamici, essi forniscono un template generico per creare un’implementazione di gestione per risorse esistenti, separare l’implementazione di management dall’implementazione della risorsa, ed estendere metadata di gestione per fornire informazioni addizionali e proprietà behavioral per la gestione di queste funzionalità trasversali: come proprietà di caching, proprietà di sicurezza, proprietà di transazionalità, proprietà di persistenza. Tutte le implementazioni di JMX MBean server devono fornire almeno una implementazione dell’interfaccia ModelMBean tramite la classe RequiredModelMBean.
+Model MBean sono estensioni di MBean dinamici, essi forniscono un template generico per creare un’implementazione di gestione per risorse esistenti, separare l’implementazione di management dall’implementazione della risorsa, ed estendere metadata di gestione per fornire informazioni addizionali e proprietà behavioral per la gestione di queste funzionalità trasversali: come proprietà di caching, proprietà di sicurezza, proprietà di transazionalità, proprietà di persistenza. Tutte le implementazioni di JMX MBean server devono fornire almeno una implementazione dell’interfaccia `ModelMBean` tramite la classe `RequiredModelMBean`.
 
-Per aggiungere politiche di gestione a Model Mbean si utilizza l’interfaccia Descriptor, gli oggetti che implementano l’interfaccia Descriptor sono usati nei metadati di Model MBean per aggiungere politiche: Politiche specifiche per la particolare implementazione dell’agente JMX, la specifica JMX definisce alcuni comportamenti standard, implementazioni di Model MBean possono essere estese per supportare comportamenti custom. Un descrittore è una collezione di coppie nome-valore in base alle quali l’implementazione dell’agente adatta il suo comportamento, le classi di metadata di Model MBean estendono le classi corrispondenti usate con MBean dinamici e standard (implicitamente) e implementano l’interfaccia DescriptorAccess.
+```
+public interface ModelMBean extends DynamicMBean,
+  PersistentMBean,
+  ModelMBeanNotificationBroadcaster {
+
+    public void setModelMBeanInfo( ModelMBeanInfo inModelMBeanInfo) throws ... ;
+
+    public void setManagedResource(Object mr, String mr_type) throws ... ;
+}
+
+public class RequiredModelMBean implements ModelMBean, ... {
+
+    ...
+
+}
+```
+
+Per aggiungere politiche di gestione dei Model MBean si utilizza l’interfaccia `Descriptor`, gli oggetti che implementano l’interfaccia `Descriptor` sono usati nei metadati di Model MBean per aggiungere politiche. Un descrittore è una collezione di coppie nome-valore in base alle quali l’implementazione dell’agente adatta il suo comportamento, le classi di metadata di Model MBean estendono le classi corrispondenti usate con MBean dinamici e standard (implicitamente) e implementano l’interfaccia `DescriptorAccess`.
+
+```
+public interface Descriptor extends Serializable, Cloneable
+{
+    public String[] getFields();
+    public void setField(String name, Object value);
+    public void removeField(String name);
+
+    ...
+
+}
+```
+
+### Servizi Standard a Livello di Agente
 
 La specifica JMX definisce quattro servizi distinti a livello di agente che devono essere disponibili su ogni implementazione conforme alla specifica:
 
-- M-Let Service che permette agli MBean di essere caricati dalla rete e inclusi nel livello di agente dinamicamente a runtime;
-- Timer Service è uno scheduler che si occupa dell’invio di notifiche agli altri MBean;
-- Monitoring Service: è un MBean che svolge il ruolo di osservatore per gli attributi di management degli altri bean e che notifica le modifiche avvenute;
-- Relation Service permette di creare associazioni fra MBean e mantiene la loro consistenza.
+- **M-Let Service** che permette agli MBean di essere caricati dalla rete e inclusi nel livello di agente dinamicamente a runtime.
+- **Timer Service** è uno scheduler che si occupa dell’invio di notifiche agli altri MBean.
+- **Monitoring Service** è un MBean che svolge il ruolo di osservatore per gli attributi di management degli altri bean e che notifica le modifiche avvenute.
+- **Relation Service** permette di creare associazioni fra MBean e mantiene la loro consistenza.
 
-### M-let service
+### Servizio di M-let
 
-Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono trovarsi su macchina locale o su macchina remota, con l’idea di spostare delle configurazioni di una applicazione verso un server remoto. Come ogni altro standard MBean, l’interfaccia MLetMBean espone le operazioni di management considerate rilevanti per il servizio, come addURL() e getMBeansFromURL(). All’URL specificato da addURL() si trovano i file di testo M-Let che descrivono i componenti MBean tramite MLET tag. Sposta la configuraazione da macchina locale a macchina remota.
+Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono trovarsi su macchina locale o su macchina remota, con l’idea di spostare delle configurazioni di una applicazione verso un server remoto. Come ogni altro standard MBean, l’interfaccia MLetMBean espone le operazioni di management considerate rilevanti per il servizio, come `addURL()` e `getMBeansFromURL()`. All’URL specificato da `addURL()` si trovano i file di testo M-Let che descrivono i componenti MBean tramite MLET tag. Sposta la configurazione da macchina locale a macchina remota.
 
-JMX realizza e sfrutta, ancora una volta, il ben noto principio di decoupling. Tutte le comunicazioni fra clienti e MBean avvengono attraverso il livello intermedio dell’agente: Ø i clienti mandano query all’agente relative agli MBean registrati Ø i clienti chiedono all’agente l’esecuzione di metodi di business/management (specificati nell’interfaccia di management) sugli MBean desiderati q NON viene passato MAI alcun riferimento diretto a componenti MBean (visibilità solo all’interno dell’agente) ottimizza alcune operazioni.
+```
+<MLET CODE = class | OBJECT =
+    serfile
+    ARCHIVE = "archiveList"
+    [CODEBASE = codebaseURL]
+    [NAME = MBeanName]
+    [VERSION = version] >
+    [arglist]
+</MLET>
+```
 
-L’applicazione di management riferisce MBean passando un riferimento a object name all’agente, per ogni operazione invocata. Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean
 
-### Servizio di timer
+Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e prevede che in una rete locale ci sia un MBean Server che abbia servizi A, B e C a livello agente. Senza M-let, bisognerebbe installare i nodi tutti i servizi A, B e C ma grazie a M-let si può velocizzare il processo. Un possibile file potrebbe essere:
 
-Il servizio di Timer è basato sul meccanismo di notifica di JMX, TimerMBean è un broadcaster MBean in grado di emettere eventi, per ricevere notifiche dal timer il consumatore deve implementare l’interfaccia NotificationListener e registrarsi. Questo è analogo al servizio di Cron in Unix/Linux o a Task Scheduler Service su Windows NT. Per impostare il tutto è possibile recuperare il servizio di timer quindi una volta registrato presso il server si può richiedere l’avvio del timer.
+```
+<MLET CODE=com.mycompany.Foo
+    ARCHIVE=“MyComponents.jar,acme .jar”
+</MLET>
+```
 
-### Servizio di monitoring
+### Servizio di Timer
 
-Un insieme di MBean che possono essere utilizzati per effettuare il monitoring degli attributi di risorse gestite. Le notifiche dei monitor differiscono dalle usuali notifiche di modifica di attributi perché si possono introdurre threshold e periodi di granularità. Vi sono tre implementazioni differenti: counter monitor traccia le variazioni di attributi che si comportano come contatori con variazioni discrete, gauge monitor per attributi integer e float, ad intervalli di granularità configurabile, con threshold, string monitor per informare in relazione a string matching/dismatching rispetto a valori attes, si fissano dei valori o delle stringhe, le notifiche vengono scatenate in caso di matching o dismatching.
+Il servizio di Timer è basato sul meccanismo di notifica di JMX. TimerMBean è un broadcaster MBean in grado di emettere eventi, per ricevere notifiche dal timer il consumatore deve implementare l’interfaccia `NotificationListener` e registrarsi:
 
-Problema se vi sono attributi "rumorosi" è impensabile ad ogni variazione di segnarla al listener, per questo si cercano di fare monitoring con delle isteresi di tempo o di confidenza sugli attributi. Gli eventi sono sollevati solo quando vi sono variazioni significative. Le notifiche partono o dopo un periodo ti tempo o al superamento di una certa soglia. Queste threshold servono per evitare un overhead del sistema di monitoraggio, deve occupare il 10% del carico del sistema, così si vogliono evitare effetti di schizofrenia nelle azioni di gestioni dipendenti dal monitoraggio.
+```
+// fa partire il servizio di timer
+List list = MBeanServerFactory.findMBeanServer(null);
+MBeanServer server = (MBeanServer)list.iterator().next();
+ObjectName timer = new ObjectName("service:name=timer");
+server.registerMBean(new Timer(), timer);
+server.invoke(timer,"start", null, null);
 
-![single tier](./img/img74.png)
+// configurazione di notification time
+Date date = new Date(System.currentTimeMillis() + Timer.ONE_SECOND * 5);
 
-Esempio per variazioni continue. Evidenziazione di soglie. Una lta e una bassa. L’emissione della notifica è sincronizzata con il periodo. Il tutto è sincronizzato dai granularity period quindi le notifiche sono date solo allo scattare di un nuovo periodo.
+server.invoke(timer, // MBean
+"addNotification", // metodo
+new Object[] { // args
+    "timer.notification", // tipo
+    "Schedule notification", // messaggio
+    null,  // user data
+    date}, // time
+new String[] { String.class.getName(),
+    String.class.getName(),
+    Object.class.getName(), // signature
+    Date.class.getName()} );
+
+// registra il listener MBean
+server.addNotificationListener(timer, this, null, null);
+```
+
+Questo è analogo al servizio di Cron in Unix/Linux o a Task Scheduler Service su Windows NT. Per impostare il tutto è possibile recuperare il servizio di timer quindi una volta registrato presso il server si può richiedere l’avvio del timer.
+
+### Servizio di Monitoring
+
+Un insieme di MBean che possono essere utilizzati per effettuare il monitoring degli attributi di risorse gestite. Gli attributi sono variabili di stato che vengono risposte tramite interfaccia di management perchè ci sono metodi `getter` e `setter` che possono andarli a modificarli. Le notifiche dei monitor differiscono dalle usuali notifiche di modifica di attributi perché si possono introdurre threshold (soglia) e periodi di granularità.
 
 ![single tier](./img/img75.png)
 
-### Esempio per variazioni discrete
+Vi sono tre implementazioni differenti:
 
-Servizi Agent-level Standard: Servizio Relation
-Permette di definire relazioni fra MBean e di reagire a modifiche (per esempio nel caso di dipendenze). Consistenza delle relazioni mantenuta tramite la definizione di ruoli per gli MBean e associare o disassociare oggetti MBean a ruoli differenti nelle relazioni. Le notifiche sono emesse modifica nelle istanze di relazione (creazione, aggiornamento, rimozione, etc).
+- **Counter monitor** traccia le variazioni di attributi che si comportano come contatori con variazioni discrete. Ad esempio, una variabile `x` che è attributo di un MBean ed è un `Integer` e varia solo discretamente (0, 1, 2 etc).
+- **Gauge monitor** per attributi `Integer` e `Float`, ad intervalli di granularità configurabile, con threshold. Vengono lanciate notifiche solo quando il valore soglia viene superato: o da un valore soglia tramite offset si calcola l'intervallo di offset (figura in alto) oppure si possono definire due valori soglia distinti (figura in basso).
+- **String monitor** viene lanciata una notifica quando la stringa monitorata come attributo fa matching/dismatching con il valore di configurazione.
+
+![single tier](./img/img74.png)
+
+Da come si può notare nella figura, la notifica non viene mai inviata quando si supera il valore soglia ma c'è sempre un pò di latenza perchè si va a vedere il valore dell'attributo ogni tot secondi dato che ciò introduce un costo (periodo di granularità). Un altro problema è qunado ci sono attributi _rumorosi_, è impensabile ad ogni variazione di segnarla al listener, per questo si cercano di fare monitoring con delle isteresi di tempo o di confidenza sugli attributi. Gli eventi sono sollevati solo quando vi sono variazioni significative. Le notifiche partono o dopo un periodo di tempo o al superamento di una certa soglia. Queste threshold servono per evitare un overhead del sistema di monitoraggio, deve occupare il 10% del carico del sistema, così si vogliono evitare effetti di schizofrenia nelle azioni di gestioni dipendenti dal monitoraggio.
+
+### Servizio di Relation
+
+Permette di definire relazioni fra altri MBean e di reagire a modifiche (per esempio nel caso di dipendenze). Ad esempio, `Mbean A` deve essere presente se e solo se è presente `MBean B`. Le notifiche sono emesse modifica nelle istanze di relazione (creazione, aggiornamento, rimozione di una di queste relazioni etc). Ad esempio, se `MBean A`, se è registrato, deve avere per forza avere sullo stesso MBean Server anche `MBean B` e viceversa. Se c'è la de-registrazione di uno dei due viene lanciata una notifica.
 
 ### JMX remote API
 
-Dall’architettura iniziale ci si ricorda che c’è una parte client e server con disaccoppiamento forte per ottenere la massima flessibilità delle interazioni dei client con Mbean che siano compliant JMX.  Esistono connettori offerti da RMI che offrono uno stub ovvero end-point che può essere interrogato dal client. Inoltre, è disponibile un Regestry RMI dove reperire l’istanza dello stato. Per effettuare operazioni remote su MBean, un server per connettori RMI è a disposizione lato server: tramite chiamata alla classe JMXServiceURL si crea un nuovo URL di servizio (indirizzo per il server di connector). Il server di connector RMI è creato via JMXConnectorServerFactory, con parametri URL di servizio e MBeanServer, Il server di connector deve essere messo in esecuzione. URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore (tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP): il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 su local host, e l’indirizzo del server è registrato al nome "server".
+Dall’architettura iniziale ci si ricorda che c’è una parte client e server con disaccoppiamento forte per ottenere la massima flessibilità delle interazioni dei client con MBean che siano compliant JMX. I connettori sono pezzetti software distribuiti che aiutano a collegare un'applicazione di management con l'MBean Server costituiti da un pezzettino client side (vicino al cliente che funge da Stub) e un pezzettino server side (vicino al MBean Server che funge da Skeleton). In ogni distribuzione JMX, deve esistere sempre l'implementazione del connettore RMI. Inoltre, è disponibile un Registry RMI dove reperire uno stub RMI per il connettore.
 
-URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore, tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP: il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 (arbitraria) su local host, mentre l’indirizzo del server è registrato al nome "server"
+```
+// lato cliente
+
+JMXServiceURL url = new JMXServiceURL(service:jmx:rmi:///jndi/rmi://" + "localhost:9999/server");
+
+JMXConnector jmxc = JMXConnector-Factory.connect(url, null);
+
+MBeanServerConnection mbsc = jmxc.getMBeanServerConnection;
+
+mbsc.createMBean(...);
+```
 
 Il cliente crea un RMI Connector Client configurato per connettersi al server RMI connector creato lato server: URL di servizio utilizzato deve fare match con quello usato alla registrazione del servizio di connector. Il connector client è restituito come risultato della connessione al connector server, il cliente ora può registrare MBean ed effettuare operazioni su di essi tramite MBeanServer remoto in modo trasparente alla distribuzione.
 
-Piccola nota aggiuntiva, oltre agli usuali connettori standard RMI e RMI/IIOP, si possono utilizzare connettori JMXMP (ad esempio per disporre di un livello di sicurezza maggiore tramite meccanismo SSL). 
+```
+// lato servitore
+MBeanServer mbs = MBeanServer-Factory.createMBeanServer();
+JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + "localhost: 9999/server");
+JMXConnectorServer cs = JMXConnectorServerFactory.newJMXConnector-Server(url, null, mbs);
+cs.start();
+```
+Per effettuare operazioni remote su MBean, un server per connettori RMI è a disposizione lato server: tramite chiamata alla classe `JMXServiceURL` si crea un nuovo URL di servizio (indirizzo per il server di connector). Il server di connector RMI è creato via `JMXConnectorServerFactory`, con parametri URL di servizio e MBeanServer. Il server di connector deve essere messo in esecuzione. URL (in formato JNDI) indica dove reperire uno stub RMI per il connettore, tipicamente in un direttorio riconosciuto da JNDI come RMI registry o LDAP: il connettore usa il trasporto di default RMI, il registry RMI in cui lo stub è memorizzato risponde alla porta 9999 (arbitraria) su local host, mentre l’indirizzo del server è registrato al nome "server"
+
+L'unico connettore da specifica JMX è quello RMI. Si possono utilizzare anche altri connettori che non sono scritti da specifica come JMXMP (ad esempio per disporre di un livello di sicurezza maggiore tramite meccanismo SSL).
+
+Per quanto riguarda gli adattatori di protocollo, sebbene non siano definiti da specifica, non esistono particolari implementazioni diffuse. Un adattatore di protocollo è un pezzettino software che sta solo lato MBean Server ed è in grado di ricevere richieste in un protocollo che non è conforme con JMX, e di tradurle nelle chiamate corrispondenti del MBean Server.
 
 ### Esempio utilizzo degli MBean
 
-Hello.java implementa l'interfaccia HelloMBean:
+`HelloMBean.java:` interfaccia MBean che descrive le operazioni e gli attributi di management: 2 operazioni (`sayHello` e `add`) e 2 attributi (`Name` e `CacheSize`):
+
+```
+package com.example.mbeans;
+
+public interface HelloMBean {
+
+    // operazioni (signature)
+    public void sayHello();
+    public int add(int x, int y);
+
+    // attributi
+    public String getName();
+    public int getCacheSize();
+    public void setCacheSize(int size);
+}
+```
+
+`Hello.java` implementa l'interfaccia `HelloMBean`:
 
 ```
 package com.example.mbeans;
@@ -4526,27 +4652,7 @@ public class Hello implements HelloMBean {
 }
 ```
 
-HelloMBean.java: interfaccia MBean che descrive le operazioni
-e gli attributi di management: 2 operazioni (sayHello e add) e
-2 attributi (Name e CacheSize):
-
-```
-package com.example.mbeans;
-
-public interface HelloMBean {
-
-    // operazioni
-    public void sayHello();
-    public int add(int x, int y);
-
-    // attributi
-    public String getName();
-    public int getCacheSize();
-    public void setCacheSize(int size);
-}
-```
-
-Main.java deve semplicemente istanziareHelloWorld MBean, registrarlo e attendere:
+`Main.java` deve semplicemente istanziare HelloWorld MBean, registrarlo e attendere:
 
 ```
 package com.example.mbeans;
@@ -4556,13 +4662,13 @@ import javax.management.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        // Ottiene il server MBean
+        // ottiene il server MBean
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        // Costruisce ObjectName per MBean da registrare
+        // costruisce ObjectName per MBean da registrare
         ObjectName name = new ObjectName("com.example.mbeans:type=Hello");
-        // Crea istanza di HelloWorld MBean
+        // crea istanza di HelloWorld MBean
         Hello mbean = new Hello();
-        // Registra l’istanza
+        // registra l’istanza
         mbs.registerMBean(mbean, name);
         System.out.println("Waiting forever...");
         Thread.sleep(Long.MAX_VALUE); 
@@ -4627,41 +4733,13 @@ public class Hello extends NotificationBroadcasterSupport implements HelloMBean 
 }
 ```
 
-### JMX at work in Application Server JBoss
+### JMX con JBoss/Wildfly
 
-Application server JBoss è stato costruito on top dell’infrastruttura JMX, questo è molto visibile in versione JBoss AS 4.3.*.  poiché a partire da questa versione JBoss utilizza un’architettura a microkernel basata su componenti MBean (application server non-monolitico). Sia le applicazioni realizzate su JBoss che l’application server sono facilmente manageable. La configurazione del server altamente flessibile, infatti è possibile scegliere fra differenti implementazioni di servizio (ad es. JMS) , si può fare l’embedding di differenti container nell’application server, anche a runtime (ad es. servlet container come Tomcat, Jetty, etc). Inoltre Se un’implementazione di servizio non offre una funzionalità richiesta da un’applicazione (ad es. transaction manager, un determinato datasource, etc), se ne può scegliere un’altra, i servizi non necessari possono essere disattivati (shut down)
-Il nucleo dell’application server JBoss è JMX MBean server: questo rende application server estremamente semplice da estendere con nuove funzionalità. Aggiungere nuovi servizi o componenti application-specific si traduce nella creazione di nuovi MBean e nella loro registrazione al server MBean. Grazie ad JMX questi componenti possono essere gestiti come MBean. Inoltre queste implementazioni non essendo più  monolitiche ma a microkernel consentono di aggiungere nuove funzionalità a runtime.
+L'applicazione server JBoss/Wildfly è stata progettata considerando JMX come nucleo di base. JBoss/Wildfly è costituito da numerosi moduli (application server non-monolitico) ed è vista come un componente MBean che si affaccia su JMX e che può essere monitorato, controllato e gestito usando delle chiamate all'MBean Server. Si può, quindi, attivare/disattivare un modulo sull'interfaccia MBean Server, si può configurare ogni modulo agganciandolo ad un'implementazione diversa del servizio medesimo. Ad esempio, un modulo JMS si può agganciare all'implementazione di JMX 1.0 piuttosto che JMX 2.0. Si può fare l’embedding di differenti container nell’application server, anche a runtime (ad es. servlet container come Tomcat, Jetty, etc).
 
 ![single tier](./img/img76.png)
 
-Possibilità di aggiungere servizi a runtime.
-Oltre all’architettura a microcontainer (evoluzione del bus JMX delle versioni precedenti), ritroviamo come moduli una serie di servizi già conosciuti. Da notare, anche per il successo di utilizzo avuto negli ultimi tempi:  JGroups – framework di supporto alla realizzazione di comunicazione multicast affidabile.
-
-![single tier](./img/img77.png)
-
-Architettura con il meglio dei due mondi, a container pensanti e leggeri. Parte di messagging, transazioni ancora presente che si riferisce a container pesanti più aggiunta di AOP microcontainer, IIOP, jbossweb e web services tipiche dei container leggeri.
-
-JGroups è un framework utile per garantire affidabilità nelle comunicazioni multicast, è importante quando vogliamo comunicare in gruppi.  
-Architettura modulare e a stack, basata su comunicazione di gruppo (JGroups), caching (JBossCache) e supporto ad alta disponibilità (HAPartition)
-
-![single tier](./img/img78.png)
-
-Alta consistenza scambio di messaggi in multicast con costo alto che va a gestire la configurazione effettuata.
-
-Esempio - uno dei componenti core caricati dal servizio M-let di JBoss è un’implementazione di ConfigurationService MBean: effettua bootstrap del server, fa il download e configura i servizi usando il file di configurazione XML jboss.jcml Con questo MBean è possibile configurare e scaricare i vari servizi.
-Utilizzato in prodotti di successo come lo stesso jBoss
-
-### Architettura di JBoss AS 7
-
-Approccio di gestione modulare nel caricamento di servizi e librerie richieste in base a metadati di dipendenza, sia all’avvio del server che delle applicazioni (dipendenze implicite rispetto all’uso di package)
-
-Alla base vi è un microkernel e al di sopra tutti i servizi, le dipendenze sono gestite con un unico file di configurazione, inoltre OSGI consente il caricamento di applicazioni a caldo ovvero dei plugin detti bundle.
-
-![single tier](./img/img79.png)
-
-Esistono tantissime implementazioni dello standard java enterprise edition qui sotto è disponibile un confronto.
-
-![single tier](./img/img80.png)
+Da un punto di vista logico, c'è un MBean Server che fa da bus a cui sono agganciati i vari moduli che hanno un'interfaccia MBean.
 
 ## JBoss/WildFly Clustering
 
