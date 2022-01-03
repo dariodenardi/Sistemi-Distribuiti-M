@@ -5387,7 +5387,7 @@ var server=app.listen(3000,function() {
 });
 ```
 
-Codice per attivare il server web e restituisce un `helloworld` relativo alla pagina di ingresso.
+Codice per attivare il server web e restituisce un `Hello World!` relativo alla pagina di ingresso.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -5435,7 +5435,9 @@ Docker offre molti strumenti non solo per ospitare container ma anche per gestir
 
 ![single tier](./img/img101.png)
 
-Il Docker daemon ascolta le richieste delle Docker API e gestisce i componenti Docker come le immagini. Il Docker Client è la parte utilizzata dagli utenti per interagire con Docker Daemon, in particolare può utilizzare comandi, come `docker run` che avvia il container. I Docker registry salvano le immagini mentre Docker Hub e Docker Cloud sono registri pubblici. A default, Docker cerca immagini su Docker Hub si può eventualmente anche eseguire un registry personale. I registry sono i componenti di distribuzione per Docker.
+I componenti dell'insfrastruttura sono: cliente, host, registry (repository).
+
+Il Docker daemon gestisce i componenti Docker come ad esempio le immagini. Il Docker Client è la parte utilizzata dagli utenti per interagire con Docker Daemon, in particolare può utilizzare comandi, come `docker run` che avvia il container. I Docker registry salvano le immagini mentre Docker Hub e Docker Cloud sono registry pubblici. A default, Docker cerca immagini su Docker Hub si può eventualmente anche eseguire un registry personale. I registry sono i componenti di distribuzione per Docker.
 
 I Docker container contengono tutto ciò che è necessario ad un’applicazione per eseguire e l’applicazione stessa, sono simili a una directory in quanto il container in esecuzione vede un file system proprio e isolato risptto al resto, dove sono presenti tutti i componenti necessari ad eseguire l’applicazione e sono creati a partire da un’immagine Docker. Gli stati possibili per un container Docker sono: `run`, `started`, `stopped`, `moved`, e `deleted`. I container sono i _run components_ di Docker.
 
@@ -5449,7 +5451,7 @@ Registry locale o remoto da cui richiedere e scaricare immagini con operazione d
 
 ### Immagini Docker
 
-La gestione delle immagini in Docker è automatizzata e ottimizzata. Le immagini create sono organizzate su layer poiché si utilizza una logica di composizione, che consente una volta creata un’immagine di accedervi in sola lettura, ogni immagine è read-only, per ogni modifica in scrittura viene aggiunto un nuovo layer all’immagine senza modificare il layer precedente questo approccio è detto copy-on-write. In sintesi, si lavora per differenze ogni nuovo layer aggiunge le differenze rispetto al layer precedente. L’immagine finale è la somma di tutti i layer creati per quell’immagine. Ogni layer è univocamente identificato da un hash con l’algoritmo SHA-256 crittograficamente sicuro per l’identificazione dell’immagine. Se sono già stati scaricati layer per un’immagine non sarà necessario scaricarli nuovamente, dovranno essere scaricati unicamente i layer mancanti per una determinata immagine. Nel Docker Daemon viene fatto caching di layer e questo evita di scaricare nuovamente gli stessi layer garantendo un grande vantaggio in termini di efficienza nell’utilizzo del disco e facilità nella modifica.
+La gestione delle immagini in Docker è automatizzata e ottimizzata. Le immagini create sono organizzate su layer poiché si utilizza una logica di composizione, che consente una volta creata un’immagine di accedervi in sola lettura, ogni immagine è read-only, per ogni modifica in scrittura viene aggiunto un nuovo layer all’immagine senza modificare il layer precedente questo approccio è detto copy-on-write. In sintesi, si lavora per differenze ogni nuovo layer aggiunge le differenze rispetto al layer precedente. L’immagine finale è la somma di tutti i layer creati per quell’immagine. Ogni layer è univocamente identificato da un hash con l’algoritmo SHA-256 crittograficamente sicuro per l’identificazione dell’immagine. Se sono già stati scaricati layer per un’immagine **non** sarà necessario scaricarli nuovamente, dovranno essere scaricati unicamente i layer mancanti per una determinata immagine. Nel Docker Daemon viene fatto caching di layer e questo evita di scaricare nuovamente gli stessi layer garantendo un grande vantaggio in termini di efficienza nell’utilizzo del disco e facilità nella modifica.
 
 ![single tier](./img/img103.png)
 
@@ -5459,79 +5461,47 @@ Convenzioni per il naming delle immagini, devono essere indicati il nome dell’
 [hostname[:port]]/[username]/reponame[:tag]
 ```
 
-Il DockerFile serve per definire e creare nuove immagini. Il run nel DockerFile è una direttiva per lanciare le configurazioni e il software. Facilita la configurazione dell’immagine e la crea. Il DockerFile presente parte da due immagini preesistenti che vengono modificate, con l’aggiunta di layer software vengono aggiunti layer all’immagine stessa:
+Il DockerFile è un file di configurazione che serve per definire e creare nuove immagini. Il `run` nel DockerFile è una direttiva per lanciare le configurazioni e il software. Facilita la configurazione dell’immagine e la crea. Il DockerFile presente parte da due immagini preesistenti che vengono modificate, con l’aggiunta di layer software vengono aggiunti layer all’immagine stessa:
 
 ![single tier](./img/img104.png)
 
-Docker non è solo un insieme di strumenti ma una piattaforma che può lavorare ad eventi nella gestione dei container in esecuzione. Docker offre la possibilità di utilizzare volumi, connettere tra loro i container, e la possibilità di gestire le autorizzazioni e la sicurezza dei container:
+Docker non è solo un insieme di strumenti ma un framework che può lavorare ad eventi nella gestione dei container in esecuzione. Il programmatore può intercettare tutti gli eventi del container:
 
 ![single tier](./img/img105.png)
 
-Docker possiede molti plugin tra questi sono molto importanti i plugin di rete e per questo Docker consente di connettere risorse e container all’esterno e all’interno. Un’altra parte importante è la persistenza prevede diverse modalità, come montare un’area di memoria come un file system ovvero uno storage persistente, che sarà quindi realizzato in memory, dà la possibilità di vedere il file system locale ospitante, oppure di avere una sandbox detta Docker area che limita lo spazio di visibilità per il container.
+Docker possiede molti plugin tra questi sono molto importanti i plugin di rete e per questo Docker consente di connettere risorse e container all’esterno e all’interno, gestione dei volumi etc. Un’altra parte importante è la persistenza prevede diverse modalità, come montare un’area di memoria vedendola come un file system ovvero uno storage virtuale persistente (sarà realizzato in memory), dà la possibilità di vedere il file system locale ospitante, oppure di avere una sandbox detta Docker Area che limita lo spazio di visibilità per il container.
 
-Dal punto di vista della configurazione si possono configurare le esecuzioni dei container. Docker compose parte da immagini su cui si è già lavorato e andarle a comporre in un nuovo container, questo può essere utile per mantenere separato in un’applicazione la parte di stato, dalla logica applicativa. Dal punto di vista del compose container diversi vengono visti come un unico container il tutto, il tutto può essere scorporato ed eseguito separatamente oppure interamente. Con il Docker Compose si agisce solo in locale, quindi, possono essere utilizzate immagini remote, ma prima devono essere scaricate in locale.
+Queste configurazioni avanzate vengono indicate nel Docker Compose, file che configura il deployment. Ad esempio, come lanciare il container, la porta disponibile, come comunicano. Con il Docker Compose si agisce solo in locale, quindi, possono essere utilizzate immagini remote, ma prima devono essere scaricate in locale.
 
-### Docker SWARM
-
-Swarm è un orchestratore di risorse container, è un engine che elabora degli script di configurazione ed esegue in continuazione garantendo che ciò che viene scritto nello script sia realizzato nel sistema che sta eseguendo. Nella terminologia di Docker e Swarm si utilizza il termine servizio che sta ad indicare i container di produzione che istanziano un servizio concettuale. Un altro termine importante è Stack che sta ad indicare un gruppo di servizi in relazione tra di loro che condividono dipendenze e possono essere orchestrati e scalati insieme.
-
-Swarm è un gruppo di macchine fisiche o virtuali che eseguono Docker all’interno di un cluster. Le macchine su cui Docker viene eseguito possono essere fisiche o a loro volta virtual machine. Nell’esempio sottostante viene mostrata l’inizializzazione di un nodo master e un nodo worker:
-
-```
-$ docker-machine create –driver virtualbox myvm1
-$ docker-machine create –driver virtualbox myvm2
-$ docker-machine ls
-NAME 	ACTIVE 		DRIVER 		STATE 		URL 			SWARM DOCKER ERRORS
-myvm1 	- 		virtualbox 	Running 	tcp://192.168.99.100:2376 v18.06.1-ce
-myvm2 	- 		virtualbox 	Running 	tcp://192.168.99.101:2376 v18.06.1-ce
-```
-
-Cluster initialization
-
-```
-$ docker-machine ssh myvm1 "docker swarm init --advertise-addr 192.168.99.100:2377
-Swarm initialized: current node 0unmutpbeeeytxpquhiy1b6ok is now a manager.
-To add a worker to this swarm, run the following command:
-docker swarm join \
---token SWMTKN-1-4y8bpxyrbno89dapkkwyjdw3268qfzp128tpf5hecjdti5hb1k-00oatopl9dzw3jejbietxa9vp 192.168.99.100:2377
-
-$ docker-machine ssh myvm2 "docker swarm join --token SWMTKN-1-4y8bpxyrbno89dapkkwyjdw3268qfzp128tpf5hecjdti5hb1k00oatopl9dzw3jejbietxa9vp 192.168.99.100:2377"
-
-$ docker-machine ssh myvm1 "docker node ls"
-ID HOSTNAME STATUS AVAILABILITY MANAGER STATUS ENGINE VERSION
-0unmutpbeeeytxpquhiy1b6ok * myvm1 Ready Active Leader 18.06.1-ce
-ktvyi0nypz31l645iej8torkx myvm2 Ready Active 18.06.1-ce
-```
+Per quanto riguarda la scalabilità, si usa Docker Swarm, che è un orchestratore di risorse container, è un engine che elabora degli script di configurazione. L'allocazione di Docker Swarm è statica, per questo motivo se bisogna aumentare le risorse non si riesce e quindi, non si ottiene scalabilità. L'utente dovrebbe richiedere tramite deployment nuove istanze ma il tutto è gestito in modo statico.
 
 ## Kubernetes
 
-Kubernetes è un orchestratore di container compatibile con Docker, la gestione dei container è dinamica e non statica, questo gli consente di offrire molte più funzionalità rispetto a Docker Swarm. Kubernetes è pensato per lavorare in ambienti cloud, infatti da una parte, quella interna, è un orchestratore di container dall’altra parte esternamente si interfaccia con i Virtual Infrastructure Manager, ovvero con i controllori di API Rest, che dispongono i cloud provider per poter andare prendere le risorse che servono per formare l’infrastruttura fisica su cui distribuire i container. Questo strumento facilita molto la migrazione dei container da un’ambiente locale a uno più largo come il cloud. I benefici sono la gestione fine grained e dinamica rispetto a tutte le problematiche di management come scaling e automatizzazione del rollout e del rollback, una volta sviluppata una nuova versione è possibile mandare ovunque in produzione e tornare indietro senza problemi in caso di bug o errori. Kubernetes consente di effettuare il rollback facilmente. Poi vi è la gestione dello scaling con la possibilità di scaling intelligente fine grained e definibile dal programmatore e non solo con Round Robin, poi vi è tutta la parte di fault tolerance e la possibilità di portare i carichi su cloud diversi.
+Kubernetes è un orchestratore di container compatibile con Docker, la gestione dei container è dinamica e non statica, questo gli consente di offrire molte più funzionalità rispetto a Docker Swarm. Kubernetes è pensato per lavorare in ambienti cloud, infatti da una parte, quella interna, è un orchestratore di container dall’altra parte esternamente si interfaccia con i Virtual Infrastructure Manager, ovvero con i controllori di API Rest, che dispongono i cloud provider per poter andare prendere le risorse che servono per formare l’infrastruttura fisica su cui distribuire i container. Questo strumento facilita molto la migrazione dei container da un’ambiente locale a uno più largo come il cloud. I benefici sono la gestione fine grained e dinamica rispetto a tutte le problematiche di management come scaling e automatizzazione del rollout e del rollback. Una volta sviluppata una nuova versione è possibile mandare ovunque in produzione e tornare indietro senza problemi in caso di bug o errori. Kubernetes consente di effettuare il rollback facilmente. Poi vi è la gestione dello scaling con la possibilità di scaling intelligente fine grained e definibile dal programmatore e non solo con Round Robin, poi vi è tutta la parte di fault tolerance e la possibilità di portare i carichi su cloud diversi.
 
 L’obiettivo principale di Kubernetes è nascondere la complessità di gestione di grandi quantità di container fornendo agli utilizzatori un set di API Rest. Kubernetes è estremamente protabile, infatti, si interfaccia con tutte le principali Cloud Platform private o pubbliche come Amazon AWS, Azure, Openstack, o resource manager come Apache Mesos. Per un orchestratore del genere è fondamentale fornire il deployment di applicazioni multi-container, garantire la continuità dei servizi grazie alla sua gestione di fault tolerance, rollback e rollout, scalare autonomamente e dinamicamente le applicazioni e rendere tutta l’architettura indipendente dall’infrastruttura sottostante.
 
 ### Architettura
 
-L’architettura di Kubernetes è abbastanza complessa, prevede di avere una serie di nodi worker chiamati Node all’interno dei quali sono istanziati i container, questi nodi sono controllati da diversi componenti di controllo racchiusi nel Control Plane, ognuno di loro è dotato di un agente locale Kubelet per interagire con il Control Plane e una parte per la comunicazione detto kube-proxy. L’architettura ha componenti tipici del cloud come il componente API, oppure gli agenti locali su tutti i nodi presenti che consentono di gestire il ciclo di vita dei container. La parte di controllo attraverso il cloud controller manager parla con un cloud provider pubblico attraverso le Cloud Provider API.
+L’architettura di Kubernetes è abbastanza complessa: prevede di avere una serie di nodi worker chiamati Node all’interno dei quali sono istanziati i container. Questi nodi sono controllati da diversi componenti di controllo racchiusi nel Control Plane, ognuno di loro è dotato di un agente locale Kubelet per interagire con il Control Plane e una parte per la comunicazione detto kube-proxy. L’architettura ha componenti tipici del cloud come il componente API, oppure gli agenti locali su tutti i nodi presenti che consentono di gestire il ciclo di vita dei container. La parte di controllo attraverso il cloud controller manager parla con un cloud provider pubblico attraverso le Cloud Provider API.
 
 ![single tier](./img/img106.png)
 
-### Deployment
-
-L’architettura è di tipo master-slave. Il nodo master può essere uno o più di uno, poiché viene replicato al fine della fault tolerance, le repliche però agiscono come un componente solo. L’Etcd rappresentato come un database è l’unico componete che mantiene lo stato dell’infrastruttura, lo stato è mantenuto il più locale possibile e auto contenuto per evitare di creare delle dipendenze nel distribuito fra le varie macchine, in questo modo tutte le macchine worker possono agire anche nel caso in cui momentaneamente perdano la connettività con il controller per garantire il massimo disaccoppiamento e asincronicità possibile. Infine, vi è il client che può richiedere le funzionalità di Kubernetes per effettuare il deployment delle applicazioni.
+L’architettura è di tipo master-slave. Il nodo master può essere uno o più di uno, poiché viene replicato al fine della fault tolerance, le repliche però agiscono come un componente solo. L’etcd rappresentato come un database è l’unico componete che mantiene lo stato dell’infrastruttura. Lo stato è mantenuto il più locale possibile e auto contenuto per evitare di creare delle dipendenze nel distribuito fra le varie macchine, in questo modo tutte le macchine worker possono agire anche nel caso in cui momentaneamente perdano la connettività con il controller per garantire il massimo disaccoppiamento e asincronicità possibile. Infine, vi è il client che può richiedere le funzionalità di Kubernetes per effettuare il deployment delle applicazioni.
 
 ![single tier](./img/img107.png)
 
-### ETCD
+### Etcd 
 
-ETCD è un archivio chiave-valore distribuito fortemente consistente che fornisce un modo affidabile per memorizzare i dati a cui è necessario accedere da a sistema distribuito o cluster di macchine. Gestisce le elezioni dei leader durante le partizioni di rete e può tollerare il guasto della macchina, anche nel nodo master.
+L'etcd è un archivio chiave-valore distribuito fortemente consistente che fornisce un modo affidabile per memorizzare i dati a cui è necessario accedere da a sistema distribuito o cluster di macchine. Gestisce le elezioni dei _leader_ durante le partizioni di rete e può tollerare il guasto della macchina, anche nel nodo master.
 
-### Controller
+### Controller Manager
 
 Il controller manager Kubernetes è un demone che incorpora i loop di controllo principali gestiti con Kubernetes. In Kubernetes, un controller è un loop di controllo che osserva lo stato condiviso del cluster attraverso l'API server e apporta modifiche tentando di spostare lo stato corrente verso lo stato desiderato. Esempi di controller forniti oggi con Kubernetes sono il controller di replica, controller degli endpoint, controller dello spazio dei nomi e controller degli account di servizio.
 
 ### Cloud Controller Manager
 
-Il cloud-controller-manager è un componente del control plane di Kubernetes che incorpora la logica di controllo specifica del cloud. Il cloud-controller-manager consente di fra interagire il cluster a quello del provider cloud API e separa i componenti che interagiscono con quella piattaforma cloud da componenti che interagiscono solo con il cluster. Disaccoppiando la logica di interoperabilità tra Kubernetes e l’infrastruttura cloud sottostante il componente cloud-controller-manager abilita il cloud provider a rilasciare funzionalità a un ritmo diverso rispetto al progetto Kubernetes. Il cloud-controller-manager è strutturato utilizzando un meccanismo di plug-in che consente l’integrazione delle piattaforme di diversi provider cloud con Kubernetes.
+Il cloud-controller-manager è un componente del Control Plane di Kubernetes che incorpora la logica di controllo specifica del cloud. Il cloud-controller-manager consente di fra interagire il cluster a quello del provider cloud API e separa i componenti che interagiscono con quella piattaforma cloud da componenti che interagiscono solo con il cluster. Disaccoppiando la logica di interoperabilità tra Kubernetes e l’infrastruttura cloud sottostante il componente cloud-controller-manager abilita il cloud provider a rilasciare funzionalità a un ritmo diverso rispetto al progetto Kubernetes. Il cloud-controller-manager è strutturato utilizzando un meccanismo di plug-in che consente l’integrazione delle piattaforme di diversi provider cloud con Kubernetes.
 
 ### Kubelet
 
@@ -5552,6 +5522,8 @@ I service sono un modo astratto per esporre un'applicazione in esecuzione su un 
 ### Kube proxy
 
 Il proxy di rete Kubernetes viene eseguito su ciascun nodo worker. Espone i service definiti come indicato nell’API Kubernetes su ogni nodo e fa un semplice inoltro di flusso TCP, UDP e SCTP o round Robin TCP, UDP e inoltro SCTP attraverso un insieme di backend.  Gli IP e le porte del cluster di servizio sono ritrovati attraverso un ambiente compatibile con i Docker-links, variabili che specificano le porte aperte dal proxy service. C'è un componente aggiuntivo opzionale che fornisce DNS cluster per questi IP cluster. L'utente deve creare un servizio con l'apiserver API per configurare il proxy.
+
+Stub locale che abilita tutta la parte di comunicazione. Uno per nodo che poi abilita tutte le comunicazioni di quel nodo.
 
 ### Scheduler
 
@@ -5627,31 +5599,35 @@ Launch Dashboard
 $ minikube dashboard
 ```
 
-### OPENFAAS
+## FaaS
 
-Così come l’internet wireless ha dei cavi da qualche parte, le architetture serverless continuano ad avere dei server da qualche parte. Come sviluppatore, non bisogna pensare a questi server, focalizzandosi solo sul codice. Il serverless consente di costruire ed eseguire applicazioni e servizi senza preoccuparsi di procurarsi o di scalare i server. Ciò che serve all’esecuzione è gestito implicitamente.
+Così come l’internet wireless ha dei cavi da qualche parte, le architetture serverless continuano ad avere dei server da qualche parte. Come sviluppatore, non bisogna pensare a questi server ma ci si focalizza solo sul codice. Il serverless consente di costruire ed eseguire applicazioni e servizi senza preoccuparsi di procurarsi o di scalare i server. Ciò che serve all’esecuzione è gestito implicitamente.
 
-In un’applicazione serverless il supporto lavora e a callback ci dice quando la computazione può proseguire eliminando la sincronicità forte che va contro la scalabilità del sistema. Il programmatore non deve gestire con degli strumenti il deployment delle applicazioni. Utilizzando questo modello per alcune tipologie di applicazioni per cui può valer la pena rendere più semplice l’applicazione stessa e rimuovere il carico del deployment, si può definire unicamente la logica applicativa, il programmatore carica l’applicazione su una piattaforma e non deve fare altro. In questo senso è simile a map-reduce poiché il programmatore implementa unicamnte le funzioni di map e reduce. Si elimina interamente l’attesa e non esistono processi idle, la parte di risorse è gestita in automatico dalla piattaforma. Tutto il focus è sulla business logic e non sulla gestione o sull’approvvigionamento dell’infrastruttura, non vi è alcun costo relativo al controllo attivo di risorse e alla scalabilità.
+In un’applicazione serverless, il supporto lavora a callback. Il programmatore non deve gestire con degli strumenti il deployment delle applicazioni. Il programmatore carica l’applicazione su una piattaforma e non deve fare altro. In questo senso è simile a map-reduce poiché il programmatore implementa unicamente le funzioni di map e reduce. La parte di risorse è gestita in automatico dalla piattaforma. Tutto il focus è sulla business logic e non sulla gestione o sull’approvvigionamento dell’infrastruttura, non vi è alcun costo relativo al controllo attivo di risorse e alla scalabilità.
 
-Analizzando le possibili soluzioni nel cloud FaaS si trova tra piattaforma PaaS e software SaaS, quindi come un Back-end as a Service e Function as a Service, BaaS + FaaS. Ci si trova in questa zona perché l’idea è quella di avere una serie di servizi di back-end e ci sia modo di concentrarsi solo sulla logica applicativa senza una conoscenza forte pregressa dei servizi di sistema.
+### Serverless come Baas+FaaS
+
+Analizzando le possibili soluzioni nel cloud, FaaS si trova tra piattaforma PaaS e software SaaS, quindi come un Back-end as a Service e Function as a Service (BaaS + FaaS). Ci si trova in questa zona perché l’idea è quella di avere una serie di servizi di back-end e ci sia modo di concentrarsi solo sulla logica applicativa senza una conoscenza forte pregressa dei servizi di sistema.
 
 ![single tier](./img/img108.png)
 
-Back-end as a Service significa fare outsourcing di tutti i servizi di sistema, con la logica di utilizzo di questi servizi molto semplice e messa a disposizione API per questi servizi come autneticazione, database e notifiche.
+Back-end as a Service (BaaS) significa esternalizzazione tutti i servizi di sistema, con la logica di utilizzo di questi servizi molto semplice e messa a disposizione API per questi servizi come autneticazione, database e notifiche.
 
-FaaS consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare.  Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
+FaaS consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare. Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
 
-L’architettura di riferimento per piattaforma FaaS
+### Architettura
+
+Di seguito viene riportata una possibile architettura di riferimento:
 
 ![single tier](./img/img109.png)
 
-Alla piattaforma FaaS arrivano eventi da diverse fonti e attraverso diverse richieste, il dispacher fa dispach presso i worker dell’evento, i worker eseguono la logica applicativa e restituiscono una risposta a seguito della computazione. Alla piattaforma arrivano delle richieste, per esempio HTTP request, a questo punto l’API gateway consente di dirigere le richieste presso una coda di eventi a cui devono registrarsi, successivamente il dispacher in base agli eventi da gestire carica le funzioni necessarie per la computazione sui worker. Il vantaggio dal punto di vista del programmatore è che non deve avere conoscenza dell’architettura, dal punto di vista del cloud abbiamo massima portabilità e leggerezza. Il problema però, sono i vincoli legati alla piattaforma stessa poiché se una funzione utilizza una quantità eccessiva di risorse e la sua computazione impiega troppo tempo, fa crollare le prestazioni del sistema. Per questo Amazon e altri provider hanno dato limitazioni in termini di risorse (memoria) e tempo di utilizzo, quindi, ci sono vincoli temporali sulle esecuzioni oltre che sulle risorse che se non vengono rispettati portano alla uccisione di quella funzione che non causa problemi in quanto effimera.
+Alla piattaforma FaaS arrivano richieste da diverse fonti e attraverso diverse richieste, il dispacher fa dispach presso i worker dell’evento, i worker eseguono la logica applicativa e restituiscono una risposta a seguito della computazione. Il vantaggio dal punto di vista del programmatore è che non deve avere conoscenza dell’architettura, dal punto di vista del cloud abbiamo massima portabilità e leggerezza. Il problema però, sono i vincoli legati alla piattaforma stessa poiché se una funzione utilizza una quantità eccessiva di risorse e la sua computazione impiega troppo tempo, fa crollare le prestazioni del sistema. Per questo Amazon e altri provider hanno dato limitazioni in termini di risorse (memoria) e tempo di utilizzo, quindi, ci sono vincoli temporali sulle esecuzioni oltre che sulle risorse che se non vengono rispettati portano alla uccisione di quella funzione che non causa problemi in quanto effimera.
 
-Principali piattaforme FaaS sul cloud vanno nel senso dell’edge computing, le risorse cloud oggi non sono più unicamente disponibili in un punto geograficamente molto distante, ma sono distribuite in punti molto vicini a noi in micro-datacenter, quindi, con l’edge computing riduciamo la latenza. Pensando in questo caso al cloud computing come batch e dividendo in task molto piccoli il lavoro, se non vi sonovincoli stringenti di QoS si possono sfruttare le FaaS e pagare meno.
+Le risorse cloud oggi non sono più unicamente disponibili in un punto geograficamente molto distante, ma sono distribuite in punti molto vicini in micro-datacenter. Ciò prende il nome di edge computing. Pensando in questo caso al cloud computing come batch e dividendo in task molto piccoli il lavoro, se non vi sono vincoli stringenti di QoS si possono sfruttare le FaaS e pagare meno.
 
 Tra le piatatforme emergenti opensource per FaaS vi sono OpenFaaS, Openwhisk, Fission e Knative.
 
-### Openwhisk, architettura interna
+### Openwhisk
 
  L’API gateway NGINX espone le API, è un punto di accesso e consente di eseguire nuove FaaS. Il controller, gestisce le richieste ed effettua il loadbalancing. Apache Kafka è un middleware MOM pub-sub che permette le comunicazioni asincrone ad eventi per massima asincronicità e disaccoppiamento forte delle richieste in arrivo rispetto all’esecuzione delle funzioni. Invoker esegue le funzioni (action). Couch DB viene utilizzato per il salvataggio di funzioni parametri e risultati, è molto scalabile in modo orizzontale. Kafka facilita la gestione a eventi, da notare come nelle nuove piattaforme si utilizzino sempre gli stessi modelli architetturali e strumenti già ben noti nel cloud.
 
