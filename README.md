@@ -5625,17 +5625,25 @@ Alla piattaforma FaaS arrivano richieste da diverse fonti e attraverso diverse r
 
 Le risorse cloud oggi non sono più unicamente disponibili in un punto geograficamente molto distante, ma sono distribuite in punti molto vicini in micro-datacenter. Ciò prende il nome di edge computing. Pensando in questo caso al cloud computing come batch e dividendo in task molto piccoli il lavoro, se non vi sono vincoli stringenti di QoS si possono sfruttare le FaaS e pagare meno.
 
-Tra le piatatforme emergenti opensource per FaaS vi sono OpenFaaS, Openwhisk, Fission e Knative.
+Tra le piatatforme emergenti open-source per FaaS vi sono OpenFaaS, OpenWhisk, Fission e Knative.
 
-### Openwhisk
+### OpenWhisk
 
- L’API gateway NGINX espone le API, è un punto di accesso e consente di eseguire nuove FaaS. Il controller, gestisce le richieste ed effettua il loadbalancing. Apache Kafka è un middleware MOM pub-sub che permette le comunicazioni asincrone ad eventi per massima asincronicità e disaccoppiamento forte delle richieste in arrivo rispetto all’esecuzione delle funzioni. Invoker esegue le funzioni (action). Couch DB viene utilizzato per il salvataggio di funzioni parametri e risultati, è molto scalabile in modo orizzontale. Kafka facilita la gestione a eventi, da notare come nelle nuove piattaforme si utilizzino sempre gli stessi modelli architetturali e strumenti già ben noti nel cloud.
+Le caratteristiche principali sono:
+
+ - Il gateway API NGINX prende tutte le richieste API da un client. Funge da punto di accesso.
+ - Il controller, gestisce le richieste ed effettua il load balancing.
+ - Apache Kafka è un middleware MOM pub-sub che permette le comunicazioni asincrone ad eventi per massima asincronicità e disaccoppiamento forte delle richieste in arrivo rispetto all’esecuzione delle funzioni.
+ - Invoker esegue le funzioni FaaS.
+ - Apache CouchDB viene utilizzato per il salvataggio di funzioni parametri e risultati, è molto scalabile in modo orizzontale.
 
 ![single tier](./img/img110.png)
 
-### Kantive
+Da notare come nelle nuove piattaforme si utilizzino sempre gli stessi modelli architetturali e strumenti già ben noti nel cloud.
 
-Knative è legato a Kubernetes, nasce con l’idea di avere la possibilità di spalmare i carichi di lavoro in workload che possono essere messi in esecuzione su Kubernetes su container che siano stateless, con il deploy e il management, non è propriamente una piattaforma FaaS, bensì trasforma le risorse Kubernetes in workload serverless.
+### Knative
+
+Knative è legato a Kubernetes, nasce con l’idea di avere la possibilità di spalmare i carichi di lavoro in workload che possono essere messi in esecuzione su Kubernetes che siano stateless. Con il deploy e il management, non è propriamente una piattaforma FaaS, bensì trasforma le risorse Kubernetes in workload serverless.
 
 ![single tier](./img/img111.png)
 
@@ -5647,7 +5655,7 @@ Dal punto di vista del disaccoppiamento dei servizi, i servizi vengono eseguiti 
 
 ![single tier](./img/img113.png)
 
-Dal punto di viste delle performance non lavorano benissimo, su applicazioni FaaS intensive ci si rende conto che non stanno utilizzando macchine di qualità, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
+Dal punto di viste delle performance queste piattaforme al di fuori degli eventi non lavorano benissimo, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
 
 ## Confronto tra Tecnologie
 
