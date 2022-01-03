@@ -229,7 +229,25 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     <li>
       <a href="#">JMX</a>
       <ul>
-        <li><a href="#"></a></li>
+        <li><a href="#">Java Management Extensions (JMX)</a></li>
+        <li><a href="#">Architettura</a></li>
+        <li><a href="#">Livello instrumentation</a></li>
+        <li><a href="#">Livello Agente</a></li>
+        <li><a href="#">Livello servizi distribuiti</a></li>
+        <li><a href="#">Standard MBean</a></li>
+        <li><a href="#">Registrazione MBean su Server</a></li>
+        <li><a href="#">Invocazione servizi di gestione</a></li>
+        <li><a href="#">Meccanismo di notifica</a></li>
+        <li><a href="#">Dynamic MBean</a></li>
+        <li><a href="#">ModelMBean</a></li>
+        <li><a href="#">Servizi Standard a Livello di Agente</a></li>
+        <li><a href="#">Servizio di M-let</a></li>
+        <li><a href="#">Servizio di Timer</a></li>
+        <li><a href="#">Servizio di Monitoring</a></li>
+        <li><a href="#">Servizio di Relation</a></li>
+        <li><a href="#">JMX remote API</a></li>
+        <li><a href="#">Esempio utilizzo degli MBean</a></li>
+        <li><a href="#">JMX con JBoss/Wildfly</a></li>
       </ul>
     </li>
     <li>
