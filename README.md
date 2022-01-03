@@ -305,7 +305,6 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     <li>
       <a href="#">Kubernates</a>
       <ul>
-        <li><a href="#"></a></li>
         <li><a href="#">Architettura</a></li>
         <li><a href="#">Etcd</a></li>
         <li><a href="#">Controller Manager</a></li>
