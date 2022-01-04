@@ -347,7 +347,7 @@ Per questo motivo è fondamentale usare un approccio basato su componenti e il t
 Un componente è un _pezzo di software_ che viene scritto dallo sviluppatore ed ha le seguenti caratteristiche:
 
 - Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia.
-- Viene eseguito all'interno di un ambiente di esecuzione detto _container_/_engine_/_middleware_.
+- Viene eseguito all'interno di un ambiente di esecuzione detto container_/_engine_/_middleware.
 
 Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con JavaFX: textBox, label, comboBox etc. Quando si clicca su un bottone, non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
 
@@ -366,7 +366,7 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
 
 - **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia.
 - **Diverso dall'oggetto**:
-    - Il componente viene eseguito all'interno di un _container_/_engine_/_middleware_ altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
+    - Il componente viene eseguito all'interno di un container_/_engine_/_middleware altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
     - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T come la riusabilità.
 
 <a href="#indice">Torna all'indice</a>
@@ -386,7 +386,7 @@ Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli 
 
 Nei sistemi distribuiti si è interessati ad eventuali colli di bottiglia, come si comporta l'applicazione quando arrivano molte richieste etc. È importante, quindi, osservare le performance e per far ciò bisogna mettere in esecuzione l'applicazione. In questo modo si capisce che cosa andare a modificare.
 
-Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di _deployment_. Quando si fa questa operazione, occorre decidere dove far eseguire il componente e di quali risorse ha bisogno per funzionare correttamente. Ad esempio, installare tutte le librerie necessarie, copiare i file che devono essere locali, distribuire i componenti su uno o più nodi, mettere davanti un bilanciatore di carico etc.
+Le modifiche non si effettuano sul codice stesso ma attraverso l'operazione di deployment. Quando si fa questa operazione, occorre decidere dove far eseguire il componente e di quali risorse ha bisogno per funzionare correttamente. Ad esempio, installare tutte le librerie necessarie, copiare i file che devono essere locali, distribuire i componenti su uno o più nodi, mettere davanti un bilanciatore di carico etc.
 
 Ci sono diversi approcci per effettuare il deployment:
 
@@ -442,17 +442,17 @@ Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di p
 
 ### Modelli a contenimento
 
-Sono modelli che si basano sull'uso di un _container/engine/middleware_ che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
+Sono modelli che si basano sull'uso di un container/engine/middleware che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
 
 ![Container-Light](./img/img4-light.png#gh-light-mode-only)
 ![Container-Dark](./img/img4-dark.png#gh-dark-mode-only)
 
-L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscono direttamente con il componente di interesse ma che passino prima attraverso il _container/engine/middleware_ che in qualche modo facilità le operazioni di sistema. Il container al suo interno ospiterà il componente.
+L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscono direttamente con il componente di interesse ma che passino prima attraverso il container/engine/middleware che in qualche modo facilità le operazioni di sistema. Il container al suo interno ospiterà il componente.
 
 Il container può essere implementato in due modi:
 
 - **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Ad esempio, Tuxedo e .NET.
-- **Soluzioni basate su standar aperti**: a differenza del caso precedente, i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. Ad esempio, JEE o J2EE (Java Enterprise Edition) che definisce questi standard, li implementa e abilita quindi questa interazione tra il componente, sviluppato in Java, e un container che realizza queste API standard.
+- **Soluzioni basate su standard aperti**: i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. Ad esempio, JEE o J2EE (Java Enterprise Edition).
 
 <a href="#indice">Torna all'indice</a>
 
@@ -486,7 +486,7 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei `Capitoli 2` e `Capito
 
 È una tecnologia a componenti lato server-side che consente di creare applicazioni distribuite che siano multi-tier, transazionali, portabili, scalabili, sicure, etc.
 
-Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, non sempre essi si prestano ad essere la soluzione migliore. Il trend attuale si sposta verso altri tipi di tecnologie che verranno approfondite nei capitoli successivi. Ciò nonostante, tutte queste soluzioni di livello enterprise, cioè un sistema che deve scalare in maniera automatica, deve semplificare l’integrazione con dei software preesistenti, consentire la modifica delle politiche in maniera veloce e flessibile, sono esagerate quando bisogna progettare delle semplici applicazioni low-cost o delle pagine Web dinamiche.
+Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, non sempre essi si prestano ad essere la soluzione migliore. Il trend attuale si sposta verso altri tipi di tecnologie che verranno approfondite nei capitoli successivi.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -506,7 +506,7 @@ Le architetture possibili sono:
 ![Multi Tier EJB (2)-Light](./img/img11-light.png#gh-light-mode-only)
 ![Multi Tier EJB (2)-Dark](./img/img11-dark.png#gh-dark-mode-only)
 
-Più nel dettaglio, la figura precedente può essere rappresentata nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming e discovery, la parte di transazionalità, di messaggistica, di accesso ai database etc. Infine, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
+La figura precedente può essere rappresentata, più nel dettaglio, nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming, di transazionalità, di messaggistica, di accesso ai database etc. Invece, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
 <a href="#indice">Torna all'indice</a>
 
@@ -656,14 +656,13 @@ L’immagine seguente mostra come i clienti interagiscono con i Bean e come i Be
 ![Interazioni tra Bean-Light](./img/img35-light.png#gh-light-mode-only)
 ![Interazioni tra Bean-Dark](./img/img35-dark.png#gh-dark-mode-only)
 
-L’immagine mette in evidenza l’interazione con e tra componenti senza considerare gli aspetti legati al container come, per esempio, la presenza dell'interfaccia EJB Home e dell'interfaccia EJB Object.
-Il cliente interagisce con i Session Bean che realizzano la logica di controllo della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
+Il cliente interagisce con i Session Bean che realizzano la logica di business della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Deployment
 
-Il file di deployment fornisce istruzioni al container su come gestire e controllare il comportamento di componenti J2EE, essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
+Il file di deployment fornisce istruzioni al container su come gestire e controllare il comportamento di componenti. Essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -674,7 +673,7 @@ Il ciclo di sviluppo di un’applicazione enterprise parte dalla creazione dei B
 ![Ciclo di sviluppo-Light](./img/img36-light.png#gh-light-mode-only)
 ![Ciclo di sviluppo-Dark](./img/img36-dark.png#gh-dark-mode-only)
 
-J2EE è un’architettura pensata per velocizzare e industrializzare lo sviluppo di applicazioni. Gli standard e l’architettura di riferimento hanno il grosso vantaggio, oltre a semplificare il lavoro dello sviluppatore, di abilitare sempre di più la standardizzazione della produzione del software aprendo le porte alla possibilità di assemblare applicazioni utilizzando e facendo coesistere moduli sviluppati da _vendor_ diversi. Ad esempio:
+L'architettura e lo standard consentono di velocizzare lo sviluppo di applicazioni: è possibile assemblare applicazioni utilizzando e facendo coesistere moduli sviluppati da _vendor_ diversi. Ad esempio:
 
 ![Applicazione 1-Light](./img/img37-light.png#gh-light-mode-only)
 ![Applicazione 1-Dark](./img/img37-dark.png#gh-dark-mode-only)
@@ -690,9 +689,8 @@ Si supponga di avere un produttore di software `A` (vendor A) specializzato nell
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- L'interfaccia `EJBHome`: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota e/o locale.
-- L'nterfaccia `EJBObject`: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. L'interfaccia può essere remota o locale.
-Il cliente ottiene il riferimento di EJB Object attraverso i metodi `create()` o `find()` dell’interfaccia EJB Home.
+- L'interfaccia `EJBHome`: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container.
+- L'nterfaccia `EJBObject`: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. Il cliente ottiene il riferimento di EJB Object attraverso i metodi `create()` o `find()` dell’interfaccia EJB Home.
 
 Le interfacce possono essere remote o locali a seconda se la comunicazione del cliente avviene in locale o in remoto.
 
@@ -803,7 +801,7 @@ Per interagire con un componente EJB il cliente deve:
 
 - Ottenere l’oggetto EJB Home (in realtà un oggetto stub) via JNDI perchè la comunicazione tra client e server avviene tramite RMI. Quindi, deve:
     - Creare l'oggetto `InitialContext`. Questo oggetto serve per poter cercare sul servizio di nomi.
-    - Effettuare la lookup sul servizio di nomi tramite JNDI.
+    - Effettuare la `lookup` sul servizio di nomi tramite JNDI.
     - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile.
 - Dall’oggetto EJB Home, si invoca la `create()` in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto stub di EJB Object per lo stesso motivo di prima.
 - Invocare i metodi di business tramite l’oggetto EJB Object.
@@ -921,7 +919,7 @@ Riprendendo le annotazioni scritte all'inizio del capitolo:
 
 ### Sintassi
 
-Le annotazioni sono strutturate nel seguente modo: ci può essere solo il nome dell'annotazione o in caso ci fossero dei membri vengono scritti come un insieme di coppie _nome=valore_. Se il membro è solo uno, il nome si può omettere.
+Le annotazioni sono strutturate nel seguente modo: ci può essere solo il nome dell'annotazione o in caso ci fossero dei membri vengono scritti come un insieme di coppie nome=valore. Se il membro è solo uno, il nome si può omettere.
 
 Con **membro** si intende il _parametro di ingresso_ dell'annotazione.
 
@@ -1047,15 +1045,15 @@ Un servizio di naming è un sistema che consente di associare ad un nome logico 
 
 Esempi di sistemi di nomi:
 
-- DNS.
-- RMI Registry (RMI).
-- Portmapper (RPC).
+- **DNS**: a un nome logico come `https://www.google.com` corrisponde l'IP fisico del server.
+- **RMI Registry (RMI)**: al nome logico corrisponde lo stub associato.
+- **Portmapper (RPC)**: fornendo il numero di programma viene restituito versione, protocollo e porta.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Sistemi di Discovery
 
-È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare le _unità_ che sono presenti nella rete.
+È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare i dispositivi che sono presenti nella rete.
 Questo servizio gestisce una piccola quantità di nomi e il numero di scritture nella tabella è molto alto proprio perchè la ricerca avviene in broadcast.
 
 ![Servizio di Discovery-Light](./img/img46-light.png#gh-light-mode-only)
@@ -1117,7 +1115,7 @@ In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice 
     ```
     Object lookup(String stringName)
     ```
-- `unbind`: Consente di togliere dalla tabella la riga che corrisponde:
+- `unbind`: consente di togliere dalla tabella la riga che corrisponde:
 
     ```
     void unbind(String stringName)
@@ -1230,7 +1228,7 @@ La specifica JNDI non impone ai naming service provider la semantica dell’oper
 
 ### Serializzazione
 
-La semantica serialized data (serializzazione) la si usa per salvare tutto il contenuto dell’oggetto. Quando si effettua l'operazione di lookup si recupera il contenuto dell’oggetto per copia.
+La semantica serialized data (serializzazione) la si usa per salvare tutto il contenuto dell’oggetto. Quando si effettua l'operazione di `lookup` si recupera il contenuto dell’oggetto per copia.
 
 Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database, file, stampante etc.
 
@@ -1238,7 +1236,7 @@ Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database
 
 ### Riferimento
 
-In altri casi quello che viene salvato è solo il riferimento ad un oggetto. Quando il cliente fa la lookup viene restituito il riferimento a quella risorsa. Spesso, questo è l’unico comportamento supportabile dal sistema di nomi.
+In altri casi, quello che viene salvato è solo il riferimento ad un oggetto. Quando il cliente fa la `lookup` viene restituito il riferimento a quella risorsa. Spesso, questo è l’unico comportamento supportabile dal sistema di nomi.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -1252,15 +1250,15 @@ Non tutti i linguaggi di programmazione conoscono il concetto di oggetto. Per qu
 
 Per accedere a uno specifico naming/directory service, occorre specificare quale service provider utilizzare, quale server etc:
 
-- **Standard**: sono proprietà indipendenti dal service provider che accomunano tutti i servizi di nomi. Ad esempio, LDAP, RMI etc. Si trovano nel package _java.naming_. Ad esempio, _java.naming.provider.url_ o _java.naming.factory.initial_.
-- **Service-specific**: proprietà comuni per tutti i naming service provider a prescindere dall'implementazione specifica, Ad esempio, LDAP. Hanno prefisso _java.naming.service_. Ad esempio, _java.naming.ldap_.
-- **Feature-specific**: comuni per tutti naming service provider che implementano una specifica feature. Ad esempio, SASL per autenticazione. Una proprietà più trasversale che interessa più sistemi di nomi. Hanno prefisso _java.naming.feature_. Ad esempio, _java.naming.security.sasl_.
-- **Provider-specific**: specifiche per un determinato naming service provider. Ad esempio, il servizio Sun LDAP ha una proprietà per abilitare tracing. Ovviamente ha un prefisso unico. Ad esempio, _com.sun.jndi.ldap.trace.ber_.
+- **Standard**: sono proprietà indipendenti dal service provider che accomunano tutti i servizi di nomi. Ad esempio, LDAP, RMI etc. Si trovano nel package `java.naming`. Ad esempio, `java.naming.provider.url` o `java.naming.factory.initial`.
+- **Service-specific**: proprietà comuni per tutti i naming service provider a prescindere dall'implementazione specifica, Ad esempio, LDAP. Hanno prefisso `java.naming.service`. Ad esempio, `java.naming.ldap`.
+- **Feature-specific**: comuni per tutti naming service provider che implementano una specifica feature. Ad esempio, SASL per autenticazione. Una proprietà più trasversale che interessa più sistemi di nomi. Hanno prefisso `java.naming.feature`. Ad esempio, `java.naming.security.sasl`.
+- **Provider-specific**: specifiche per un determinato naming service provider. Ad esempio, il servizio Sun LDAP ha una proprietà per abilitare tracing. Ovviamente ha un prefisso unico. Ad esempio, `com.sun.jndi.ldap.trace.ber`.
 
 Come specificare proprietà di ambiente:
 
 - **Attraverso i parametri di environment**: vengono passati al costruttore di `InitialContext`. Ad esempio, si crea un oggetto `HashTable`.
-- **File application resource**: si modifica il file jndi.properties che contiene una lista di coppie attributo/valore.
+- **File application resource**: si modifica il file `jndi.properties` che contiene una lista di coppie attributo/valore.
 - **Proprietà di sistema**: una proprietà di sistema è una coppia attributo/valore che la Java runtime definisce/usa per descrivere utenti, ambiente di sistema e JVM. Per modificare/aggiungere queste proprietà si usa la linea di comando.
 - **Parametri di applet**: le applet ormai sono in disuso.
 
