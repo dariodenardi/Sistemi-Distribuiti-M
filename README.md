@@ -1381,7 +1381,7 @@ public class PayrollMDB implements javax.jms.MessageListener {
 
 ### Dependency Injection
 
-Le risorse di un Vean sono _iniettate_ dal container. In questo modo lo sviluppatore non ha più visibilità delle API JNDI.
+Le risorse di un Bean sono _iniettate_ dal container. In questo modo lo sviluppatore non ha più visibilità delle API JNDI.
 
 Di seguito è riportato un pezzo di codice di EJB 3.X:
 
@@ -1452,7 +1452,7 @@ Più precisamente, il container si occupa dell’injection della risorsa nel com
             
             ...
             
-            @Resource(name="customerDB")
+            @Resource
             private void setmyDB(javax.sql.DataSource ds) {
                 myDB = ds;
             }
@@ -1493,7 +1493,7 @@ public class SomeMessageBean { ... }
 
 Ovviamente il codice deve essere riutilizzabile per non perdere tutto quello che è stato prodotto nelle versioni precedenti.
 
-Le nuove applicazioni EJB 3.X possono essere clienti di vecchi bean:
+Le nuove applicazioni EJB 3.X possono essere clienti di vecchi Bean:
 
 ```
 // Vista cliente da EJB 3.X di un bean EJB 2.X
@@ -1508,7 +1508,7 @@ cart.remove();
 
 Come si può notare dal codice, nell'annotazione EJB è stato specificato `EJBHome` del componente scritto in EJB 2.X.
 
-Anche i nuovi bean conformi a EJB 3.X possono essere utilizzati sulle vecchie applicazioni:
+Anche i nuovi Bean conformi a EJB 3.X possono essere utilizzati sulle vecchie applicazioni:
 
 ```
 // Vista cliente da EJB 2.X di un bean conforme a EJB 3.X
@@ -1520,7 +1520,7 @@ cart.addItem(...);
 cart.remove();
 ```
 
-Le interfacce `EJBHome` e `EJBObject` vengono automaticamente mappate sulla classe del bean di tipo EJB 3.X.
+Le interfacce `EJBHome` e `EJBObject` vengono automaticamente mappate sulla classe del Bean di tipo EJB 3.X.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -1556,7 +1556,7 @@ rispondere ad una invocazione di metodo.
 
 Quando arriva una richiesta i passaggi che vengono eseguiti sono i seguenti:
 
-- Quando viene eseguito il depoly dell'applicazione, l'EJB container si accorge che la classe `Pippo` è stateless perchè trova la corrispondente annotazione.
+- Quando viene eseguito il deploy dell'applicazione, l'EJB container si accorge che la classe `Pippo` è stateless perchè trova la corrispondente annotazione.
 - Il container crea un pool di istanze della classe Pippo pari a k. Non c'è scritto da specifica quanto deve essere k.
 - Se ci sono delle dipendenze a livello di classe/metodo, vengono risolte.
 - Il cliente `C1` fa una richiesta e arriva al container.
@@ -1583,7 +1583,7 @@ trattamento dei transient...
 ![Activation-Light](./img/img56-light.png#gh-light-mode-only)
 ![Activation-Dark](./img/img56-dark.png#gh-dark-mode-only)
 
-Non si può permettere di manterere k istanze occupate senza far niente. Per superare questo problema si cerca di liberare lo stato salvandolo.
+Non si può permettere di manterere k istanze occupate senza far niente. Per superare questo problema si cerca di liberare lo stato salvandolo:
 
 - Prima parte uguale come nel resource pooling. Quando viene restituito il risultato l'istanza non può essere resa libera perchè c'è lo stato del cliente. In Java, basta prendere l'oggetto che rappresenta lo stato, lo si serializza e si salva (passivation).
 - A questo punto, quando il cliente fa in seguito di nuovo la richiesta basta recuperare lo stato salvato (activation). Non è detto che si debba usare la stessa istanza fisica.
@@ -1596,7 +1596,7 @@ UserTransaction etc).
 
 ### Transazionalità
 
-Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: può o terminare correttamente (commit) oppure no (rollback).
+Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: o termina correttamente (`commit`) oppure no (`rollback`).
 
 Le transazioni possono essere gestite dal container (Container-Managed Transaction) o manualmente dal programmatore (Bean-Managed Transaction).
 
@@ -1606,8 +1606,8 @@ Le transazioni possono essere gestite dal container (Container-Managed Transacti
 
 Le transazioni gestite dal container sono:
 
-- La tipologia di default. Si usa l'annotazione `@TransactionManagement` che può avere come membro o CONTAINER (default) oppure BEAN.
-- Transazione associata con l’intera esecuzione di un metodo: inizio immediatamente prima dell’inizio dell’esecuzione del metodo e commit immediatamente prima della terminazione del metodo.
+- La tipologia di default. Si usa l'annotazione `@TransactionManagement` che può avere come membro o `CONTAINER` (default) oppure `BEAN`.
+- Transazione associata con l’intera esecuzione di un metodo: inizio immediatamente prima dell’inizio dell’esecuzione del metodo e `commit` immediatamente prima della terminazione del metodo.
 - Non si possono utilizzare metodi per gestione delle transazioni che interferiscano con gestione automatica del container. Ad esempio, è proibito l’uso di `commit` o `rollback` di `java.sql.Connection`, di `rollback` di `javax.jms.Session` o dell’intera interfaccia j`avax.Transaction.UserTransaction`.
 
 Per rendere più flessibili le transazioni gestite dal container si usa l'annotazione `@TransactionAttribute`. Ad esempio, si consideri `BeanA` e `BeanB`. Se il `BeanA` invoca un metodo del `BeanB`, a default, viene creata un'unica grande transazione che inizia con il metodo di `BeanA` e termina alla fine quando è stato eseguito il metodo di `BeanB`. Se si vuole usare un approccio moderno è necessario rilassare la proprietà ACID di una transazione cioè non devono essere tutte sempre rispettate. Per far ciò si cambia valore dell'annotazione: `REQUIRED` (default), `REQUIRES_NEW`, `MANDATORY`, `NOT_SUPPORTED`, `SUPPORTS`, `NEVER`.
@@ -1676,12 +1676,6 @@ Per rendere più flessibili le transazioni gestite dal container si usa l'annota
 
 Di seguito viene riportata una rappresentazione grafica per fissare meglio i concetti:
 
-- `NOT_SUPPORTED`:
-![Not Supported-Light](./img/img57-light.png#gh-light-mode-only)
-![Not Supported-Dark](./img/img57-dark.png#gh-dark-mode-only)
-- `SUPPORTS`:
-![Supports-Light](./img/img58-light.png#gh-light-mode-only)
-![Supports-Dark](./img/img58-dark.png#gh-dark-mode-only)
 - `REQUIRED`:
 ![Required-Light](./img/img59-light.png#gh-light-mode-only)
 ![Required-Dark](./img/img59-dark.png#gh-dark-mode-only)
@@ -1691,25 +1685,31 @@ Di seguito viene riportata una rappresentazione grafica per fissare meglio i con
 - `MANDATORY`:
 ![Mandatory-Light](./img/img61-light.png#gh-light-mode-only)
 ![Mandatory-Dark](./img/img61-dark.png#gh-dark-mode-only)
+- `NOT_SUPPORTED`:
+![Not Supported-Light](./img/img57-light.png#gh-light-mode-only)
+![Not Supported-Dark](./img/img57-dark.png#gh-dark-mode-only)
+- `SUPPORTS`:
+![Supports-Light](./img/img58-light.png#gh-light-mode-only)
+![Supports-Dark](./img/img58-dark.png#gh-dark-mode-only)
 - `NEVER`:
 ![Never-Light](./img/img62-light.png#gh-light-mode-only)
 ![Never-Dark](./img/img62-dark.png#gh-dark-mode-only)
 
-Se una transazione fallisce bisogna effettuare il rollback della transazione. Può essere scatenata da due cause:
+Se una transazione fallisce bisogna effettuare il `rollback` della transazione. Può essere scatenata da due cause:
 
-- Eccezione del sistema. Il container automaticamente lancia il rollback.
+- Eccezione del sistema. Il container automaticamente lancia il `rollback`.
 - Invocando il metodo `setRollBackOnly` di `EJBContext`. `EJBContext` è un'interfaccia che contente di accedere a molte funzionalità del container come chi è il cliente.
 
-È bene ricordare che non sempre è possibile eseguire un rollback di una transazione. Si consideri questo semplice esempio: `t1` apre la finestra e dopo viene eseguita `t2` ma fallisce. `t1` deve richiuderla ma per un tempo è stata aperta. Nessuno può garantire che non sia entrato un ladro.
+È bene ricordare che non sempre è possibile eseguire un `rollback` di una transazione. Si consideri questo semplice esempio: `t1` apre la finestra e dopo viene eseguita `t2` ma fallisce. `t1` deve richiuderla ma per un tempo è stata aperta. Nessuno può garantire che non sia entrato un ladro.
 
-È possibile invocare anche metodi di callback associati alla semantica transazionale tramite l'uso dell'interfaccia `SessionSynchronization`:
+È possibile invocare anche metodi di `callback` associati alla semantica transazionale tramite l'uso dell'interfaccia `SessionSynchronization`:
 
 - Metodo `afterBegin` invocato dal container immediatamente prima
 dell’invocazione del metodo di business all’interno della transazione.
 - Metodo `beforeCompletion` invocato dal container immediatamente prima
 del commit della transazione.
 - Metodo `afterCompletion` invocato dal container immediatamente dopo il
-completamento della transazione (con commit o rollback).
+completamento della transazione (con `commit` o `rollback`).
 
 Un esempio di codice è riportato di seguito:
 
@@ -1777,7 +1777,7 @@ Questo Bean verrà approfondito nel `Capitolo 7`.
 
 ### Sicurezza
 
-Il container EJB è anche responsabile nello svolgere azioni di controllo dell’accesso sui metodi del bean cioè verifica se il cliente ha il diritto di invocare una determinata operazione remota.
+Il container EJB è anche responsabile nello svolgere azioni di controllo dell’accesso sui metodi del Bean cioè verifica se il cliente ha il diritto di invocare una determinata operazione remota.
 
 Il container EJB basa le sue decisioni di sicurezza sui concetti di realm, utenti, gruppi e ruoli.
 
@@ -1818,7 +1818,7 @@ public PayrollBean implements Payroll {
 
 ### Intercettori
 
-Sono oggetti capaci di interporsi sulle chiamate di metodo o su eventi del ciclo di vita di SB e MDB. Il container si interpone sempre sulle invocazioni dei metodi della logica applicativa. In particolare, si interpongono dopo l'esecuzione di tutti i servizi di sistema e prima dell’esecuzione del metodo logica applicativa.
+Sono oggetti capaci di interporsi sulle chiamate di metodo o su eventi del ciclo di vita di Session Bean e Message-Driven Bean. Il container si interpone sempre sulle invocazioni dei metodi della logica applicativa. In particolare, si interpongono dopo l'esecuzione di tutti i servizi di sistema e prima dell’esecuzione del metodo logica applicativa.
 
 L'intercettore è uno strumento potente ma che bisogna usare con prudenza: cambiare stati, spargere il codice su più metodi, diventa poi difficile controllare il codice. Bisogna stare attenti a mettere il codice di un bean dentro all'intercettore.
 
@@ -1827,21 +1827,15 @@ Le annotazioni che si usano sono due:
 - `@Interceptors`: per associare una classe/metodo di un componente di business alla classe intercettore correlata.
 - `@AroundInvoke`: per definire quale metodo della classe intercettore eseguire all’atto dell’intercettazione.
 
-Gli intercettori possono essere definiti:
-
-- **Specificati nel descrittore di deployment**: si applicano a tutti i metodi di business di ogni componente nel file ejb-jar.
-- **Intercettori a livello di classe**: si applicano ai metodi di business della classe bean.
-- **Intercettori a livello di metodo**: per determinazioni più fini e anche per fare overriding di associazioni precedenti.
-
-Di seguito viene riportato un esempio:
-
 ```
 //classe Profiler
 public class Profiler {
 
     @AroundInvoke
     public Object profile() throws Exception {
-        ... 
+
+        ...
+         
     }
 }
 
@@ -1851,6 +1845,12 @@ public class Profiler {
 @Interceptors(Profiler.class)
 public Objecty m1(...) throws ... { ... }
 ```
+
+Gli intercettori possono essere definiti:
+
+- **Specificati nel descrittore di deployment**: si applicano a tutti i metodi di business di ogni componente nel file ejb-jar.
+- **Intercettori a livello di classe**: si applicano ai metodi di business della classe Bean.
+- **Intercettori a livello di metodo**: per determinazioni più fini e anche per fare overriding di associazioni precedenti.
 
 <a href="#indice">Torna all'indice</a>
 
