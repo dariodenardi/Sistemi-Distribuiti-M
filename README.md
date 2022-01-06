@@ -1871,9 +1871,6 @@ esecuzione. Infatti, i database relazionali sono progettati per operazioni di qu
 
 JPA è la specifica Java standard che consente il supporto al mapping O/R. Le API di persistenza sono state estese per includere anche l’utilizzo al di fuori di un container EJB. Infatti, ci sono le stesse API per sviluppare applicazioni JSE, Web e EJB.
 
-Astrarre: usiamo le annotazioni semplificando il modello della programmazione
-Vista performance: nel 2.1 la connessione era da gestire esplicitamente dallo sviluppatore. Nella 3 la gestione è demandata al container in modo da ottimizzare le risorse.
-
 <a href="#indice">Torna all'indice</a>
 
 ### Perchè usare JPA
@@ -1926,20 +1923,14 @@ Una Entity è un oggetto POJO (Plain Old Java Object) e _leggero_ (non un compon
 Una classe Entity deve avere le seguenti caratteristiche:
 
 - Ha la annatazione `javafx.persistence.Entity`.
-- avere un costruttore senza argomenti, `public` o `protected` (costruttori aggiuntivi sono ovviamente consentiti).
-- Nessun metodo o variabile di istanza persistente deve essere dichiarata final perchè i valori devono essere modificati.
-- Le annotazioni di mapping possono essere applicate solo a variabili di istanza o ai metodi getter per proprietà in stile JavaBean. Non si possono utilizzare annotazioni di entrambi i tipi in una singola classe Entity.
-
-È serializzabile. Utilizzabile come detached object in altri tier
-(lo vedremo). Non necessari oggetti specifici addizionali per il trasferimento di
-dati, ovvero mancata necessità di DTO espliciti
-
-Se una istanza di Entity è passata per valore (by value) come oggetto
-detached (vedremo che cosa vuol dire), ad esempio all’interfaccia remota di un Session Bean, allora la classe deve implementare l’interfaccia Serializable
+- Avere un costruttore senza argomenti, `public` o `protected` (costruttori aggiuntivi sono ovviamente consentiti).
+- Nessun metodo o variabile di istanza persistente deve essere dichiarata `final` perchè i valori devono essere modificati.
+- Le annotazioni di mapping possono essere applicate solo a variabili di istanza o ai metodi `getter` in stile JavaBean. Non si possono utilizzare annotazioni su entrambi i tipi in una singola classe Entity.
+- Se una istanza di Entity è passata per valore (by value) come oggetto detached, ad esempio all’interfaccia remota di un altro Session Bean, allora la classe deve implementare l’interfaccia `Serializable`.
 
 Per quanto riguarda i campi persistenti:
 
-- Variabili di istanza persistenti devono essere dichiarate `private`,
+- Variabili di istanza persistenti devono essere dichiarate `private`.
 `protected`, o `package-private`, e possono essere accedute direttamente solo dai metodi della classe dell’Entity.
 - Tutti i campi non annotati `javax.persistence.Transient` sono gestiti come persistenti verso il DB.
 - Per campi persistenti con valori non singoli si usa Java Collection. Ad esempio:
@@ -1950,7 +1941,7 @@ Per quanto riguarda i campi persistenti:
 
 Invece per le proprietà persistenti:
 
-- Si devono seguire le convenzioni sui metodi tipiche dei JavaBean. cioè devono avere i metodi getter e setter: `getProperty()`, `setProperty()`, `isProperty()`. Ad esempio, se è stata creata la classe `Customer` con proprietà persistenti, con una variabile di istanza privata chiamata `firstName` di tipo `String`, i metodi saranno:
+- Si devono seguire le convenzioni sui metodi tipiche dei JavaBean cioè devono avere i metodi `getter` e `setter`: `getProperty()`, `setProperty()`, `isProperty()`. Ad esempio, se è stata creata la classe `Customer` con proprietà persistenti, con una variabile di istanza privata chiamata `firstName` di tipo `String`, i metodi saranno:
 
     ```
     public String getFirstName() {
@@ -2021,7 +2012,7 @@ persistenti. Si usano le annotazioni `javax.persistence.EmbeddedId` oppure `java
         private long projectId;
     }
     ```
-    La classe `Project` ha una primary key i cui campi sono _embeddati_ dalla classe ProjectId.
+    La classe `Project` ha una primary key i cui campi sono _embeddati_ dalla classe `ProjectId`.
 
 Per quanto riguarda la chiave primaria:
 
@@ -2143,41 +2134,27 @@ public class PartTimeEmployee extends Employee {
 
 Dato che si è nel mondo ad oggetti, il provider di persistenza si deve occupare di effettuare il mapping della gerarchia di classi Entity perchè nel mondo relazionale le tabelle sono piatte ovvero non esiste classe padre e figlia. Si usa l'annotazione `javax.persistence.Inheritance`.
 
-- `InheritanceType.SINGLE_TABLE`: tutte i campi in un'unica tabella con un attributo chiamato discriminator che consente di stabilire il tipo di Entity. Questo può servire per risalire alla tipologia dell'oggetto che ci interessa. Scarsa efficienza se abbiamo molti NULL nella tabella.
+- `InheritanceType.SINGLE_TABLE`: tutte i campi in un'unica tabella con un attributo chiamato discriminator che consente di stabilire il tipo di Entity. Questo può servire per risalire alla tipologia dell'oggetto che ci interessa. Scarsa efficienza se abbiamo molti `NULL` nella tabella.
 - `InheritanceType.TABLE_PER_CLASS`: ogni tabella ha colonne per ogni proprietà comprese quelle ereditatte dalle superclassi. Non c'è bisogno del discriminator e non è uno schema normalizzato.
 - `InheritanceType.JOINED`: ogni tabella ha le colonne con valore con le sole proprietà definite nella classe specifica ma lo schema è normalizzato (schema non ridondante). Se bisogna normalizzare i dati non c'è ridondanza ma dobbiamo effettuare le join. Se la gerarchia è estesa il costo diventa molto alto.
 
-Il default è `InheritanceType.SINGLE_TABLE`, usato se l’annotation
-`@Inheritance` non è specificata alla classe radice gerarchia di Entity.
+Il default è `InheritanceType.SINGLE_TABLE`, usato se l'annotazione `@Inheritance` non è specificata alla classe radice gerarchia di Entity.
 
-La strategia `TABLE_PER_CLASS` offre una scarsa efficienza nel supporto a relazioni (e query) polimorfiche; di solito richiede query separate per ogni sottoclasse per coprire l’intera gerarchia
+La strategia `TABLE_PER_CLASS` offre una scarsa efficienza nel supporto a relazioni (e query) polimorfiche; di solito richiede query separate per ogni sottoclasse per coprire l’intera gerarchia.
 
-Invece, utilizzando JOINED, ogni sottoclasse ha una tabella
-separata che contiene i soli campi specifici per la sottoclasse (la
-tabella non contiene colonne per i campi e le proprietà ereditati)
-=> buon supporto a relazioni polimorfiche ma richiede
-operazioni di join (anche multiple) quando si istanziano
-sottoclassi di Entity (scarsa performance per gerarchie
-di classi estese). Analogamente, query che intendono coprire
-l’intera gerarchia richiedono operazioni di join fra tabelle sottoclassi
+Invece, utilizzando `JOINED`, ogni sottoclasse ha una tabella separata che contiene i soli campi specifici per la sottoclasse (la tabella non contiene colonne per i campi e le proprietà ereditati). Buon supporto a relazioni polimorfiche ma richiede operazioni di join (anche multiple) quando si istanziano sottoclassi di Entity (scarsa performance per gerarchie di classi estese). Analogamente, query che intendono coprire l’intera gerarchia richiedono operazioni di join fra tabelle sottoclassi.
 
-In conclusione, la scelta della strategia ottimale presuppone una buona
-conoscenza del tipo di query che si faranno sulle Entity.
+In conclusione, la scelta della strategia ottimale presuppone una buona conoscenza del tipo di query che si faranno sulle Entity.
 
 <a href="#indice">Torna all'indice</a>
 
 ### Molteplicità nelle Relazioni
 
-Ci sono quattro tipologie di molteplicità che corrispondono a quelle delle
-relazioni E/R:
+Ci sono quattro tipologie di molteplicità che corrispondono a quelle delle relazioni E/R:
 
-- **One-to-one**: ogni istanza di Entity è associata a una singola istanza
-di un’altra Entity. Si usa l'annotazione `javax.persistence.OneToOne` sul
-corrispondente campo/proprietà persistente.
-- **One-to-many**: ad esempio un ordine di vendita con associati oggetti
-multipli. Si usa l'annotazione `javax.persistence.OneToMany`.
-- **Many-to-one**: viceversa, uno degli oggetti contenuti nell’ordine di
-vendita. Si usa l'annotazione `javax.persistence.ManyToOne`.
+- **One-to-one**: ogni istanza di Entity è associata a una singola istanza di un’altra Entity. Si usa l'annotazione `javax.persistence.OneToOne` sul corrispondente campo/proprietà persistente.
+- **One-to-many**: ad esempio un ordine di vendita con associati oggetti multipli. Si usa l'annotazione `javax.persistence.OneToMany`.
+- **Many-to-one**: viceversa, uno degli oggetti contenuti nell’ordine di vendita. Si usa l'annotazione `javax.persistence.ManyToOne`.
 - **Many-to-many**: so usa l'annotation `javax.persistence.ManyToMany`.
 
 Nel mondo ad oggetti, non si cattura questo aspetto che c'è nel mondo relazione per cui è importante aggiungere l'annotazione nella classe Entity che si sta costruendo sopra al campo/proprietà appropriata:
@@ -2193,9 +2170,7 @@ public Set<Purchase> getPurchases() {
 
 ### Direzionalità delle relazioni
 
-Le relazioni possono essere monodirezionale o bidirezionali. 
-
-Nella relazione bidirezionale, ogni entità ha un campo o una proprietà che riferisce l’altra entità. Ad esempio, una classe `Ordine` al cui interno ha un campo che indica gli oggetti dell'ordine e una classe `Oggetto` che al suo interno ha un campo che indica a quale ordine appartiene. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono _navigare_ da un’entità all’altra. Inoltre, si possono utilizzzare per capire quali relazioni cancellare. Sembra normale che se si cancella un ordine non venga cancellato chi l'ha fatto ma il contrario. Per questo motivo è importante stabilire chi è il proprietario della relazione con il membro `@mappedBy`:
+Le relazioni possono essere monodirezionale o bidirezionali. Nella relazione bidirezionale, ogni entità ha un campo o una proprietà che riferisce l’altra entità. Ad esempio, una classe `Ordine` al cui interno ha un campo che indica gli oggetti dell'ordine e una classe `Oggetto` che al suo interno ha un campo che indica a quale ordine appartiene. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono _navigare_ da un’entità all’altra. Ad esempio, utilizzate per capire quali relazioni cancellare. Sembra normale che se si cancella un ordine non venga cancellato chi l'ha fatto ma il contrario. Per questo motivo è importante stabilire chi è il proprietario della relazione con il membro `@mappedBy`:
 
 ```
 @OneToMany(cascade=REMOVE, mappedBy="customer")
@@ -2208,7 +2183,7 @@ public Set<Order> getOrders() {
 
 ### Gestione a runtime di Entity
 
-Le Entity sono gestite da un EntityManager. Ogni istanza di un EntityManager è associata ad un contesto di persistenza. Il contesto di persistenza è una sorta di cache ad oggetti del database che mantiene gli Entity e che sono gestite da un singolo EntityManager. L’interfaccia dell’EntityManager definisce i metodi che sono usati per interagire con il contesto di persistenza (creazione e rimozione di istanze di Entity persistenti, ritrovamento di Entity tramite chiave primaria ed esecuzione di query).
+Le Entity sono gestite da un Entity Manager. Ogni istanza di un EntityManager è associata ad un contesto di persistenza. Il contesto di persistenza è una sorta di cache ad oggetti del database che mantiene gli Entity e che sono gestite da un singolo Entity Manager. L’interfaccia dell’Entity Manager definisce i metodi che sono usati per interagire con il contesto di persistenza (creazione e rimozione di istanze di Entity persistenti, ritrovamento di Entity tramite chiave primaria ed esecuzione di query).
 
 All’interno di tale contesto è come se le Entity avessero con un loro ciclo di vita. Il constesto di persistenza è, quindi, il luogo dove esistono tutte le istanze Entity.
 
@@ -2216,7 +2191,7 @@ L’Entity Manager può essere utilizzato demandando completamente la gestione a
 
 <a href="#indice">Torna all'indice</a>
 
-### Container-managed EntityManager
+### Container-managed Entity Manager
 
 Il contesto è automaticamente propagato dal container ai componenti applicativi. L'injection avviene tramite l'annotazione `@PersistenceContext` e viene passato all'Entity Manager. In questo senso, l’Entity Manager è container-managed poiché il contesto di persistenza è direttamente passato ai componenti:
 
@@ -2229,7 +2204,7 @@ Il tutto è interlacciato con le transazioni. Le transazioni JTA eseguono genera
 
 <a href="#indice">Torna all'indice</a>
 
-### Application-managed EntityManager
+### Application-managed Entity Manager
 
 Il contesto di persistenza non è propagato ai componenti applicativi e il ciclo di vita delle istanze dell'Entity Manager è gestito direttamente dall’applicazione. Viene usato quando l’applicazione necessita di diversi contesti di persistenza e di diverse istanze di Entity Manager correlate. In questo caso, si usa il metodo `createEntityManager()` di `javax.persistence.EntityManagerFactory` per crearsi un Entity Manager:
 
@@ -2249,7 +2224,7 @@ Di solito, quando l'applicazione è semplice e si ha un solo DB si usa un solo E
 
 ### Ciclo di Vita
 
-Le Entity vivono all’interno di contesti di persistenza e ciascuna di esse può avere 4 diversi stati:
+Le Entity vivono all’interno di contesti di persistenza e ciascuna di esse può avere quattro diversi stati:
 
 ![Ciclo di Vita Entity-Light](./img/img25-light.png#gh-light-mode-only)
 ![Ciclo di Vita Entity-Dark](./img/img25-dark.png#gh-dark-mode-only)
@@ -2293,11 +2268,10 @@ public Collection<LineItem> getLineItems() {
 Dallo stato managed entity, le Entity possono essere rimosse tramite `remove()` o attraverso l'operazione di rimozione in cascata da Entity correlate con `cascade=REMOVE` o `cascade=ALL`:
 
 - Se `remove()` è invocato su new entity, l'operazione viene ignorata.
-- Se `remove()` è invocato su detached entity viene lanciata l'eccezione `IllegalArgumentException` o fallimento del commit della transazione.
+- Se `remove()` è invocato su detached entity viene lanciata l'eccezione `IllegalArgumentException` o fallimento del `commit` della transazione.
 - Se `remove()` è invocato su Entity già in stato di removed l'operazione viene ignorata.
 
-I dati relativi alla Entity sono effettivamente rimossi dal DB solo a
-transazione completata o come risultato di una operazione esplicita di flush:
+I dati relativi alla Entity sono effettivamente rimossi dal DB solo a transazione completata o come risultato di una operazione esplicita di `flush`:
 
 ```
 public void removeOrder(Integer orderId) {
@@ -2314,7 +2288,7 @@ Quando lo stato viene persistito con la commit verso il DB, si stacca l’oggett
 
 Quando si lavora con le Entity bisogna verificare sempre che le Entity siano ancora collegate e attive.
 
-Per sincronizzarsi con il DB bisogna effetuare la commit della transazione. A quel punto avviene l'allineamento con il DB. Se si ha il cascading attivo o comunque relazioni bidirezionali, la commit crea una reazione a catena. Per forzare la sincronizzazione con DB, possibilità di invocare il metodo `flush()` (con solito effetto cascade).
+Per sincronizzarsi con il DB bisogna effetuare la `commit` della transazione. A quel punto avviene l'allineamento con il DB. Se si ha il cascading attivo o comunque relazioni bidirezionali, la `commit` crea una reazione a catena. Per forzare la sincronizzazione con DB, possibilità di invocare il metodo `flush()` (con solito effetto cascade).
 
 <a href="#indice">Torna all'indice</a>
 
@@ -2323,7 +2297,7 @@ Per sincronizzarsi con il DB bisogna effetuare la commit della transazione. A qu
 L’unità di persistenza è un concetto legato al deployment in cui viene specificato il database da usare, quali sono gli Entity etc. Definisce l'insieme di tutte le potenziali classi gestite dall’Entity Manager in un’applicazione. Potenziali perchè non è detto che nell'applicazione poi vengono usate davvero le classi che modellano l'Entity. Nel caso del contesto di persitenza, si ragiona in termini di transazioni da effettuare sugli oggetti della cache che poi devono essere persistiti, non in termini di deployment delle classi. Queste due cose sono ortogonali.
 
 Le unità di persistenza sono definite all’interno di un file XML chiamato
-persistence.xml, distribuito insieme al file EJB-JAR o WAR, a seconda
+`persistence.xml`, distribuito insieme al file EJB-JAR o WAR, a seconda
 dell’applicazione sviluppata:
 
 ```
@@ -2346,7 +2320,7 @@ Gli elementi `jar-file` e `class` specificano le classi relative all’unità di
 
 ### Creazione di Query
 
-È possibile creare query invocando i metodi `createQuery()` e `createNamedQuery()` dell'EntityManager. Le query devono essere conformi alla specifica Java Peristence Query Language e sono scritte con un liguaggio SQL like Java.
+È possibile creare query invocando i metodi `createQuery()` e `createNamedQuery()` dell'Entity Manager. Le query devono essere conformi alla specifica Java Peristence Query Language e sono scritte con un liguaggio SQL like Java.
 
 Il metodo `createQuery()` permette la costruzione di query dinamiche, ovvero query definite all’interno della business logic:
 
@@ -2404,7 +2378,7 @@ In generale, si usa eager per realtà ristrette e lazy in tutti gli altri casi. 
 
 ### Listener di Entity
 
-Si possono definire listener o metodi di callback che saranno invocati dal provider di persistenza alla transizione fra diversi stati del ciclo di vita delle Entity. Quindi, è un controllo uteriore per controllare che sia possibile effettuare, ad esempio, la persist e cambiare lo stato. L’obiettivo è quello di effettuare controlli e aggiornamenti prima o dopo le operazioni che riguardano la persistenza dei dati.
+Si possono definire listener o metodi di callback che saranno invocati dal provider di persistenza alla transizione fra diversi stati del ciclo di vita delle Entity. Quindi, è un controllo uteriore per controllare che sia possibile effettuare, ad esempio, la `persist` e cambiare lo stato. L’obiettivo è quello di effettuare controlli e aggiornamenti prima o dopo le operazioni che riguardano la persistenza dei dati.
 
 Per usare metodi di callback, occorre annotare i metodi di callback desiderati nella classe della Entity:
 
@@ -2486,9 +2460,9 @@ Gli oggetti `Transaction` sono oggetti single-therad che servono ad aprire, chiu
 
 Gli oggetti si possono trovare in tre possibili stati:
 
-- transient non appartiene al contesto di persistenza. Stato transient non è mai associato a un contesto di persistenza e questo accade quando si definisce un’istanza fuori da una sessione.
-- persistent appartiene al contesto di persistenza. Nello stato persistent l’stanza è associata a una sessione e il suo stato corrisponde a una riga del DB.
-- detached è un istanza che non è al momento nel contesto di persistenza poiché è stata scollegata.
+- **transient** non appartiene al contesto di persistenza. Stato transient non è mai associato a un contesto di persistenza e questo accade quando si definisce un’istanza fuori da una sessione.
+- **persistent** appartiene al contesto di persistenza. Nello stato persistent l’stanza è associata a una sessione e il suo stato corrisponde a una riga del DB.
+- **detached** è un istanza che non è al momento nel contesto di persistenza poiché è stata scollegata.
 
 Gli oggetti persistenti sono oggetti per cui si vuole mantenere uno stato persistente e devono essere inseriti in un contesto di persitenza con una `Session` che opera e lavora come una cache. Quando si chiude una sessione gli oggetti diventano detached e possono essere usati sapendo che non c’è un collegamento con il DB.
 
@@ -2498,10 +2472,10 @@ Gli oggetti transient o detached hanno istanze non legate alla sessione. Modific
 
 ### Il caching in Hibernate
 
-In generale, la cache migliora la performance dei sistemi e si accede al database solo se lo stato necessario non è presente in cache. In Hibernatem esistono due livelli di cache: uno associata alla `Session` e uno associata alla `SessionFactory`. Le cache di primo livello è usata da Hibernate all’interno dei confini di una singola transazione principalmente al fine di ridurre il numero di query SQL generate all’interno di una transazione. Ad esempio, se un oggetto è modificato diverse volte all’interno della medesima transazione, Hibernate genera un unico statement SQL UPDATE alla fine della transazione, con tutte le modifiche. Invece, la cache di secondo livello, mantiene dati a livello di `Session Factory`, utilizzabili da diverse transazioni.
+In generale, la cache migliora la performance dei sistemi e si accede al database solo se lo stato necessario non è presente in cache. In Hibernate esistono due livelli di cache: uno associata alla `Session` e uno associata alla `SessionFactory`. Le cache di primo livello è usata da Hibernate all’interno dei confini di una singola transazione principalmente al fine di ridurre il numero di query SQL generate all’interno di una transazione. Ad esempio, se un oggetto è modificato diverse volte all’interno della medesima transazione, Hibernate genera un unico statement SQL UPDATE alla fine della transazione, con tutte le modifiche. Invece, la cache di secondo livello, mantiene dati a livello di `SessionFactory`, utilizzabili da diverse transazioni.
 
-![Caching Hibernate-Light](./img/img70-light.png)
-![Caching Hibernate-Dark](./img/img70-dark.png)
+![Caching Hibernate-Light](./img/img70-light.png#gh-light-mode-only)
+![Caching Hibernate-Dark](./img/img70-dark.png#gh-dark-mode-only)
 
 Dalla `SessionFactory` si crea un oggetto `Session`. Un primo componente `C1` si crea il proprio oggetto `Session` e lavora sulla cacha di primo livello `L1_1`. La `Session` fa una find di un dato del DB. La cache all'inizio è vuota. Il layer di persistenza prende il dato dal DB e carica in cache l'oggetto `O1`. Non viene fatta una copia solo nella cache di primo livello, ma viene fatta una copia anche nella cache di secondo livello. Un secondo componente `C2` crea dalla stessa `SessionFactory` un nuovo oggetto `Session` e lavora sulla cache di primo livello `L1_2`. Il secondo componente non trova l'oggetto `O1` nella propria cache di primo livello `C1` ma lo trova nella cache di secondo livello `L2` e se lo porta nella propria cache di primo livello una copia di `O1` senza andare su DB.
 
@@ -2544,8 +2518,7 @@ update orders set description=?, status=?, version=2 where id=? and
 version=1
 ```
 
-Il risultato è che questa seconda update non fa match con alcuna riga (no
-match con clausola WHERE). Hibernate lancia una eccezione `org.hibernate.StaleObjectStateException`. Risultato è che Bob non può comandare update fino a che non ha rinfrescato la sua vista dati. Ovviamente sta al programmatore gestire opportunamente l'eccezione a livello applicativo.
+Il risultato è che questa seconda update non fa match con alcuna riga (no match con clausola WHERE). Hibernate lancia una eccezione `org.hibernate.StaleObjectStateException`. Risultato è che Bob non può effettuare update fino a che non ha rinfrescato la sua vista dati. Ovviamente sta al programmatore gestire opportunamente l'eccezione a livello applicativo.
 
 Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
@@ -2553,11 +2526,11 @@ Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
 ### Fetching dei dati
 
-Per fare fetching (cioè caricare i dati dal DB alla memoria) si possono usare varie stretegie che si indicano a priori nel file di mapping o successivamente nelle query con override. Quindi, anche in Hibernate si possono fare caricamenti più eager o più lazy che impatteranno sulla cache di primo e di secondo livello, è il programmatore che decide se fare un caricamento più aggressivo o più pigro. Si specifica con un parametro chiamato FetchMode e le modalità di fetching sono:
+Per fare fetching (cioè caricare i dati dal DB alla memoria) si possono usare varie stretegie che si indicano a priori nel file di mapping o successivamente nelle query con override. Quindi, anche in Hibernate si possono fare caricamenti più eager o più lazy che impatteranno sulla cache di primo e di secondo livello, è il programmatore che decide se fare un caricamento più aggressivo o più pigro. Si specifica con un parametro chiamato `FetchMode` e le modalità di fetching sono:
 
-- `FetchMode.DEFAULT`: FetchMode è presa del file di configurazione.
+- `FetchMode.DEFAULT`: `FetchMode` è presa del file di configurazione.
 - `FetchMode.JOIN`: Hibernate recupera i dati associati, anche collezioni, utilizzando un outer join all’interno della stessa select.
-- `FetchMode.SELECT `: Hibernate effettua una seconda select separata per recuperare le entity o collection associate. Lazy fetching è il default: la seconda select viene eseguita solo quando l’applicazione accede veramente ai dati associati.
+- `FetchMode.SELECT`: Hibernate effettua una seconda select separata per recuperare le entity o collection associate. Lazy fetching è il default: la seconda select viene eseguita solo quando l’applicazione accede veramente ai dati associati.
 
 Usare una strategia di fetching rispetto ad un'altra ha ovviamente impatto sulle performance ottenibili.
 
