@@ -885,9 +885,9 @@ Le annotazioni sono state già viste sicuramente in altri corsi anche se non si 
     public String toString() {
         ...
     }
-    ```java
-- `@Deprecated`:
     ```
+- `@Deprecated`:
+    ```java
     @Deprecated
     public class ExampleClass { ... }
     ```
@@ -1179,7 +1179,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 - `modifyAttributes`: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
-    ```java
+    ```
     void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
     ```
 
