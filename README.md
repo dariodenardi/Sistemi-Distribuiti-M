@@ -266,13 +266,13 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
       </ul>
     </li>
     <li>
-      <a href="#">Big Data</a>
+      <a href="#big-data">Big Data</a>
       <ul>
-        <li><a href="#">Definizione</a></li>
-        <li><a href="#">Stream Processing</a></li>
-        <li><a href="#">Batch Processing</a></li>
-        <li><a href="#">Hadoop Distributed File System (HDFS)</a></li>
-        <li><a href="#">MapReduce</a></li>
+        <li><a href="#definizione-1">Definizione</a></li>
+        <li><a href="#stream-processing">Stream Processing</a></li>
+        <li><a href="#batch-processing">Batch Processing</a></li>
+        <li><a href="#hadoop-distributed-file-system-hdfs">Hadoop Distributed File System (HDFS)</a></li>
+        <li><a href="#mapreduce">MapReduce</a></li>
       </ul>
     </li>
     <li>
@@ -1862,8 +1862,7 @@ Una parte rilevante nello sviluppo di ogni applicazione distribuita di livello e
 
 ### Object/Relational Mapping (ORM)
 
-Mapping O/R si occupa di risolvere il potenziale mismatch fra i dati mantenuti in un DB relazionale e il loro processamento tramite oggetti in
-esecuzione. Infatti, i database relazionali sono progettati per operazioni di query efficienti su dati di tipo tabellare mentre in Java c'è la necessità di lavorare invece tramite interazione fra oggetti.
+Mapping O/R si occupa di risolvere il potenziale mismatch fra i dati mantenuti in un DB relazionale e il loro processamento tramite oggetti in esecuzione. Infatti, i database relazionali sono progettati per operazioni di query efficienti su dati di tipo tabellare mentre in Java c'è la necessità di lavorare invece tramite interazione fra oggetti.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -5161,7 +5160,7 @@ Nelle applicazioni event-driven vi è un solo processo che fa fetching di eventi
 
 ### Thread vs Event
 
-Per gestire una richiesta a un server web, nel multithread si ha l’invocazione di una read request letta dalla socket, poi si processa la richiesta e si manda una risposta send reply, che rappresenta l’operazione di scrittura:
+Per gestire una richiesta a un server web, nel multithread si ha l’invocazione di una read request letta dalla socket, poi si processa la richiesta e si manda una risposta `sendReply`, che rappresenta l’operazione di scrittura:
 
 ```
 request = readRequest(socket);
@@ -5169,7 +5168,7 @@ reply = processRequest(request);
 sendReply(socket, reply);
 ```
 
-La prima operazione bloccante è la `readRequest` su cui si blocca il thread in attesa, il blocco è sulla read a livello di sistema. Sull’operazione di lettura il processo si sospende e quindi avviene il context switching.
+La prima operazione bloccante è la `readRequest` su cui si blocca il thread in attesa, il blocco è sulla `read` a livello di sistema. Sull’operazione di lettura il processo si sospende e quindi avviene il context switching.
 
 ```
 startRequest(socket);
@@ -5337,7 +5336,7 @@ var net = require('net’);
 net.createServer(processTCPconnection).listen(4000); 
 ```
 
-Crea una socket per una connessione TCP, fa binding del server su una porta (4000 in questo caso) e si mette in stato di listen per connessioni, per ogni connessione TCP, invoca la funzione processTCPconnection:
+Crea una socket per una connessione TCP, fa binding del server su una porta (4000 in questo caso) e si mette in stato di listen per connessioni, per ogni connessione TCP, invoca la funzione `processTCPconnection`:
 
 ```
 // lista di client connessi
