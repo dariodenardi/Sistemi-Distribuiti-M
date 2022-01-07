@@ -1878,7 +1878,7 @@ Prima di JPA, il tipico modo per accedere a dati era tramite i metodi Java Data 
 
 Di seguito viene riportato il codice per la ricerca di una chiave primaria: 
 
-```
+```java
 public SampleDAO samplelookup(String id) {
 
     Connection c = null;
@@ -1934,7 +1934,7 @@ Per quanto riguarda i campi persistenti:
 - Tutti i campi non annotati `javax.persistence.Transient` sono gestiti come persistenti verso il DB.
 - Per campi persistenti con valori non singoli si usa Java Collection. Ad esempio:
 
-    ```
+    ```java
     protected Set<Purchase> purchases;
     ```
 
@@ -1942,7 +1942,7 @@ Invece per le proprietà persistenti:
 
 - Si devono seguire le convenzioni sui metodi tipiche dei JavaBean cioè devono avere i metodi `getter` e `setter`: `getProperty()`, `setProperty()`, `isProperty()`. Ad esempio, se è stata creata la classe `Customer` con proprietà persistenti, con una variabile di istanza privata chiamata `firstName` di tipo `String`, i metodi saranno:
 
-    ```
+    ```java
     public String getFirstName() {
         return name;
     }
@@ -1954,7 +1954,7 @@ Invece per le proprietà persistenti:
 
 - Per le proprietà persistenti con valori non singoli si usa Java Collection. Ad esempio:
 
-    ```
+    ```java
     public Set<Purchase> getPurchases() {
         return purchases;
     }
@@ -1963,7 +1963,8 @@ Invece per le proprietà persistenti:
 Ogni Entity deve avere un identificatore unico perchè nel mondo relazionale esistono le primary key. La chiave primaria di una Entity può essere semplice o composta:
 
 - **Chiave primaria semplice**: si usa l'annotazione `javax.persistence.Id` sulla proprietà o sul campo che deve ricoprire il ruolo di chiave:
-    ```
+
+    ```java
     @Entity
     public class Project {
         @Id
@@ -1975,7 +1976,8 @@ Ogni Entity deve avere un identificatore unico perchè nel mondo relazionale esi
     ```
 - **Chiave primaria composita**: si usa quando un'entità ha più campi o proprietà come chiave primaria
 persistenti. Si usano le annotazioni `javax.persistence.EmbeddedId` oppure `javax.persistence.IdClass`:
-    ```
+
+    ```java
     @Entity @IdClass(ProjectId.class)
     public class Project {
         @Id
@@ -1995,7 +1997,7 @@ persistenti. Si usano le annotazioni `javax.persistence.EmbeddedId` oppure `java
     Quando un'entità ha più campi chiave primaria, JPA richiede la definizione di una classe ID _speciale_ collegata alla classe dell'entità utilizzando l'annotazione `@IdClass`. La classe ID riflette i campi della chiave primaria e i suoi oggetti rappresentano i valori della chiave primaria. 
     Un modo alternativo per rappresentare una chiave primaria composita consiste nell'utilizzare una classe incorporabile: 
 
-    ```
+    ```java
     @Entity
     public class Project {
         @EmbeddedId
@@ -2020,7 +2022,7 @@ Per quanto riguarda la chiave primaria:
 - Serializzabile.
 - Se la classe contiene campi/proprietà multiple della classe Entity, nomi e tipi dei campi/proprietà nella chiave devono fare match con quelli nella classe Entity.
 
-```
+```java
 @Entity
 public final class LineItemKey implements Serializable {
 
@@ -2068,7 +2070,7 @@ In JPA, c'è il supporto all'ereditarietà e al polimorfismo. Una classe Entity 
 
 Le classi Entity possono essere sia astratte che concrete. Se una query è effettuata su un Entity astratta, si opera su tutte le sue sottoclassi non astratte.
 
-```
+```java
 @Entity
 public abstract class Employee {
 
@@ -2098,7 +2100,7 @@ public class PartTimeEmployee extends Employee {
 
 Esiste anche un'altra annotazione `@MappedSuperclass`: lo stato definito in questa classe, è stato persistente **solo** per le sue classi figlie. Gli oggetti creati dalle classi figlie saranno persistenti ma gli oggetti marcati con `@MappedSuperclass` non sono entità persistenti. Questa annotazione evita di creare tabelle inutili quando non servono.
 
-```
+```java
 @MappedSuperclass
 public class Employee {
 
@@ -2158,7 +2160,7 @@ Ci sono quattro tipologie di molteplicità che corrispondono a quelle delle rela
 
 Nel mondo ad oggetti, non si cattura questo aspetto che c'è nel mondo relazione per cui è importante aggiungere l'annotazione nella classe Entity che si sta costruendo sopra al campo/proprietà appropriata:
 
-```
+```java
 @OneToMany
 public Set<Purchase> getPurchases() {
     return purchases;
@@ -2171,7 +2173,7 @@ public Set<Purchase> getPurchases() {
 
 Le relazioni possono essere monodirezionale o bidirezionali. Nella relazione bidirezionale, ogni entità ha un campo o una proprietà che riferisce l’altra entità. Ad esempio, una classe `Ordine` al cui interno ha un campo che indica gli oggetti dell'ordine e una classe `Oggetto` che al suo interno ha un campo che indica a quale ordine appartiene. Questo tipo di relazioni sono utili in caso di gestione di query da parte del container, per capire se le query possono _navigare_ da un’entità all’altra. Ad esempio, utilizzate per capire quali relazioni cancellare. Sembra normale che se si cancella un ordine non venga cancellato chi l'ha fatto ma il contrario. Per questo motivo è importante stabilire chi è il proprietario della relazione con il membro `@mappedBy`:
 
-```
+```java
 @OneToMany(cascade=REMOVE, mappedBy="customer")
 public Set<Order> getOrders() {
     return orders;
@@ -2194,7 +2196,7 @@ L’Entity Manager può essere utilizzato demandando completamente la gestione a
 
 Il contesto è automaticamente propagato dal container ai componenti applicativi. L'injection avviene tramite l'annotazione `@PersistenceContext` e viene passato all'Entity Manager. In questo senso, l’Entity Manager è container-managed poiché il contesto di persistenza è direttamente passato ai componenti:
 
-```
+```java
 @PersistenceContext
 EntityManager em;
 ```
@@ -2207,7 +2209,7 @@ Il tutto è interlacciato con le transazioni. Le transazioni JTA eseguono genera
 
 Il contesto di persistenza non è propagato ai componenti applicativi e il ciclo di vita delle istanze dell'Entity Manager è gestito direttamente dall’applicazione. Viene usato quando l’applicazione necessita di diversi contesti di persistenza e di diverse istanze di Entity Manager correlate. In questo caso, si usa il metodo `createEntityManager()` di `javax.persistence.EntityManagerFactory` per crearsi un Entity Manager:
 
-```
+```java
 @PersistenceUnit
 EntityManagerFactory emf;
 EntityManager em = emf.createEntityManager();
@@ -2241,7 +2243,7 @@ Le istanze Entity nello stato new diventano gestite e persistenti se viene invoc
 
 Questo comporta che i dati saranno memorizzati nel DB quando la transazione associata a `persist()` sarà completata.
 
-```
+```java
 @PersistenceContext
 EntityManager em;
 
@@ -2272,7 +2274,7 @@ Dallo stato managed entity, le Entity possono essere rimosse tramite `remove()` 
 
 I dati relativi alla Entity sono effettivamente rimossi dal DB solo a transazione completata o come risultato di una operazione esplicita di `flush`:
 
-```
+```java
 public void removeOrder(Integer orderId) {
     try {
         Order order = em.find(Order.class, orderId);
@@ -2299,7 +2301,7 @@ Le unità di persistenza sono definite all’interno di un file XML chiamato
 `persistence.xml`, distribuito insieme al file EJB-JAR o WAR, a seconda
 dell’applicazione sviluppata:
 
-```
+```xml
 <persistence>
     <persistence-unit name="OrderManagement">
         <description> Questa unità gestisce ordini e clienti</description>
@@ -2323,7 +2325,7 @@ Gli elementi `jar-file` e `class` specificano le classi relative all’unità di
 
 Il metodo `createQuery()` permette la costruzione di query dinamiche, ovvero query definite all’interno della business logic:
 
-```
+```java
 public List findWithName(String name) {
 
     return em.createQuery(
@@ -2337,7 +2339,7 @@ public List findWithName(String name) {
 Il metodo `createNamedQuery()` si utilizza invece per creare query
 statiche, ovvero definite a livello di annotazione tramite `@NamedQuery` ma non sono query compilate prima dell'esecuzione:
 
-```
+```java
 @NamedQuery(
     name="findAllCustomersWithName",
     query="SELECT c FROM Customer c WHERE c.name LIKE :custName")
@@ -2381,7 +2383,7 @@ Si possono definire listener o metodi di callback che saranno invocati dal provi
 
 Per usare metodi di callback, occorre annotare i metodi di callback desiderati nella classe della Entity:
 
-```
+```java
 @Entity
 @EntityListener(com.acme.AlertMonitor.class)
 public class AccountBean implements Account {
@@ -2413,7 +2415,7 @@ public class AccountBean implements Account {
 
 o definirli all’interno di una classe listener separata:
 
-```
+```java
 public class AlertMonitor {
     @PostPersist
     public void newAccountAlert(Account acct) {
@@ -2482,7 +2484,7 @@ In lettura, non ci sono problemi mentre in scrittura ci possono essere alcuni pr
 
 Per l’invalidazione della cache si usa una strategia ottimistica poiché si assume che la maggior parte delle transazioni verso il DB non sono in conflitto con le altre transazioni. In caso di collisioni, si effettua un versioning dei dati. Si inserisce nella tabella del database una colonna in più che si indica con l'annotazione `@Version`:
 
-```
+```java
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -2498,21 +2500,21 @@ public class Order {
 
 Questo numero viene gestito in modo automatico dal layer di persistenza anche se si perde un pò di trasparenza dato che nella tabella del DB ci sarà una colonna in più. Ogni volta che avviene una scrittura sul record del DB viene aggiornato questo valore:
 
-```
+```sql
 update orders set description=?, status=?, version=? where id=? and
 version=?
 ```
 
 In questo modo, si eliminano i problemi di inconsistenza. Ad esempio, ci sono due utenti (Bob e Alice) che hanno sessioni diverse ma che condividono la cache di secondo livello. Alice decide di approvare l’ordine per cui lo stato è aggiornato sul DB. Il fatto di persistere l’aggiornamento del dato incrementa version counter a 2:
 
-```
+```sql
 update orders set description=?, status=?, version=2 where id=? and
 version=1
 ```
 
 Nel frattempo Bob, ad esempio nella sua GUI, ha ancora la vecchia versione dei dati (version=1). Quando lancia un update all’ordine, la query eseguita risulta essere:
 
-```
+```sql
 update orders set description=?, status=?, version=2 where id=? and
 version=1
 ```
@@ -2543,7 +2545,7 @@ Lo stile è drasticamente differente da SQL per la ricerca di dati nel DB. L'ide
 - Permettere a Hibernate di costruire trasparentemente un criterio di
 scelta (criteria) usando l’istanza come esempio.
 
-```
+```java
 // cerca gli oggetti persona tramite un oggetto di esempio
 Criteria crit = sess.createCriteria(Person.class);
 Person person = new Person();
@@ -2576,7 +2578,7 @@ Tra gli esempi di sistemi di messaging ci sono le transazioni commerciali che us
 
 Si possono avere due modelli di messaging:
 
-- point to point;
+- point-to-point;
 - publish subscribe.
 
 Le principali caratteristiche sono:
@@ -2790,7 +2792,7 @@ I passaggi per costruire un JMS Sender sono:
 
 - Ottenere un oggetto `ConnectionFactory` e un oggetto `Destination` (`Topic` o `Queue`) attraverso JNDI:
 
-```
+```java
 // Ottiene oggetto InitialContext
 Context jndiContext = new InitialContext();
 
@@ -2804,7 +2806,7 @@ Topic weatherTopic = (Topic) jndiContext.lookup("WeatherData");
 
 - Creare una `Connection`:
 
-```
+```java
 // Richiede la creazione di un oggetto Connection
 // all’oggetto ConnectionFactory
 TopicConnection topicConnection = factory.createTopicConnection();
@@ -2812,7 +2814,7 @@ TopicConnection topicConnection = factory.createTopicConnection();
 
 - Creare una `Session` per inviare/ricevere messaggi:
 
-```
+```java
 // Crea un oggetto Session da Connection:
 // primo parametro controlla transazionalità
 // secondo specifica il tipo di ack
@@ -2821,7 +2823,7 @@ TopicSession session = topicConnection.createTopicSession(false, session.CLIENT_
 
 - Creare un oggetto `MessageProducer` (`TopicPublisher` o `QueueSender`):
 
-```
+```java
 // Richiede la creazione di un oggetto MessageProducer
 // all’oggetto Session
 // TopicPublisher per Pub/Sub
@@ -2831,7 +2833,7 @@ TopicPublisher publisher = session.createPublisher(weatherTopic);
 
 - Avviare la `Connection`:
 
-```
+```java
 // Avvia la Connection
 // Fino a che la connessione non è avviata, il
 // flusso dei messaggi non comincia: di solito
@@ -2842,7 +2844,7 @@ topicConnection.start();
 
 - Inviare o pubblicare messaggi:
 
-```
+```java
 // Creazione del messaggio
 TextMessage message = session.createMessage();
 message.setText("text:35 degrees");
@@ -2853,7 +2855,7 @@ publisher.publish(message);
 
 - Chiudere `Session` e `Connection`:
 
-```
+```java
 session.close();
 topicConnection.close();
 ```
@@ -2866,14 +2868,14 @@ I passaggi per costruire un JMS Receiver (non-blocking) sono:
 - Creare un oggetto `Session` per inviare/ricevere messaggi.
 - Creare un oggetto `MessageConsumer` (`TopicSubscriber` o `QueueReceiver`):
 
-```
+```java
 // Crea oggetto Subscriber da Session
 TopicSubscriber subscriber = session.createSubscriber(weatherTopic);
 ```
 
 - Registrare `MessageListener` per modalità non-blocking:
 
-```
+```java
 // Crea oggetto MessageListener
 WeatherListener myListener = new WeatherListener();
 
@@ -2907,7 +2909,7 @@ Se ci sono sessioni con transazionalità, vi è un ACK automatico al commitment,
 
 I vari tipi di ACK dipendono da chi stimola l'ACK:
 
-- **Auto acknowledgment**: ACK generato automaticamente dal supporto JMS dai metodi `MessageConsumer.receive()` o `MessageListener.onMessage()` dopo la return del metodo (se ha successo).
+- **Auto acknowledgment**: ACK generato automaticamente dal supporto JMS dai metodi `MessageConsumer.receive()` o `MessageListener.onMessage()` dopo la `return` del metodo (se ha successo).
 - **Client acknowledgment**: il cliente a livello applicativo si fa carico di inviare l’ACK con la chiamata al metodo `acknowledge()`, questo è cumulativo, quindi, conferma tutti i messaggi inviati nell’intervallo che è passato dal penultimo ACK a quello corrente.
 - **Lazy acknowledgment**: viene inviato saltuariamente senza limiti nel numero di messaggi, sempre in modo cumulativo. Questo tipo di ACK è inviato dal supporto ovvero da JMS stesso.
 
@@ -2917,7 +2919,7 @@ In produzione si può avere una semantica bloccante per la `send()`. Il client m
 
 Nell’invio dei messaggi vi sono due diversi modi di gestire la persistenza che si differenziano per la modalità di consegna. La modalità persistent richiede la persistenza quindi il provider ha la responsabilità di non perdere il messaggio e questo grazie allo storage è possibile. Il non persistent non dà garanzie rispetto al fault ma non ha problemi relativi al collo di bottiglia generato dallo storage quindi è possibile sostenere un high rate nell’invio con migliori performance. La modalità di consegna si imposta con il metodo `setDeliveryMode()` dell’interfaccia `MessageProducer`:
 
-```
+```java
 \\ metodo dell’interfaccia MessageProducer
 producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 ```
@@ -2930,9 +2932,9 @@ Vi è un trade-off tra il numero di ACK che si può inviare, l’overhead che si
 
 Attributo che fa parte dell’header del messaggio (`JMSPriority`), a livello di API, quindi è una parte funzionale che tutti devono trattare. Sono attributi che sono sempre visibili dall’API, questa è una decisione forte a livello di supporto presa al momento della progettazione.
 
-La priorità è impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il TimeToLive (TTL). La priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4. Per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo `setPriority()` mentre il TTL si imposta con `setTimeToLive()` dell’interfaccia `MessageProducer`:
+La priorità è impostabile sia a livello di produttore del messaggio sia per il singolo messaggio, funziona allo stesso modo anche il `TimeToLive` (TTL). La priorità ha una scala di importanza da 0 a 9 e a default è impostato a 4. Per il TTL bisogna invece impostare il valore in secondi. La priorità si imposta con il metodo `setPriority()` mentre il TTL si imposta con `setTimeToLive()` dell’interfaccia `MessageProducer`:
 
-```
+```java
 // metodi nell’interfaccia MessageProducer
 producer.setTimeToLive(60000);
 producer.setPriority(7);
@@ -2960,7 +2962,7 @@ Per l'advanced reliability:
 
 ### Durable Subscription
 
-Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Se un durable subscriber non ha clienti attivi, il provider JMS mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene l'expiration (la scadenza). All’interno di una singola applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
+Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Il provider JMS mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene l'expiration (la scadenza). All’interno di una singola applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3035,11 +3037,11 @@ Nell’architettura SOA non importa quale è la tecnologia utilizzata ma si poss
 ![WSDL-Light](./img/img23-light.png#gh-light-mode-only)
 ![WSDL-Dark](./img/img23-dark.png#gh-dark-mode-only)
 
-L’integrazione è un grosso problema: solo il 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
-
 <a href="#indice">Torna all'indice</a>
 
 ### Enterprise Application Integration (EAI)
+
+L’integrazione è un grosso problema: solo il 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
 
 L’Enterprise Application Integration si occupa dell’integrazione di queste applicazioni, costruendo intorno a queste applicazioni degli strumenti che le integrano.
 
@@ -3082,7 +3084,7 @@ L'ESB è la realizzazione della seconda architettura. L'idea principale è quell
 
 - La possibilità di mandare e ricevere messaggi.
 - Possibilità di registrare i servizi che si affacciano al bus.
-- Orchestrare l'integrazione tra i vari servizi che si affacciano cioè vuol dire gestire il flusso di esecuzione complessivo che deriva dall'interazione tra i componenti e gestisce le varie interazioni
+- Orchestrare l'integrazione tra i vari servizi che si affacciano cioè vuol dire gestire il flusso di esecuzione complessivo che deriva dall'interazione tra i componenti e gestisce le varie interazioni.
 
 ESB consente di utilizzare tanti e diversi protocolli per scambiare le informazioni, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta WSDL, si descriverà con un biding concreto gli endpoint da offrire al mondo esterno, e ESB funge da _orchestratore_ nel mezzo risparmiando al programmatore di fare l’integrazione poiché è compito del supporto. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti (ad esempio, abilitare un routing rispetto ad un altro) e nei vari servizi aggiuntivi come auditing e logging.
 
