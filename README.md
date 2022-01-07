@@ -700,7 +700,7 @@ Le interfacce possono essere remote o locali a seconda se la comunicazione del c
 
 Per prima cosa bisogna implementare le interfacce `EJBHome` e `EJBObject`. Di seguito viene riportato un esempio di come si dovrebbe scrivere queste interfacce:
 
-```
+```java
 // EJBHome
 package com.ejb_book.interest;
 
@@ -712,7 +712,7 @@ public interface InterestHome extends EJBHome{
 }
 ```
 
-```
+```java
 // EJBObject
 package com.ejb_book.interest;
 
@@ -763,7 +763,7 @@ Inoltre, c'è un altro possibile uso delle interfacce locali. Un Session Bean pu
 
 Questa possibilità è stata introdotta a partire da EJB 2.0 anche se alcune implementazioni avevano già adottato delle ottimizzazioni senza che fossero inserite ufficialmente nello standard.
 
-```
+```java
 // EJBHome
 package com.ejb_book.interest;
 
@@ -776,7 +776,7 @@ public interface InterestLocalHome extends EJBLocalHome {
 }
 ```
 
-```
+```java
 // EJBObject
 package com.ejb_book.interest;
 
@@ -807,7 +807,7 @@ Per interagire con un componente EJB il cliente deve:
 - Invocare i metodi di business tramite l’oggetto EJB Object.
 - Effettuare il clean up finale per liberare le risorse. Perchè occupare un'istanza che non si usa?
 
-```
+```java
 public class InterestClient {
 
     public static void main (String[] args) throws CreateException, RemoteException, NamingException {
@@ -880,19 +880,19 @@ Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni c
 Le annotazioni sono state già viste sicuramente in altri corsi anche se non si sapeva che si chiamassero in questo modo. Di seguito vengono riportati alcuni esempi:
 
 - `@Overrided`:
-    ```
+    ```java
     @Override
     public String toString() {
         ...
     }
-    ```
+    ```java
 - `@Deprecated`:
     ```
     @Deprecated
     public class ExampleClass { ... }
     ```
 - `@SuppressWarnings`:
-    ```
+    ```java
     @SuppressWarnings("unchecked")
     public void aMethod() {
         ...
@@ -925,7 +925,7 @@ Con **membro** si intende il _parametro di ingresso_ dell'annotazione.
 
 Nel paragrafo della definizione, è stata usata la parola _decora_ proprio perchè vengono aggiunte all'esterno del metodo, classe, interfaccia. Ad esempio:
 
-```
+```java
 @Override
 public String toString() {
     ...
@@ -949,7 +949,7 @@ Le annotazioni si possono classificare nel seguente modo:
 
 Di seguito viene riportato un esempio di come scrivere un'annotazione personalizzata:
 
-```
+```java
 public @interface GroupTODO {
     public enum Severity {CRITICAL, IMPORTANT, TRIVIAL} ;
     Severity severity() default Severity.IMPORTANT;
@@ -962,7 +962,7 @@ Si noti che le annotazioni personalizzate sono di tipo `@interface`.
 
 Adesso, la si può aggiungere, ad esempio, ad un metodo:
 
-```
+```java
 @GroupTODO (
     severity = GroupTODO.Severity.CRITICAL;
     item = "Figure out the amount of interest per month"
@@ -991,28 +991,28 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 - `@Target`: specifica il tipo di elemento al quale si può allegare tale tipo di annotazione (campo, metodo, classe, interfaccia etc):
 
-    ```
+    ```java
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } )
     public @interface ExampleAnnotation { ... }
     ```
 
 - `@Documented`: specifica che le annotazioni di tale tipo faranno parte della Javadoc:
 
-    ```
+    ```java
     @Documented
     public @interface ExampleAnnotation { ... }
     ```
 
 - `@Inherited`: questo tipo di annotazione funziona **solo** se apposta ad una classe. Il tipo di annotazione verrà automaticamente ereditato dalle sottoclassi della classe alla quale viene allegata:
 
-    ```
+    ```java
     @Target ( { ElementType.METHOD,ElementType.PACKAGE } )
     public @interface ExampleAnnotation { ... }
     ```
 
 - `@Retention`: politica di mantenimento in memoria con cui il compilatore e JVM devono gestire le annotazioni:
 
-    ```
+    ```java
     @Inherited
     public @interface ExampleAnnotation { ... }
     ```
@@ -1100,35 +1100,35 @@ In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice 
 
 - `bind`: consente di associare ad un nome logico un oggetto. È importante che il nome non deve essere associato già ad alcun oggetto:
 
-    ```
+    ```java
     void bind(String stringName, Object object)
     ```
 
 - `rebind`: consente di riassegnare al nome logico un nuovo oggetto:
 
-    ```
+    ```java
     void rebind(String stringName, Object object)
     ```
 
 - `lookup`: consente di cercare l'oggetto che corrisponde al nome logico dato come parametro di ingresso:
 
-    ```
+    ```java
     Object lookup(String stringName)
     ```
 - `unbind`: consente di togliere dalla tabella la riga che corrisponde:
 
-    ```
+    ```java
     void unbind(String stringName)
     ```
 - `rename`: Consente di cambiare nome logico:
 
-    ```
+    ```java
     void rename(String stringOldName, String stringNewName)
     ```
 
 - `listBindings`: restituisce tutte le entry che si trovano nel sistema di nomi che fanno matching con la stringa di ingresso. In RMI, non è possibile avere due entry con lo stesso nome logico ma ci potrebbero essere dei sistemi di nomi che lo consentono:
 
-    ```
+    ```java
     NamingEnumeration listBindings(String stringName)
     ```
 
@@ -1143,43 +1143,43 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 - `bind`: associa un nome a un oggetto e memorizza gli attributi specificati nella entry corrispondente. È importante che il nome non deve essere associato già ad alcun oggetto:
 
-    ```
+    ```java
     void bind(String stringName, Object object, Attributes attributes)
     ```
 
 - `rebind`: consente di riassegnare al nome logico un nuovo oggetto:
 
-    ```
+    ```java
     void rebind(String stringName, Object object, Attributes attributes)
     ```
 
 - `createSubcontext`: crea un sottocontesto, eventualmente con attributi. Bisogna immaginarsi come una cartella del file system. Al suo interno si possono creare altre cartelle:
 
-    ```
+    ```java
     DirContext createSubcontext(String stringName, Attributes attributes)
     ```
 
 - `getAttributes`: restituisce gli attributi associati con l’entry specificata:
 
-    ```
+    ```java
     Attributes getAttributes(String stringName)
     ```
 
 - `getAttributes`: restituisce gli attributi specificati nell’array fornito:
 
-    ```
+    ```java
     Attributes getAttributes(String stringName, String [] rgstringAttributeNames)
     ```
 
 - `modifyAttributes`: modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
-    ```
+    ```java
     void modifyAttributes(String stringName, int nOperation, Attributes attributes)
     ```
 
 - `modifyAttributes`: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
-    ```
+    ```java
     void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
     ```
 
@@ -1189,14 +1189,14 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 - Per prima cosa, serve scegliere un naming service provider. Ad esempio, OpenLDAP o un’altra implementazione di LDAP. Dopo, bisogna aggiungere il nome del provider all’insieme di proprietà di ambiente in un oggetto `Hashtable`:
 
-    ```
+    ```java
     Hashtable hashtableEnvironment = new Hashtable();
     hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
     ```
 
 - Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider. Ad esempio, per LDAP, l'URL che identifica il servizio, context radice, nome e password per connessione:
 
-    ```
+    ```java
     hashtableEnvironment.put(Context.PROVIDER_URL, "ldap://localhost:389/dc=etcee,dc=com");
     hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
     hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
@@ -1204,13 +1204,13 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 - Si crea l'oggetto `InitialContext`:
 
-    ```
+    ```java
     Context context = new InitialContext(hashtableEnvironment);
     ```
 
     Invece, se il servizio di naming è una Directory si crea un oggetto `InitialDirContext`:
 
-    ```
+    ```java
     DirContext context = new InitialDirContext(hashtableEnvironment);
     ```
 
@@ -1292,7 +1292,7 @@ Per specificare che tipo di componente si vuole usare, si aggiungono al codice l
 
 Grazie all'uso delle annotazioni è possibile riscrivere le interfacce in modo POJI (Plain Old Java Interface) cioè l'interfaccia viene riscritta in un modo più simile a quello di come viene scritta un'interfaccia _normale_.
 
-```
+```java
 @Remote
 public interface Payroll {
     public void setTaxDeductions(int empId, int deductions);
@@ -1303,7 +1303,7 @@ Le annotazioni che si usano sono: `@Remote`, `@Local`, `@WebService`. Come sugge
 
 Queste annotazioni si possono specificare a livello di classe o di interfaccia. Nell'esempio di sopra, viene inserita a livello di interfaccia mentre di seguito la stessa interfaccia viene scritta senza annotazione perchè verrà specificata nella classe che lo sviluppatore andrà a scrivere:
 
-```
+```java
 public interface Payroll {
     public void setTaxDeductions(int empId, int deductions);
 }
@@ -1311,7 +1311,7 @@ public interface Payroll {
 
 Invece, di seguito è riportato come un pezzo di codice che mostra come venivano scritte le interfacce in EJB 2.X:
 
-```
+```java
 // interfaccia locale di EJBHome
 public interface PayrollHome extends javax.ejb.EJBLocalHome {
     public Payroll create() throws CreateException;
@@ -1327,7 +1327,7 @@ Si può notare la differenza di scrittura di codice nelle due versioni.
 
 Anche la classe che deve scrivere lo sviluppatore con la logica di Business con l'uso delle annotazioni è diventata molto più semplice:
 
-```
+```java
 @Stateless
 public class PayrollBean implements Payroll {
 
@@ -1340,7 +1340,7 @@ public class PayrollBean implements Payroll {
 
 Si noti la differenza di codice rispetto a EJB 2.X:
 
-```
+```java
 public class PayrollBean implements javax.ejb.SessionBean {
     SessionContext cxt;
         
@@ -1368,7 +1368,7 @@ Per definire che tipo di componente si sta usando lo si deve inserire a livello 
 
 Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'interfaccia `jms.MessageListener` come in EJB 2.X e usare l'annotazione `@MessageDriven`:
 
-```
+```java
 @MessageDriven
 public class PayrollMDB implements javax.jms.MessageListener {
     public void onMessage(Message msg) {
@@ -1385,7 +1385,7 @@ Le risorse di un Bean sono _iniettate_ dal container. In questo modo lo sviluppa
 
 Di seguito è riportato un pezzo di codice di EJB 3.X:
 
-```
+```java
 @EJB
 ShoppingCart myCart;
 
@@ -1398,7 +1398,7 @@ Collection widgets = myCart.startToShop("widgets");
 
 Qui è riportato come bisogna ottenere una risorsa in EJB 2.X:
 
-```
+```java
 Context initialContext = new InitialContext();
 ShoppingCartHome myCartHome = (ShoppingCartHome) initialContext.lookup("java:comp/env/ejb/cart");
 ShoppingCart myCart = myCartHome.create();
@@ -1437,37 +1437,37 @@ Più precisamente, il container si occupa dell’injection della risorsa nel com
 
 - **Campo**: all’inizializzazione del componente:
 
-    ```
-        public class SomeClass {
-            @Resource
-            private javax.sql.DataSource myDB;
-        }
+    ```java
+    public class SomeClass {
+        @Resource
+        private javax.sql.DataSource myDB;
+    }
     ```
 
 - **Metodo**: all’inizializzazione del componente:
 
-    ```
-        public class SomeClass {
-            private javax.sql.DataSource myDB;
+    ```java
+    public class SomeClass {
+        private javax.sql.DataSource myDB;
             
-            ...
+        ...
             
-            @Resource
-            private void setmyDB(javax.sql.DataSource ds) {
-                myDB = ds;
-            }
-            
-            ... 
-            
+        @Resource
+        private void setmyDB(javax.sql.DataSource ds) {
+            myDB = ds;
         }
+            
+        ... 
+            
+    }
     ```
 
 - **Classe**: a runtime, by need cioè solo quando si ha necessità di
 accedere alla risorsa iniettata:
 
-    ```
-        @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory")
-        public class SomeMessageBean { ... }
+    ```java
+    @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory")
+    public class SomeMessageBean { ... }
     ```
 
     In questo caso è obbligatorio utilizzare gli elementi `name` e `type` perchè altrimenti non si saprebbe a quale campo l'annotazione `@Resource` viene associata.
@@ -1479,7 +1479,7 @@ I vantaggi e gli svantaggi di usare un modo rispetto altro sono:
 
 Nel caso di risorse multiple si usa l'annotazione `@Resources` a livello classe:
 
-```
+```java
 @Resources({
     @Resource(name="myMessageQueue", type="javax.jms.ConnectionFactory"),
     @Resource(name="myMailSession", type="javax.mail.Session")
@@ -1495,7 +1495,7 @@ Ovviamente il codice deve essere riutilizzabile per non perdere tutto quello che
 
 Le nuove applicazioni EJB 3.X possono essere clienti di vecchi Bean:
 
-```
+```java
 // Vista cliente da EJB 3.X di un bean EJB 2.X
 
 @EJB
@@ -1510,7 +1510,7 @@ Come si può notare dal codice, nell'annotazione EJB è stato specificato `EJBHo
 
 Anche i nuovi Bean conformi a EJB 3.X possono essere utilizzati sulle vecchie applicazioni:
 
-```
+```java
 // Vista cliente da EJB 2.X di un bean conforme a EJB 3.X
 
 Context initialContext = new InitialContext();
@@ -1713,7 +1713,7 @@ completamento della transazione (con `commit` o `rollback`).
 
 Un esempio di codice è riportato di seguito:
 
-```
+```java
 import static TransactionAtributeType.*;
 
 @Stateless
@@ -1733,7 +1733,7 @@ public class TravelAgentBean implements TravelAgentRemote {
 
 La gestione delle transazioni è a carico dele programmatore, la complessità è molto maggiore ma anche la flessibilità. Un esempio di codice è riportato di seguito:
 
-```
+```java
 // EJB 3.0: Bean-managed transaction
 @TransactionManagement(BEAN)
 @Stateless
@@ -1800,7 +1800,7 @@ Le annotazioni più importanti sono:
 
 La determinazione dei ruoli di sicurezza svolta a runtime dal container. Infatti, il container verifica quale ruolo sta coprendo un determinato utente al momento della richiesta. Di seguito viene riportato un esempio di codice:
 
-```
+```java
 @Stateless
 public PayrollBean implements Payroll {
 
@@ -1827,7 +1827,7 @@ Le annotazioni che si usano sono due:
 - `@Interceptors`: per associare una classe/metodo di un componente di business alla classe intercettore correlata.
 - `@AroundInvoke`: per definire quale metodo della classe intercettore eseguire all’atto dell’intercettazione.
 
-```
+```java
 //classe Profiler
 public class Profiler {
 
