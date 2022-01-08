@@ -13,46 +13,40 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
 </div>
 
 <!-- INDICE -->
+## Indice
+- [Modelli](#modelli)
+    - [Componente](#componente)
+    - [Differenza tra un componente ed un oggetto](#differenza-tra-un-componente-ed-un-oggetto)
+    - [Modelli](#modelli-1)
+    - [Deployment](#deployment)
+    - [Architetture applicazioni Enterprise (1)](#architetture-applicazioni-enterprise-1)
+    - [Modelli a contenimento](#modelli-a-contenimento)
+    - [J2EE](#j2ee)
+    - [Architetture applicazioni Enterprise (2)](#architetture-applicazioni-enterprise-2)
+- [EJB 2.X](#ejb-2x)
+    - [Scenari applicativi](#scenari-applicativi)
+    - [Principi di design](#principi-di-design)
+    - [Architettura](#architettura)
+    - [JNDI](#jndi)
+    - [Contratti](#contratti)
+    - [EJB container](#ejb-container)
+    - [Tipologie di componenti Bean](#tipologie-di-componenti-bean)
+    - [Session Bean](#session-bean)
+    - [Entity Bean](#entity-bean)
+    - [Message Driven Bean](#message-driven-bean)
+    - [Interazioni tra Bean](#interazioni-tra-bean)
+    - [Deployment](#deployment-1)
+    - [Ciclo di sviluppo](#ciclo-di-sviluppo)
+    - [Interfacce EJBHome ed EJBObject](#interfacce-ejbhome-ed-ejbobject)
+    - [Invocazione remota](#invocazione-remota)
+    - [Invocazione locale](#invocazione-locale)
+    - [Cliente](#cliente)
+    - [Deployment di un'applicazione](#deployment-di-unapplicazione)
+    - [Problemi riscontrati](#problemi-riscontrati)
+
 <details href="indice" open="open">
   <summary><h2 style="display: inline-block">Indice</h2></summary>
   <ol>
-    <li>
-      <a href="#modelli">Modelli</a>
-      <ul>
-        <li><a href="#componente">Componente</a></li>
-        <li><a href="#differenza-tra-un-componente-ed-un-oggetto">Differenza tra un componente ed un oggetto</a></li>
-        <li><a href="#modelli-1">Modelli</a></li>
-        <li><a href="#deployment">Deployment</a></li>
-        <li><a href="#architetture-applicazioni-enterprise-1">Architetture applicazioni Enterprise (1)</a></li>
-        <li><a href="#modelli-a-contenimento">Modelli a contenimento</a></li>
-        <li><a href="#j2ee">J2EE</a></li>
-        <li><a href="#architetture-applicazioni-enterprise-2">Architetture applicazioni Enterprise (2)</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#ejb-2x">EJB 2.X</a>
-      <ul>
-        <li><a href="#scenari-applicativi">Scenari applicativi</a></li>
-        <li><a href="#principi-di-design">Principi di design</a></li>
-        <li><a href="#architettura">Architettura</a></li>
-        <li><a href="#jndi">JNDI</a></li>
-        <li><a href="#contratti">Contratti</a></li>
-        <li><a href="#ejb-container">EJB container</a></li>
-        <li><a href="#tipologie-di-componenti-bean">Tipologie di componenti Bean</a></li>
-        <li><a href="#session-bean">Session Bean</a></li>
-        <li><a href="#entity-bean">Entity Bean</a></li>
-        <li><a href="#message-driven-bean">Message Driven Bean</a></li>
-        <li><a href="#interazioni-tra-bean">Interazioni tra Bean</a></li>
-        <li><a href="#deployment-1">Deployment</a></li>
-        <li><a href="#ciclo-di-sviluppo">Ciclo di sviluppo</a></li>
-        <li><a href="#interfacce-ejbhome-ed-ejbobject">Interfacce EJBHome ed EJBObject</a></li>
-        <li><a href="#invocazione-remota">Invocazione remota</a></li>
-        <li><a href="#invocazione-locale">Invocazione locale</a></li>
-        <li><a href="#cliente">Cliente</a></li>
-        <li><a href="#deployment-di-unapplicazione">Deployment di un'applicazione</a></li>
-        <li><a href="#problemi-riscontrati">Problemi riscontrati</a></li>
-      </ul>
-    </li>
     <li>
       <a href="#annotazioni">Annotazioni</a>
       <ul>
@@ -347,7 +341,7 @@ Per questo motivo è fondamentale usare un approccio basato su componenti e il t
 Un componente è un _pezzo di software_ che viene scritto dallo sviluppatore ed ha le seguenti caratteristiche:
 
 - Contiene stato, metodi etc. ma espone verso l'esterno solo quei metodi che si decidono che siano visibili all'esterno grazie all'uso di un'interfaccia.
-- Viene eseguito all'interno di un ambiente di esecuzione detto container_/_engine_/_middleware.
+- Viene eseguito all'interno di un ambiente di esecuzione detto container/engine/middleware.
 
 Esempi di componenti sono quelli che si usano per creare le interfacce grafiche con JavaFX: textBox, label, comboBox etc. Quando si clicca su un bottone, non si verifica se effettivamente il mouse è sopra al tasto e lo si schiaccia ma si scrive solo il codice che deve essere eseguito se quel determinato evento si verifica.
 
@@ -366,7 +360,7 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
 
 - **Uguale all'oggetto**: mantiene dettagli di come è implementato: stato, metodi etc ed espone solo alcuni dei suoi dettagli tramite l'interfaccia.
 - **Diverso dall'oggetto**:
-    - Il componente viene eseguito all'interno di un container_/_engine_/_middleware altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
+    - Il componente viene eseguito all'interno di un container/engine/middleware altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
     - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T come la riusabilità.
 
 <a href="#indice">Torna all'indice</a>
@@ -436,7 +430,7 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
             - Nessun problema di aggiornamento del software sul client.
         - **Svantaggi**: Il middle tier resta ancora molto complesso: la logica di business deve far fronte alle problematiche specifiche dell’applicazione e tutti i servizi di sistema (transazioni, concorrenza, sicurezza etc) sono in un’unica base di codice. Non c’è quindi una separazione netta tra la parte funzionale e quella non funzionale.
 
-Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di più i livelli. Come appena visto, il middle tier rimane molto complesso perchè la parte di logica dell’applicazione non è ancora separata da tutti i servizi di sistema. Questo vuol dire che essi vengono duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il _container/engine/middleware_, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
+Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di più i livelli. Come appena visto, il middle tier rimane molto complesso perchè la parte di logica dell’applicazione non è ancora separata da tutti i servizi di sistema. Questo vuol dire che essi vengono duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il container/engine/middleware, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -4268,7 +4262,7 @@ Il contesto nel quale si è inserita la specifica Java è quella del monitoraggi
 
 ![single tier](./img/img124.png)
 
-I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean. Questi MBean sono gestiti attraverso un agente che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti MBean e cliente, quindi, l’agente in un certo senso rende trasparenti gli MBean. In questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi Managed Bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
+I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean. Questi MBean sono gestiti attraverso un agente che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i Bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti MBean e cliente (di management), quindi, l’agente in un certo senso rende trasparenti gli MBean. In questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi Managed Bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
 
 ### Architettura
 
@@ -4326,9 +4320,9 @@ La specifica JMX Remote API definisce come si possa fare l’advertising e trova
 
 ### Standard MBean
 
-Lo standard MBean è il modo più semplice per rendere JMX-managed nuove classi Java. L'interfaccia è statically-typed e dichiara esplicitamente gli attributi tramite metodi getter e setter e le operazioni di gestione. Convenzione sui nomi: quando un managed object viene registrato, l’agente cerca una interfaccia di management con lo stesso nome classe dell’oggetto + suffisso MBean, nel caso, navigando l’albero di ereditarietà della classe:
+Lo standard MBean è il modo più semplice per rendere JMX-managed nuove classi Java. L'interfaccia è statically-typed e dichiara esplicitamente gli attributi tramite metodi `getter` e `setter` e le operazioni di gestione. Convenzione sui nomi: quando un managed object viene registrato, l’agente cerca una interfaccia di management con lo stesso nome classe dell’oggetto + suffisso MBean, nel caso, navigando l’albero di ereditarietà della classe:
 
-```
+```java
 public interface UserMBean{
 
     public long getId();
@@ -4351,9 +4345,9 @@ public class Student extends User {
 
 ### Registrazione MBean su Server
 
-Per registrare un manageable object come un MBean è necessario creare prima ObjectName. Il riferimento all’agente può essere ottenuto da una lista di implementazioni disponibili di MBeanServer o creandolo da zero:
+Per registrare un manageable object come un MBean è necessario creare prima `ObjectName`. Il riferimento all’agente può essere ottenuto da una lista di implementazioni disponibili di MBeanServer o creandolo da zero:
 
-```
+```java
 ObjectName username = new ObjectName("example:name=user1");
 
 List serverList = MBeanServerFactory.findMBeanServer(null);
@@ -4371,7 +4365,7 @@ La registrazione di MBean consiste semplicemente nell’associare il manageable 
 
 L’applicazione di management riferisce MBean passando un riferimento a object name all’agente, per ogni operazione invocata:
 
-```
+```java
 ObjectName username = new ObjectName("example:name=user1");
 
 Object result = server.invoke(
@@ -4389,7 +4383,7 @@ L’architettura JMX definisce un meccanismo di notifica per MBean che consente 
 
 La classe JMX `Notification` estende `EventObject` introducendo campi per il tipo di evento, numero di sequenza, timestamp, messaggio e dati utente opzionali, perciò le notifiche possono essere filtrate, grazie all’implementazione dell’interfaccia `NotificationFilter` è subscribed presso broadcaster MBean, insieme con il listener con il metodo `addNotificationListener()`, il broadcaster deve controllare se la notifica supera il filtro prima di inviarla.
 
-```
+```java
 public interface NotificationFilter {
 
     public boolean isNotificationEnabled(Notification notification);
@@ -4411,7 +4405,7 @@ MBean dinamici implementano l’interfaccia generica `DynamicMBean` che offre me
 
 In MBean dinamici, l’interfaccia di management viene esposta tramite le classi di metadata definite in JMX API, i metadata sono ritrovati dinamicamente dall’agente come istanza della classe `MBeanInfo`, tale classe include tutti gli elementi di metadata, i quali ereditano caratteristiche comuni dalla classe `MBeanFeatureInfo`. Quindi, le informazioni che sono dentro a `MBeanInfo` possono essere modificate anche runtime. Se si ha una classe `Pippo`, e tramite `geBeanInfo()` si ottiene l'oggetto `BeanInfo` per poi andarlo a popolare.
 
-```
+```java
 public class DynamicUser extends NotificationBroadcasterSupport implements DynamicMbean {
 
     // Attributi
@@ -4465,7 +4459,7 @@ Prima di fare la chiamata al metodo `invoke`, `MBeanInfo()` e va a leggere i met
 
 Model MBean sono estensioni di MBean dinamici, essi forniscono un template generico per creare un’implementazione di gestione per risorse esistenti, separare l’implementazione di management dall’implementazione della risorsa, ed estendere metadata di gestione per fornire informazioni addizionali e proprietà behavioral per la gestione di queste funzionalità trasversali: come proprietà di caching, proprietà di sicurezza, proprietà di transazionalità, proprietà di persistenza. Tutte le implementazioni di JMX MBean server devono fornire almeno una implementazione dell’interfaccia `ModelMBean` tramite la classe `RequiredModelMBean`.
 
-```
+```java
 public interface ModelMBean extends DynamicMBean,
   PersistentMBean,
   ModelMBeanNotificationBroadcaster {
@@ -4484,7 +4478,7 @@ public class RequiredModelMBean implements ModelMBean, ... {
 
 Per aggiungere politiche di gestione dei Model MBean si utilizza l’interfaccia `Descriptor`, gli oggetti che implementano l’interfaccia `Descriptor` sono usati nei metadati di Model MBean per aggiungere politiche. Un descrittore è una collezione di coppie nome-valore in base alle quali l’implementazione dell’agente adatta il suo comportamento, le classi di metadata di Model MBean estendono le classi corrispondenti usate con MBean dinamici e standard (implicitamente) e implementano l’interfaccia `DescriptorAccess`.
 
-```
+```java
 public interface Descriptor extends Serializable, Cloneable
 {
     public String[] getFields();
@@ -4509,7 +4503,7 @@ La specifica JMX definisce quattro servizi distinti a livello di agente che devo
 
 Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono trovarsi su macchina locale o su macchina remota, con l’idea di spostare delle configurazioni di una applicazione verso un server remoto. Come ogni altro standard MBean, l’interfaccia MLetMBean espone le operazioni di management considerate rilevanti per il servizio, come `addURL()` e `getMBeansFromURL()`. All’URL specificato da `addURL()` si trovano i file di testo M-Let che descrivono i componenti MBean tramite MLET tag. Sposta la configurazione da macchina locale a macchina remota.
 
-```
+```xml
 <MLET CODE = class | OBJECT =
     serfile
     ARCHIVE = "archiveList"
@@ -4523,7 +4517,7 @@ Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono 
 
 Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e prevede che in una rete locale ci sia un MBean Server che abbia servizi A, B e C a livello agente. Senza M-let, bisognerebbe installare i nodi tutti i servizi A, B e C ma grazie a M-let si può velocizzare il processo. Un possibile file potrebbe essere:
 
-```
+```xml
 <MLET CODE=com.mycompany.Foo
     ARCHIVE=“MyComponents.jar,acme .jar”
 </MLET>
@@ -4533,7 +4527,7 @@ Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e
 
 Il servizio di Timer è basato sul meccanismo di notifica di JMX. TimerMBean è un broadcaster MBean in grado di emettere eventi, per ricevere notifiche dal timer il consumatore deve implementare l’interfaccia `NotificationListener` e registrarsi:
 
-```
+```java
 // fa partire il servizio di timer
 List list = MBeanServerFactory.findMBeanServer(null);
 MBeanServer server = (MBeanServer)list.iterator().next();
@@ -4586,7 +4580,7 @@ Permette di definire relazioni fra altri MBean e di reagire a modifiche (per ese
 
 Dall’architettura iniziale ci si ricorda che c’è una parte client e server con disaccoppiamento forte per ottenere la massima flessibilità delle interazioni dei client con MBean che siano compliant JMX. I connettori sono pezzetti software distribuiti che aiutano a collegare un'applicazione di management con l'MBean Server costituiti da un pezzettino client side (vicino al cliente che funge da Stub) e un pezzettino server side (vicino al MBean Server che funge da Skeleton). In ogni distribuzione JMX, deve esistere sempre l'implementazione del connettore RMI. Inoltre, è disponibile un Registry RMI dove reperire uno stub RMI per il connettore.
 
-```
+```java
 // lato cliente
 
 JMXServiceURL url = new JMXServiceURL(service:jmx:rmi:///jndi/rmi://" + "localhost:9999/server");
@@ -4600,7 +4594,7 @@ mbsc.createMBean(...);
 
 Il cliente crea un RMI Connector Client configurato per connettersi al server RMI connector creato lato server: URL di servizio utilizzato deve fare match con quello usato alla registrazione del servizio di connector. Il connector client è restituito come risultato della connessione al connector server, il cliente ora può registrare MBean ed effettuare operazioni su di essi tramite MBeanServer remoto in modo trasparente alla distribuzione.
 
-```
+```java
 // lato servitore
 MBeanServer mbs = MBeanServer-Factory.createMBeanServer();
 JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + "localhost: 9999/server");
@@ -4617,7 +4611,7 @@ Per quanto riguarda gli adattatori di protocollo, sebbene non siano definiti da 
 
 `HelloMBean.java:` interfaccia MBean che descrive le operazioni e gli attributi di management: 2 operazioni (`sayHello` e `add`) e 2 attributi (`Name` e `CacheSize`):
 
-```
+```java
 package com.example.mbeans;
 
 public interface HelloMBean {
@@ -4635,7 +4629,7 @@ public interface HelloMBean {
 
 `Hello.java` implementa l'interfaccia `HelloMBean`:
 
-```
+```java
 package com.example.mbeans;
 
 public class Hello implements HelloMBean {
@@ -4674,7 +4668,7 @@ public class Hello implements HelloMBean {
 
 `Main.java` deve semplicemente istanziare HelloWorld MBean, registrarlo e attendere:
 
-```
+```java
 package com.example.mbeans;
 import java.lang.management.*;
 import javax.management.*;
@@ -4698,7 +4692,7 @@ public class Main {
 
 Esempio con uso di Notification:
 
-```
+```java
 package com.example.mbeans;
 import javax.management.*;
 
