@@ -43,286 +43,224 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Cliente](#cliente)
     - [Deployment di un'applicazione](#deployment-di-unapplicazione)
     - [Problemi riscontrati](#problemi-riscontrati)
-
-<details href="indice" open="open">
-  <summary><h2 style="display: inline-block">Indice</h2></summary>
-  <ol>
-    <li>
-      <a href="#annotazioni">Annotazioni</a>
-      <ul>
-        <li><a href="#definizione">Definizione</a></li>
-        <li><a href="#sintassi">Sintassi</a></li>
-        <li><a href="#categorie-di-annotazioni">Categorie di annotazioni</a></li>
-        <li><a href="#annotazioni-personalizzate">Annotazioni personalizzate</a></li>
-        <li><a href="#limiti-delle-annotazioni-personalizzate">Limiti delle annotazioni personalizzate</a></li>
-        <li><a href="#meta-annotazioni">Meta-annotazioni</a></li>
-        <li><a href="#politiche-di-retention">Politiche di retention</a></li>
-        <li><a href="#perchè-usarle">Perchè usarle</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#sistemi-di-nomi">Servizio di nomi</a>
-      <ul>
-        <li><a href="#sistemi-di-discovery">Sistemi di Discovery</a></li>
-        <li><a href="#sistemi-di-directory">Sistemi di Directory</a></li>
-        <li><a href="#directory-vs-db">Directory vs DB</a></li>
-        <li><a href="#java-naming-directory-interface-jndi">Java Naming Directory Interface (JNDI)</a></li>
-        <li><a href="#interfaccia-context">Interfaccia Context</a></li>
-        <li><a href="#interfaccia-dircontext">Interfaccia DirContext</a></li>
-        <li><a href="#uso-di-jndi">Uso di JNDI</a></li>
-        <li><a href="#memorizzare-i-dati-in-un-servizio-nomi">Memorizzare i dati in un servizio nomi</a></li>
-        <li><a href="#serializzazione">Serializzazione</a></li>
-        <li><a href="#riferimento">Riferimento</a></li>
-        <li><a href="#attributi">Attributi</a></li>
-        <li><a href="#configurazione-di-jndi">Configurazione di JNDI</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#ejb-3x">EJB 3.X</a>
-      <ul>
-        <li><a href="#annotazioni-e-descrittori-di-deployment">Annotazioni e Descrittori di Deployment</a></li>
-        <li><a href="#tipologie-di-componenti">Tipologie di componenti</a></li>
-        <li><a href="#session-bean-1">Session Bean</a></li>
-        <li><a href="#message-driven-bean-1">Message Driven Bean</a></li>
-        <li><a href="#dependency-injection">Dependency Injection</a></li>
-        <li><a href="#interoperabilità-tra-ejb-3x-e-ejb-2x">Interoperabilità tra EJB 3.X e EJB 2.X</a></li>
-        <li><a href="#servizi-di-sistema">Servizi di sistema</a></li>
-        <li><a href="#pooling-e-concorrenza">Pooling e concorrenza</a></li>
-        <li><a href="#resource-pooling">Resource Pooling</a></li>
-        <li><a href="#activation">Activation</a></li>
-        <li><a href="#transazionalità">Transazionalità</a></li>
-        <li><a href="#container-managed-transaction">Container-Managed Transaction</a></li>
-        <li><a href="#bean-managed-transaction">Bean-Managed Transaction</a></li>
-        <li><a href="#gestione-delle-connessioni-a-risorse">Gestione delle connessioni a risorse</a></li>
-        <li><a href="#persistenza">Persistenza</a></li>
-        <li><a href="#messaggistica">Messaggistica</a></li>
-        <li><a href="#sicurezza">Sicurezza</a></li>
-        <li><a href="#intercettori">Intercettori</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#jpa">JPA</a>
-      <ul>
-        <li><a href="#objectrelational-mapping-orm">Object/Relational Mapping (ORM)</a></li>
-        <li><a href="#java-persistence-api-jpa">Java Persistence API (JPA)</a></li>
-        <li><a href="#perchè-usare-jpa">Perchè usare JPA</a></li>
-        <li><a href="#entity">Entity</a></li>
-        <li><a href="#ereditarietà-e-polimorfismo">Ereditarietà e Polimorfismo</a></li>
-        <li><a href="#strategie-di-mapping">Strategie di Mapping</a></li>
-        <li><a href="#molteplicità-nelle-relazioni">Molteplicità nelle Relazioni</a></li>
-        <li><a href="#direzionalità-delle-relazioni">Direzionalità delle relazioni</a></li>
-        <li><a href="#gestione-a-runtime-di-entity">Gestione a runtime di Entity</a></li>
-        <li><a href="#container-managed-entitymanager">Container-managed EntityManager</a></li>
-        <li><a href="#application-managed-entitymanager">Application-managed EntityManager</a></li>
-        <li><a href="#entity-manager-singoli-vs-multipli">Entity Manager singoli vs multipli</a></li>
-        <li><a href="#ciclo-di-vita">Ciclo di Vita</a></li>
-        <li><a href="#unità-di-persistenza">Unità di Persistenza</a></li>
-        <li><a href="#creazione-di-query">Creazione di Query</a></li>
-        <li><a href="#loading-lazyeager">Loading Lazy/Eager</a></li>
-        <li><a href="#listener-di-entity">Listener di Entity</a></li>
-        <li><a href="#hibernate">Hibernate</a></li>
-        <li><a href="#interfaccia-sessionfactory">Interfaccia SessionFactory</a></li>
-        <li><a href="#interfaccia-session">Interfaccia Session</a></li>
-        <li><a href="#transazioni">Transazioni</a></li>
-        <li><a href="#ciclo-di-vita-1">Ciclo di Vita</a></li>
-        <li><a href="#il-caching-in-hibernate">Il caching in Hibernate</a></li>
-        <li><a href="#fetching-dei-dati">Fetching dei dati</a></li>
-        <li><a href="#query-by-examples-qbe">Query By Examples (QBE)</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#jms">JMS</a>
-      <ul>
-        <li><a href="#perchè-usare-un-servizio-di-messagistica">Perchè usare un servizio di messagistica</a></li>
-        <li><a href="#modello-point-to-point">Modello point-to-point</a></li>
-        <li><a href="#modello-publishsubscriber">Modello publish/subscriber</a></li>
-        <li><a href="#affidabilità-nello-scambio-di-messaggi">Affidabilità nello scambio di messaggi</a></li>
-        <li><a href="#transazionalità-1">Transazionalità</a></li>
-        <li><a href="#sicurezza-1">Sicurezza</a></li>
-        <li><a href="#java-messaging-service-jms">Java Messaging Service (JMS)</a></li>
-        <li><a href="#tipi-di-comunicazioni">Tipi di comunicazioni</a></li>
-        <li><a href="#messaggi-jms">Messaggi JMS</a></li>
-        <li><a href="#interfaccia-destination">Interfaccia Destination</a></li>
-        <li><a href="#interfaccia-connectionfactory">Interfaccia ConnectionFactory</a></li>
-        <li><a href="#interfaccia-connection">Interfaccia Connection</a></li>
-        <li><a href="#interfaccia-session-1">Interfaccia Session</a></li>
-        <li><a href="#interfacce-message-consumer-e-message-producer">Interfacce Message Consumer e Message Producer</a></li>
-        <li><a href="#riassunto-api-jms">Riassunto API JMS</a></li>
-        <li><a href="#uso-di-jms">Uso di JMS</a></li>
-        <li><a href="#affidabilità-dei-messaggi">Affidabilità dei messaggi</a></li>
-        <li><a href="#ack">ACK</a></li>
-        <li><a href="#priorità">Priorità</a></li>
-        <li><a href="#affidabilità">Affidabilità</a></li>
-        <li><a href="#durable-subscription">Durable Subscription</a></li>
-        <li><a href="#gestione-delle-transazioni-di-jms">Gestione delle transazioni di JMS</a></li>
-        <li><a href="#selettori-di-messaggi">Selettori di messaggi</a></li>
-        <li><a href="#jms-in-ejb">JMS in EJB</a></li>
-        <li><a href="#enterprise-service-bus-esb">Enterprise Service Bus (ESB)</a></li>
-        <li><a href="#service-oriented-architecture-soa">Service Oriented Architecture (SOA)</a></li>
-        <li><a href="#web-services">Web Services</a></li>
-        <li><a href="#web-service-description-language-wsdl">Web Service Description Language (WSDL)</a></li>
-        <li><a href="#enterprise-application-integration-eai">Enterprise Application Integration (EAI)</a></li>
-        <li><a href="#hub-and-spoke">Hub-and-Spoke</a></li>
-        <li><a href="#bus-di-interconnessione">Bus di Interconnessione</a></li>
-        <li><a href="#concetti-chiave-di-esb">Concetti chiave di ESB</a></li>
-        <li><a href="#java-business-integration-jbi">Java Business Integration (JBI)</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">CORBA</a>
-      <ul>
-        <li><a href="#">CORBA 2.X</a></li>
-        <li><a href="#">CORBA Component Model (CCM)</a></li>
-        <li><a href="#">Implementazioni CCM disponibili</a></li>
-        <li><a href="#">Comparazione CCM vs. EJB e .NET</a></li>
-        <li><a href="#">Running Example</a></li>
-        <li><a href="#">Componente CCM</a></li>
-        <li><a href="#">Gestione Lifecycle CCM</a></li>
-        <li><a href="#">CORBA Home</a></li>
-        <li><a href="#">Viste di Componenti CCM</a></li>
-        <li><a href="#">Configurazione dinamica dei componenti</a></li>
-        <li><a href="#">Supporto Runtime: Funzionalità Component Server</a></li>
-        <li><a href="#">Executor</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">Spring</a>
-      <ul>
-        <li><a href="#perchè-usare-spring">Perchè usare Spring</a></li>
-        <li><a href="#architettura-1">Architettura</a></li>
-        <li><a href="#aspect-oriented-programming-aop">Aspect Oriented Programming (AOP)</a></li>
-        <li><a href="#joinpoint">Joinpoint</a></li>
-        <li><a href="#advice">Advice</a></li>
-        <li><a href="#pointcut">Pointcut</a></li>
-        <li><a href="#aspect">Aspect</a></li>
-        <li><a href="#weaving">Weaving</a></li>
-        <li><a href="#target">Target</a></li>
-        <li><a href="#dependency-injection-1">Dependency Injection</a></li>
-        <li><a href="#varianti-per-dependency-injection">Varianti per Dependency Injection</a></li>
-        <li><a href="#oggetto-beanfactory">Oggetto BeanFactory</a></li>
-        <li><a href="#injection-di-valori-semplici">Injection di valori semplici</a></li>
-        <li><a href="#injection-di-un-bean-allinterno-della-stessa-factory">Injection di un Bean all’interno della stessa factory</a></li>
-        <li><a href="#naming-dei-componenti">Naming dei Componenti</a></li>
-        <li><a href="#helloworld-con-dependency-injection">HelloWorld con dependency injection</a></li>
-        <li><a href="#considerazioni-sulla-dependency-injection">Considerazioni sulla dependency injection</a></li>
-        <li><a href="#helloworld-con-aop">HelloWorld con AOP</a></li>
-        <li><a href="#intercettori-1">Intercettori</a></li>
-        <li><a href="#transazioni-verso-db">Transazioni verso DB</a></li>
-        <li><a href="#lost-update">Lost Update</a></li>
-        <li><a href="#dirty-read">Dirty Read</a></li>
-        <li><a href="#unrepeatble-read">Unrepeatble Read</a></li>
-        <li><a href="#phantom-row">Phantom Row</a></li>
-        <li><a href="#livelli-di-isolamenti">Livelli di Isolamenti</a></li>
-        <li><a href="#transazionalità-verso-db">Transazionalità verso DB</a></li>
-        <li><a href="#pooling-e-concorrenza-1">Pooling e concorrenza</a></li>
-        <li><a href="#autowiring">Autowiring</a></li>
-        <li><a href="#dependency-checking">Dependency checking</a></li>
-        <li><a href="#applicationcontext">ApplicationContext</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">JMX</a>
-      <ul>
-        <li><a href="#">Java Management Extensions (JMX)</a></li>
-        <li><a href="#">Architettura</a></li>
-        <li><a href="#">Livello instrumentation</a></li>
-        <li><a href="#">Livello Agente</a></li>
-        <li><a href="#">Livello servizi distribuiti</a></li>
-        <li><a href="#">Standard MBean</a></li>
-        <li><a href="#">Registrazione MBean su Server</a></li>
-        <li><a href="#">Invocazione servizi di gestione</a></li>
-        <li><a href="#">Meccanismo di notifica</a></li>
-        <li><a href="#">Dynamic MBean</a></li>
-        <li><a href="#">ModelMBean</a></li>
-        <li><a href="#">Servizi Standard a Livello di Agente</a></li>
-        <li><a href="#">Servizio di M-let</a></li>
-        <li><a href="#">Servizio di Timer</a></li>
-        <li><a href="#">Servizio di Monitoring</a></li>
-        <li><a href="#">Servizio di Relation</a></li>
-        <li><a href="#">JMX remote API</a></li>
-        <li><a href="#">Esempio utilizzo degli MBean</a></li>
-        <li><a href="#">JMX con JBoss/Wildfly</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">JBoss/WildFly Clustering</a>
-      <ul>
-        <li><a href="#">Architettura JBoss</a></li>
-        <li><a href="#">JGroups</a></li>
-        <li><a href="#">HA Partition</a></li>
-        <li><a href="#">Load-Balancing</a></li>
-        <li><a href="#">JBoss Cache</a></li>
-        <li><a href="#">Infinispan</a></li>
-        <li><a href="#">Replicazione Stato HTTP</a></li>
-        <li><a href="#">Replicazione Stato EJB</a></li>
-        <li><a href="#">Clustering di Componenti EJB</a></li>
-        <li><a href="#">Configurazione di JBoss/WildFly</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#big-data">Big Data</a>
-      <ul>
-        <li><a href="#definizione-1">Definizione</a></li>
-        <li><a href="#stream-processing">Stream Processing</a></li>
-        <li><a href="#batch-processing">Batch Processing</a></li>
-        <li><a href="#hadoop-distributed-file-system-hdfs">Hadoop Distributed File System (HDFS)</a></li>
-        <li><a href="#mapreduce">MapReduce</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#nodejs">Node.js</a>
-      <ul>
-        <li><a href="#utilizzo-di-javascript">Utilizzo di Javascript</a></li>
-        <li><a href="#event-loop">Event Loop</a></li>
-        <li><a href="#thread-vs-asynchronous-event-driven">Thread vs Asynchronous Event Driven</a></li>
-        <li><a href="#thread-vs-event">Thread vs Event</a></li>
-        <li><a href="#moduli">Moduli</a></li>
-        <li><a href="#modulo-http">Modulo HTTP</a></li>
-        <li><a href="#npm">NPM</a></li>
-        <li><a href="#modulo-fs">Modulo FS</a></li>
-        <li><a href="#modulo-stream">Modulo Stream</a></li>
-        <li><a href="#modulo-net">Modulo Net</a></li>
-        <li><a href="#modulo-express">Modulo Express</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">Docker</a>
-      <ul>
-        <li><a href="#">Microservizi</a></li>
-        <li><a href="#">DevOps</a></li>
-        <li><a href="#">Container</a></li>
-        <li><a href="#">Docker</a></li>
-        <li><a href="#">Gestione del ciclo di vita del container</a></li>
-        <li><a href="#">Immagini Docker</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">Kubernates</a>
-      <ul>
-        <li><a href="#">Architettura</a></li>
-        <li><a href="#">Etcd</a></li>
-        <li><a href="#">Controller Manager</a></li>
-        <li><a href="#">Cloud Controller Manager</a></li>
-        <li><a href="#">Kubelet</a></li>
-        <li><a href="#">Pod</a></li>
-        <li><a href="#">Service</a></li>
-        <li><a href="#">Kube proxy</a></li>
-        <li><a href="#">Scheduler</a></li>
-        <li><a href="#">Volumi</a></li>
-        <li><a href="#">Network</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">FaaS</a>
-      <ul>
-        <li><a href="#">Serverless come Baas+FaaS</a></li>
-        <li><a href="#">Architettura</a></li>
-        <li><a href="#">Openwhisk</a></li>
-        <li><a href="#">Kantive</a></li>
-      </ul>
-    </li>
-  </ol>
-</details>
+- [Annotazioni](#annotazioni)
+    - [Definizione](#definizione)
+    - [Sintassi](#sintassi)
+    - [Categorie di annotazioni](#categorie-di-annotazioni)
+    - [Annotazioni personalizzate](#annotazioni-personalizzate)
+    - [Limiti delle annotazioni personalizzate](#limiti-delle-annotazioni-personalizzate)
+    - [Meta-annotazioni](#meta-annotazioni)
+    - [Politiche di retention](#politiche-di-retention)
+    - [Perchè usarle](#perchè-usarle)
+- [Servizio di nomi](#sistemi-di-nomi)
+    - [Sistemi di Discovery](#sistemi-di-discovery)
+    - [Sistemi di Directory](#sistemi-di-directory)
+    - [Directory vs DB](#directory-vs-db)
+    - [Java Naming Directory Interface (JNDI)](#java-naming-directory-interface-jndi)
+    - [Interfaccia Context](#interfaccia-context)
+    - [Interfaccia DirContext](#interfaccia-dircontext)
+    - [Uso di JNDI](#uso-di-jndi)
+    - [Memorizzare i dati in un servizio nomi](#memorizzare-i-dati-in-un-servizio-nomi)
+    - [Serializzazione](#serializzazione)
+    - [Riferimento](#riferimento)
+    - [Attributi](#attributi)
+    - [Configurazione di JNDI](#configurazione-di-jndi)
+- [EJB 3.X](#ejb-3x)
+    - [Annotazioni e Descrittori di Deployment](#annotazioni-e-descrittori-di-deployment)
+    - [Tipologie di componenti](#tipologie-di-componenti)
+    - [Session Bean](#session-bean-1)
+    - [Message Driven Bean](#message-driven-bean-1)
+    - [Dependency Injection](#dependency-injection)
+    - [Interoperabilità tra EJB 3.X e EJB 2.X](#interoperabilità-tra-ejb-3x-e-ejb-2x)
+    - [Servizi di sistema](#servizi-di-sistema)
+    - [Pooling e concorrenza](#pooling-e-concorrenza)
+    - [Resource Pooling](#resource-pooling)
+    - [Activation](#activation)
+    - [Transazionalità](#transazionalità)
+    - [Container-Managed Transaction](#container-managed-transaction)
+    - [Bean-Managed Transaction](#bean-managed-transaction)
+    - [Gestione delle connessioni a risorse](#gestione-delle-connessioni-a-risorse)
+    - [Persistenza](#persistenza)
+    - [Messaggistica](#messaggistica)
+    - [Sicurezza](#sicurezza)
+    - [Intercettori](#intercettori)
+- [JPA](#jpa)
+    - [Object/Relational Mapping (ORM)](#objectrelational-mapping-orm)
+    - [Java Persistence API (JPA)](#java-persistence-api-jpa)
+    - [Perchè usare JPA](#perchè-usare-jpa)
+    - [Entity](#entity)
+    - [Ereditarietà e Polimorfismo](#ereditarietà-e-polimorfismo)
+    - [Strategie di Mapping](#strategie-di-mapping)
+    - [Molteplicità nelle Relazioni](#molteplicità-nelle-relazioni)
+    - [Direzionalità delle relazioni](#direzionalità-delle-relazioni)
+    - [Gestione a runtime di Entity](#gestione-a-runtime-di-entity)
+    - [Container-managed EntityManager](#container-managed-entitymanager)
+    - [Application-managed EntityManager](#application-managed-entitymanager)
+    - [Entity Manager singoli vs multipli](#entity-manager-singoli-vs-multipli)
+    - [Ciclo di Vita](#ciclo-di-vita)
+    - [Unità di Persistenza](#unità-di-persistenza)
+    - [Creazione di Query](#creazione-di-query)
+    - [Loading Lazy/Eager](#loading-lazyeager)
+    - [Listener di Entity](#listener-di-entity)
+    - [Hibernate](#hibernate)
+    - [Interfaccia SessionFactory](#interfaccia-sessionfactory)
+    - [Interfaccia Session](#interfaccia-session)
+    - [Transazioni](#transazioni)
+    - [Ciclo di Vita](#ciclo-di-vita-1)
+    - [Il caching in Hibernate](#il-caching-in-hibernate)
+    - [Fetching dei dati](#fetching-dei-dati)
+    - [Query By Examples (QBE)](#query-by-examples-qbe)
+- [JMS](#jms)
+    - [Perchè usare un servizio di messagistica](#perchè-usare-un-servizio-di-messagistica)
+    - [Modello point-to-point](#modello-point-to-point)
+    - [Modello publish/subscriber](#modello-publishsubscriber)
+    - [Affidabilità nello scambio di messaggi](#affidabilità-nello-scambio-di-messaggi)
+    - [Transazionalità](#transazionalità-1)
+    - [Sicurezza](#sicurezza-1)
+    - [Java Messaging Service (JMS)](#java-messaging-service-jms)
+    - [Tipi di comunicazioni](#tipi-di-comunicazioni)
+    - [Messaggi JMS](#messaggi-jms)
+    - [Interfaccia Destination](#interfaccia-destination)
+    - [Interfaccia ConnectionFactory](#interfaccia-connectionfactory)
+    - [Interfaccia Connection](#interfaccia-connection)
+    - [Interfaccia Session](#interfaccia-session-1)
+    - [Interfacce Message Consumer e Message Producer](#interfacce-message-consumer-e-message-producer)
+    - [Riassunto API JMS](#riassunto-api-jms)
+    - [Uso di JMS](#uso-di-jms)
+    - [Affidabilità dei messaggi](#affidabilità-dei-messaggi)
+    - [ACK](#ack)
+    - [Priorità](#priorità)
+    - [Affidabilità](#affidabilità)
+    - [Durable Subscription](#durable-subscription)
+    - [Gestione delle transazioni di JMS](#gestione-delle-transazioni-di-jms)
+    - [Selettori di messaggi](#selettori-di-messaggi)
+    - [JMS in EJB](#jms-in-ejb)
+    - [Enterprise Service Bus (ESB)](#enterprise-service-bus-esb)
+    - [Service Oriented Architecture (SOA)](#service-oriented-architecture-soa)
+    - [Web Services](#web-services)
+    - [Web Service Description Language (WSDL)](#web-service-description-language-wsdl)
+    - [Enterprise Application Integration (EAI)](#enterprise-application-integration-eai)
+    - [Hub-and-Spoke](#hub-and-spoke)
+    - [Bus di Interconnessione](#bus-di-interconnessione)
+    - [Concetti chiave di ESB](#concetti-chiave-di-esb)
+    - [Java Business Integration (JBI)](#java-business-integration-jbi)
+ - [CORBA](#)
+    - [CORBA 2.X](#)
+    - [CORBA Component Model (CCM)](#)
+    - [Implementazioni CCM disponibili](#)
+    - [Comparazione CCM vs. EJB e .NET](#)
+    - [Running Example](#)
+    - [Componente CCM](#)
+    - [Gestione Lifecycle CCM](#)
+    - [CORBA Home](#)
+    - [Viste di Componenti CCM](#)
+    - [Configurazione dinamica dei componenti](#)
+    - [Supporto Runtime: Funzionalità Component Server](#)
+    - [Executor](#)
+- [Spring](#)
+    - [Perchè usare Spring](#perchè-usare-spring)
+    - [Architettura](#architettura-1)
+    - [Aspect Oriented Programming (AOP)](#aspect-oriented-programming-aop)
+    - [Joinpoint](#joinpoint)
+    - [Advice](#advice)
+    - [Pointcut](#pointcut)
+    - [Aspect](#aspect)
+    - [Weaving](#weaving)
+    - [Target](#target)
+    - [Dependency Injection](#dependency-injection-1)
+    - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
+    - [Oggetto BeanFactory](#oggetto-beanfactory)
+    - [Injection di valori semplici](#injection-di-valori-semplici)
+    - [Injection di un Bean all’interno della stessa factory](#injection-di-un-bean-allinterno-della-stessa-factory)
+    - [Naming dei Componenti](#naming-dei-componenti)
+    - [HelloWorld con dependency injection](#helloworld-con-dependency-injection)
+    - [Considerazioni sulla dependency injection](#considerazioni-sulla-dependency-injection)
+    - [HelloWorld con AOP](#helloworld-con-aop)
+    - [Intercettori](#intercettori-1)
+    - [Transazioni verso DB](#transazioni-verso-db)
+    - [Lost Update](#lost-update)
+    - [Dirty Read](#dirty-read)
+    - [Unrepeatble Read](#unrepeatble-read)
+    - [Phantom Row](#phantom-row)
+    - [Livelli di Isolamenti](#livelli-di-isolamenti)
+    - [Transazionalità verso DB](#transazionalità-verso-db)
+    - [Pooling e concorrenza](#pooling-e-concorrenza-1)
+    - [Autowiring](#autowiring)
+    - [Dependency checking](#dependency-checking)
+    - [ApplicationContext](#applicationcontext)
+- [JMX](#)
+    - [Java Management Extensions (JMX)](#)
+    - [Architettura](#)
+    - [Livello instrumentation](#)
+    - [Livello Agente](#)
+    - [Livello servizi distribuiti](#)
+    - [Standard MBean](#)
+    - [Registrazione MBean su Server](#)
+    - [Invocazione servizi di gestione](#)
+    - [Meccanismo di notifica](#)
+    - [Dynamic MBean](#)
+    - [ModelMBean](#)
+    - [Servizi Standard a Livello di Agente](#)
+    - [Servizio di M-let](#)
+    - [Servizio di Timer](#)
+    - [Servizio di Monitoring](#)
+    - [Servizio di Relation](#)
+    - [JMX remote API](#)
+    - [Esempio utilizzo degli MBean](#)
+    - [JMX con JBoss/Wildfly](#)
+- [JBoss/WildFly Clustering](#)
+    - [Architettura JBoss](#)
+    - [JGroups](#)
+    - [HA Partition](#)
+    - [Load-Balancing](#)
+    - [JBoss Cache](#)
+    - [Infinispan](#)
+    - [Replicazione Stato HTTP](#)
+    - [Replicazione Stato EJB](#)
+    - [Clustering di Componenti EJB](#)
+    - [Configurazione di JBoss/WildFly](#)
+- [Big Data](#)
+    - [Definizione](#definizione-1)
+    - [Stream Processing](#stream-processing)
+    - [Batch Processing](#batch-processing)
+    - [Hadoop Distributed File System (HDFS)](#hadoop-distributed-file-system-hdfs)
+    - [MapReduce](#mapreduce)
+- [Node.js](#nodejs)
+    - [Utilizzo di Javascript](#utilizzo-di-javascript)
+    - [Event Loop](#event-loop)
+    - [Thread vs Asynchronous Event Driven](#thread-vs-asynchronous-event-driven)
+    - [Thread vs Event](#thread-vs-event)
+    - [Moduli](#moduli)
+    - [Modulo HTTP](#modulo-http)
+    - [NPM](#npm)
+    - [Modulo FS](#modulo-fs)
+    - [Modulo Stream](#modulo-stream)
+    - [Modulo Net](#modulo-net)
+    - [Modulo Express](#modulo-express)
+- [Docker](#)
+    - [Microservizi](#)
+    - [DevOps](#)
+    - [Container](#)
+    - [Docker](#)
+    - [Gestione del ciclo di vita del container](#)
+    - [Immagini Docker](#)
+- [Kubernates](#)
+    - [Architettura](#)
+    - [Etcd](#)
+    - [Controller Manager](#)
+    - [Cloud Controller Manager](#)
+    - [Kubelet](#)
+    - [Pod](#)
+    - [Service](#)
+    - [Kube proxy](#)
+    - [Scheduler](#)
+    - [Volumi](#)
+    - [Network](#)
+- [FaaS](#)
+    - [Serverless come Baas+FaaS](#)
+    - [Architettura](#)
+    - [Openwhisk](#)
+    - [Kantive](#)
 
 ## Modelli
 
@@ -4375,7 +4313,7 @@ Object result = server.invoke(
     null); // void signature
 ```
 
-Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tuto questo nascondendo le operazioni al cliente
+Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tutto questo nascondendo le operazioni al cliente
 
 ### Meccanismo di notifica
 
@@ -4501,7 +4439,7 @@ La specifica JMX definisce quattro servizi distinti a livello di agente che devo
 
 ### Servizio di M-let
 
-Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono trovarsi su macchina locale o su macchina remota, con l’idea di spostare delle configurazioni di una applicazione verso un server remoto. Come ogni altro standard MBean, l’interfaccia MLetMBean espone le operazioni di management considerate rilevanti per il servizio, come `addURL()` e `getMBeansFromURL()`. All’URL specificato da `addURL()` si trovano i file di testo M-Let che descrivono i componenti MBean tramite MLET tag. Sposta la configurazione da macchina locale a macchina remota.
+Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono trovarsi su macchina locale o su macchina remota, con l’idea di spostare delle configurazioni di una applicazione verso un server remoto. Come ogni altro standard MBean, l’interfaccia `MLetMBean` espone le operazioni di management considerate rilevanti per il servizio, come `addURL()` e `getMBeansFromURL()`. All’URL specificato da `addURL()` si trovano i file di testo M-Let che descrivono i componenti MBean tramite MLET tag. Sposta la configurazione da macchina locale a macchina remota.
 
 ```xml
 <MLET CODE = class | OBJECT =
@@ -4515,7 +4453,7 @@ Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono 
 ```
 
 
-Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e prevede che in una rete locale ci sia un MBean Server che abbia servizi A, B e C a livello agente. Senza M-let, bisognerebbe installare i nodi tutti i servizi A, B e C ma grazie a M-let si può velocizzare il processo. Un possibile file potrebbe essere:
+Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e prevede che in una rete locale ci sia un MBean Server che abbia servizi `A`, `B` e `C` a livello agente. Senza M-let, bisognerebbe installare i nodi tutti i servizi `A`, `B` e `C` ma grazie a M-let si può velocizzare il processo. Un possibile file potrebbe essere:
 
 ```xml
 <MLET CODE=com.mycompany.Foo
@@ -4793,7 +4731,7 @@ Un cluster logico (o partizione) JBoss non è altro che l'insieme dei nodi fisic
 
 La configurazione della comunicazione in JGroups avviene con il file `cluster-service.xml` nella directory `/deploy`. Esso descrive la configurazione per la partizione di default del cluster. Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’attributo `PartitionConfig` di MBean `ClusterPartition` descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast:
 
-```
+```xml
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
 name="jboss:service={jboss.partition.name:DefaultPartition}">
 
@@ -4844,7 +4782,7 @@ High Avaiability (HA) Partition è un servizio general-purpose di alta disponibi
 
 Esempio di configurazione HA Partition:
 
-```
+```xml
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
 name="jboss:service=DefaultPartition">
     <attribute name="PartitionName">${jboss.partition.name:DefaultPartition}</attribute>
@@ -4861,7 +4799,7 @@ name="jboss:service=DefaultPartition">
 
 Per fare parte dello stesso cluster, i nodi devono semplicemente avere lo stesso `PartitionName` e gli stessi elementi `PartitionConfig`. Necessità di configurare i protocolli JGroups e la definizione di timeout ad alto livello per gestire la replicazione, per esempio il tempo massimo per sincronizzare lo stato tra diversi nodi.
 
-Il deployment può avvenire in due modi: vi è la possibilità di deployment omogeneo in cui avviene la replica su tutti i nodi logici del cluster, questo facilita la gestione ed evita diversi possibili porblemi ed è reso automatico attraverso farming, oppure deployment disomogeneo generalmente sconsigliato dagli sviluppatori JBoss, per diverse ragioni, come avere dei componenti solo in alcuni nodi del cluster. Il clustering omogeno è quello più utilizzato.
+Il deployment può avvenire in due modi: vi è la possibilità di deployment omogeneo in cui avviene la replica su tutti i nodi logici del cluster, questo facilita la gestione ed evita diversi possibili problemi ed è reso automatico attraverso farming, oppure deployment disomogeneo generalmente sconsigliato dagli sviluppatori JBoss, per diverse ragioni, come avere dei componenti solo in alcuni nodi del cluster. Il clustering omogeno è quello più utilizzato.
 
 Uno dei problemi da risolvere quando si porta EJB su un cluster è quello di decidere dove eseguire il servizio JNDI ( su un nodo o più nodi, nel secondo caso bisogna tenere aggiornate tutte le entry).
 
