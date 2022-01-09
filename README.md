@@ -256,11 +256,11 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Scheduler](#)
     - [Volumi](#)
     - [Network](#)
-- [FaaS](#)
-    - [Serverless come Baas+FaaS](#)
-    - [Architettura](#)
-    - [Openwhisk](#)
-    - [Kantive](#)
+- [FaaS](#faas)
+    - [Serverless come Baas+FaaS](#serverless-come-baasfaas)
+    - [Architettura](#architettura-4)
+    - [Openwhisk](#openwhisk)
+    - [Kantive](#knative)
 
 ## Modelli
 
@@ -5535,19 +5535,19 @@ $ minikube dashboard
 
 ## FaaS
 
-Così come l’internet wireless ha dei cavi da qualche parte, le architetture serverless continuano ad avere dei server da qualche parte. Come sviluppatore, non bisogna pensare a questi server ma ci si focalizza solo sul codice. Il serverless consente di costruire ed eseguire applicazioni e servizi senza preoccuparsi di procurarsi o di scalare i server. Ciò che serve all’esecuzione è gestito implicitamente.
+Così come l’internet wireless ha dei cavi da qualche parte, le architetture serverless continuano ad avere dei server da qualche parte. Come sviluppatore, non bisogna pensare a questi server ma ci si focalizza solo sul codice. Il serverless consente di costruire ed eseguire applicazioni e servizi senza preoccuparsi di scalare i server. Ciò che serve all’esecuzione è gestito implicitamente.
 
 In un’applicazione serverless, il supporto lavora a callback. Il programmatore non deve gestire con degli strumenti il deployment delle applicazioni. Il programmatore carica l’applicazione su una piattaforma e non deve fare altro. Non esiste in sè per sè un server ma c'è una piattaforma. In questo senso è simile a map-reduce poiché il programmatore implementa unicamente le funzioni di map e reduce. La parte di risorse è gestita in automatico dalla piattaforma. Tutto il focus è sulla business logic e non sulla gestione o sull’approvvigionamento dell’infrastruttura, non vi è alcun costo relativo al controllo attivo di risorse e alla scalabilità.
 
 ### Serverless come Baas+FaaS
 
-Analizzando le possibili soluzioni nel cloud, FaaS si trova tra piattaforma PaaS e software SaaS, quindi come un Back-end as a Service e Function as a Service (BaaS + FaaS). Ci si trova in questa zona perché l’idea è quella di avere una serie di servizi di back-end e ci sia modo di concentrarsi solo sulla logica applicativa senza una conoscenza forte pregressa dei servizi di sistema. Ci sono delle API che facilitano lo sviluppo senza configurare il back-end e di configurarlo. Ad esempio, connessioni al database e la sua configurazione.
+Analizzando le possibili soluzioni nel cloud, FaaS si trova tra piattaforma PaaS e software SaaS, quindi come un Back-end as a Service e Function as a Service (BaaS + FaaS). Ci si trova in questa zona perché l’idea è quella di avere una serie di servizi di back-end e ci sia modo di concentrarsi solo sulla logica applicativa senza una conoscenza forte pregressa dei servizi di sistema. Ci sono delle API che facilitano lo sviluppo senza configurare il back-end e di configurarlo. Ad esempio, connessioni al database, configurazione del database etc.
 
 ![single tier](./img/img108.png)
 
-Back-end as a Service (BaaS) significa esternalizzazione tutti i servizi di sistema, con la logica di utilizzo di questi servizi molto semplice e messa a disposizione API per questi servizi come autneticazione, database e notifiche.
+Back-end as a Service (BaaS) significa esternalizzazione tutti i servizi di sistema mettendo a disposizione API per questi servizi (autenticazione, database, notifiche etc).
 
-FaaS consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare. Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
+FaaS che consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare. Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
 
 ### Architettura
 
@@ -5589,7 +5589,7 @@ Dal punto di vista del disaccoppiamento dei servizi, i servizi vengono eseguiti 
 
 ![single tier](./img/img113.png)
 
-Dal punto di viste delle performance queste piattaforme al di fuori degli eventi non lavorano benissimo, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
+Dal punto di viste delle performance, queste piattaforme al di fuori degli eventi non lavorano benissimo, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
 
 ## Confronto tra Tecnologie
 
