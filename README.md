@@ -144,29 +144,28 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Bus di Interconnessione](#bus-di-interconnessione)
     - [Concetti chiave di ESB](#concetti-chiave-di-esb)
     - [Java Business Integration (JBI)](#java-business-integration-jbi)
- - [CORBA](#)
-    - [CORBA 2.X](#)
-    - [CORBA Component Model (CCM)](#)
-    - [Implementazioni CCM disponibili](#)
-    - [Comparazione CCM vs. EJB e .NET](#)
-    - [Running Example](#)
-    - [Componente CCM](#)
-    - [Gestione Lifecycle CCM](#)
-    - [CORBA Home](#)
-    - [Viste di Componenti CCM](#)
-    - [Configurazione dinamica dei componenti](#)
-    - [Supporto Runtime: Funzionalità Component Server](#)
-    - [Executor](#)
+ - [CORBA](#corba)
+    - [CORBA 2.X](#corba-2x)
+    - [CORBA Component Model (CCM)](#corba-component-model-ccm)
+    - [Implementazioni CCM disponibili](#implementazioni-ccm-disponibili)
+    - [Comparazione CCM vs. EJB e .NET](#comparazione-ccm-vs-ejb-e-net)
+    - [Running Example](#running-example)
+    - [Componente CCM](#componente-ccm)
+    - [Gestione Lifecycle CCM](#gestione-lifecycle-ccm)
+    - [CORBA Home](#corba-home)
+    - [Configurazione dinamica dei componenti](#configurazione-dinamica-dei-componenti)
+    - [Supporto Runtime: Funzionalità Component Server](#supporto-runtime-funzionalità-component-server)
+    - [Executor](#exectutor)
 - [Spring](#spring)
     - [Perchè usare Spring](#perchè-usare-spring)
     - [Architettura](#architettura-1)
     - [Aspect Oriented Programming (AOP)](#aspect-oriented-programming-aop)
-    - [Joinpoint](#joinpoint)
-    - [Advice](#advice)
-    - [Pointcut](#pointcut)
-    - [Aspect](#aspect)
-    - [Weaving](#weaving)
-    - [Target](#target)
+        - [Joinpoint](#joinpoint)
+        - [Advice](#advice)
+        - [Pointcut](#pointcut)
+        - [Aspect](#aspect)
+        - [Weaving](#weaving)
+        - [Target](#target)
     - [Dependency Injection](#dependency-injection-1)
     - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
     - [Oggetto BeanFactory](#oggetto-beanfactory)
@@ -178,11 +177,11 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [HelloWorld con AOP](#helloworld-con-aop)
     - [Intercettori](#intercettori-1)
     - [Transazioni verso DB](#transazioni-verso-db)
-    - [Lost Update](#lost-update)
-    - [Dirty Read](#dirty-read)
-    - [Unrepeatble Read](#unrepeatble-read)
-    - [Phantom Row](#phantom-row)
-    - [Livelli di Isolamenti](#livelli-di-isolamenti)
+        - [Lost Update](#lost-update)
+        - [Dirty Read](#dirty-read)
+        - [Unrepeatble Read](#unrepeatble-read)
+        - [Phantom Row](#phantom-row)
+        - [Livelli di Isolamenti](#livelli-di-isolamenti)
     - [Transazionalità verso DB](#transazionalità-verso-db)
     - [Pooling e concorrenza](#pooling-e-concorrenza-1)
     - [Autowiring](#autowiring)
@@ -2215,7 +2214,7 @@ public void removeOrder(Integer orderId) {
 }
 ```
 
-La refresh nello stato managed serve quando si ha la necessità di aggiornarne lo stato. Soprattutto in caso di transazioni non ACID. Ad esempio, nel caso di transazioni di tipo mandatory.
+La `refresh()` nello stato managed serve quando si ha la necessità di aggiornarne lo stato. Soprattutto in caso di transazioni non ACID. Ad esempio, nel caso di transazioni di tipo mandatory.
 
 Quando lo stato viene persistito con la commit verso il DB, si stacca l’oggetto dal contesto di persistenza che entra nello stato di detached. Questo può portare a stati non significativi.
 
@@ -2356,7 +2355,7 @@ public class AlertMonitor {
 }
 ```
 
-La classe `AccountBean` usa l'annotazione `@EntityListener(com.acme.AlertMonitor.class)` per indicare che la classe AlertMonitor contiene metodi di callback (in realtà solo uno).
+La classe `AccountBean` usa l'annotazione `@EntityListener(com.acme.AlertMonitor.class)` per indicare che la classe `AlertMonitor` contiene metodi di callback (in realtà solo uno).
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3315,37 +3314,37 @@ Aspect Oriented programming (AOP) è un approccio di design e una tecnica per se
 
 <a href="#indice">Torna all'indice</a>
 
-### Joinpoint
+#### Joinpoint
 
 Joinpoint è un punto ben definito all’interno del codice applicativo, anche determinabile a runtime, dove può essere inserita logica addizionale, alcuni esempi di joinpoint sono: l’Invocazione di metodi, l’Inizializzazione di classi, l’inizializzazione di oggetti, ovvero la creazione di istanze.
 
 <a href="#indice">Torna all'indice</a>
 
-### Advice
+#### Advice
 
 Advice è una parte di codice che aggiunge logica addizionale al programma, deve essere aggiunto ed eseguito ad un determinato joinpoint. I diversi tipi di Advice sono: i before advice che eseguono prima del joinpoint, after advice eseguono dopo il joinpoint, around advice eseguono attorno (around) al joinpoint.
 
 <a href="#indice">Torna all'indice</a>
 
-### Pointcut
+#### Pointcut
 
 Pointcut è un Insieme di joinpoint che vengono verificati per definire quando eseguire un advice, il pointcut è l’insieme di tutte le invocazioni di quel metodo in una determinata classe, i pointcut possono essere messi in relazione tra di loro per decidere quando eseguirli insieme al collegato advice, con controllo fine e flessibile su come applicare advice al codice applicativo. La differenza tra pointcut e jointpoit è la seguente: il pointcut è l’insieme di tutte le invocazioni di metodo in una determinata classe mentre l’invocazione di un metodo è un tipico joinpoint. I pointcut possono essere composti in relazioni anche complesse per vincolare il momento di esecuzione dell’advice corrispondente.
 
 <a href="#indice">Torna all'indice</a>
 
-### Aspect
+#### Aspect
 
 Aspect definisce quando e come gestire la logica per quell’aspetto, Aspect è la combinazione di advice e pointcut.
 
 <a href="#indice">Torna all'indice</a>
 
-### Weaving
+#### Weaving
 
 Weaving è il processo dell’effettivo inserimento di aspect dentro il codice applicativo nel punto appropriato (la traduzione di weaving è cucire il codice nel punto appropriato), ci sono due possibilità per effettuare il weaving a tempo di compilazione, o a runtime ritardiamo il più possibile l’inserimento dell’aspetto.
 
 <a href="#indice">Torna all'indice</a>
 
-### Target
+#### Target
 
 Target è un oggetto il cui flusso di esecuzione viene modificato da qualche processo AOP attraverso il weaving, in alcuni casi viene anche indicato come oggetto con advice (advised object).
 
@@ -3995,7 +3994,7 @@ La concorrenza però va gestita, se le varie transazioni interferiscono tra di l
 
 <a href="#indice">Torna all'indice</a>
 
-### Lost Update
+#### Lost Update
 
 Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
 
@@ -4004,7 +4003,7 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 
 <a href="#indice">Torna all'indice</a>
 
-### Dirty Read
+#### Dirty Read
 
 In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
 
@@ -4013,7 +4012,7 @@ In questo caso il problema è che una transazione legge un dato che non c’è: 
 
 <a href="#indice">Torna all'indice</a>
 
-### Unrepeatble Read
+#### Unrepeatble Read
 
 Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
 
@@ -4024,7 +4023,7 @@ Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si p
 
 <a href="#indice">Torna all'indice</a>
 
-### Phantom Row
+#### Phantom Row
 
 Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un _phantom_, in quanto T1 non la vede.
 
@@ -4032,7 +4031,7 @@ Questo caso si può presentare quando vengono inserite o cancellate tuple che un
 
 <a href="#indice">Torna all'indice</a>
 
-### Livelli di Isolamenti
+#### Livelli di Isolamenti
 
 Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce 4 livelli di isolamento, che sono serializable, repeatable read, read committed, uncommitted read:
 
