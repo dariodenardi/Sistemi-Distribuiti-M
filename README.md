@@ -166,6 +166,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         - [Aspect](#aspect)
         - [Weaving](#weaving)
         - [Target](#target)
+    - [AOP Statico](#)
+    - [AOP Dinamico](#)
     - [Dependency Injection](#dependency-injection-1)
     - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
     - [Oggetto BeanFactory](#oggetto-beanfactory)
@@ -3283,7 +3285,7 @@ Spring è una soluzione a container leggero utile per sviluppare applicazioni Ja
 
 ### Perchè usare Spring
 
-Le motivazioni per cui scegliere spring sono diverse. Spring consente l’integrazione e la cooperazione fra componenti (secondo il semplice modello JavaBean) via dependency Injection, pone molta importanza al disaccoppiamento, mette a disposizione Test-Driven Development (TDD), ovvero la possibilità di effettuare testing delle classi (POJO) senza essere legati al framework, ha un uso semplificato di tecnologie diffuse e di successo utilizzando astrazioni che isolano il codice applicativo, con eliminazione di codice ridondante, e gestione di comuni condizioni di errore (caso delle unchecked exception), lascia una parziale visibilità quindi non vi è totale trasparenza. La progettazione avviene per interfacce, con ottimo isolamento delle funzionalità dai dettagli implementativi, inoltre integra la programmazione dichiarativa via AOP che consente una facile configurazione degli aspetti, come ad esempio il supporto alle transazioni.
+Le motivazioni per cui scegliere Spring sono diverse. Spring consente l’integrazione e la cooperazione fra componenti (secondo il semplice modello JavaBean) via dependency Injection, pone molta importanza al disaccoppiamento, mette a disposizione Test-Driven Development (TDD), ovvero la possibilità di effettuare testing delle classi (POJO) senza essere legati al framework, ha un uso semplificato di tecnologie diffuse e di successo utilizzando astrazioni che isolano il codice applicativo, con eliminazione di codice ridondante, e gestione di comuni condizioni di errore (caso delle unchecked exception), lascia una parziale visibilità quindi non vi è totale trasparenza. La progettazione avviene per interfacce, con ottimo isolamento delle funzionalità dai dettagli implementativi, inoltre integra la programmazione dichiarativa via AOP che consente una facile configurazione degli aspetti, come ad esempio il supporto alle transazioni.
 
 Spring non è una soluzione _all-or-nothing_ cioè si prende solo quello di cui si ha bisogno, e pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e ORM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
 
@@ -3291,7 +3293,7 @@ Spring non è una soluzione _all-or-nothing_ cioè si prende solo quello di cui 
 
 ### Architettura
 
-Il Core è un container leggero basato sull’inversion of control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE si occupa della gestione di tutti i servizi enterpise. Il Web Tier contiene tutti i framework web che possono essere integrati con il core. DAO e ORM sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il Core, DAO e ORM.
+Il Core è un container leggero basato sull’Inversion of Control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE si occupa della gestione di tutti i servizi enterpise. Il Web Tier contiene tutti i framework web che possono essere integrati con il core. DAO e ORM sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il Core, DAO e ORM.
 
 ![Architettura Spring-Light](./img/img39-light.png#gh-light-mode-only)
 ![Architettura Spring-Dark](./img/img39-dark.png#gh-dark-mode-only)
@@ -3328,7 +3330,7 @@ Advice è una parte di codice che aggiunge logica addizionale al programma, deve
 
 #### Pointcut
 
-Pointcut è un Insieme di joinpoint che vengono verificati per definire quando eseguire un advice, il pointcut è l’insieme di tutte le invocazioni di quel metodo in una determinata classe, i pointcut possono essere messi in relazione tra di loro per decidere quando eseguirli insieme al collegato advice, con controllo fine e flessibile su come applicare advice al codice applicativo. La differenza tra pointcut e jointpoit è la seguente: il pointcut è l’insieme di tutte le invocazioni di metodo in una determinata classe mentre l’invocazione di un metodo è un tipico joinpoint. I pointcut possono essere composti in relazioni anche complesse per vincolare il momento di esecuzione dell’advice corrispondente.
+Pointcut è un Insieme di joinpoint che vengono verificati per definire quando eseguire un advice, il pointcut è l’insieme di tutte le invocazioni di quel metodo in una determinata classe, i pointcut possono essere messi in relazione tra di loro per decidere quando eseguirli insieme al collegato advice, con controllo fine e flessibile su come applicare advice al codice applicativo. La differenza tra pointcut e joinpoint è la seguente: il pointcut è l’insieme di tutte le invocazioni di metodo in una determinata classe mentre l’invocazione di un metodo è un tipico joinpoint. I pointcut possono essere composti in relazioni anche complesse per vincolare il momento di esecuzione dell’advice corrispondente.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3348,7 +3350,11 @@ Weaving è il processo dell’effettivo inserimento di aspect dentro il codice a
 
 Target è un oggetto il cui flusso di esecuzione viene modificato da qualche processo AOP attraverso il weaving, in alcuni casi viene anche indicato come oggetto con advice (advised object).
 
+### AOP Statico
+
 Nell’AOP statico il processo di weaving viene realizzato a tempo di compilazione, come passo ulteriore del processo di sviluppo, durante la build dell’applicazione, vengono aggiunti opportunamente in alcuni punti gli advice, in questo caso il weaving incide sul codice dell’applicazione che viene eseguito e sul suo footprint, può avvenire in diversi modi anche andando a modificare i BYTECODE. Ad esempio, in un programma Java, si può avere weaving attraverso la modifica del bytecode di una applicazione, senza la modifica del codice sorgente, intervenendo direttamente sul bytecode stesso, i file bytecode possono essere modificati prima della messa in esecuzione questo richiede che durante la compilazione ci sia questo passaggio di modifica.
+
+### AOP Dinamico
 
 Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime, vi è la possibilità di cambiare weaving senza bisogno di ricompilazione. Bisogna intercettare il punto in cui cambiare il weaving e inserire gli advice, con un continuo monitoraggio e iniezione durante l’esecuzione, questo rappresenta uno svantaggio perché causa un overhead durante l’esecuzione.
 
@@ -3360,7 +3366,7 @@ Spring realizza AOP sulla base dell’utilizzo di proxy, infatti se si desidera 
 
 La Dependency Injection è l’applicazione più nota e di maggiore successo del principio di Inversion of Control e l’Hollywood Principle, che si traduce in _Don't call me, I'll call you_. L’idea è che il container leggero si occupi di risolvere (injection) le dipendenze dei componenti attraverso l’opportuna configurazione dell’implementazione dell’oggetto (push), per questo fu chiamato dependency injection. Questa idea è opposta ai pattern più classici di istanziazione di componenti o Service Locator, dove è il componente che deve determinare l’implementazione della risorsa desiderata (pull). Questo consente di mantenere il più possibile l’implementazione leggera.
 
-Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le annotazioni per aggiungere tutte le informazioni utili che servono a esprimere tutte le dipendenze tra i vari compoennti, con il vantaggio della flessibilità con l’eliminazione del codice di lookup nella logica di business, in caso di cambio delle risorse esterne non vi è la necessità di cambiare il codice, la possibilità e facilità di testing con nessun bisogno di dipendere da risorse esterne o da container in fase di testing, vi è la possibilità di abilitare testing automatico, ed un’elevata manutenibilità del codice che permette riutilizzo in diversi ambienti applicativi cambiando semplicemente i file di configurazione (o in generale le specifiche di dependency injection) e non il codice, dividendo nettamente la parte di programma da quella di configurazione.
+Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le annotazioni per aggiungere tutte le informazioni utili che servono a esprimere tutte le dipendenze tra i vari componenti, con il vantaggio della flessibilità con l’eliminazione del codice di lookup nella logica di business, in caso di cambio delle risorse esterne non vi è la necessità di cambiare il codice, la possibilità e facilità di testing con nessun bisogno di dipendere da risorse esterne o da container in fase di testing, vi è la possibilità di abilitare testing automatico, ed un’elevata manutenibilità del codice che permette riutilizzo in diversi ambienti applicativi cambiando semplicemente i file di configurazione (o in generale le specifiche di dependency injection) e non il codice, dividendo nettamente la parte di programma da quella di configurazione.
 
 <a href="#indice">Torna all'indice</a>
 
@@ -3455,7 +3461,7 @@ Tutti questi tipi possono essere usati sia per injection sui costruttori che sui
 
 ### Injection di valori semplici
 
-un esempio, di injection di valori semplici è il seguente:
+Un esempio, di injection di valori semplici è il seguente:
 
 ```
 <beans>
@@ -4100,7 +4106,7 @@ Per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’
 - Propagazione di eventi a Bean che implementano l’interfaccia `ApplicationListener`.
 - Accesso a risorse come URL e file.
 
-Per aggiungere l’`ApplicationContext` e collegarlo alla gestione del ciclo di vita del Bean, bisogna prendere l’interfaccia `ApplicationContextAware`, implementarla in modo da poter aggiungere il metodo di interfaccia `setApplicationContext() ` che verrà automaticamente invocato alla creazione del Bean stesso che riceverà così un riferimento al contesto su cui poter effettuare invocazioni:
+Per aggiungere l’`ApplicationContext` e collegarlo alla gestione del ciclo di vita del Bean, bisogna prendere l’interfaccia `ApplicationContextAware`, implementarla in modo da poter aggiungere il metodo di interfaccia `setApplicationContext()` che verrà automaticamente invocato alla creazione del Bean stesso che riceverà così un riferimento al contesto su cui poter effettuare invocazioni:
 
 ```
 public class Publisher implements ApplicationContextAware {
@@ -4108,7 +4114,7 @@ public class Publisher implements ApplicationContextAware {
     private ApplicationContext ctx; 
     
     // Questo metodo sarà automaticamente invocato da IoC container 
-    public void setApplicationContext( ApplicationContext applicationContext) throws BeansException { 
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException { 
         this.ctx = applicationContext;
     }
 
@@ -4121,7 +4127,7 @@ La gestione degli eventi in `ApplicationContext` è realizzata tramite la classe
 - `ContextClosedEvent` per la chiusura di un `ApplicationContext`.
 - `RequestHandleEvent` evento specifico per il Web, significa che una richiesta HTTP è stata appena servita.
 
-Ad esempio, qui si mostra la configurazione in ApplicationContext.xml del comportamento "ad ogni ricezione di un'email da un indirizzo in black list, invia un email di notifica a spam@list.org":
+Ad esempio, qui si mostra la configurazione in `ApplicationContext.xml `del comportamento "ad ogni ricezione di un'email da un indirizzo in black list, invia un email di notifica a "spam@list.org":
 
 ```
 <bean id="emailer" class="example.EmailBean">
@@ -4603,7 +4609,7 @@ public class Hello implements HelloMBean {
 }
 ```
 
-`Main.java` deve semplicemente istanziare HelloWorld MBean, registrarlo e attendere:
+`Main.java` deve semplicemente istanziare `HelloWorld` MBean, registrarlo e attendere:
 
 ```java
 package com.example.mbeans;
@@ -5643,7 +5649,7 @@ Dal punto di viste delle performance, queste piattaforme al di fuori degli event
     <td>Conoscenza più di alto livello</td>
   </tr>
   <tr>
-    <td>Intermediario</td>
+    <td>Intercettori</td>
     <td>Container nel mezzo</td>
     <td>Container nel mezzo</td>
     <td>Container nel mezzo</td>
