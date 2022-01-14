@@ -271,7 +271,7 @@ Nella vita professione, è molto difficile che si scriva un software da zero per
 - Si vuole interoperare fra diversi ambienti (anche legacy).
 - Il tempo di sviluppo è molto limitato e ci sono vincoli nella consegna dell'applicazione finale.
 
-Per questo motivo è fondamentale usare un approccio basato su componenti e il trand attuale si sposta verso questo tipo di soluzione.
+Per questo motivo è fondamentale usare un approccio basato su componenti e il trend attuale si sposta verso questo tipo di soluzione.
 
 <a href="#indice">Torna all'indice</a>
 
