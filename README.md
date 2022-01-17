@@ -475,7 +475,7 @@ Ad esempio, si consideri un'applicazione riguardante una banca dove un utente pu
 
 - **Sviluppatore**: crea solo una classe che chiama `Account`. Al suo interno ci sono i metodi `prelievo()` e `deposito()`. Non bisogna occuparsi dell'allocazione/deallocazione delle istanze, della concorrenza etc ma si scrive il codice come se si avesse solo un cliente. A tutto il resto ci pensa il container. In EJB 2.X ad ogni classe creata, bisogna anche creare due interfacce: `EJBHome` e `EJBObject`.
 - **Cliente**: si ipotizzi di avere due clienti: `C1` e `C2` che richiedono tutti di eseguire il metodo `prelievo()`:
-    - Quando `C1` fa richiesta, essa passa prima da EJB Home il quale crea un oggetto `O1` che è l’istanza logica dedicata per `C1`. EJB Home restituisce al cliente il riferimento di EJB Object.
+    - Quando `C1` fa richiesta, essa passa prima da EJB Home il quale crea un oggetto `O1` che è l’istanza dedicata per `C1`. EJB Home restituisce al cliente il riferimento di EJB Object.
     - Adesso, `C1` può invocare il metodo `prelievo()` che verrà eseguito su EJB Object che a sua volta potrà invocare il metodo dell’oggetto `O1`.
     - `C2` fa una richiesta. L'oggetto EJB Home potrà creare un nuovo oggetto `O2` oppure dare il riferimento di `O1` se l'interazione tra `C1` e l'oggetto `O1` è terminata. Dipende dalla politica adottata dal container.
 
@@ -492,7 +492,7 @@ I clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home.
 Esistono due tipi di contratto:
 
 - **Client view contract**: contratto tra cliente e container. Un contratto client view è costituito da:
-    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza logica dedicata al cliente. Con Home Interface si intende la `EJBHome`. È il nome tecnico usato nella documentazione J2EE.
+    - **Home interface**: proxy che funge da vera e propria factory dato che assegna un'istanza dedicata al cliente. Con Home Interface si intende la `EJBHome`. È il nome tecnico usato nella documentazione J2EE.
     - **Object interface**: proxy che ha gli stessi metodi di business della classe sviluppata dal programmatore. Con Object Interface si intende la `EJBObject`. È il nome tecnico usato nella documentazione J2EE.
     - **Identità dell'oggetto**: l’identificativo è di fondamentale importanza per il servizio di nomi in modo da poter recuperare l'oggetto EJB Home.
 - **Component contract**: contratto tra componente e container. Il contratto serve a:
@@ -543,7 +543,7 @@ I componenti possono essere classificati in due categorie:
 Un Session Bean ha le seguenti caratteristiche:
 
 - Viene usato quando bisogna effettuare calcoli computazionali.
-- Ogni cliente ha un'istanza logica dedicata: se un cliente fa due interazioni in due momenti diversi con il server, non è detto che abbia la stessa istanza fisica ma viene garantito, lo stesso, il corretto funzionamento.
+- Ogni cliente ha un'istanza dedicata: se un cliente fa due interazioni in due momenti diversi con il server, non è detto che abbia la stessa istanza fisica ma viene garantito, lo stesso, il corretto funzionamento.
 - Short-lived: la vita del Bean è pari alla vita del cliente o al massimo alla durata della sessione.
 - Transient.
 - No fault-tollerant: lo stato non sopravvive a crash da parte del server.
@@ -622,7 +622,7 @@ Si supponga di avere un produttore di software `A` (vendor A) specializzato nell
 
 Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve anche creare due tipi di interfacce:
 
-- L'interfaccia `EJBHome`: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container.
+- L'interfaccia `EJBHome`: è un proxy che intercetta la chiamata del cliente (solo la prima volta) e decide quale istanza dedicata gli deve restituire (una già creata, nuova etc). Al suo interno ci sono i metodi per la creazione, il ritrovamento e la distruzione del Bean. Ad esempio, `create()`, `find()`, `remove()` etc. Tuttavia, il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container.
 - L'nterfaccia `EJBObject`: È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il Java Bean. Il programmatore definisce solo l'interfaccia mentre l'oggetto è implementato dal container. Il cliente ottiene il riferimento di EJB Object attraverso i metodi `create()` o `find()` dell’interfaccia EJB Home.
 
 Le interfacce possono essere remote o locali a seconda se la comunicazione del cliente avviene in locale o in remoto.
@@ -736,7 +736,7 @@ Per interagire con un componente EJB il cliente deve:
     - Creare l'oggetto `InitialContext`. Questo oggetto serve per poter cercare sul servizio di nomi.
     - Effettuare la `lookup` sul servizio di nomi tramite JNDI.
     - Effettuare il narrowing: dato che si è nel mondo Java, si potrebbe usare anche un normale cast ma dato che Java ha la visione del mondo CORBA, si è deciso di rendere l'uso più generale possibile.
-- Dall’oggetto EJB Home, si invoca la `create()` in modo da ottenere l'istanza logica dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto stub di EJB Object per lo stesso motivo di prima.
+- Dall’oggetto EJB Home, si invoca la `create()` in modo da ottenere l'istanza dedicata dell'oggetto EJB desiderato. In realtà, si ottiene un oggetto stub di EJB Object per lo stesso motivo di prima.
 - Invocare i metodi di business tramite l’oggetto EJB Object.
 - Effettuare il clean up finale per liberare le risorse. Perchè occupare un'istanza che non si usa?
 
@@ -1408,7 +1408,7 @@ accedere alla risorsa iniettata:
 I vantaggi e gli svantaggi di usare un modo rispetto altro sono:
 
 - **A tempo di all’inizializzazione**: la risorsa viene istanziata quando viene creata l'istanza, minor tempo ma si occupa più spazio in memoria.
-- **A tempo di caricamento**: la risorsa viene iniettata quando l'utente fa la richiesta di ottenere l'istanza logica dedicata. Ovviamente bisogna aspettare che si risolvano le dipendenze e ci vuole più tempo.
+- **A tempo di caricamento**: la risorsa viene iniettata quando l'utente fa la richiesta di ottenere l'istanza dedicata. Ovviamente bisogna aspettare che si risolvano le dipendenze e ci vuole più tempo.
 
 Nel caso di risorse multiple si usa l'annotazione `@Resources` a livello classe:
 
@@ -3124,10 +3124,10 @@ Rispetto ad altri framework le principali caratteristiche:
 - Linguaggio di programmazione: in EJB va tutto realizzato in Java, in .NET si possono usare diversi linguaggi di programmazione (ma vincolo di usare Windows). In CORBA si possono usare più linguaggi di programmazione.
 - In CORBA si hanno delle Home simili a EJB2 (che poi c’è anche in EJB3, ma lavora dietro alle quinte).
 - In EJB c'è il container EJB. In CORBA si può avere più di un container, se serve.
-- Da microsoft COM, CORBA 3 ha imparato la cosa di avere diverse interfacce mostrabili ai clienti (non si può fare in EJB3) e ha imparato la questione degli eventi. Non è vero che in EJB non si possono scambiare eventi, ma va fatto a mano: il container non aiuta.
-- In COM o .NET si può navigare sulle interfacce. Si può fare in CORBA 3, ma non su EJB.
+- Da microsoft COM, CCM ha imparato la cosa di avere diverse interfacce mostrabili ai clienti (non si può fare in EJB3) e ha imparato la questione degli eventi. Non è vero che in EJB non si possono scambiare eventi, ma va fatto a mano: il container non aiuta.
+- In COM o .NET si può navigare sulle interfacce. Si può fare in CCM, ma non su EJB.
 
-In sintesi, CORBA 3 ha preso le tecnologie presenti sul mercato al momento della creazione della specifica cercando di prendere il meglio da tutte. Ci ha messo dentro veramente tantissima roba tanto non la implementavano loro dato che è una specifica.
+In sintesi, CCM ha preso le tecnologie presenti sul mercato al momento della creazione della specifica cercando di prendere il meglio da tutte. Ci ha messo dentro veramente tantissima roba tanto non la implementavano loro dato che è una specifica.
 
 <a href="#indice">Torna all'indice</a>
 
