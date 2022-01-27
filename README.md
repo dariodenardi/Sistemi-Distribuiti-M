@@ -5063,6 +5063,8 @@ Un secondo esempio per chiarire tutti i concetti visti è il seguente:
 
 Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, per evitare i rallentamenti causati dalle letture e scritture su disco.
 
+Per rendere l'approccio batch-processing simile a quello stream-processing, è possibile creare delle finestre di dimensioni inferiori rispetto a quelle usate normalmente. Esiste una versione di Spark che prende il nome di Spark Stream.
+
 <a href="#indice">Torna all'indice</a>
 
 ## Node.js
