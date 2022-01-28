@@ -94,8 +94,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Molteplicità nelle Relazioni](#molteplicità-nelle-relazioni)
     - [Direzionalità delle relazioni](#direzionalità-delle-relazioni)
     - [Gestione a runtime di Entity](#gestione-a-runtime-di-entity)
-    - [Container-managed EntityManager](#container-managed-entitymanager)
-    - [Application-managed EntityManager](#application-managed-entitymanager)
+    - [Container-managed EntityManager](#container-managed-entity-manager)
+    - [Application-managed EntityManager](#application-managed-entity-manager)
     - [Entity Manager singoli vs multipli](#entity-manager-singoli-vs-multipli)
     - [Ciclo di Vita](#ciclo-di-vita)
     - [Unità di Persistenza](#unità-di-persistenza)
@@ -166,8 +166,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         - [Aspect](#aspect)
         - [Weaving](#weaving)
         - [Target](#target)
-        - [AOP Statico](#)
-        - [AOP Dinamico](#)
+        - [AOP Statico](#aop-statico)
+        - [AOP Dinamico](#aop-dinamico)
     - [Dependency Injection](#dependency-injection-1)
     - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
     - [Oggetto BeanFactory](#oggetto-beanfactory)
@@ -232,31 +232,32 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Thread vs Asynchronous Event Driven](#thread-vs-asynchronous-event-driven)
     - [Thread vs Event](#thread-vs-event)
     - [Moduli](#moduli)
-    - [Modulo HTTP](#modulo-http)
-    - [NPM](#npm)
-    - [Modulo FS](#modulo-fs)
-    - [Modulo Stream](#modulo-stream)
-    - [Modulo Net](#modulo-net)
-    - [Modulo Express](#modulo-express)
-- [Docker](#)
-    - [Microservizi](#)
-    - [DevOps](#)
-    - [Container](#)
-    - [Docker](#)
-    - [Gestione del ciclo di vita del container](#)
-    - [Immagini Docker](#)
-- [Kubernates](#)
-    - [Architettura](#)
-    - [Etcd](#)
-    - [Controller Manager](#)
-    - [Cloud Controller Manager](#)
-    - [Kubelet](#)
-    - [Pod](#)
-    - [Service](#)
-    - [Kube proxy](#)
-    - [Scheduler](#)
-    - [Volumi](#)
-    - [Network](#)
+        - [Modulo HTTP](#modulo-http)
+        - [NPM](#npm)
+        - [Modulo FS](#modulo-fs)
+        - [Modulo Stream](#modulo-stream)
+        - [Modulo Net](#modulo-net)
+        - [Modulo Express](#modulo-express)
+- [Docker](#docker)
+    - [Microservizi](#microservizi)
+    - [DevOps](#devops)
+    - [Container](#container)
+    - [Docker](#docker-1)
+    - [Gestione del ciclo di vita del container](#gestione-del-ciclo-di-vita-del-container)
+    - [Immagini Docker](#immagini-docker)
+- [Kubernates](#kubernetes)
+    - [Architettura](#architettura-3)
+    - [Etcd](#etcd)
+    - [Controller Manager](#controller-manager)
+    - [Cloud Controller Manager](#cloud-controller-manager)
+    - [Kubelet](#kubelet)
+    - [Pod](#pod)
+    - [Service](#service)
+    - [Kube proxy](#kube-proxy)
+    - [Scheduler](#scheduler)
+    - [Volumi](#volumi)
+    - [Network](#network)
+    - [Modello dichiarativo](#modello-dichiarativo)
 - [FaaS](#faas)
     - [Serverless come Baas+FaaS](#serverless-come-baasfaas)
     - [Architettura](#architettura-4)
@@ -5178,7 +5179,7 @@ Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e 
 
 <a href="#indice">Torna all'indice</a>
 
-### Modulo HTTP
+#### Modulo HTTP
 
 Il modulo più usato è HTTP. Il modulo viene caricato tramite la `require`:
 
@@ -5200,7 +5201,7 @@ Si può richiedere la creazione di un HTTP server che sia in grado di rispondere
 
 <a href="#indice">Torna all'indice</a>
 
-### NPM
+#### NPM
 
 Il core di Node.js è stato progettato per essere piccolo e snello, i moduli che fanno parte del core si focalizzano su protocolli e formati di uso comune. Per ogni altra cosa, si usa NPM: chiunque può creare un modulo Node con funzionalità aggiuntive e pubblicarlo in NPM.
 
@@ -5208,7 +5209,7 @@ NPM è un package manager di grande successo e in forte crescita, che semplifica
 
 <a href="#indice">Torna all'indice</a>
 
-### Modulo FS
+#### Modulo FS
 
 Il modulo di gestione dei file si chiama FS. Una volta caricato il modulo con la `require` si può effettuare la `read`, questo scatena la lettura e si passa la funzione che dovrà essere scatenata e per leggere il file. Notare che in Node.js il primo parametro è sempre quello di errore il secondo è il contenuto del file. Il file deve essere piccolo perché altrimenti l’operazione di console diventerebbe troppo lunga e bloccherebbe l’event loop.
 
@@ -5230,7 +5231,7 @@ function readDoneCallback(error, dataBuffer) {
 
 <a href="#indice">Torna all'indice</a>
 
-### Modulo Stream
+#### Modulo Stream
 
 Node.js contiene moduli che producono/consumano flussi di dati (stream), questo può essere modo utile per strutturare server, per elaborare contenuti di grosse dimensioni e spezzare il carico in arrivo, per il modello concorrente è importante che non vi siano task pensanti. Stream supporta la gestione di flussi di dati utile per lavorare con file di grosse dimensioni, stream a livello di rete. Questi stream possono essere elaborati e trasformati dinamicamente. Si possono costruire stream anche dinamicamente e aggiungere moduli sul flusso. Ad esempio stream.push(Encryption). Vi sono diversi tipi di stream: Readable stream (es: fs.createReadStream), Writable stream (es. fs.createWriteStream), Duplex stream (es. net.createConnection), Transform stream (es. zlib, crypto).
 
@@ -5268,7 +5269,7 @@ writableStreamEvent.end();
 
 <a href="#indice">Torna all'indice</a>
 
-### Modulo Net
+#### Modulo Net
 
 Esiste un modulo di rete Node.js, chiamato Net, che fa da wrapper per le chiamate di rete di SO, include anche funzionalità di alto livello, come:
 
@@ -5313,7 +5314,7 @@ La funzione `processTCPConnection` aggiunge la lista di clienti connessi alla so
 
 <a href="#indice">Torna all'indice</a>
 
-### Modulo Express
+#### Modulo Express
 
 Express.js è il framework più utilizzato oggi per lo sviluppo di applicazioni Web su Node.js, molto flessibile e con ottime performance e consente di utilizzare diverse opzioni e motori di templating. Mette a disposizione eseguibili per rapida generazione di applicazioni ed è ispirato e basato sul precedente `Sinatra`:
 
