@@ -166,8 +166,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         - [Aspect](#aspect)
         - [Weaving](#weaving)
         - [Target](#target)
-    - [AOP Statico](#)
-    - [AOP Dinamico](#)
+        - [AOP Statico](#)
+        - [AOP Dinamico](#)
     - [Dependency Injection](#dependency-injection-1)
     - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
     - [Oggetto BeanFactory](#oggetto-beanfactory)
@@ -3350,11 +3350,11 @@ Weaving è il processo dell’effettivo inserimento di aspect dentro il codice a
 
 Target è un oggetto il cui flusso di esecuzione viene modificato da qualche processo AOP attraverso il weaving, in alcuni casi viene anche indicato come oggetto con advice (advised object).
 
-### AOP Statico
+#### AOP Statico
 
 Nell’AOP statico il processo di weaving viene realizzato a tempo di compilazione, come passo ulteriore del processo di sviluppo, durante la build dell’applicazione, vengono aggiunti opportunamente in alcuni punti gli advice, in questo caso il weaving incide sul codice dell’applicazione che viene eseguito e sul suo footprint, può avvenire in diversi modi anche andando a modificare i BYTECODE. Ad esempio, in un programma Java, si può avere weaving attraverso la modifica del bytecode di una applicazione, senza la modifica del codice sorgente, intervenendo direttamente sul bytecode stesso, i file bytecode possono essere modificati prima della messa in esecuzione questo richiede che durante la compilazione ci sia questo passaggio di modifica.
 
-### AOP Dinamico
+#### AOP Dinamico
 
 Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime, vi è la possibilità di cambiare weaving senza bisogno di ricompilazione. Bisogna intercettare il punto in cui cambiare il weaving e inserire gli advice, con un continuo monitoraggio e iniezione durante l’esecuzione, questo rappresenta uno svantaggio perché causa un overhead durante l’esecuzione.
 
