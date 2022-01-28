@@ -5337,6 +5337,8 @@ Codice per attivare il server web e restituisce un `Hello World!` relativo alla 
 
 Microservizi e container costituiscono un’alternativa più moderna al tradizionale modello software basato sull’architettura monolitica.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Microservizi
 
 Per avere applicazioni molto portabili e scalabili è importante esprimerle in termini di micro-servizi, ovvero piccoli componenti che compongono un’applicazione distribuita costituita da servizi deploiabili separatamente che eseguono funzioni specifiche di business e comunicano con interfacce web. I micro-servizi sono piccoli blocchi di codice riutilizzabili che compongono l’applicazione. L’obiettivo è quello di rendere l’applicazione scalabile e meno sottoposta all’incremento del tempo necessario al deployment nell’ambiente dei DevOps.
@@ -5349,11 +5351,15 @@ Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile 
 
 Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database. VI è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB dove i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio ha la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali etc.
 
+<a href="#indice">Torna all'indice</a>
+
 ### DevOps
 
 Legato al mondo dei micro-servizi vi è quello dei DevOps. I DevOps garantiscono uno sviluppo agile dell’applicazione consentendo di unire la parte applicativa a quella infrastrutturale, velocizzando il processo di cambiamento e correzione delle applicazioni. L’idea di mettere insieme micro-servizi e DevOps sopraggiunge per la necessità di preparare l’ambiente per controllare le nuove release, installarle, verificarle e poter facilmente tornare indietro, garantendo QoS consistenza ed evitando crash e altri problemi.
 
 I DevOps vanno nella direzione del continuo ciclo di sviluppo, seguendo le fasi di Design Build Deploy teste e Release senza mai fermarsi in un ciclo infinito. Per questo un’applicazione può continuamente essere aggiornata durante la sua esecuzione senza la necessità di interrompere o interferire con l’attuale versione. Il continuo processo di test e rilascio è per struttura più semplice da utilizzare in un’applicazione a micro-servizi.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Container
 
@@ -5369,6 +5375,8 @@ Dal punto di vista del marketing la containerizzazione ha avuto un grande succes
 
 I container sono la giusta piattaforma per un micro-servizio, poiché sono soluzioni leggere e virtualizzate oltre ad essere corretti, auto contenuti e ben isolati, sono in grado allo stesso tempo di condividere le parti di supporto interne al kernel del sistema operativo e non sono specifici per una piattaforma per questo sono estremamente portabili. Infine, possono ospitare i micro-servizi e le loro applicazioni con tutte le loro parti e le loro dipendenze.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Docker
 
 Docker è un insieme di tool che facilita la gestione di container, inizialmente lavorava solo su Linux ma al momento funziona anche su Windows, è molto diffuso a partire dal 2013 anno di creazione del progetto.
@@ -5383,6 +5391,8 @@ Il Docker daemon gestisce i componenti Docker come ad esempio le immagini. Il Do
 
 I Docker container contengono tutto ciò che è necessario ad un’applicazione per eseguire e l’applicazione stessa, sono simili a una directory in quanto il container in esecuzione vede un file system proprio e isolato risptto al resto, dove sono presenti tutti i componenti necessari ad eseguire l’applicazione e sono creati a partire da un’immagine Docker. Gli stati possibili per un container Docker sono: `run`, `started`, `stopped`, `moved`, e `deleted`. I container sono i _run components_ di Docker.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Gestione del ciclo di vita del container
 
 La figura seguente mostra i passi della gestione del ciclo di vita del container:
@@ -5390,6 +5400,8 @@ La figura seguente mostra i passi della gestione del ciclo di vita del container
 ![single tier](./img/img102.png)
 
 Registry locale o remoto da cui richiedere e scaricare immagini con operazione di `pull`, oppure inviare aggiornamenti delle immagini presenti con l’operazione di push. Inoltre, è presente un backup locale in cui salvare immagini con `save` o caricarle con `load`. Le immagini possono essere istanziate sul container con il comando di `run`, di seguito il container può essere avviato con `start`, fermato con `stop` oppure riavvito con `restart`. Se vengono effettuati cambiamenti di configurazioni aggiunta di librerie nel filesystem con la `commit` si può aggiornare l’immagine ed eventualmente aggiungere nuove informazioni attraverso tag. Il DockerFile in modo assertivo enuncia delle direttive che attraverso l’operazione di build consentono di creare nuove immagini.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Immagini Docker
 
@@ -5417,11 +5429,15 @@ Queste configurazioni avanzate vengono indicate nel Docker Compose, file che con
 
 Per quanto riguarda la scalabilità, si usa Docker Swarm, che è un orchestratore di risorse container, è un engine che elabora degli script di configurazione. L'allocazione di Docker Swarm è statica, per questo motivo se bisogna aumentare le risorse non si riesce e quindi, non si ottiene scalabilità. L'utente dovrebbe richiedere tramite deployment nuove istanze ma il tutto è gestito in modo statico.
 
+<a href="#indice">Torna all'indice</a>
+
 ## Kubernetes
 
 Kubernetes è un orchestratore di container compatibile con Docker, la gestione dei container è dinamica e non statica, questo gli consente di offrire molte più funzionalità rispetto a Docker Swarm. Kubernetes è pensato per lavorare in ambienti cloud, infatti da una parte, quella interna, è un orchestratore di container dall’altra parte esternamente si interfaccia con i Virtual Infrastructure Manager, ovvero con i controllori di API Rest, che dispongono i cloud provider per poter andare prendere le risorse che servono per formare l’infrastruttura fisica su cui distribuire i container. Questo strumento facilita molto la migrazione dei container da un’ambiente locale a uno più largo come il cloud. I benefici sono la gestione fine grained e dinamica rispetto a tutte le problematiche di management come scaling e automatizzazione del rollout e del rollback. Una volta sviluppata una nuova versione è possibile mandare ovunque in produzione e tornare indietro senza problemi in caso di bug o errori. Kubernetes consente di effettuare il rollback facilmente. Poi vi è la gestione dello scaling con la possibilità di scaling intelligente fine grained e definibile dal programmatore e non solo con Round Robin, poi vi è tutta la parte di fault tolerance e la possibilità di portare i carichi su cloud diversi.
 
 L’obiettivo principale di Kubernetes è nascondere la complessità di gestione di grandi quantità di container fornendo agli utilizzatori un set di API Rest. Kubernetes è estremamente protabile, infatti, si interfaccia con tutte le principali Cloud Platform private o pubbliche come Amazon AWS, Azure, Openstack, o resource manager come Apache Mesos. Per un orchestratore del genere è fondamentale fornire il deployment di applicazioni multi-container, garantire la continuità dei servizi grazie alla sua gestione di fault tolerance, rollback e rollout, scalare autonomamente e dinamicamente le applicazioni e rendere tutta l’architettura indipendente dall’infrastruttura sottostante.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Architettura
 
@@ -5433,21 +5449,31 @@ L’architettura è di tipo master-slave. Il nodo master può essere uno o più 
 
 ![single tier](./img/img107.png)
 
+<a href="#indice">Torna all'indice</a>
+
 ### Etcd 
 
 L'etcd è un archivio chiave-valore distribuito fortemente consistente che fornisce un modo affidabile per memorizzare i dati a cui è necessario accedere da a sistema distribuito o cluster di macchine. Gestisce le elezioni dei _leader_ durante le partizioni di rete e può tollerare il guasto della macchina, anche nel nodo master.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Controller Manager
 
 Il controller manager Kubernetes è un demone che incorpora i loop di controllo principali gestiti con Kubernetes. In Kubernetes, un controller è un loop di controllo che osserva lo stato condiviso del cluster attraverso l'API server e apporta modifiche tentando di spostare lo stato corrente verso lo stato desiderato. Esempi di controller forniti oggi con Kubernetes sono il controller di replica, controller degli endpoint, controller dello spazio dei nomi e controller degli account di servizio.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Cloud Controller Manager
 
 Il cloud-controller-manager è un componente del Control Plane di Kubernetes che incorpora la logica di controllo specifica del cloud. Il cloud-controller-manager consente di fra interagire il cluster a quello del provider cloud API e separa i componenti che interagiscono con quella piattaforma cloud da componenti che interagiscono solo con il cluster. Disaccoppiando la logica di interoperabilità tra Kubernetes e l’infrastruttura cloud sottostante il componente cloud-controller-manager abilita il cloud provider a rilasciare funzionalità a un ritmo diverso rispetto al progetto Kubernetes. Il cloud-controller-manager è strutturato utilizzando un meccanismo di plug-in che consente l’integrazione delle piattaforme di diversi provider cloud con Kubernetes.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Kubelet
 
 Il kubelet è il principale node agent che esegue su ogni nodo, questo componente logico può registrare il nodo con l'APIserver. Il kubelet funziona in termini di PodSpec, un PodSpec è un oggetto YAML o JSON che descrive un pod. Di conseguenza il kubelet accetta una serie di PodSpec forniti attraverso vari meccanismi (principalmente tramite l'apiserver) e assicura che i container descritti in quelle PodSpecs siano running e in salute.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Pod
 
@@ -5457,9 +5483,13 @@ Per esempio, il pod potrebbe includere sia il contenitore che il Node.js e un co
 
 I pod sono l'unità atomica sulla piattaforma Kubernetes: quando creiamo una distribuzione su Kubernetes, che la distribuzione crea pod con container al loro interno (invece di creare direttamente i container). Ogni Pod è legato al nodo in cui è programmato e vi rimane fino alla cessazione o cancellazione. In caso di guasto di un nodo, i Pod identici sono schedulati su altri nodi disponibili nel cluster.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Service
 
 I service sono un modo astratto per esporre un'applicazione in esecuzione su un set di podin comunicazione uno con l’altro per erogare il service. I pod vengono creati e distrutti per corrispondere allo stato del cluster. Ogni Pod ottiene il proprio indirizzo IP, tuttavia il set di pod in esecuzione in un momento specifico può essere diverso. I service sono astrazioni che definiscono un insieme logico di pod e una policy con cui accedervi.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Kube proxy
 
@@ -5467,17 +5497,25 @@ Il proxy di rete Kubernetes viene eseguito su ciascun nodo worker. Espone i serv
 
 Stub locale che abilita tutta la parte di comunicazione. Uno per nodo che poi abilita tutte le comunicazioni di quel nodo.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Scheduler
 
 Lo scheduler è la parte del controllo che si occupa dello scheduling, controlla la creazione dei Pod e trova il nodo migliore per ospitare quel Pod. Filtra i nodi per verificare quale soddisfi i requisiti di programmazione specifici per quel Pod. Se non ci sono nodi adatti, il Pod rimane non schedulabile. Per ogni nodo adatto e utilizzabile, lo Scheduler stima un punteggio eseguendo una serie di funzioni, il Pod è schedulato sul nodo adatto con il più alto punteggio, lo scheduler quindi notifica al server API questa decisione in un processo chiamato binding.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Volumi
 
 Kubernetes supporta diversi tipi di volumi. Due tipi principali sono: i tipi di volume effimero, questi hanno la durata di un Pod, quando un Pod cessa di esistere, Kubernetes distrugge i volumi effimeri. I volumi persistenti che esistono oltre la durata di un Pod, Kubernetes non distrugge i volumi persistenti. Per qualsiasi tipo di volume in un dato Pod, i dati vengono conservati durante i riavvii del contenitore. Al suo interno, un volume è una directory accessibile ai container in un Pod. Massima interoperabilità con gli strumenti preesistenti quindi con tutti gli storage anche cloud.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Network
 
 Non andando nel dettaglio sulla rete, si ricorda che la gestione della rete può essere anche piuttosto complessa in Kubernetes, poiché vi sono i Pod che si mostrano internamente con indirizzi privati, che però utilizzando indirizzi di rete possono essere messi in comunicazione con altre macchine, anch’esse con una interfaccia di rete. Tutti i mapping per far comunicare le macchine sono gestite dal networking di Kubernetes.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Modello dichiarativo
 
@@ -5489,37 +5527,53 @@ In Kubernetes, il modello dichiarativo funziona in questo modo:
 - Kubernetes implementa lo stato desiderato sul cluster.
 - Kubernetes implementa i loop, attraverso il kube-controller-manager, per assicurarsi che lo stato attuale dell'applicazione non vari dallo stato desiderato.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Concetti di base di Kubernetes
 
 ### Pod
 
 Nel mondo Kubernetes, l'unità atomica di programmazione è il Pod. Non è possibile eseguire un container direttamente su un Kubernetes cluster come in Docker, il container deve sempre essere eseguito all'interno di Pods. Anche se è possibile eseguire più contenitori all'interno dello stesso Pod, ogni Pod ospita solitamente un contenitore. I Pod sono anche l'unità minima di ridimensionamento, se fosse necessario ridimensionare un’app, si aggiungono o si rimuovono Pod. Non si scala l’applicazione aggiungendo più contenitori a un Pod esistente. I Pod sono mortali e quindi sono inaffidabili. Quando un Pod si interrompe in modo imprevisto, Kuberntes non lo riporterà in vita, ma ne inizializza uno nuovo al suo posto.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Service
 
 Per superare l'inaffidabilità dei Pod entrano in gioco i Servizi. I servizi forniscono una rete affidabile per una serie di Pod. I servizi hanno un front-end che consiste in un nome DNS stabile, un indirizzo IP e una porta. Sul back-end viene eseguito il bilanciamento dinamico su un set di Pod. I Pod vanno e vengono, il Service osserva i cicli di vita dei Pod e si aggiorna automaticamente, nel frattempo continua a fornire l'endpoint di rete stabile. La mappatura tra Service e Pod viene eseguita tramite label e selettori di label.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Deployment
 
 I Pod non si auto-riparano, non si ridimensionano e non consentono facili aggiornamenti o rollback. I deployment si occupano di tutto questo, perciò i Pod sono eseguiti e gestiti grazie al deployment. Un unico deployment può gestire solo un singolo tipo di Pod. Ad esempio, se è presente un'app con un Pod per il frontend web e un altro Pod per il backend, ci sarà bisogno bisogno di due implementazioni. Dietro le quinte, i deployment sfruttano un altro oggetto chiamato set di repliche. Le distribuzioni utilizzano i set di repliche per fornire self-healing e scalabilità.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Kubernetes Storage
 
 Kubernetes ha un sottosistema di archiviazione ricco di funzionalità. Indipendentemente dal tipo di spazio di archiviazione di cui si dispone e da dove proviene, quando questo viene esposto nel cluster è detto Volume. Il sottosistema di volumes persistenti di Kubernetes è un insieme di oggetti API che consentono alle app di utilizzare spazio di archiviazione. Ad alto livello, i Persistent Volumes (PV) sono il modo utilizzato per mappare lo storage esterno sul cluster, le Persistent Volume Claims (PVC) sono come i biglietti che autorizzano le applicazioni (Pod) a utilizzare un PV.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Daemons set
 
 Sono utili quando è necessaria una replica di un particolare Pod in esecuzione su ogni nodo del cluster. Alcuni esempi includono i Pod di monitoraggio e la registrazione dei Pod.
 
+<a href="#indice">Torna all'indice</a>
+
 ### Jobs and Cronjobs
 
 Sono utili quando è necessario eseguire un determinato numero di un particolare Pod e bisogna garantire che andranno a buon fine.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Spazio dei nomi
 
 Un cluster virtuale (un singolo cluster fisico può eseguire più cluster virtuali) destinato ad ambienti con molti utenti si diffonde in più team o progetti, per isolare i problemi. Inoltre, a uno spazio dei nomi può essere assegnata una quota di risorse per evitare di consumare più delle risorse complessive  presenti nel cluster fisico.
 
 Per vedere in piccolo il funzionamento di Kubernetes si può utilizzare Minicube. Minicube è uno strumento che semplifica l’esecuzione di Kubernetes in locale, è un cluster con un singolo nodo all’interno di una Virtual Machine.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Cluster initialization
 
@@ -5541,11 +5595,15 @@ Launch Dashboard
 $ minikube dashboard
 ```
 
+<a href="#indice">Torna all'indice</a>
+
 ## FaaS
 
 Così come l’internet wireless ha dei cavi da qualche parte, le architetture serverless continuano ad avere dei server da qualche parte. Come sviluppatore, non bisogna pensare a questi server ma ci si focalizza solo sul codice. Il serverless consente di costruire ed eseguire applicazioni e servizi senza preoccuparsi di scalare i server. Ciò che serve all’esecuzione è gestito implicitamente.
 
 In un’applicazione serverless, il supporto lavora a callback. Il programmatore non deve gestire con degli strumenti il deployment delle applicazioni. Il programmatore carica l’applicazione su una piattaforma e non deve fare altro. Non esiste in sè per sè un server ma c'è una piattaforma. In questo senso è simile a map-reduce poiché il programmatore implementa unicamente le funzioni di map e reduce. La parte di risorse è gestita in automatico dalla piattaforma. Tutto il focus è sulla business logic e non sulla gestione o sull’approvvigionamento dell’infrastruttura, non vi è alcun costo relativo al controllo attivo di risorse e alla scalabilità.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Serverless come Baas+FaaS
 
@@ -5556,6 +5614,8 @@ Analizzando le possibili soluzioni nel cloud, FaaS si trova tra piattaforma PaaS
 Back-end as a Service (BaaS) significa esternalizzazione tutti i servizi di sistema mettendo a disposizione API per questi servizi (autenticazione, database, notifiche etc).
 
 FaaS che consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare. Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Architettura
 
@@ -5568,6 +5628,8 @@ Alla piattaforma FaaS arrivano richieste da diverse fonti e attraverso diverse r
 Le risorse cloud oggi non sono più unicamente disponibili in un punto geograficamente molto distante, ma sono distribuite in punti molto vicini in micro-datacenter. Ciò prende il nome di edge computing. Pensando in questo caso al cloud computing come batch e dividendo in task molto piccoli il lavoro, se non vi sono vincoli stringenti di QoS si possono sfruttare le FaaS e pagare meno.
 
 Tra le piatatforme emergenti open-source per FaaS vi sono OpenFaaS, OpenWhisk, Fission e Knative.
+
+<a href="#indice">Torna all'indice</a>
 
 ### OpenWhisk
 
@@ -5582,6 +5644,8 @@ Le caratteristiche principali sono:
 ![single tier](./img/img110.png)
 
 Da notare come nelle nuove piattaforme si utilizzino sempre gli stessi modelli architetturali e strumenti già ben noti nel cloud.
+
+<a href="#indice">Torna all'indice</a>
 
 ### Knative
 
@@ -5598,6 +5662,8 @@ Dal punto di vista del disaccoppiamento dei servizi, i servizi vengono eseguiti 
 ![single tier](./img/img113.png)
 
 Dal punto di viste delle performance, queste piattaforme al di fuori degli eventi non lavorano benissimo, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
+
+<a href="#indice">Torna all'indice</a>
 
 ## Confronto tra Tecnologie
 
