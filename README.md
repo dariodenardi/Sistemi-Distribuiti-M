@@ -31,9 +31,9 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Contratti](#contratti)
     - [EJB container](#ejb-container)
     - [Tipologie di componenti Bean](#tipologie-di-componenti-bean)
-    - [Session Bean](#session-bean)
-    - [Entity Bean](#entity-bean)
-    - [Message Driven Bean](#message-driven-bean)
+        - [Session Bean](#session-bean)
+        - [Entity Bean](#entity-bean)
+        - [Message Driven Bean](#message-driven-bean)
     - [Interazioni tra Bean](#interazioni-tra-bean)
     - [Deployment](#deployment-1)
     - [Ciclo di sviluppo](#ciclo-di-sviluppo)
@@ -68,8 +68,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
 - [EJB 3.X](#ejb-3x)
     - [Annotazioni e Descrittori di Deployment](#annotazioni-e-descrittori-di-deployment)
     - [Tipologie di componenti](#tipologie-di-componenti)
-    - [Session Bean](#session-bean-1)
-    - [Message Driven Bean](#message-driven-bean-1)
+        - [Session Bean](#session-bean-1)
+        - [Message Driven Bean](#message-driven-bean-1)
     - [Dependency Injection](#dependency-injection)
     - [Interoperabilità tra EJB 3.X e EJB 2.X](#interoperabilità-tra-ejb-3x-e-ejb-2x)
     - [Servizi di sistema](#servizi-di-sistema)
@@ -103,13 +103,13 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Loading Lazy/Eager](#loading-lazyeager)
     - [Listener di Entity](#listener-di-entity)
     - [Hibernate](#hibernate)
-    - [Interfaccia SessionFactory](#interfaccia-sessionfactory)
-    - [Interfaccia Session](#interfaccia-session)
-    - [Transazioni](#transazioni)
-    - [Ciclo di Vita](#ciclo-di-vita-1)
-    - [Il caching in Hibernate](#il-caching-in-hibernate)
-    - [Fetching dei dati](#fetching-dei-dati)
-    - [Query By Examples (QBE)](#query-by-examples-qbe)
+        - [Interfaccia SessionFactory](#interfaccia-sessionfactory)
+        - [Interfaccia Session](#interfaccia-session)
+        - [Transazioni](#transazioni)
+        - [Ciclo di Vita](#ciclo-di-vita-1)
+        - [Il caching in Hibernate](#il-caching-in-hibernate)
+        - [Fetching dei dati](#fetching-dei-dati)
+        - [Query By Examples (QBE)](#query-by-examples-qbe)
 - [JMS](#jms)
     - [Perchè usare un servizio di messagistica](#perchè-usare-un-servizio-di-messagistica)
     - [Modello point-to-point](#modello-point-to-point)
@@ -136,14 +136,14 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Selettori di messaggi](#selettori-di-messaggi)
     - [JMS in EJB](#jms-in-ejb)
     - [Enterprise Service Bus (ESB)](#enterprise-service-bus-esb)
-    - [Service Oriented Architecture (SOA)](#service-oriented-architecture-soa)
-    - [Web Services](#web-services)
-    - [Web Service Description Language (WSDL)](#web-service-description-language-wsdl)
-    - [Enterprise Application Integration (EAI)](#enterprise-application-integration-eai)
-    - [Hub-and-Spoke](#hub-and-spoke)
-    - [Bus di Interconnessione](#bus-di-interconnessione)
-    - [Concetti chiave di ESB](#concetti-chiave-di-esb)
-    - [Java Business Integration (JBI)](#java-business-integration-jbi)
+        - [Service Oriented Architecture (SOA)](#service-oriented-architecture-soa)
+        - [Web Services](#web-services)
+        - [Web Service Description Language (WSDL)](#web-service-description-language-wsdl)
+        - [Enterprise Application Integration (EAI)](#enterprise-application-integration-eai)
+        - [Hub-and-Spoke](#hub-and-spoke)
+        - [Bus di Interconnessione](#bus-di-interconnessione)
+        - [Concetti chiave di ESB](#concetti-chiave-di-esb)
+        - [Java Business Integration (JBI)](#java-business-integration-jbi)
  - [CORBA](#corba)
     - [CORBA 2.X](#corba-2x)
     - [CORBA Component Model (CCM)](#corba-component-model-ccm)
@@ -224,8 +224,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Definizione](#definizione-1)
     - [Stream Processing](#stream-processing)
     - [Batch Processing](#batch-processing)
-    - [Hadoop Distributed File System (HDFS)](#hadoop-distributed-file-system-hdfs)
-    - [MapReduce](#mapreduce)
+        - [Hadoop Distributed File System (HDFS)](#hadoop-distributed-file-system-hdfs)
+        - [MapReduce](#mapreduce)
 - [Node.js](#nodejs)
     - [Utilizzo di Javascript](#utilizzo-di-javascript)
     - [Event Loop](#event-loop)
@@ -539,7 +539,7 @@ I componenti possono essere classificati in due categorie:
 
 <a href="#indice">Torna all'indice</a>
 
-### Session Bean
+#### Session Bean
 
 Un Session Bean ha le seguenti caratteristiche:
 
@@ -558,7 +558,7 @@ I Session Bean che esistono sono di due tipi:
 
 <a href="#indice">Torna all'indice</a>
 
-### Entity Bean
+#### Entity Bean
 
 Un Entity Bean ha le seguenti caratteristiche:
 
@@ -577,7 +577,7 @@ Gli Entity Bean che esistono sono di due tipi:
 
 <a href="#indice">Torna all'indice</a>
 
-### Message Driven Bean
+#### Message Driven Bean
 
 Questo Bean verrà approfondito nel `Capitolo 7`.
 
@@ -1222,7 +1222,7 @@ Per specificare che tipo di componente si vuole usare, si aggiungono al codice l
 
 <a href="#indice">Torna all'indice</a>
 
-### Session Bean
+#### Session Bean
 
 Grazie all'uso delle annotazioni è possibile riscrivere le interfacce in modo POJI (Plain Old Java Interface) cioè l'interfaccia viene riscritta in un modo più simile a quello di come viene scritta un'interfaccia _normale_.
 
@@ -1298,7 +1298,7 @@ Per definire che tipo di componente si sta usando lo si deve inserire a livello 
 
 <a href="#indice">Torna all'indice</a>
 
-### Message Driven Bean
+#### Message Driven Bean
 
 Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'interfaccia `jms.MessageListener` come in EJB 2.X e usare l'annotazione `@MessageDriven`:
 
@@ -2373,25 +2373,25 @@ L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostant
 
 <a href="#indice">Torna all'indice</a>
 
-### Interfaccia SessionFactory
+#### Interfaccia SessionFactory
 
 `SessionFactory` é l'equivalente all'`EntityManagerFactory` di JPA. Consente di creare oggetti `Session` e mantiene le risorse necessarie per cache di primo e secondo livello. Di solito si crea una `SessionFactory` per ogni DB ma niente vieta di creare più `SessionFactory` per un singolo DB.
 
 <a href="#indice">Torna all'indice</a>
 
-### Interfaccia Session
+#### Interfaccia Session
 
 La `Session` è l'analogo dell'`EntityManager` in JPA. Va a gestire il ciclo di vita degli oggetti persistenti e opera da factory per gli oggetti `Transaction` cioè ogni volta che si vuole lavorare sui dati con semantica transazionale serve ottenere questo oggetto.
 
 <a href="#indice">Torna all'indice</a>
 
-### Transazioni
+#### Transazioni
 
 Gli oggetti `Transaction` sono oggetti single-therad che servono ad aprire, chiudere e fare il rollback di una transazione unità atomiche astraendo dai dettagli delle librerie e dei framework che si usano. Le transazioni in Hibernate non sono eseguiti, a default, con semantica transazionale quindi ogni volta è necessario crearsi un oggetto `Transaction`.
 
 <a href="#indice">Torna all'indice</a>
 
-### Ciclo di Vita
+#### Ciclo di Vita
 
 Gli oggetti si possono trovare in tre possibili stati:
 
@@ -2405,7 +2405,7 @@ Gli oggetti transient o detached hanno istanze non legate alla sessione. Modific
 
 <a href="#indice">Torna all'indice</a>
 
-### Il caching in Hibernate
+#### Il caching in Hibernate
 
 In generale, la cache migliora la performance dei sistemi e si accede al database solo se lo stato necessario non è presente in cache. In Hibernate esistono due livelli di cache: uno associata alla `Session` e uno associata alla `SessionFactory`. Le cache di primo livello è usata da Hibernate all’interno dei confini di una singola transazione principalmente al fine di ridurre il numero di query SQL generate all’interno di una transazione. Ad esempio, se un oggetto è modificato diverse volte all’interno della medesima transazione, Hibernate genera un unico statement SQL UPDATE alla fine della transazione, con tutte le modifiche. Invece, la cache di secondo livello, mantiene dati a livello di `SessionFactory`, utilizzabili da diverse transazioni.
 
@@ -2459,7 +2459,7 @@ Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
 <a href="#indice">Torna all'indice</a>
 
-### Fetching dei dati
+#### Fetching dei dati
 
 Per fare fetching (cioè caricare i dati dal DB alla memoria) si possono usare varie stretegie che si indicano a priori nel file di mapping o successivamente nelle query con override. Quindi, anche in Hibernate si possono fare caricamenti più eager o più lazy che impatteranno sulla cache di primo e di secondo livello, è il programmatore che decide se fare un caricamento più aggressivo o più pigro. Si specifica con un parametro chiamato `FetchMode` e le modalità di fetching sono:
 
@@ -2471,7 +2471,7 @@ Usare una strategia di fetching rispetto ad un'altra ha ovviamente impatto sulle
 
 <a href="#indice">Torna all'indice</a>
 
-### Query By Examples (QBE)
+#### Query By Examples (QBE)
 
 Lo stile è drasticamente differente da SQL per la ricerca di dati nel DB. L'idea di base è quella di effettuare una ricerca di tipo associativa:
 
@@ -2935,7 +2935,7 @@ Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integra
 
 <a href="#indice">Torna all'indice</a>
 
-### Service Oriented Architecture (SOA)
+#### Service Oriented Architecture (SOA)
 
 SOA è un'architettura software che mette a disposizione:
 
@@ -2949,7 +2949,7 @@ Tutto questo ha l’obiettivo di ottenere accoppiamento debole, e quindi flessib
 
 <a href="#indice">Torna all'indice</a>
 
-### Web Services
+#### Web Services
 
 I Web Services sono una possibile implementazione dell'architettura SOA e facilitano l’interazione tra applicazioni basata sul concetto di servizio, utilizzando interfacce Web, in particolare operano sulla porta 80. Tali Web services sfruttano essenzialmente tre tecnologie:
 
@@ -2959,7 +2959,7 @@ I Web Services sono una possibile implementazione dell'architettura SOA e facili
 
 La differenza tra un Web service e un servizio di distributed object computing è che nel caso dei Web Service non c’è dipendenza dall’implementazione e non ha neanche importanza il protocollo su cui viaggia.
 
-### Web Service Description Language (WSDL)
+#### Web Service Description Language (WSDL)
 
 WSDL è suddiviso in due parti:
 
@@ -2973,7 +2973,7 @@ Nell’architettura SOA non importa quale è la tecnologia utilizzata ma si poss
 
 <a href="#indice">Torna all'indice</a>
 
-### Enterprise Application Integration (EAI)
+#### Enterprise Application Integration (EAI)
 
 L’integrazione è un grosso problema: solo il 10% delle applicazioni è integrato (dati Gartner Inc.) e solo 15% di queste sfruttano middleware ad hoc. Perché le tecnologie passate si sono rivelate inadeguate? A causa di un’architettura _casuale_ che è il risultato della composizione di diverse soluzioni adottate per i diversi sistemi nel corso degli anni, e col tempo presenta: alti costi di mantenimento, rigidità (applicazioni tightly-coupled), prestazioni insoddisfacenti (scarsa scalabilità). Sono poche le applicazioni che nascono con la volontà di un’integrazione forte.
 
@@ -2990,7 +2990,7 @@ La soluzione è avere dei broker e dei orchestration engine come facilitatori de
 
 <a href="#indice">Torna all'indice</a>
 
-### Hub-and-Spoke
+#### Hub-and-Spoke
 
 Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e le applicazioni hanno un adapter a un formato comune garantito dal message broker. Una central automation engine cioè un motore che consuma i messaggi, guarda dentro i messaggi e facendo routing intelligente tra le applicazioni li manda dove devono arrivare. Inoltre, vi sono tutti i servizi di sistema, tra cui persistenza e transazioni.
 
@@ -3001,7 +3001,7 @@ I pro dell’architettura a stella sono la facilità di gestione (centralizzata)
 
 <a href="#indice">Torna all'indice</a>
 
-### Bus di Interconnessione
+#### Bus di Interconnessione
 
 L’altra architettura di riferimento è quella a bus dove l’automation engine risiede con l’applicazione e non c'è il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto.
 
@@ -3012,7 +3012,7 @@ I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno
 
 <a href="#indice">Torna all'indice</a>
 
-### Concetti chiave di ESB
+#### Concetti chiave di ESB
 
 L'ESB è la realizzazione della seconda architettura. L'idea principale è quella di fare integrazione di servizi basata su scambio di messaggi tra applicazioni che hanno un adapter diverso e il bus deve uniformare la visione. Il bus può essere visto come un middleware che consente di integrare il tutto. Il bus mette a disposizione:
 
@@ -3024,7 +3024,7 @@ ESB consente di utilizzare tanti e diversi protocolli per scambiare le informazi
 
 <a href="#indice">Torna all'indice</a>
 
-### Java Business Integration (JBI)
+#### Java Business Integration (JBI)
 
 Nel mondo Java a supporto di tutto questo c'è lo standard JBI (Java Business Integration). In JBI, ci sono servizi interni ed esterni. I servizi esterni non riescono a parlare direttamente con l’orchestratore ESB perchè usano, ad esempio, protocolli diversi. Per questi servizi servono dei binding componenent che fungono da proxy verso i servizi esterni. In particolare, essi sono degli adatatori per passare dal protocollo `A` al `B`. Poi, vi sono i servizi interni e con questi si ha la possibilità di utilizzare il Normalized Message Router (il bus) che si occupa dell’interazione tra componenti cioè del routing delle informazioni. Sopra, si ha la parte di servizi offerta dal framework tra cui l’orchestrazione dei servizi stessi offerta da BPEL (engine) che orchestra i servizi a grana grossa tramite diagrammi di flusso che gestiscono le integrazioni. Sono offerti anche servizi grafici al programmatore per l’integrazione più facile dei servizi.
 
@@ -4959,7 +4959,7 @@ Probabilmente il padre storico di impatto industriale è il progetto Apache Hado
 - **MapReduce**: framework per processing distribuito di grandi insiemi di
 dati su cluster.
 
-### Hadoop Distributed File System (HDFS)
+#### Hadoop Distributed File System (HDFS)
 
 Prende ispirazione da Google file system. È un file system scalabile, distribuito, portabile, scritto in Java per framework Hadoop. HDFS può essere parte di Hadoop o un file system distribuito stand-alone general-purpose. HDFS è costituito da:
 
@@ -4972,7 +4972,7 @@ Hadoop può lavorare su qualsiasi file system distribuito ma sfrutta conoscenza 
 
 <a href="#indice">Torna all'indice</a>
 
-### MapReduce
+#### MapReduce
 
 MapReduce è modello di programmazione e un framework software sviluppato originariamente da Google. Questo modello è stato implementato anche nel framework open source da parte di Yahoo. L'obiettivo è quello di semplificare il processamento di enormi moli di dati in parallelo su cluster di grandi dimensioni usando hardware low-cost, in modo affidabile e fault-tolerant. Il processamento deve avvenire su:
 
