@@ -16,7 +16,7 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
 ## Indice
 - [Modelli](#modelli)
     - [Componente](#componente)
-    - [Differenza tra un componente ed un oggetto](#differenza-tra-un-componente-ed-un-oggetto)
+        - [Differenza tra un componente ed un oggetto](#differenza-tra-un-componente-ed-un-oggetto)
     - [Modelli](#modelli-1)
     - [Deployment](#deployment)
     - [Architetture applicazioni Enterprise (1)](#architetture-applicazioni-enterprise-1)
@@ -74,11 +74,11 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Interoperabilità tra EJB 3.X e EJB 2.X](#interoperabilità-tra-ejb-3x-e-ejb-2x)
     - [Servizi di sistema](#servizi-di-sistema)
     - [Pooling e concorrenza](#pooling-e-concorrenza)
-    - [Resource Pooling](#resource-pooling)
-    - [Activation](#activation)
+        - [Resource Pooling](#resource-pooling)
+        - [Activation](#activation)
     - [Transazionalità](#transazionalità)
-    - [Container-Managed Transaction](#container-managed-transaction)
-    - [Bean-Managed Transaction](#bean-managed-transaction)
+        - [Container-Managed Transaction](#container-managed-transaction)
+        - [Bean-Managed Transaction](#bean-managed-transaction)
     - [Gestione delle connessioni a risorse](#gestione-delle-connessioni-a-risorse)
     - [Persistenza](#persistenza)
     - [Messaggistica](#messaggistica)
@@ -94,8 +94,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Molteplicità nelle Relazioni](#molteplicità-nelle-relazioni)
     - [Direzionalità delle relazioni](#direzionalità-delle-relazioni)
     - [Gestione a runtime di Entity](#gestione-a-runtime-di-entity)
-    - [Container-managed EntityManager](#container-managed-entity-manager)
-    - [Application-managed EntityManager](#application-managed-entity-manager)
+        - [Container-managed EntityManager](#container-managed-entity-manager)
+        - [Application-managed EntityManager](#application-managed-entity-manager)
     - [Entity Manager singoli vs multipli](#entity-manager-singoli-vs-multipli)
     - [Ciclo di Vita](#ciclo-di-vita)
     - [Unità di Persistenza](#unità-di-persistenza)
@@ -169,13 +169,13 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         - [AOP Statico](#aop-statico)
         - [AOP Dinamico](#aop-dinamico)
     - [Dependency Injection](#dependency-injection-1)
-    - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
-    - [Oggetto BeanFactory](#oggetto-beanfactory)
-    - [Injection di valori semplici](#injection-di-valori-semplici)
-    - [Injection di un Bean all’interno della stessa factory](#injection-di-un-bean-allinterno-della-stessa-factory)
-    - [Naming dei Componenti](#naming-dei-componenti)
-    - [HelloWorld con dependency injection](#helloworld-con-dependency-injection)
-    - [Considerazioni sulla dependency injection](#considerazioni-sulla-dependency-injection)
+        - [Varianti per Dependency Injection](#varianti-per-dependency-injection)
+        - [Oggetto BeanFactory](#oggetto-beanfactory)
+        - [Injection di valori semplici](#injection-di-valori-semplici)
+        - [Injection di un Bean all’interno della stessa factory](#injection-di-un-bean-allinterno-della-stessa-factory)
+        - [Naming dei Componenti](#naming-dei-componenti)
+        - [HelloWorld con dependency injection](#helloworld-con-dependency-injection)
+        - [Considerazioni sulla dependency injection](#considerazioni-sulla-dependency-injection)
     - [HelloWorld con AOP](#helloworld-con-aop)
     - [Intercettori](#intercettori-1)
     - [Transazioni verso DB](#transazioni-verso-db)
@@ -184,7 +184,7 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
         - [Unrepeatble Read](#unrepeatble-read)
         - [Phantom Row](#phantom-row)
         - [Livelli di Isolamenti](#livelli-di-isolamenti)
-    - [Transazionalità verso DB](#transazionalità-verso-db)
+    - [Transazionalità](#transazionalità)
     - [Pooling e concorrenza](#pooling-e-concorrenza-1)
     - [Autowiring](#autowiring)
     - [Dependency checking](#dependency-checking)
@@ -294,7 +294,7 @@ Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i compone
 
 <a href="#indice">Torna all'indice</a>
 
-### Differenza tra un componente ed un oggetto
+#### Differenza tra un componente ed un oggetto
 
 A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto perchè sembrano molto simili tra di loro:
 
@@ -1473,7 +1473,7 @@ La concorrenza viene gestita in modi diversi in base se il componente ha stato o
 
 <a href="#indice">Torna all'indice</a>
 
-### Resource Pooling
+#### Resource Pooling
 
 L'idea di base è di evitare di mantenere un'istanza separata di ogni componente EJB per ogni cliente perchè le richieste potrebbero non essere servite tutte dato che non si possono creare istanze illimitate.
 
@@ -1503,7 +1503,7 @@ Questa politica di gestione si applica anche ai Message-Driven Bean: l'unica dif
 
 <a href="#indice">Torna all'indice</a>
 
-### Activation
+#### Activation
 
 La gestione avviene in due fasi:
 
@@ -1536,7 +1536,7 @@ Le transazioni possono essere gestite dal container (Container-Managed Transacti
 
 <a href="#indice">Torna all'indice</a>
 
-### Container-Managed Transaction
+#### Container-Managed Transaction
 
 Le transazioni gestite dal container sono:
 
@@ -1663,7 +1663,7 @@ public class TravelAgentBean implements TravelAgentRemote {
 
 <a href="#indice">Torna all'indice</a>
 
-### Bean-Managed Transaction
+#### Bean-Managed Transaction
 
 La gestione delle transazioni è a carico dele programmatore, la complessità è molto maggiore ma anche la flessibilità. Un esempio di codice è riportato di seguito:
 
@@ -2126,7 +2126,7 @@ L’Entity Manager può essere utilizzato demandando completamente la gestione a
 
 <a href="#indice">Torna all'indice</a>
 
-### Container-managed Entity Manager
+#### Container-managed Entity Manager
 
 Il contesto è automaticamente propagato dal container ai componenti applicativi. L'injection avviene tramite l'annotazione `@PersistenceContext` e viene passato all'Entity Manager. In questo senso, l’Entity Manager è container-managed poiché il contesto di persistenza è direttamente passato ai componenti:
 
@@ -2139,7 +2139,7 @@ Il tutto è interlacciato con le transazioni. Le transazioni JTA eseguono genera
 
 <a href="#indice">Torna all'indice</a>
 
-### Application-managed Entity Manager
+#### Application-managed Entity Manager
 
 Il contesto di persistenza non è propagato ai componenti applicativi e il ciclo di vita delle istanze dell'Entity Manager è gestito direttamente dall’applicazione. Viene usato quando l’applicazione necessita di diversi contesti di persistenza e di diverse istanze di Entity Manager correlate. In questo caso, si usa il metodo `createEntityManager()` di `javax.persistence.EntityManagerFactory` per crearsi un Entity Manager:
 
@@ -3371,7 +3371,7 @@ Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le an
 
 <a href="#indice">Torna all'indice</a>
 
-### Varianti per Dependency Injection
+#### Varianti per Dependency Injection
 
 La dependency injection può essere effettuate a livello di costruttore, in cui le dipendenze sono fornite attraverso i costruttori dei componenti:
 
@@ -3401,7 +3401,7 @@ public class SetterInjection {
 
 <a href="#indice">Torna all'indice</a>
 
-### Oggetto BeanFactory
+#### Oggetto BeanFactory
 
 L’oggetto `BeanFactory` è responsabile della gestione dei Bean che usano Spring e delle loro dipendenze. Ogni applicazione interagisce con la dependency injection di Spring (IoC container) tramite l'interfaccia `BeanFactory`. L'oggetto `BeanFactory` viene creato dall’applicazione tipicamente nella forma di `XmlBeanFactory`. Questo oggetto `BeanFactory` legge un file di configurazione XML e si occupa di fare l’injection, detto anche wiring della configurazione. `XmlBeanFactory` è l'estensione di `DefaultListableBeanFactory` per leggere definizioni di Bean da un documento XML. La XML `BeanFactory` legge la configurazione da un file e attraverso il metodo `getBean()` è possibile specificare il nome del Bean e crearlo ottenendo l'istanza logica. Le informazioni sono invece contenute tutte nel file XML:
 
@@ -3484,7 +3484,7 @@ Il Bean con nome logico `injectSimple` la cui classe è `InjectSimple` presenta 
 
 <a href="#indice">Torna all'indice</a>
 
-### Injection di un Bean all’interno della stessa factory
+#### Injection di un Bean all’interno della stessa factory
 
 L’injection di un Bean della stessa Factory è usata quando è necessario fare injection di un Bean all’interno di un altro Bean (target bean). Si Usa il tag `ref` all'interno del tag `property` o `constructor-arg` del target bean:
 
@@ -3502,13 +3502,13 @@ Il Bean con nome logio `injectRef` la cui classe è `InjectRef`, ha il metodo se
 
 <a href="#indice">Torna all'indice</a>
 
-### Naming dei Componenti
+#### Naming dei Componenti
 
 Il ritrovamento dei Bean avviene attraverso il naming dei componenti Spring che vengono specificati nei file XML. Ogni bean deve avere un nome unico all’interno della BeanFactory che lo contiene e la procedura di risoluzione dei nomi avviene seguendo le seguenti regole: se un tag ha un attributo di nome `id`, il valore di questo attributo viene usato come nome, se non c’è attributo `id`, Spring cerca un attributo di nome `name`, se non è definito né `id` né `name`, Spring usa il nome della classe del Bean come suo nome.
 
 <a href="#indice">Torna all'indice</a>
 
-### HelloWorld con dependency injection
+#### HelloWorld con dependency injection
 
 Tramite una serie di esempi, si vede come la `BeanFactory` può essere realizzata. Si parte dal seguente esempio:
 
@@ -3862,7 +3862,7 @@ public class ConfigurableMessageProvider implements MessageProvider {
 
 <a href="#indice">Torna all'indice</a>
 
-### Considerazioni sulla dependency injection
+#### Considerazioni sulla dependency injection
 
 La possibilità di semplice Dependency Injection tramite costruttori o metodi semplifica il testing delle applicazioni Spring. Per esempio è semplice scrivere un test JUnit che crea l’oggetto Spring e configura le sue proprietà a fini di testing. Il container IoC non è invasivo: molti oggetti di business non dipendono dalle API di invocazione del container, queste possono essere portabili verso altre implementazioni di container (PicoContainer, HiveMind etc) ed è facile _introdurre_ vecchi POJO in ambiente Spring. Le factory Spring sono leggere, esistono anche implementazioni all’interno di singole applet o come applicazioni Swing standalone. Un altro importante aspetto, secondario ma comunque rilevante è la possibilità di avere di avere unchecked runtime exception. Un'eccezione runtime exception è un oggetto che viene generato e viene gestito tramite `try-catch`. Tuttavia, è possibile che a tempo di esecuzione, un'eccezione non venga gestita quindi l'errore viene propagato e l'applicazione si può interrompere. In Spring, se un'eccezione non viene catturata viene ignorata.
 
@@ -4049,7 +4049,7 @@ Scegliere di operare a un livello di isolamento in cui si possono presentare dei
 
 <a href="#indice">Torna all'indice</a>
 
-### Transazionalità verso DB
+### Transazionalità
 
 Con scarsa sorpresa in Spring, si chiama transazione locale, una transazione specifica per una singola risorsa transazionale, ad esempio un'unica risorsa di un database, mentre si chiama transazione globale, una transazione gestita dal container, questa può includere risorse  multiple e distribuite. Il programmatore può specificare in modo dichiarativo che un metodo di Bean deve avere proprietà transazionali. Anche l’implementazione delle transazioni è basata su AOP, infatti avviene l’intercettazione di chiamate a metodi per la gestione transazioni. Nessuna necessità di modificare la logica di business, né al cambio della transazionalità desiderata né al cambio del provider di transazionalità.
 
