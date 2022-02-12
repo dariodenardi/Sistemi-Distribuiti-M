@@ -8,7 +8,7 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_
 
 Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come realizzarle
 
-[![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark&Light%20Mode-1f425f.svg)](https://github.com/settings/appearance)
+[![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark%26Light%20Mode-1f425f.svg)](https://github.com/settings/appearance)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 </div>
 
@@ -274,7 +274,7 @@ Nella vita professione, è molto difficile che si scriva un software da zero per
 
 Per questo motivo è fondamentale usare un approccio basato su componenti e il trend attuale si sposta verso questo tipo di soluzione.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Componente
 
@@ -292,7 +292,7 @@ Tuttavia, il componente del distribuito assume un concetto più ampio rispetto a
 
 Il corso si focalizza sui sistemi distribuiti quindi verranno trattati i componenti del secondo punto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Differenza tra un componente ed un oggetto
 
