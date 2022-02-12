@@ -459,8 +459,8 @@ I principi di progettazione che sono alla base di questa tecnologia sono i segue
 
 L'immagine di seguito riportata, fa riferimento ad un'architettura three-tier: c'è un cliente, un server e un database.
 
-![Architettura EJB2-Light](./img/img1-light.png#gh-light-mode-only)
-![Architetttura EJB2-Dark](./img/img1-dark.png#gh-dark-mode-only)
+<img src="./img/img1-light.png#gh-light-mode-only" alt="Architettura EJB2-Light">
+<img src="./img/img1-dark.png#gh-dark-mode-only" alt="Architettura EJB2-Dark">
 
 È bene ricordare che la macchina server non è _pura_ perché è necessario installarci sopra anche un container per far girare l'applicazione costituita da componenti.
 
