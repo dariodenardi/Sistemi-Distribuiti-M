@@ -1,0 +1,30 @@
+name: Markdown to PDF and HTML
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  converttopdf:
+    name: Build PDF
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: BaileyJM02/markdown-to-pdf@v1
+        with:
+          input_dir: .
+          images_dir: img
+          image_import: ./img
+          output_dir: pdf
+          table_of_contents: false
+          build_html: false
+      - name: Update PDF
+        run: |
+          if [[ "$(git status --porcelain)" != "" ]]; then
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit -m "Update PDF"
+          git push
+          fi
