@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: BaileyJM02/markdown-to-pdf@v1
         with:
+          theme: styles/theme.css
           input_dir: .
           images_dir: img
           image_import: ./img
@@ -20,7 +21,6 @@ jobs:
           table_of_contents: false
           build_html: false
           extend_default_theme: false
-          theme: styles/theme.css
       - name: Update PDF
         run: |
           if [[ "$(git status --porcelain)" != "" ]]; then
