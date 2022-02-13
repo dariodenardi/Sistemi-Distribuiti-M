@@ -19,7 +19,7 @@ jobs:
           image_import: ./img
           output_dir: pdf
           table_of_contents: false
-          build_html: false
+          build_html: true
           extend_default_theme: false
       - name: Update PDF
         run: |
