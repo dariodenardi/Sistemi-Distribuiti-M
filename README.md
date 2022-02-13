@@ -1615,18 +1615,23 @@ Di seguito viene riportata una rappresentazione grafica per fissare meglio i con
 - `REQUIRED`:
 <img src="./img/img59-light.png#gh-light-mode-only" alt="Required">
 <img class="dark-mode" src="./img/img59-dark.png#gh-dark-mode-only" alt="Required">
+
 - `REQUIRES_NEW`:
 <img src="./img/img60-light.png#gh-light-mode-only" alt="Requires New">
 <img class="dark-mode" src="./img/img60-dark.png#gh-dark-mode-only" alt="Requires New">
+
 - `MANDATORY`:
 <img src="./img/img61-light.png#gh-light-mode-only" alt="Mandatory">
 <img class="dark-mode" src="./img/img61-dark.png#gh-dark-mode-only" alt="Mandatory">
+
 - `NOT_SUPPORTED`:
 <img src="./img/img57-light.png#gh-light-mode-only" alt="Not Supported">
 <img class="dark-mode" src="./img/img57-dark.png#gh-dark-mode-only" alt="Not Supported">
+
 - `SUPPORTS`:
 <img src="./img/img58-light.png#gh-light-mode-only" alt="Supports">
 <img class="dark-mode" src="./img/img58-dark.png#gh-dark-mode-only" alt="Supports">
+
 - `NEVER`:
 <img src="./img/img62-light.png#gh-light-mode-only" alt="Never">
 <img class="dark-mode" src="./img/img62-dark.png#gh-dark-mode-only" alt="Never">
