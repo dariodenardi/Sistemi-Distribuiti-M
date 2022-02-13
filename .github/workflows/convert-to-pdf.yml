@@ -18,7 +18,7 @@ jobs:
           image_import: ./img
           output_dir: pdf
           table_of_contents: false
-          build_html: false
+          build_html: true
           extend_default_theme: true
           theme: styles/theme.css
       - name: Update PDF
