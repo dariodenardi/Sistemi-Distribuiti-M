@@ -86,11 +86,6 @@ body {
   margin: 1rem auto;
 }
 
-em {
-  color: #4472c4;
-  font-weight: bold;
-}
-
 details {
   display: block;
 }
@@ -1017,6 +1012,11 @@ pre code {
 .task-list-item input {
   margin: 0 0.2em 0.25em -1.6em;
   vertical-align: middle;
+}
+
+em {
+  color: #4472c4;
+  font-weight: bold;
 }
 
 .dark-mode {
