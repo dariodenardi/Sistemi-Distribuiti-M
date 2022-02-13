@@ -86,6 +86,11 @@ body {
   margin: 1rem auto;
 }
 
+em {
+  color: #4472c4;
+  font-weight: bold;
+}
+
 details {
   display: block;
 }
