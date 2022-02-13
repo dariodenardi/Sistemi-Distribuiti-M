@@ -381,7 +381,7 @@ Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di p
 Sono modelli che si basano sull'uso di un container/engine/middleware che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
 
 <img src="./img/img4-light.png#gh-light-mode-only" alt="Container">
-<img class="dark-mode" src="./img/img4-dark.png-only#gh-dark-mode" alt="Container">
+<img class="dark-mode" src="./img/img4-dark.png#gh-dark-mode" alt="Container">
 
 L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscono direttamente con il componente di interesse ma che passino prima attraverso il container/engine/middleware che in qualche modo facilità le operazioni di sistema. Il container al suo interno ospiterà il componente.
 
