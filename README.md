@@ -10,6 +10,8 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
 
 [![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark%26Light%20Mode-1f425f.svg)](https://github.com/settings/appearance)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+    
+È possibile scaricare anche la versione pdf che si trova su nella cartella pdf della repo
 </div>
 
 <!-- INDICE -->
@@ -303,7 +305,7 @@ A questo punto ci si domanda che differenza c'è tra un componente ed un oggetto
     - Il componente viene eseguito all'interno di un container/engine/middleware altrimenti non verrebbe eseguita la funzione di callback. Se si eseguisse il codice di un componente su una qualsiasi JVM non funzionerebbe. Riprendendo l'esempio di prima: chi è che controlla che effettivamente il mouse è posizionato sopra al bottone? Nessuno, quindi il codice non potrebbe funzionare.
     - Il componente è di dimensioni più grande di un oggetto  in termini di codice, perchè il costo di overhead tra un'interazione e l'altra è maggiore. Si ipotizzi che due componenti `A` e `B` interagiscano tra di loro. `A` per comunicare con `B` deve instaurare una connessione, scambiare i dati e alla fine chiuderla. Nel concentrato, invece, gli oggetti anche se sono piccoli e interagiscono spesso fra di loro non hanno questo problema di overhead. Ovviamente bisogna stare attenti a creare un componente non troppo grande per evitare di andare incontro a tutti quei problemi affrontati durante il corso di Ingegneria del Software T come la riusabilità.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Modelli
 
@@ -314,7 +316,7 @@ Ogni problema presenta una soluzione diversa. Per capire meglio come risolverli 
 
 È meglio una soluzione statica o dinamica? Meglio una soluzione preventiva o reattiva? La risposta in generale che deve fornire un ingegnere è sempre: _dipende_. Ogni problema ha una storia diversa. Questo perchè **non** esistono formule precise nei sistemi distribuiti dato che ci sono troppi parametri da prendere in considerazione: famiglia del processore, sistema operativo, linguaggio di programmazione etc.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Deployment
 
@@ -328,7 +330,7 @@ Ci sono diversi approcci per effettuare il deployment:
 - **File Script**: si devono eseguire alcuni file di script che racchiudono la sequenza dei comandi per arrivare alla configurazione che presenta le dipendenze.
 - **Linguaggi dichiarativi**: supporto automatico alla configurazione attraverso linguaggi dichiarativi o modelli di funzionamento della configurazione da ottenere. Ad esempio, tramite un file .XML e annotazioni.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architetture applicazioni Enterprise (1)
 
@@ -372,7 +374,7 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 
 Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di più i livelli. Come appena visto, il middle tier rimane molto complesso perchè la parte di logica dell’applicazione non è ancora separata da tutti i servizi di sistema. Questo vuol dire che essi vengono duplicati per ogni applicazione. La soluzione a questa grande problematica consiste nell’introduzione di uno strato software ulteriore, il container/engine/middleware, che si faccia carico di tutti servizi non funzionali cioè non legati alla logica applicativa.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Modelli a contenimento
 
@@ -388,7 +390,7 @@ Il container può essere implementato in due modi:
 - **Soluzioni proprietarie**: questo tipo di soluzione viene implementata in modo proprietario fornendo delle API proprietarie per richiedere le funzionalità di sistema. Ad esempio, Tuxedo e .NET.
 - **Soluzioni basate su standard aperti**: i servizi di sistema vengono forniti in maniera ben definita in accordo a standard industriali tramite delle API standard. Ad esempio, JEE o J2EE (Java Enterprise Edition).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### J2EE
 
@@ -399,7 +401,7 @@ Esistono diversi software open source, che vengono spesso usati anche in ambient
 - **GlassFish**: è l'implementazione di riferimento mantenuta da Oracle;
 - **WildFly**: precedentemente noto come JBoss.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architetture applicazioni Enterprise (2)
 
@@ -414,7 +416,7 @@ Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo 
 
 Una delle tecnologie che fa uso di componenti è EJB. Nei `Capitoli 2` e `Capitolo 5` verrà approfondita.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## EJB 2.X
 
@@ -422,7 +424,7 @@ Una delle tecnologie che fa uso di componenti è EJB. Nei `Capitoli 2` e `Capito
 
 Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, separando la logica di business e il codice di sistema, non sempre essi si prestano ad essere la soluzione migliore. Il trend attuale si sposta verso altri tipi di tecnologie che verranno approfondite nei capitoli successivi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Scenari applicativi
 
@@ -442,7 +444,7 @@ Le architetture possibili sono:
 
 La figura precedente può essere rappresentata, più nel dettaglio, nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming, di transazionalità, di messaggistica, di accesso ai database etc. Invece, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Principi di design
 
@@ -453,7 +455,7 @@ I principi di progettazione che sono alla base di questa tecnologia sono i segue
 - Lo sviluppatore **non** deve pensare a come gestire le risorse. Ci pensa tutto il container.
 - Le applicazioni EJB sono N-tier.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architettura
 
@@ -480,13 +482,13 @@ Ad esempio, si consideri un'applicazione riguardante una banca dove un utente pu
     - Adesso, `C1` può invocare il metodo `prelievo()` che verrà eseguito su EJB Object che a sua volta potrà invocare il metodo dell’oggetto `O1`.
     - `C2` fa una richiesta. L'oggetto EJB Home potrà creare un nuovo oggetto `O2` oppure dare il riferimento di `O1` se l'interazione tra `C1` e l'oggetto `O1` è terminata. Dipende dalla politica adottata dal container.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### JNDI
 
 I clienti, ovviamente la prima volta non sanno dove si trova l'oggetto EJB Home. Serve, quindi, un servizio di nomi che svolge appunto questo compito. Ogni sistema di nomi può avere delle API diverse per effettuare le operazioni. Per questo motivo, esse sono state standardizzate: in Java viene usata la libreria JNDI che consente di collegarsi a un qualunque servizio di nomi con API standardizzate in modo che se il servizio di nomi cambia, non si modifica il codice sorgente.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Contratti
 
@@ -503,7 +505,7 @@ Esistono due tipi di contratto:
     - Gestisce tutti i servizi di sistema: sicurezza, transazionalità etc.
     - Implementa il meccanismo delle callback: ci sono dei componenti asincroni chiamati Message Driven Bean che vengono attivati solo quando ricevono un determinato messaggio.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### EJB container
 
@@ -518,7 +520,7 @@ Come è stato detto in precedenza, lo sviluppatore si occupa solo di scrivere la
 - Threading.
 - Sicurezza.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Tipologie di componenti Bean
 
@@ -537,7 +539,7 @@ I componenti possono essere classificati in due categorie:
 ![Componenti EJB2-Light](./img/img33-light.png#gh-light-mode-only)
 ![Componenti EJB2-Dark](./img/img33-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Session Bean
 
@@ -556,7 +558,7 @@ I Session Bean che esistono sono di due tipi:
 - **Stateless**: il componente è privo di stato. Ad esempio, quando un'azione deve essere idempotente.
 - **Statefull**: il componente è con stato. Ad esempio, quando si aggiungono i prodotti in un carrello di un sito e-commerce.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Entity Bean
 
@@ -575,13 +577,13 @@ Gli Entity Bean che esistono sono di due tipi:
 - **Container Managed Persistence (CMP)**: persistenza gestita completamente dal container. I requisiti di persistenza specificati interamente nel file di deployment.
 - **Bean Managed Persistence (BMP)**: è responsabilità dello sviluppatore la gestione della persistenza. Di conseguenza, il codice diventa molto più complesso.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Message Driven Bean
 
 Questo Bean verrà approfondito nel `Capitolo 7`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interazioni tra Bean
 
@@ -592,13 +594,13 @@ L’immagine seguente mostra come i clienti interagiscono con i Bean e come i Be
 
 Il cliente interagisce con i Session Bean che realizzano la logica di business della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Deployment
 
 Il file di deployment fornisce istruzioni al container su come gestire e controllare il comportamento di componenti. Essendo scritto in un linguaggio dichiarativo si possono modificare le politiche rispetto alle funzionalità di sistema senza dover ricompilare il tutto. Queste decisioni vengono scritte in modo dichiarativo in un file .XML.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Ciclo di sviluppo
 
@@ -617,7 +619,7 @@ Si supponga di avere un produttore di software `A` (vendor A) specializzato nell
 ![Applicazione 2-Light](./img/img38-light.png#gh-light-mode-only)
 ![Applicazione 2-Dark](./img/img38-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfacce EJBHome ed EJBObject
 
@@ -628,7 +630,7 @@ Come detto in precedenza, lo sviluppatore, oltre al componente Java Bean, deve a
 
 Le interfacce possono essere remote o locali a seconda se la comunicazione del cliente avviene in locale o in remoto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Invocazione remota
 
@@ -687,7 +689,7 @@ I passaggi sono i seguenti:
 
 In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protocollo di comunicazione del mondo CORBA. C'è una visione in RMI del mondo CORBA. CORBA consente di comunicare fra client e server scritti in due linguaggi completamente diversi. Idealmente si tiene aperta la possibilità di comunicare con mondi che appartengono a linguaggi diversi ma in realtà è tutto Java based.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Invocazione locale
 
@@ -727,7 +729,7 @@ public interface InterestLocal extends EJBLocalObject {
 
 È bene ricordare che non è trasparente passare da `EJBHome` a `EJBLocalHome` perchè l'interfaccia locale non ha la `RemoteException`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Cliente
 
@@ -775,7 +777,7 @@ public class InterestClient {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Deployment di un'applicazione
 
@@ -795,7 +797,7 @@ Per effettuare il deployment di un'applicazione EJB sono necessari i seguenti fi
     - **application.xml**: descrittore di deployment. La visibilità è _globale_ paragonato a quello che si trova all'interno di ogni modulo.
 - ***.JAR**: cliente EJB. Questo archivio consiste di tutte le classi necessarie per il corretto funzionamento del programma cliente.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Problemi riscontrati
 
@@ -807,7 +809,7 @@ La comunità di sviluppatori ha riscrontrato una serie di problemi che sono emer
 
 Tuttavia, prima di passare a spiegare EJB 3.X, bisogna introdurre prima alcuni concetti. Nel `Capitolo 3` e `Capitolo 4`, si parlerà di annotazioni e di sistema di nomi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Annotazioni
 
@@ -833,7 +835,7 @@ Le annotazioni sono state già viste sicuramente in altri corsi anche se non si 
     }
     ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Definizione
 
@@ -849,7 +851,7 @@ Riprendendo le annotazioni scritte all'inizio del capitolo:
 - `@Deprecated`: serve a livello di documentazione per indicare che quel metodo, classe etc è in disuso.
 - `@SuppressWarnings`: serve al compilatore. Se la compilazione presenta dei warning questi vengono trascurati e non mostrati all’utente.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Sintassi
 
@@ -866,7 +868,7 @@ public String toString() {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Categorie di annotazioni
 
@@ -877,7 +879,7 @@ Le annotazioni si possono classificare nel seguente modo:
 - **Full annotation**: l'annotazione è formata da più di un membro.
 - **Custom annotation**: i programmatori possono crearsi le proprie annotazioni.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Annotazioni personalizzate
 
@@ -907,7 +909,7 @@ public void calculateInterest(float amount, float rate) { ... }
 
 Questa annotazione fa parte della categoria delle annotazioni personalizzate e presenta tre membri. Se non fosse stato specificato il membro `severity` il suo valore sarebbe stato `IMPORTANT`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Limiti delle annotazioni personalizzate
 
@@ -917,7 +919,7 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 - **Non** sono permessi _self-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationA`.
 - **Non** sono permessi _circular-reference_. Ad esempio: `AnnotationA` non può contenere un membro di tipo `AnnotationB` e quest'ultimo di `AnnotationA`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Meta-annotazioni
 
@@ -951,7 +953,7 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
     public @interface ExampleAnnotation { ... }
     ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Politiche di retention
 
@@ -963,7 +965,7 @@ I valori che possono essere specificati nell'annotazione `@Retention` sono:
 
 Le differenze sostanzialmente sono in termini di spazio quando i file vengono caricati in memoria. Nel primo caso, mom rimane nessuna traccia dell'annotazione, nel secondo e terzo si. L'ultimo caso, dato che si usa la reflection, ci sono strutture in più nel file quindi l'occupazione è maggiore.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Perchè usarle
 
@@ -971,7 +973,7 @@ Le annotazioni arricchiscono lo spazio concettuale di un linguaggio di programma
 
 In poche parole, si aggiunge una _parola_ al codice della classe senza cambiare la logica di business.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Sistemi di Nomi
 
@@ -983,7 +985,7 @@ Esempi di sistemi di nomi:
 - **RMI Registry (RMI)**: al nome logico corrisponde lo stub associato.
 - **Portmapper (RPC)**: fornendo il numero di programma viene restituito versione, protocollo e porta.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Sistemi di Discovery
 
@@ -995,7 +997,7 @@ Questo servizio gestisce una piccola quantità di nomi e il numero di scritture 
 
 Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Sistemi di Directory
 
@@ -1006,7 +1008,7 @@ Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
 Ad esempio, il protocollo LDAP consente di accedere ai laboratori di UNIBO, X.500.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Directory vs DB
 
@@ -1015,7 +1017,7 @@ A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta �
 - Gli schemi nelle Directory sono prefissati mentre nei DB si devono creare con la progettazione concettuale e logica.
 - Nelle Directory, le operazioni sono molto più ottimizzate rispetto al DB perchè sono pensati come strumenti da usare in ambiente distribuiti.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Java Naming Directory Interface (JNDI)
 
@@ -1026,7 +1028,7 @@ JNDI è un'interfaccia standard che consente di accedere in modo uniforme a serv
 
 In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client perchè basta solo modificare la parte in cui si specifica quale servizio di nomi si sta usando.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfaccia Context
 
@@ -1068,7 +1070,7 @@ In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice 
 
 Non a caso, in EJB 2.X prima di trovare un componente sul servizio di nomi, bisogna creare un oggetto `InitialContext`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfaccia DirContext
 
@@ -1117,7 +1119,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
     void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
     ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Uso di JNDI
 
@@ -1148,7 +1150,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
     DirContext context = new InitialDirContext(hashtableEnvironment);
     ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Memorizzare i dati in un servizio nomi
 
@@ -1158,7 +1160,7 @@ La specifica JNDI non impone ai naming service provider la semantica dell’oper
 - Riferimento.
 - Attributi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Serializzazione
 
@@ -1166,19 +1168,19 @@ La semantica serialized data (serializzazione) la si usa per salvare tutto il co
 
 Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database, file, stampante etc.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Riferimento
 
 In altri casi, quello che viene salvato è solo il riferimento ad un oggetto. Quando il cliente fa la `lookup` viene restituito il riferimento a quella risorsa. Spesso, questo è l’unico comportamento supportabile dal sistema di nomi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Attributi
 
 Non tutti i linguaggi di programmazione conoscono il concetto di oggetto. Per questo motivo, utilizzare la semantica per attributi consente eliminare il mismatch tra linguaggi differenti perchè il programma userebbe una collezione di attributi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Configurazione di JNDI
 
@@ -1198,13 +1200,13 @@ Come specificare proprietà di ambiente:
 
 Nel caso di proprietà presenti in più sorgenti, generalmente i valori delle proprietà sono concatenati in una lista separata da virgole. Se sono presenti più valori per una proprietà ma ci deve essere solo un valore, viene preso solo primo della lista.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## EJB 3.X
 
 A seguito dei problemi elencati nel `Capitolo 2` e per contrastare la tecnologia Spring che stava prendendo piede molto in fretta, è stata rilasciata una nuova versione.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Annotazioni e Descrittori di Deployment
 
@@ -1212,7 +1214,7 @@ A partire da EJB 3.X si possono usare le annotazioni al posto del file descripto
 
 I descrittori possono essere anche parziali e incompleti (_sparse descriptor_) cioè si possono specificare una parte tramite annotazioni e l'altra tramite file descriptor. Lo si può usare anche per fare override di annotazioni perchè i descrittori sono prioritari sulle annotazioni.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Tipologie di componenti
 
@@ -1220,7 +1222,7 @@ In EJB 3.X i componenti sono solo di tipo Session Bean e Message Driven Bean. Gl
 
 Per specificare che tipo di componente si vuole usare, si aggiungono al codice le annotazioni `@Stateless`, `@Stateful` e `@MessageDriven` che devono essere specificate all'interno della classe.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Session Bean
 
@@ -1296,7 +1298,7 @@ public class PayrollBean implements javax.ejb.SessionBean {
 
 Per definire che tipo di componente si sta usando lo si deve inserire a livello di file descryptor mentre in EJB 3.X basta usare un'annotazione.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Message Driven Bean
 
@@ -1311,7 +1313,7 @@ public class PayrollMDB implements javax.jms.MessageListener {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Dependency Injection
 
@@ -1421,7 +1423,7 @@ Nel caso di risorse multiple si usa l'annotazione `@Resources` a livello classe:
 public class SomeMessageBean { ... }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interoperabilità tra EJB 3.X e EJB 2.X
 
@@ -1456,13 +1458,13 @@ cart.remove();
 
 Le interfacce `EJBHome` e `EJBObject` vengono automaticamente mappate sulla classe del Bean di tipo EJB 3.X.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Servizi di sistema
 
 I servizi di sistema che sono messi a disposizione dell'EJB come visto nel `Capitolo 2` sono molteplici. Di seguito vengono spiegati ad uno ad uno.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Pooling e concorrenza
 
@@ -1471,7 +1473,7 @@ La concorrenza viene gestita in modi diversi in base se il componente ha stato o
 - **Resource Pooling:** utilizzata da Session Bean di tipo stateless e dai Message Driven Bean.
 - **Activation**: utilizzata da Session Bean di tipo stateful.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Resource Pooling
 
@@ -1501,7 +1503,7 @@ Se all'interno della classe è stata specificata una variabile e il valore cambi
 
 Questa politica di gestione si applica anche ai Message-Driven Bean: l'unica differenza che ogni EJB container contiene molti pool, ciascuno dei quali è composto di istanze, eventualmente di classi Message-Driven Bean diversi, appartenenti però alla stessa coda. Se si facesse come nei Session Bean di tipo stateless, si potrebbero avere due istanze nello stesso pool che appartengono però a code diverse e ci sarebbe concorrenza tra di loro.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Activation
 
@@ -1526,7 +1528,7 @@ In queste due fasi si possono associare anche metodi di callback sui cambi di st
 Similmente, `@javax.ejb.PrePassivate` viene attivata prima dell’azione di passivation. Ad esempio, vengono utilizzati spesso per la chiusura/apertura di connessioni a risorse per gestione più efficiente (a default vengono mantenuti e serializzati nello stato solo i riferimenti remoti ad altri bean, a SessionContext, al servizio EntityManager e all’oggetto
 UserTransaction etc).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Transazionalità
 
@@ -1534,7 +1536,7 @@ Una transazione è un insieme di operazioni logiche (query) a cui corrispondono 
 
 Le transazioni possono essere gestite dal container (Container-Managed Transaction) o manualmente dal programmatore (Bean-Managed Transaction).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Container-Managed Transaction
 
@@ -1661,7 +1663,7 @@ public class TravelAgentBean implements TravelAgentRemote {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Bean-Managed Transaction
 
@@ -1687,7 +1689,7 @@ public class PayrollBean implements Payroll {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Gestione delle connessioni a risorse
 
@@ -1695,19 +1697,19 @@ Un componente può avere bisogno di utilizzare altri componenti e risorse come d
 
 In particolare, relativamente a risorse a database si usa la connection pooling: connessioni sono riutilizzabili per ridurre latenza e incrementare prestazioni nell’accesso a DB. Si veda l'annotazione `@Resource`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Persistenza
 
 Questo Bean verrà approfondito nel `Capitolo 6`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Messaggistica
 
 Questo Bean verrà approfondito nel `Capitolo 7`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Sicurezza
 
@@ -1748,7 +1750,7 @@ public PayrollBean implements Payroll {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Intercettori
 
@@ -1786,25 +1788,25 @@ Gli intercettori possono essere definiti:
 - **Intercettori a livello di classe**: si applicano ai metodi di business della classe Bean.
 - **Intercettori a livello di metodo**: per determinazioni più fini e anche per fare overriding di associazioni precedenti.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## JPA
 
 Una parte rilevante nello sviluppo di ogni applicazione distribuita di livello enterprise si concentra sul layer di persistenza. È importante poter accedere, manipolare, gestire dati persistenti che tipicamente sono mantenuti in un DB relazionale.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Object/Relational Mapping (ORM)
 
 Mapping O/R si occupa di risolvere il potenziale mismatch fra i dati mantenuti in un DB relazionale e il loro processamento tramite oggetti in esecuzione. Infatti, i database relazionali sono progettati per operazioni di query efficienti su dati di tipo tabellare mentre in Java c'è la necessità di lavorare invece tramite interazione fra oggetti.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Java Persistence API (JPA)
 
 JPA è la specifica Java standard che consente il supporto al mapping O/R. Le API di persistenza sono state estese per includere anche l’utilizzo al di fuori di un container EJB. Infatti, ci sono le stesse API per sviluppare applicazioni JSE, Web e EJB.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Perchè usare JPA
 
@@ -1847,7 +1849,7 @@ Come si può vedere la codice, bisogna aprire la connessione, inviare la query e
 - Ogni oggetto apre una connessione.
 - Tutto dipende dal Data Source.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Entity
 
@@ -1996,7 +1998,7 @@ public final class LineItemKey implements Serializable {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Ereditarietà e Polimorfismo
 
@@ -2063,7 +2065,7 @@ public class PartTimeEmployee extends Employee {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Strategie di Mapping
 
@@ -2081,7 +2083,7 @@ Invece, utilizzando `JOINED`, ogni sottoclasse ha una tabella separata che conti
 
 In conclusione, la scelta della strategia ottimale presuppone una buona conoscenza del tipo di query che si faranno sulle Entity.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Molteplicità nelle Relazioni
 
@@ -2101,7 +2103,7 @@ public Set<Purchase> getPurchases() {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Direzionalità delle relazioni
 
@@ -2114,7 +2116,7 @@ public Set<Order> getOrders() {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Gestione a runtime di Entity
 
@@ -2124,7 +2126,7 @@ All’interno di tale contesto è come se le Entity avessero con un loro ciclo d
 
 L’Entity Manager può essere utilizzato demandando completamente la gestione al container oppure lo si può gestire a livello applicativo.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Container-managed Entity Manager
 
@@ -2137,7 +2139,7 @@ EntityManager em;
 
 Il tutto è interlacciato con le transazioni. Le transazioni JTA eseguono generalmente chiamate fra componenti applicativi che, per completare la transazione, devono avere accesso a un contesto di persistenza.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Application-managed Entity Manager
 
@@ -2149,13 +2151,13 @@ EntityManagerFactory emf;
 EntityManager em = emf.createEntityManager();
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Entity Manager singoli vs multipli
 
 Di solito, quando l'applicazione è semplice e si ha un solo DB si usa un solo Entity Manager. Invece, se l'applicazione è più complessa si usano molte Entity che fanno parte di DB diversi e di conseguenza servono più Entity Manager. Tuttavia, è possibile che ci siano Entity Manager multipli verso lo stesso DB per gestire tabelle diverse e di conseguenza avere diversi contesti di persitenza per gestirli in modo diverso e separare i contesti e le diverse transazioni collegate.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Ciclo di Vita
 
@@ -2225,7 +2227,7 @@ Quando si lavora con le Entity bisogna verificare sempre che le Entity siano anc
 
 Per sincronizzarsi con il DB bisogna effetuare la `commit` della transazione. A quel punto avviene l'allineamento con il DB. Se si ha il cascading attivo o comunque relazioni bidirezionali, la `commit` crea una reazione a catena. Per forzare la sincronizzazione con DB, possibilità di invocare il metodo `flush()` (con solito effetto cascade).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Unità di Persistenza
 
@@ -2251,7 +2253,7 @@ Ad esempio, il file sopra definisce una unità di persistenza chiamata `OrderMan
 
 Gli elementi `jar-file` e `class` specificano le classi relative all’unità di persistenza: classi Entity, Embeddable, e superclassi Mapped. Invece, l’elemento `jta-data-source` specifica il nome JNDI globale della sorgente dati che deve essere utilizzata dal container.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Creazione di Query
 
@@ -2292,7 +2294,7 @@ I valori in entrambi i casi sono dinamici cioè dipendono dai valori che le vari
 
 Da notare che i _parametri con nome_ sono parametri di query preceduti da `:` e sono legati al valore dal metodo `setParameter()`. Ad esempio, nell'esempio di sopra `:custName`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Loading Lazy/Eager
 
@@ -2309,7 +2311,7 @@ Nell'applicazione è possibile controllare il caricamento dei dati:
 
 In generale, si usa eager per realtà ristrette e lazy in tutti gli altri casi. È costoso portarsi dietro tutte le relazioni in cascata ma è utile se vengono sicuramente usate. Bisogna valutare sempre i costi e benefici.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Listener di Entity
 
@@ -2360,7 +2362,7 @@ public class AlertMonitor {
 
 La classe `AccountBean` usa l'annotazione `@EntityListener(com.acme.AlertMonitor.class)` per indicare che la classe `AlertMonitor` contiene metodi di callback (in realtà solo uno).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Hibernate
 
@@ -2371,25 +2373,25 @@ L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostant
 ![Architettura Hibernate-Light](./img/img67-light.png#gh-light-mode-only)
 ![Architettura Hibernate-Dark](./img/img67-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Interfaccia SessionFactory
 
 `SessionFactory` é l'equivalente all'`EntityManagerFactory` di JPA. Consente di creare oggetti `Session` e mantiene le risorse necessarie per cache di primo e secondo livello. Di solito si crea una `SessionFactory` per ogni DB ma niente vieta di creare più `SessionFactory` per un singolo DB.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Interfaccia Session
 
 La `Session` è l'analogo dell'`EntityManager` in JPA. Va a gestire il ciclo di vita degli oggetti persistenti e opera da factory per gli oggetti `Transaction` cioè ogni volta che si vuole lavorare sui dati con semantica transazionale serve ottenere questo oggetto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Transazioni
 
 Gli oggetti `Transaction` sono oggetti single-therad che servono ad aprire, chiudere e fare il rollback di una transazione unità atomiche astraendo dai dettagli delle librerie e dei framework che si usano. Le transazioni in Hibernate non sono eseguiti, a default, con semantica transazionale quindi ogni volta è necessario crearsi un oggetto `Transaction`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Ciclo di Vita
 
@@ -2403,7 +2405,7 @@ Gli oggetti persistenti sono oggetti per cui si vuole mantenere uno stato persis
 
 Gli oggetti transient o detached hanno istanze non legate alla sessione. Modificando gli oggetti non si modifica il DB.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Il caching in Hibernate
 
@@ -2457,7 +2459,7 @@ Il risultato è che questa seconda update non fa match con alcuna riga (no match
 
 Nelle ultime versioni di JPA c’è la possibilità di versioning.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Fetching dei dati
 
@@ -2469,7 +2471,7 @@ Per fare fetching (cioè caricare i dati dal DB alla memoria) si possono usare v
 
 Usare una strategia di fetching rispetto ad un'altra ha ovviamente impatto sulle performance ottenibili.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Query By Examples (QBE)
 
@@ -2491,7 +2493,7 @@ List results = crit.list();
 
 Si va quindi a costruire i criteri riempiendoli con elementi che rendono la ricerca associativa in modo trasparente cercando nel database tuple che facciano match. Il programmatore in questo modo non deve conoscere il linguaggio SQL e può effettuare ricerche in modo trasparente attraverso il framwork stesso.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## JMS
 
@@ -2524,7 +2526,7 @@ Le principali caratteristiche sono:
 
 I MOM poi possono supportare altre funzionalità come la qualità dei canali, transazioni sicure, auditing, load balacing etc.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Modello point-to-point 
 
@@ -2535,7 +2537,7 @@ La comunicazione avviene tra due sole entità. Questo modello viene utilizzato q
 
 Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi e in un caso, se si ipotizza la disconnessione dei destinatari, si dovrebbe avere persistenza dei messaggi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Modello publish/subscriber
 
@@ -2546,13 +2548,13 @@ Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumat
 
 Ad esempio, questo modello si usa per creare un'applicazione di bacheca per richieste di lavoro.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Affidabilità nello scambio di messaggi
 
 Più la semantica di affidabilità è stringente più il throughput del sistema si abbassa. Tutti i sistemi di messaging moderni supportano la persistenza dei messaggi, che eleva il livello di affidabilità stessa. Di solito i supporti ai sistemi di messaging utilizzano storage persistente per preservare i messaggi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Transazionalità
 
@@ -2572,7 +2574,7 @@ Lo scope della transazionalità è di due tipi:
 
 La seconda opzione è molto complessa e non viene garantita da molti MOM. Inoltre, il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Sicurezza
 
@@ -2584,7 +2586,7 @@ Il supporto alla sicurezza del MOM è dato da autenticazione confidenzialità e 
 
 La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging. Con JMS non si offre un servizio diretto di sicurezza ma esistono API che consentono di implementare varie politiche di sicurezza. JMS consente unicamente di definire il servizio.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Java Messaging Service (JMS)
 
@@ -2605,7 +2607,7 @@ Le entità in gioco sono:
 - Provider JMS (sistema di messaging dipendenti dal specifico vendor).
 - Gli oggetti Destination e ConnectionFactory pubblicati tramite JNDI sul servizio di nomi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Tipi di comunicazioni
 
@@ -2619,7 +2621,7 @@ Nella comunicazione pub/sub, i messaggi possono essere:
 - Non durevoli: sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza.
 - Durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Messaggi JMS
 
@@ -2650,7 +2652,7 @@ Il payload ovviamente, è il contenuto del messaggio e supporta diversi tipi di 
 
 Queste sono interfacce locali per interrogare i payload cioè funzionano sul nodo e non si sa come viene trasmesso effettivamente il contenuto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfaccia Destination
 
@@ -2659,7 +2661,7 @@ L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una qu
 ![Interfaccia Destination-Light](./img/img14-light.png#gh-light-mode-only)
 ![Interfaccia Destination-Dark](./img/img14-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfaccia ConnectionFactory
 
@@ -2668,7 +2670,7 @@ L’interfaccia `ConnectionFactory` serve per creare una connessione provider-sp
 ![Interfaccia ConnectionFactory-Light](./img/img15-light.png#gh-light-mode-only)
 ![Interfaccia ConnectionFactory-Dark](./img/img15-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfaccia Connection
 
@@ -2679,7 +2681,7 @@ L'interfaccia `Connection` è un’astrazione che rappresenta un singolo canale 
 
 La connessione dovrebbe essere chiusa quando si è terminato di utilizzare la risorsa.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfaccia Session
 
@@ -2688,7 +2690,7 @@ L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connes
 ![Interfaccia Session-Light](./img/img17-light.png#gh-light-mode-only)
 ![Interfaccia Session-Dark](./img/img17-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Interfacce Message Consumer e Message Producer
 
@@ -2705,7 +2707,7 @@ Vi sono due modalità di ricezione dei messaggi:
 ![Interfaccia Message Consumer-Light](./img/img19-light.png#gh-light-mode-only)
 ![Interfaccia Message Consumer-Dark](./img/img19-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Riassunto API JMS
 
@@ -2713,7 +2715,7 @@ Le API JMS possono essere riassunte nella seguente figura:
 
 ![single tier](./img/img20.png)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Uso di JMS
 
@@ -2823,7 +2825,7 @@ subscriber.setMessageListener(myListener);
 
 Il codice è stato inserito solo nei punti diversi rispetto al produttore.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Affidabilità dei messaggi
 
@@ -2833,7 +2835,7 @@ Nell’**affidabilità di base** (basic reliability) vi è l’utilizzo di messa
 
 Nell’**affidabilità avanzata** (advanced reliability) si può avere _abbonamenti_ durevoli e l’utilizzo di transazioni locali, ovvero transazioni che non possono essere garantire in tutto il percorso end-to-end ma solo tra consumatore e provider e/o tra provider e produttore.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### ACK
 
@@ -2860,7 +2862,7 @@ producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
 Vi è un trade-off tra il numero di ACK che si può inviare, l’overhead che si introduce e il livello generale di affidabilità che si vuole raggiungere. Quanto bisogna coinvolgere la parte applicativa nella gestione degli ACK, coinvolgere molto il client nella gestione degli ACK può aiutare a diminuire l’overhead legato al fatto di non inviare più un ACK per ogni messaggio dall’altra parte però il livello applicativo che si prende in carico l’invio dei messaggi deve essere ben fatto e con maggiore cura. L’API permette quidi di gestire diversamente l’invio dei messaggi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Priorità
 
@@ -2874,7 +2876,7 @@ producer.setTimeToLive(60000);
 producer.setPriority(7);
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Affidabilità
 
@@ -2892,25 +2894,25 @@ Per l'advanced reliability:
 - Sottoscrizione durevole scelto a livello di sessione, interfaccia `Session`.
 - Transazionalità scelto a livello di sessione, interfaccia `Session`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Durable Subscription
 
 Il durable subscriber si va a registrare con una identità univoca, perché un subscriber durevole potrebbe non essere sempre presente, quindi si ha bisogno di un naming durevole per ricondurre sempre i messaggi allo stesso subscriber. Il provider JMS mantiene questi messaggi fino a quando non vengono effettivamente consegnati oppure non avviene l'expiration (la scadenza). All’interno di una singola applicazione, una sola session può avere durable subscription a un deteminato named topic ad un determinato istante.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Gestione delle transazioni di JMS
 
 Lo scope delle transazioni in JMS è solo fra clienti e sistema di messaging, non fra produttori e consumatori. Quindi, un gruppo di messaggi all’interno di una singola transazione è consegnato come un’unica unità lato produttore e un gruppo di messaggi in una transazione è ricevuto come un’unica unità lato consumatore. Le transazioni possono essere gestite _localmente_ e sono controllate dall’oggetto `Session`. La transazione inizia implicitamente quando l’oggetto di sessione è creato e termina all’invocazione di `Session.commit()` o `Session.abort()`. La sessione è transazionale se si specifica il flag appropriato all’atto della creazione. Ad esempio: `QueueConnection.createQueueSession(true, ...)`. Eventualmente le transazioni possono essere anche essere gestite in modo _distribuito_ se si vuole combinare in un unico blocco operazioni a scambio di messaggi e operazioni transazionali DB. In tal caso devono essere coordinate da un transactional manager esterno, ovvero tramite l'uso di Java Transactions API (JTA). L’utilizzo di `Session.commit()` e `Session.rollback()` è non consentito perchè viene eseguita tramite i metodi JTA.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Selettori di messaggi
 
 I selettori sono filtri la cui logica di filtraggio è specificabile con stringe SQL like 92 (SQL92) che possono lavorare sui messaggi in arrivo per estrarne solo alcuni. Dal lato receiver, le applicazioni JMS possono utilizzare i selettori per scegliere i soli messaggi che sono potenzialmente di loro interesse. Non possono riferire il contenuto dei messaggi ma solo tramite proprietà e header (non possono leggere il payload). I selettori consentono una gestione più semplice e rimuovono overhead dal provider e dal supporto. Il fatto che il MOM non sia content-based è dovuto al fatto della retrocompatibilità con i precedenti MOM.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### JMS in EJB
 
@@ -2921,7 +2923,7 @@ I MDB prelevati da un poll di istanze quando il messaggio viene ricevuto. Vi è 
 
 L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Enterprise Service Bus (ESB)
 
@@ -2933,7 +2935,7 @@ Il tema principale su cui si soffermano gli Enterpise Service Bus è l’integra
 - Struttura messaggi.
 - QoS configurabile.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Service Oriented Architecture (SOA)
 
@@ -2947,7 +2949,7 @@ SOA è un'architettura software che mette a disposizione:
 
 Tutto questo ha l’obiettivo di ottenere accoppiamento debole, e quindi flessibilità di business, interoperabilità tra le applicazioni, indipendenza rispetto alle tecnologie di implementazione, grazie alle interfacce molto astratte. Un esempio è Azure che espone API con interfacce REST.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Web Services
 
@@ -2971,7 +2973,7 @@ Nell’architettura SOA non importa quale è la tecnologia utilizzata ma si poss
 ![WSDL-Light](./img/img23-light.png#gh-light-mode-only)
 ![WSDL-Dark](./img/img23-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Enterprise Application Integration (EAI)
 
@@ -2988,7 +2990,7 @@ Questa soluzione ha alte latenze al momento delle batch perchè ci possono esser
 
 La soluzione è avere dei broker e dei orchestration engine come facilitatori della comunicazione e non più provider ma entità intelligenti tra le due applicazioni. Le due architetture di riferimento sono hub -and-spoke e una a bus.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Hub-and-Spoke
 
@@ -2999,7 +3001,7 @@ Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale 
 
 I pro dell’architettura a stella sono la facilità di gestione (centralizzata). Il principale contro è che l’hub è punto critico di centralizzazione. Inoltre, questa architettura ha una ridotta scalabilità.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Bus di Interconnessione
 
@@ -3010,7 +3012,7 @@ L’altra architettura di riferimento è quella a bus dove l’automation engine
 
 I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Concetti chiave di ESB
 
@@ -3022,7 +3024,7 @@ L'ESB è la realizzazione della seconda architettura. L'idea principale è quell
 
 ESB consente di utilizzare tanti e diversi protocolli per scambiare le informazioni, senza imporre un protocollo unico. La descrizione astratta delle informazioni scambiate avviene nella parte astratta WSDL, si descriverà con un biding concreto gli endpoint da offrire al mondo esterno, e ESB funge da _orchestratore_ nel mezzo risparmiando al programmatore di fare l’integrazione poiché è compito del supporto. L’orchestrazione è sia astratta che concreta specialmente nei routing intelligenti (ad esempio, abilitare un routing rispetto ad un altro) e nei vari servizi aggiuntivi come auditing e logging.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Java Business Integration (JBI)
 
@@ -3047,7 +3049,7 @@ JBI supporta quattro possibili pattern di scambio messaggi:
 - **In-Out** per interazione request-response con possibilità fault lato provider e ha una sola conferma da parte del consumatore.
 - **In Optional-Out** per provider con risposta opzionale e possibilità di segnalare fault da provider/consumer (interazione completa).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## CORBA
 
@@ -3059,7 +3061,7 @@ Si immagini di voler realizzare un sistema distribuito che funzioni derivando da
 
 L'obiettivo di CORBA è lavorare con dispositivi molto leggeri e con poche risorse quindi si usa il protocollo GIOP (General Inter-ORB Protocol) per comunicare a byte. CORBA è talmente standard de facto che persino EJB utilizza RMI sopra al protocollo CORBA.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### CORBA 2.X
 
@@ -3081,7 +3083,7 @@ L’interface repository permette di registrare le interfacce CORBA, non le impl
 
 Uno dei problemi aperti di CORBA è il fatto che non c’è nulla per la gestione dell’impacchettamento e del deployment del software ma tutto questo deve essere fatto a mano, quindi una volta fatta l’interfaccia poi bisogna a mano mettere insieme tutti i vari pacchetti. Questo causa molti problemi per le infrastrutture perché si deve lavorare in modo diverso ogni volta e non ci sono tool automatici, nella specifica CORBA non ci sono strumenti per gestire tutti componenti e metterli nel punto giusto. Le conseguenze sono una scarsa manutenibilità e una scarsa penetrazione nel mercato.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### CORBA Component Model (CCM)
 
@@ -3100,13 +3102,13 @@ Component Implementation Framework (CIF) è l'insieme di strumenti di sviluppo c
 - Altri file di interfaccia per executor.
 - Pezzi di codice che aiutano esecuzione runtime dell'Object Servant.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ![single tier](./img/img27.png)
 
 In CCM vengono aggiunti anche gli strumenti di deployment: automatizzano la distribuzione del package sui nodi. Automatizzano il deployment di Component Assembly verso component server. Il component packaging ha funzionalità per fare packaging dei componenti in una applicazione. In CORBA 2 non c'è la possibilità di preparare oggetti CORBA e poi ci si arrangia per il deployment. In CCM si può assemblare l’applicazione nel suo insieme mettendo dentro i vari componenti CCM che servono e i vari file di metalivello che descrivono le loro configurazioni e i loro vincoli di deployment. Assomiglia all’idea di fare un EAR di EJB3.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Implementazioni CCM disponibili
 
@@ -3116,7 +3118,7 @@ Le principali standardizzazioni sono le seguenti:
 
 Le tecnologie CORBA sono datate, CORBA ha avuto grande successo negli anni '80/'90 e ha trovato applicazione nei dipartimenti militari e nelle banche. I sistemi CORBA non hanno avuto successo perché Microsoft non ha mai voluto tale standardizzazione ma ha preferito i Web Services (quindi i motivi sono commerciali).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Comparazione CCM vs. EJB e .NET
 
@@ -3130,7 +3132,7 @@ Rispetto ad altri framework le principali caratteristiche:
 
 In sintesi, CCM ha preso le tecnologie presenti sul mercato al momento della creazione della specifica cercando di prendere il meglio da tutte. Ci ha messo dentro veramente tantissima roba tanto non la implementavano loro dato che è una specifica.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Running Example
 
@@ -3140,7 +3142,7 @@ C'è un component server che ospita dei componenti. Ce ne sono 3: componente `Ra
 
 Il `Rate Generator` emette un impulso e ha una porta `Rate` che è un parametro di configurazione definito a livello di deployment. `Pulse` è un impulso generato ed è un evento. `GPS` è un ricevitore per quell’evento. Tutte le volte che `GPS` riceve l'evento `Pulse`, riaggiorna il calcolo della posizione corrente del dispositivo: la posizione è interrogabile dall’esterno (pallino di fianco a `MyLocation`). `GPS` è esso stesso emettitore di eventi `Ready` che vengono consumati da `NavDisplay`: lui riceve eventi `Refresh` e in risposta va ad invocare `MyLocation`. La mezzaluna rappresenta il fatto che il componente si aspetti di interagire con un altro componente che esponga la stessa interfaccia di `GPSLocation`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Componente CCM
 
@@ -3170,13 +3172,13 @@ In CCM, ci sono 5 tipi porte che un componente può specificare e utilizzare. Le
 - **Event Sink**: con questa porta si specifica che il componente consuma eventi. La parola riservata è `consumes`. Vale sia per eventi prodotti da un publisher sia per eventi prodotti da un emitter. Non ci sono differenze.
 - **Attributes**: particolari proprietà che possono essere configurate dall’esterno, tipicamente dal container, in base alle informazioni che si passano sui file di deployment descriptor. La parola chiave è `attribute`. Il discorso da aprire è: come è importante nei sistemi industriali distribuiti poter definire a livello di deployment delle proprietà configurabili esternamente. È un discorso che si conosce molto bene, quindi non lo si apre. Questi attributi vengono definiti, viene dato loro valore, a tempo di deployment tramite file di configurazione esterni: dei descriptor di tipo XML, e la cosa non sconvolge perché è stata già vista anche in EJB.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Gestione Lifecycle CCM
 
 La gestione automatica del ciclo di vita non c’è in CORBA 2. Per gestione automatica si intende quella di EJB: ci sono componenti che magari è giusto gestire con una determinata strategia (magari sono componenti di sessione), altri in un altro perché sono componenti senza stato. Questa cosa la si vuole in CCM. Il concetto fondamentale per aiutare la struttura CORBA a gestire il ciclo di vita delle istanze dei componenti è quello di passare attraverso le Home. Queste Home sono l’aggancio per gestire il ciclo di vita dei componenti in modo differenziato a seconda delle tipologie di componenti.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### CORBA Home
 
@@ -3189,7 +3191,7 @@ sia bello runnato dalla sua Home, ma nulla vieta di
 istanziarne altri 10 assegnarli ad altre 10 Home tutte diverse
 con diverse istruzioni per il lifecycle e che quindi gestiranno in modo diverso il ciclo di vita di quel componente. Le Home fanno da _guscio_ per l’esecuzione delle singole istanze di componenti.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Configurazione dinamica dei componenti
 
@@ -3225,7 +3227,7 @@ main (int argc, char *argv[])
 
 Sin questo esempio si vuole andare a recuperare una certa facet e invocare un metodo di tale interfaccia. Si parte dall’ORB che è un servizio di nomi che dà la possibilità di recuperare i servizi di base come il servizio di naming (come RMI Registry). Una volta recuperato il servizio di nomi si possono andare ad invocare dei servizi di lookup, in particolare in questo caso si fa il lookup della ComponentHome registrata come MyHelloHome, attraverso il narrowing si può recuperare un oggetto tipato Home, su quell’oggetto si applica la create che crea il componente, a questo punto è interrogabile e può restituire una descrizione di tutte le facet offerte da quel compente, si può poi con il receptable effettuare l’introspezione, con il metodo provide possiamo chiedere il recupero del riferimento all’implementazione di quella interfaccia, una volta ottenuto si può fare il narrowing e a quel punto effettuare la chiamata a un metodo che ci interessa. Le interfacce in CORBA non vengono mantenute insieme alle implementazioni ma in un repository che si chiama Interface Repository. Quindi le informazioni dell’interfaccia non sono insieme agli altri dati questo genera overhead quando bisogna recuperare molte interfacce diverse.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Supporto Runtime: Funzionalità Component Server
 
@@ -3267,7 +3269,7 @@ configurazione (come devo fare il deployment, come devo creare le istanze, mette
 
 Esistono container transazionali, sui quali le invocazioni sono transazionali, oppure container stateless. Questo permette di gestire in modo articolato e differenziato come si gestisce il ciclo di vita, le transazioni, la gestione eventi e la sicurezza, che, a questo punto, sono servizi corba messi a disposizione. Molte delle configurazioni dei servizi di sistema in CCM si fanno tramite file XML. Esistono anche direttive dentro i file IDL che altrimenti mettiamo nel deployment descriptor. L’importante da sapere è che queste funzionalità vengono implementate dai container e non dai componenti dato che l’invocazione passa sempre per il container: passando sempre di lì, per esempio, è il container che può avviare la transazione! Modello a container pesante.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Exectutor
 
@@ -3276,13 +3278,13 @@ Esistono container transazionali, sui quali le invocazioni sono transazionali, o
 Ultima cosa, ma è proprio un dettaglio. Se noi andiamo a vedere com’è realizzato il modello ci sono anche degli Executor in CCM, e in particolare un executor per la Home e uno per il servant (la logica di business per il componente CORBA). Questi exectutor ci sono per supportare mismatch fra linguaggi di programmazione differenti, sono indispensabili per realizzare il modello a componenti e devono essere scritti dal programmatore. Il CIDL compiler scrive solo uno scheletro di queste cose, che va poi integrato. La buccia esterna di Servant, sia per la Home che per la logica di business invece viene generata completamente dal CIDL compiler. La figura finale è quindi questa, dove abbiamo il container, il CORBA component (costituito da un main executor e da altri executor) e infine un gestore del contesto di esecuzione del componente che interagisce con il POA. La cosa importante è che nel suo insieme il component CORBA espone le sue porte come descritto. In particolare le facets vengono gestite direttamente dal main component executor, mentre quelle di componenti e di receptacles dal CCMContext.
 È ovvio che questo è un modello a container pensante dove ogni volta qualcuno che invoca qualcosa lo fa passando attraverso intermediari.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Spring
 
 Spring è una soluzione a container leggero utile per sviluppare applicazioni Java SE e Java EE. Spring non è solo un altro framework, rappresenta un approccio piuttosto unico, che ha fortemente influenzato i container successivi, verso tecnologie a microcontainer. Le principali proprietà originali sono: la modularità, architettura a layer, possibilità di utilizzare anche solo alcune parti (i container)  in isolamento, si può introdurre Spring incrementalmente in progetti esistenti e di imparare ad utilizzare la tecnologia _pezzo per pezzo_, supporta importanti aree non coperte da altri framework diffusi, come il management degli oggetti di business, una tecnologia di integrazione di soluzioni esistenti, maggiore facilità di testing, e infine è un progetto con una community attivi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Perchè usare Spring
 
@@ -3290,7 +3292,7 @@ Le motivazioni per cui scegliere Spring sono diverse. Spring consente l’integr
 
 Spring non è una soluzione _all-or-nothing_ cioè si prende solo quello di cui si ha bisogno, e pone l’accento su un’estrema modularità e flessibilità, ed è progettata per essere facile da estendere e con molte classi riutilizzabili, ed integrabile con altre tecnologie tra le quali: EJB per J2EE, Hibernate, iBates, JDBC per l’accesso a dati e ORM, Java Persistence API per la persistenza, Struts e WebWork per Web tier.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architettura
 
@@ -3309,43 +3311,43 @@ Alcuni package importanti sono:
 - Il **MVC Package** implementa il pattern Model-View-Controller (MVC) per applicazioni Web, con buona separazione e indipendenza fra codice del modello di dominio e form Web ovvero la parte di presentazione e la logica applicativa a livello di control.
 - Il **AOP Package** implementa l'aspect-oriented programming conforme allo standard AOP Alliance. Permette di definire, ad esempio, degli intercettori di metodo e pointcut per la logica disaccoppiamento degli aspetti in modo pulito, inoltre dà la possibilità di utilizzare metadati a livello sorgente per incorporare informazioni aggiuntive di comportamento all’interno del codice.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Aspect Oriented Programming (AOP)
 
 Aspect Oriented programming (AOP) è un approccio di design e una tecnica per semplificare la gestione di aspetti trasversali e non strettamente legati alla logica (cross-cutting concern). Degli esempi di cross-cutting concern sono il logging, il locking, la gestione degli eventi, la gestione delle transazioni, sicurezza e auditing. AOP introduce anche nuovi strumenti che facilitano la gestione di questi aspetti tra cui: Joinpoint, Advice, Pointcut e Aspect, Weaving e Target, Introduction. L’idea di base è quella di intercettare le chiamate da remoto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Joinpoint
 
 Joinpoint è un punto ben definito all’interno del codice applicativo, anche determinabile a runtime, dove può essere inserita logica addizionale, alcuni esempi di joinpoint sono: l’Invocazione di metodi, l’Inizializzazione di classi, l’inizializzazione di oggetti, ovvero la creazione di istanze.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Advice
 
 Advice è una parte di codice che aggiunge logica addizionale al programma, deve essere aggiunto ed eseguito ad un determinato joinpoint. I diversi tipi di Advice sono: i before advice che eseguono prima del joinpoint, after advice eseguono dopo il joinpoint, around advice eseguono attorno (around) al joinpoint.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Pointcut
 
 Pointcut è un Insieme di joinpoint che vengono verificati per definire quando eseguire un advice, il pointcut è l’insieme di tutte le invocazioni di quel metodo in una determinata classe, i pointcut possono essere messi in relazione tra di loro per decidere quando eseguirli insieme al collegato advice, con controllo fine e flessibile su come applicare advice al codice applicativo. La differenza tra pointcut e joinpoint è la seguente: il pointcut è l’insieme di tutte le invocazioni di metodo in una determinata classe mentre l’invocazione di un metodo è un tipico joinpoint. I pointcut possono essere composti in relazioni anche complesse per vincolare il momento di esecuzione dell’advice corrispondente.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Aspect
 
 Aspect definisce quando e come gestire la logica per quell’aspetto, Aspect è la combinazione di advice e pointcut.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Weaving
 
 Weaving è il processo dell’effettivo inserimento di aspect dentro il codice applicativo nel punto appropriato (la traduzione di weaving è cucire il codice nel punto appropriato), ci sono due possibilità per effettuare il weaving a tempo di compilazione, o a runtime ritardiamo il più possibile l’inserimento dell’aspetto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Target
 
@@ -3361,7 +3363,7 @@ Nell’AOP dinamico il Processo di weaving è realizzato dinamicamente a runtime
 
 Spring realizza AOP sulla base dell’utilizzo di proxy, infatti se si desidera creare una classe advised, occorre utilizzare la classe ProxyFactory per creare un proxy per un’istanza di quella classe, fornendo a ProxyFactory tutti gli aspect con cui si desidera informare il proxy.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Dependency Injection
 
@@ -3369,7 +3371,7 @@ La Dependency Injection è l’applicazione più nota e di maggiore successo del
 
 Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le annotazioni per aggiungere tutte le informazioni utili che servono a esprimere tutte le dipendenze tra i vari componenti, con il vantaggio della flessibilità con l’eliminazione del codice di lookup nella logica di business, in caso di cambio delle risorse esterne non vi è la necessità di cambiare il codice, la possibilità e facilità di testing con nessun bisogno di dipendere da risorse esterne o da container in fase di testing, vi è la possibilità di abilitare testing automatico, ed un’elevata manutenibilità del codice che permette riutilizzo in diversi ambienti applicativi cambiando semplicemente i file di configurazione (o in generale le specifiche di dependency injection) e non il codice, dividendo nettamente la parte di programma da quella di configurazione.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Varianti per Dependency Injection
 
@@ -3399,7 +3401,7 @@ public class SetterInjection {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Oggetto BeanFactory
 
@@ -3458,7 +3460,7 @@ Nei prossimi paragrafi verranno visti solo il primo e il secondo punto.
 
 Tutti questi tipi possono essere usati sia per injection sui costruttori che sui metodi setter.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Injection di valori semplici
 
@@ -3482,7 +3484,7 @@ Un esempio, di injection di valori semplici è il seguente:
 
 Il Bean con nome logico `injectSimple` la cui classe è `InjectSimple` presenta tre metodi `setter`. Ad esempio, il primo si chiama `name` e avrà come valore `John Smith`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Injection di un Bean all’interno della stessa factory
 
@@ -3500,13 +3502,13 @@ L’injection di un Bean della stessa Factory è usata quando è necessario fare
 
 Il Bean con nome logio `injectRef` la cui classe è `InjectRef`, ha il metodo setter con nome `oracle`, il cui parametro di ingresso è un altro componente _locale_ cioè usa la stessa factory il cui nome logico è `oracle`. Il controllo sul tipo del Bean è _lasco_ rispetto a quanto definito nel target perchè se il tipo definito nel target è un’interfaccia, il bean injected deve essere un’implementazione di tale interfaccia, se il tipo definito nel target è una classe, il bean injected deve essere della stessa classe o di una sottoclasse.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Naming dei Componenti
 
 Il ritrovamento dei Bean avviene attraverso il naming dei componenti Spring che vengono specificati nei file XML. Ogni bean deve avere un nome unico all’interno della BeanFactory che lo contiene e la procedura di risoluzione dei nomi avviene seguendo le seguenti regole: se un tag ha un attributo di nome `id`, il valore di questo attributo viene usato come nome, se non c’è attributo `id`, Spring cerca un attributo di nome `name`, se non è definito né `id` né `name`, Spring usa il nome della classe del Bean come suo nome.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### HelloWorld con dependency injection
 
@@ -3860,13 +3862,13 @@ public class ConfigurableMessageProvider implements MessageProvider {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Considerazioni sulla dependency injection
 
 La possibilità di semplice Dependency Injection tramite costruttori o metodi semplifica il testing delle applicazioni Spring. Per esempio è semplice scrivere un test JUnit che crea l’oggetto Spring e configura le sue proprietà a fini di testing. Il container IoC non è invasivo: molti oggetti di business non dipendono dalle API di invocazione del container, queste possono essere portabili verso altre implementazioni di container (PicoContainer, HiveMind etc) ed è facile _introdurre_ vecchi POJO in ambiente Spring. Le factory Spring sono leggere, esistono anche implementazioni all’interno di singole applet o come applicazioni Swing standalone. Un altro importante aspetto, secondario ma comunque rilevante è la possibilità di avere di avere unchecked runtime exception. Un'eccezione runtime exception è un oggetto che viene generato e viene gestito tramite `try-catch`. Tuttavia, è possibile che a tempo di esecuzione, un'eccezione non venga gestita quindi l'errore viene propagato e l'applicazione si può interrompere. In Spring, se un'eccezione non viene catturata viene ignorata.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### HelloWorld con AOP
 
@@ -3921,7 +3923,7 @@ public static void main(String[] args) {
 
 Guarda caso, anche in Spring si possono definire intercettori, ma questa volta in modo molto diverso e meno trasparente rispetto a un modello a container pesante, sfruttando i concetti di AOP e gli oggetti con proxy.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Intercettori
 
@@ -3974,7 +3976,7 @@ Nel file di configurazione si definiscono i componenti, l’intercettore e quali
 </beans>
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Transazioni verso DB
 
@@ -3999,7 +4001,7 @@ La concorrenza però va gestita, se le varie transazioni interferiscono tra di l
 - **Unrepeatable read**: letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
 - **Phantom row**: nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Lost Update
 
@@ -4008,7 +4010,7 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 ![Lost Update-Light](./img/img41-light.png#gh-light-mode-only)
 ![Lost Update-Dark](./img/img41-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Dirty Read
 
@@ -4017,7 +4019,7 @@ In questo caso il problema è che una transazione legge un dato che non c’è: 
 ![Dirty Read-Light](./img/img42-light.png#gh-light-mode-only)
 ![Dirty Read-Dark](./img/img42-dark.png#gh-dark-mode-only)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Unrepeatble Read
 
@@ -4028,7 +4030,7 @@ Ora il problema è che una transazione legge due volte un dato e trova valori di
 
 Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Phantom Row
 
@@ -4036,7 +4038,7 @@ Questo caso si può presentare quando vengono inserite o cancellate tuple che un
 
 ![single tier](./img/img43.png)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Livelli di Isolamenti
 
@@ -4047,7 +4049,7 @@ Scegliere di operare a un livello di isolamento in cui si possono presentare dei
 - `ISOLATION_REPEATABLE_READ`: possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili.
 - `ISOLATION_SERIALIZABLE`: tutte le possibilità spiacevoli sopra elencate per la lettura sono rese impossibili. Viene garantita le proprietà ACID.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Transazionalità
 
@@ -4063,7 +4065,7 @@ In Spring, i livelli di propagazione delle transazioni sono:
 - `PROPAGATION_NEVER`.
 - `PROPAGATION_NESTED`.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Pooling e concorrenza
 
@@ -4074,7 +4076,7 @@ Alla base dell’architettura Spring, c’è l’idea di Inversion of Control (p
 
 La modalità singleton di Spring è vicina a quella di EJB stateless perchè non c'è lo stato ma è diversa perchè in Spring non c'è un pool di thread. Lo stesso vale per prototype che si avvicina agli EJB statefull ma sono diversi perchè ogni volta quando si invoca `getBean()`, viene restituita una nuova istanza dedicata senza ottimizzazione di carico (non c'è activation e passivation). Inoltre, in Spring le richieste non vengono intercettate per cui è necessario crearsi a mano un altro `BeanFactory` che funge da proxy utilizzando ad esempio con AOP (concettualmente simile a interception in EJB, ma di più semplice utilizzo).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Autowiring
 
@@ -4086,7 +4088,7 @@ Spring può occuparsi automaticamente di risolvere dipendenze tramite introspezi
 
 Anche in EJB esiste la stessa risoluzione delle dipendenze attraverso JNDI.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Dependency checking
 
@@ -4097,7 +4099,7 @@ Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenz
 - object: dependency checking effettuato solo per altri bean associati all’interno della stessa factory cioè quando è presente il tag ref local (collaborator);
 - all: dependency checking effettuato per collaborator, tipi primitivi e collection.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### ApplicationContext
 
@@ -4190,7 +4192,7 @@ public class BlackListNotifier implement ApplicationListener {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## JMX
 
@@ -4198,7 +4200,7 @@ Come già detto più volte, si è interessati non solo alla fase di sviluppo, ma
 
 Protocollo SNMP per la gestione e il management del mondo del networking. SNMP rappresenta uno standard, allo stesso modo si vogliono avere standard per il monitoraggio nel mondo distribuito in ambienti aperti e interoperabili. Per fare un esempio, Distributed Management Task Force (DMTF) è un’organizzazione per la standardizzazione per IT system management in ambienti industriali e in Internet. Gli standard DMTF permettono la costruzione di componenti per system management indipendenti dalla piattaforma e technology-neutral, abilitando così interoperabilità fra prodotti per la gestione di sistemi di diversi vendor, alcuni elementi fondamentali in DMTF sono: Common Information Model (CIM), Common Diagnostic Model (CDM), Web-Based Enterprise Management (WBEM). Common Information Model (CIM) è un modello astratto per la rappresentazione degli elementi gestiti (ad esempio, computer o storage area network) come insieme di oggetti e relazioni. CIM è estensibile per consentire l’introduzione di estensioni product-specific e svolge la stessa funzione del CMIB per SNMP. Common Diagnostic Model (CDM) è un modello di diagnostica e definizione di come questo debba essere incorporato nell’infrastruttura di management, infine Web-Based Enterprise Management (WBEM) è un insieme di protocolli per l’interazione fra componenti di system management (conformi a CIM e ai suoi profili) e la loro interrogazione. I profili in generale sono utilizzati in data-model molto estesi con diversi diritti e operazioni.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Java Management Extensions (JMX)
 
@@ -4707,7 +4709,7 @@ Il cluster è una soluzione potente ma allo stesso tempo difficile da gestire a 
 
 JBoss Application Server (AS) Clustering è una soluzione commerciale con buona trasparenza (cluster mantenuto automaticamente, approccio modulare) e open-source.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architettura JBoss
 
@@ -4890,7 +4892,7 @@ Le opzioni di configurazione di JBoss/WildFly ovvero dell’application server:
 
 Al giorno d'oggi, sempre più sistemi sono costituiti e caratterizzati da enormi moli di dati da gestire, originati da sorgenti altamente eterogenee e con formati altamente differenziati, oltre a una qualità estremamente eterogenea (fonte dei dati).
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Definizione
 
@@ -4912,7 +4914,7 @@ Altre definizioni di Big Data includono anche un'altra V cioè la **variabilità
 
 Il processamento dei Big Data può avvenire in due modi: o tramite stream processing o tramite batch processing.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Stream Processing
 
@@ -4948,7 +4950,7 @@ Uno Stream è una sequenza infinita di tuple strutturate. Possono essere consuma
 
 Invece, la finestra è un gruppo finito e sequenziale di tuple in un flusso. La finestra è basata su contatori, tempo, valore di attributi, punctuation mark etc. Ogni operatore, ad esempio, potrebbe lavorare su una finestra di tre tuple e quindi le operazioni vengono eseguite su tre tuple alla volta.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Batch Processing
 
@@ -4970,7 +4972,7 @@ HDFS memorizza file di grandi dimensioni in blocchi distribuiti sul cluster, gar
 
 Hadoop può lavorare su qualsiasi file system distribuito ma sfrutta conoscenza di località per ottimizzazione, quindi HDFS particolarmente adatto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### MapReduce
 
@@ -5066,7 +5068,7 @@ Spark è l'evoluzione di Hadoop. Infatti, usa il più possibile la memoria RAM, 
 
 Per rendere l'approccio batch-processing simile a quello stream-processing, è possibile creare delle finestre di dimensioni inferiori rispetto a quelle usate normalmente. Esiste una versione di Spark che prende il nome di Spark Stream.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Node.js
 
@@ -5074,7 +5076,7 @@ Node.js è una tecnologia Javascript che si usa lato server-side, supporta effic
 
 In particolare, Node.js è molto utilizzato nella programmazione web per la scrittura di applicazioni web, è possibile usarlo sia per chiamare le funzioni core su file system e networking ma vi sono anche framework più larghi per facilitare lo sviluppo delle applicazioni web stesse, associabile anche a DevOps e tecnologie front-end.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Utilizzo di JavaScript
 
@@ -5082,7 +5084,7 @@ L’uso di JavaScript sia lato cliente che lato servitore ha alcuni vantaggi tra
 
 Per usare Node.js è necessario renderlo fruibile è necessario appoggiarsi ad un run-time enviroment del linguaggio JavaScript supportato da Google Chrome V8 engine. Il codice JavaScript viene compilato con una buona efficienza a run-time. Vi è la massima concorrenza e scalabilità per questo di solito si evita di utilizzare più thread dedicati e concorrenti. Il funzionamento è sempre non bloccante, persino per chiamate I/O-oriented.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Event Loop
 
@@ -5090,7 +5092,7 @@ L’idea di base è gestire tutto con l’event loop: un ciclo infinito di elabo
 
 Ha senso utilizzare questa strategia perché a seconda del tipo di operazione, come l’accesso alle cache di primo o secondo livello, alla memoria, al disco o alla rete, sono richiesti molti più cicli di CPU per effettuare queste operazioni. Se ci si blocca in attesa di queste risorse per certe operazioni, rimangono ferme delle risorse attive come i thread. Se questo è vero bisogna strutturare l’applicazione sfruttando il parallelismo e quindi generando nuove richieste di risorse al sistema poiché con il parallelismo si creano nuovi thread e processi. A livello di sistema si utilizza la `select` che consente di gestire le operazioni non bloccanti a evento. In questo modo, è possibile realizzare dei servitori anche mono-processo (nel caso estremo) che concorretemene gestiscono la molteplicità di richieste senza doversi bloccare su operazioni di lettura in genere più fastidiose da questo punto di vista.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Thread vs Asynchronous Event Driven
 
@@ -5098,7 +5100,7 @@ Nelle applicazioni event-driven vi è un solo processo che fa fetching di eventi
 
 ![single tier](./img/img92.png)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Thread vs Event
 
@@ -5171,13 +5173,13 @@ Per eseguire operazioni come il processamento di DB, letture di file da file sys
 
 Viene esasperato il concetto di _server stateless_ perchè il server non mantiene stato. Ogni evento viene messo sulla coda e l'event loop processa un evento indipendentemente dal precedente. Dato che è costoso adottarlo in questo modello, se ci fosse bisogno di stato bisognerebbe usare i cookie e quindi lo si mantiene lato client side.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Moduli
 
 Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e logica applicativa consentendo di non scrivere sempre lo stesso codice per la gestione delle callback e degli eventi. Il core di Node.js consiste di circa una ventina di moduli, alcuni di più basso livello come per la gestione di eventi e stream, altri di più alto livello come HTTP.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Modulo HTTP
 
@@ -5199,7 +5201,7 @@ console.log("Server running at http://127.0.0.1:8000/");
 
 Si può richiedere la creazione di un HTTP server che sia in grado di rispondere con un `Hello World` e si può invocare questo server, il tutto è gestito con funzioni non bloccanti ed è in grado di reagire generando una richiesta HTTP quando riceve una richiesta. A questo punto si può mettere in ascolto il servitore sulla posta 8000 che è pronto a rispondere.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### NPM
 
@@ -5207,7 +5209,7 @@ Il core di Node.js è stato progettato per essere piccolo e snello, i moduli che
 
 NPM è un package manager di grande successo e in forte crescita, che semplifica sharing e riuso di codice JavaScript in forma di moduli. In generale è preinstallato con distribuzione Node, esegue tramite linea di comando e permette di ritrovare moduli dal registry pubblico in http://npmjs.org.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Modulo FS
 
@@ -5229,7 +5231,7 @@ function readDoneCallback(error, dataBuffer) {
 }
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Modulo Stream
 
@@ -5267,7 +5269,7 @@ writableStreamEvent.write('Hello world!\n');
 writableStreamEvent.end();
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Modulo Net
 
@@ -5312,7 +5314,7 @@ function broadcast(message, sender) {
 
 La funzione `processTCPConnection` aggiunge la lista di clienti connessi alla socket. Dopo di che all’arrivo dei dati questi possono essere elaborati. In questo caso all’arrivo di un nuovo dato viene invocata la funzione di callback function, successivamente vengono inviati in broadcast tutti i dati ricevuti. Infine, con il broadcast tutti i dati vengono inviati ai vari clienti con la funzione broadcast. L’altro evento importante è la fine della connessione per rimuovere la connessione dalla lista dei client una volta terminata la connessione stessa, ancora una volta tutto è gestito in callback.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 #### Modulo Express
 
@@ -5331,13 +5333,13 @@ var server=app.listen(3000,function() {
 
 Codice per attivare il server web e restituisce un `Hello World!` relativo alla pagina di ingresso.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Docker
 
 Microservizi e container costituiscono un’alternativa più moderna al tradizionale modello software basato sull’architettura monolitica.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Microservizi
 
@@ -5351,7 +5353,7 @@ Il vantaggio enorme introdotto da tale paradigma di programmazione è tangibile 
 
 Le applicazioni monolitiche hanno una così detta struttura a silos con una parte di applicazione e una parte di database. VI è una fase intermedia detta Internally Componentized Application, visibile in framework come EJB dove i container accedono a un unico database, per poi passare all’architettura a micro-servizi ogni servizio ha la sua parte di database replicata. Questo concetto che può inizialmente sembrare controintuitivo in realtà aumenta molto la scalabilità del sistema poiché il database relazionale può diventare un collo di bottiglia negli accessi nelle letture e scritture consistenti. Inoltre, non vi è più un single point of failure quindi in caso di crash del database di un micro-servizio gli altri rimangono up and running senza essere affetti dal fallimento del singolo. Infine, si può utilizzare il tipo di storage migliore per la necessità del servizio, per esempio storage relazione o non relazionali etc.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### DevOps
 
@@ -5359,7 +5361,7 @@ Legato al mondo dei micro-servizi vi è quello dei DevOps. I DevOps garantiscono
 
 I DevOps vanno nella direzione del continuo ciclo di sviluppo, seguendo le fasi di Design Build Deploy teste e Release senza mai fermarsi in un ciclo infinito. Per questo un’applicazione può continuamente essere aggiornata durante la sua esecuzione senza la necessità di interrompere o interferire con l’attuale versione. Il continuo processo di test e rilascio è per struttura più semplice da utilizzare in un’applicazione a micro-servizi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Container
 
@@ -5375,7 +5377,7 @@ Dal punto di vista del marketing la containerizzazione ha avuto un grande succes
 
 I container sono la giusta piattaforma per un micro-servizio, poiché sono soluzioni leggere e virtualizzate oltre ad essere corretti, auto contenuti e ben isolati, sono in grado allo stesso tempo di condividere le parti di supporto interne al kernel del sistema operativo e non sono specifici per una piattaforma per questo sono estremamente portabili. Infine, possono ospitare i micro-servizi e le loro applicazioni con tutte le loro parti e le loro dipendenze.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Docker
 
@@ -5391,7 +5393,7 @@ Il Docker daemon gestisce i componenti Docker come ad esempio le immagini. Il Do
 
 I Docker container contengono tutto ciò che è necessario ad un’applicazione per eseguire e l’applicazione stessa, sono simili a una directory in quanto il container in esecuzione vede un file system proprio e isolato risptto al resto, dove sono presenti tutti i componenti necessari ad eseguire l’applicazione e sono creati a partire da un’immagine Docker. Gli stati possibili per un container Docker sono: `run`, `started`, `stopped`, `moved`, e `deleted`. I container sono i _run components_ di Docker.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Gestione del ciclo di vita del container
 
@@ -5401,7 +5403,7 @@ La figura seguente mostra i passi della gestione del ciclo di vita del container
 
 Registry locale o remoto da cui richiedere e scaricare immagini con operazione di `pull`, oppure inviare aggiornamenti delle immagini presenti con l’operazione di push. Inoltre, è presente un backup locale in cui salvare immagini con `save` o caricarle con `load`. Le immagini possono essere istanziate sul container con il comando di `run`, di seguito il container può essere avviato con `start`, fermato con `stop` oppure riavvito con `restart`. Se vengono effettuati cambiamenti di configurazioni aggiunta di librerie nel filesystem con la `commit` si può aggiornare l’immagine ed eventualmente aggiungere nuove informazioni attraverso tag. Il DockerFile in modo assertivo enuncia delle direttive che attraverso l’operazione di build consentono di creare nuove immagini.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Immagini Docker
 
@@ -5429,7 +5431,7 @@ Queste configurazioni avanzate vengono indicate nel Docker Compose, file che con
 
 Per quanto riguarda la scalabilità, si usa Docker Swarm, che è un orchestratore di risorse container, è un engine che elabora degli script di configurazione. L'allocazione di Docker Swarm è statica, per questo motivo se bisogna aumentare le risorse non si riesce e quindi, non si ottiene scalabilità. L'utente dovrebbe richiedere tramite deployment nuove istanze ma il tutto è gestito in modo statico.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Kubernetes
 
@@ -5437,7 +5439,7 @@ Kubernetes è un orchestratore di container compatibile con Docker, la gestione 
 
 L’obiettivo principale di Kubernetes è nascondere la complessità di gestione di grandi quantità di container fornendo agli utilizzatori un set di API Rest. Kubernetes è estremamente protabile, infatti, si interfaccia con tutte le principali Cloud Platform private o pubbliche come Amazon AWS, Azure, Openstack, o resource manager come Apache Mesos. Per un orchestratore del genere è fondamentale fornire il deployment di applicazioni multi-container, garantire la continuità dei servizi grazie alla sua gestione di fault tolerance, rollback e rollout, scalare autonomamente e dinamicamente le applicazioni e rendere tutta l’architettura indipendente dall’infrastruttura sottostante.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architettura
 
@@ -5449,31 +5451,31 @@ L’architettura è di tipo master-slave. Il nodo master può essere uno o più 
 
 ![single tier](./img/img107.png)
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Etcd 
 
 L'etcd è un archivio chiave-valore distribuito fortemente consistente che fornisce un modo affidabile per memorizzare i dati a cui è necessario accedere da a sistema distribuito o cluster di macchine. Gestisce le elezioni dei _leader_ durante le partizioni di rete e può tollerare il guasto della macchina, anche nel nodo master.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Controller Manager
 
 Il controller manager Kubernetes è un demone che incorpora i loop di controllo principali gestiti con Kubernetes. In Kubernetes, un controller è un loop di controllo che osserva lo stato condiviso del cluster attraverso l'API server e apporta modifiche tentando di spostare lo stato corrente verso lo stato desiderato. Esempi di controller forniti oggi con Kubernetes sono il controller di replica, controller degli endpoint, controller dello spazio dei nomi e controller degli account di servizio.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Cloud Controller Manager
 
 Il cloud-controller-manager è un componente del Control Plane di Kubernetes che incorpora la logica di controllo specifica del cloud. Il cloud-controller-manager consente di fra interagire il cluster a quello del provider cloud API e separa i componenti che interagiscono con quella piattaforma cloud da componenti che interagiscono solo con il cluster. Disaccoppiando la logica di interoperabilità tra Kubernetes e l’infrastruttura cloud sottostante il componente cloud-controller-manager abilita il cloud provider a rilasciare funzionalità a un ritmo diverso rispetto al progetto Kubernetes. Il cloud-controller-manager è strutturato utilizzando un meccanismo di plug-in che consente l’integrazione delle piattaforme di diversi provider cloud con Kubernetes.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Kubelet
 
 Il kubelet è il principale node agent che esegue su ogni nodo, questo componente logico può registrare il nodo con l'APIserver. Il kubelet funziona in termini di PodSpec, un PodSpec è un oggetto YAML o JSON che descrive un pod. Di conseguenza il kubelet accetta una serie di PodSpec forniti attraverso vari meccanismi (principalmente tramite l'apiserver) e assicura che i container descritti in quelle PodSpecs siano running e in salute.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Pod
 
@@ -5483,13 +5485,13 @@ Per esempio, il pod potrebbe includere sia il contenitore che il Node.js e un co
 
 I pod sono l'unità atomica sulla piattaforma Kubernetes: quando creiamo una distribuzione su Kubernetes, che la distribuzione crea pod con container al loro interno (invece di creare direttamente i container). Ogni Pod è legato al nodo in cui è programmato e vi rimane fino alla cessazione o cancellazione. In caso di guasto di un nodo, i Pod identici sono schedulati su altri nodi disponibili nel cluster.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Service
 
 I service sono un modo astratto per esporre un'applicazione in esecuzione su un set di podin comunicazione uno con l’altro per erogare il service. I pod vengono creati e distrutti per corrispondere allo stato del cluster. Ogni Pod ottiene il proprio indirizzo IP, tuttavia il set di pod in esecuzione in un momento specifico può essere diverso. I service sono astrazioni che definiscono un insieme logico di pod e una policy con cui accedervi.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Kube proxy
 
@@ -5497,25 +5499,25 @@ Il proxy di rete Kubernetes viene eseguito su ciascun nodo worker. Espone i serv
 
 Stub locale che abilita tutta la parte di comunicazione. Uno per nodo che poi abilita tutte le comunicazioni di quel nodo.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Scheduler
 
 Lo scheduler è la parte del controllo che si occupa dello scheduling, controlla la creazione dei Pod e trova il nodo migliore per ospitare quel Pod. Filtra i nodi per verificare quale soddisfi i requisiti di programmazione specifici per quel Pod. Se non ci sono nodi adatti, il Pod rimane non schedulabile. Per ogni nodo adatto e utilizzabile, lo Scheduler stima un punteggio eseguendo una serie di funzioni, il Pod è schedulato sul nodo adatto con il più alto punteggio, lo scheduler quindi notifica al server API questa decisione in un processo chiamato binding.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Volumi
 
 Kubernetes supporta diversi tipi di volumi. Due tipi principali sono: i tipi di volume effimero, questi hanno la durata di un Pod, quando un Pod cessa di esistere, Kubernetes distrugge i volumi effimeri. I volumi persistenti che esistono oltre la durata di un Pod, Kubernetes non distrugge i volumi persistenti. Per qualsiasi tipo di volume in un dato Pod, i dati vengono conservati durante i riavvii del contenitore. Al suo interno, un volume è una directory accessibile ai container in un Pod. Massima interoperabilità con gli strumenti preesistenti quindi con tutti gli storage anche cloud.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Network
 
 Non andando nel dettaglio sulla rete, si ricorda che la gestione della rete può essere anche piuttosto complessa in Kubernetes, poiché vi sono i Pod che si mostrano internamente con indirizzi privati, che però utilizzando indirizzi di rete possono essere messi in comunicazione con altre macchine, anch’esse con una interfaccia di rete. Tutti i mapping per far comunicare le macchine sono gestite dal networking di Kubernetes.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Modello dichiarativo
 
@@ -5527,7 +5529,7 @@ In Kubernetes, il modello dichiarativo funziona in questo modo:
 - Kubernetes implementa lo stato desiderato sul cluster.
 - Kubernetes implementa i loop, attraverso il kube-controller-manager, per assicurarsi che lo stato attuale dell'applicazione non vari dallo stato desiderato.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Concetti di base di Kubernetes
 
@@ -5535,37 +5537,37 @@ In Kubernetes, il modello dichiarativo funziona in questo modo:
 
 Nel mondo Kubernetes, l'unità atomica di programmazione è il Pod. Non è possibile eseguire un container direttamente su un Kubernetes cluster come in Docker, il container deve sempre essere eseguito all'interno di Pods. Anche se è possibile eseguire più contenitori all'interno dello stesso Pod, ogni Pod ospita solitamente un contenitore. I Pod sono anche l'unità minima di ridimensionamento, se fosse necessario ridimensionare un’app, si aggiungono o si rimuovono Pod. Non si scala l’applicazione aggiungendo più contenitori a un Pod esistente. I Pod sono mortali e quindi sono inaffidabili. Quando un Pod si interrompe in modo imprevisto, Kuberntes non lo riporterà in vita, ma ne inizializza uno nuovo al suo posto.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Service
 
 Per superare l'inaffidabilità dei Pod entrano in gioco i Servizi. I servizi forniscono una rete affidabile per una serie di Pod. I servizi hanno un front-end che consiste in un nome DNS stabile, un indirizzo IP e una porta. Sul back-end viene eseguito il bilanciamento dinamico su un set di Pod. I Pod vanno e vengono, il Service osserva i cicli di vita dei Pod e si aggiorna automaticamente, nel frattempo continua a fornire l'endpoint di rete stabile. La mappatura tra Service e Pod viene eseguita tramite label e selettori di label.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Deployment
 
 I Pod non si auto-riparano, non si ridimensionano e non consentono facili aggiornamenti o rollback. I deployment si occupano di tutto questo, perciò i Pod sono eseguiti e gestiti grazie al deployment. Un unico deployment può gestire solo un singolo tipo di Pod. Ad esempio, se è presente un'app con un Pod per il frontend web e un altro Pod per il backend, ci sarà bisogno bisogno di due implementazioni. Dietro le quinte, i deployment sfruttano un altro oggetto chiamato set di repliche. Le distribuzioni utilizzano i set di repliche per fornire self-healing e scalabilità.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Kubernetes Storage
 
 Kubernetes ha un sottosistema di archiviazione ricco di funzionalità. Indipendentemente dal tipo di spazio di archiviazione di cui si dispone e da dove proviene, quando questo viene esposto nel cluster è detto Volume. Il sottosistema di volumes persistenti di Kubernetes è un insieme di oggetti API che consentono alle app di utilizzare spazio di archiviazione. Ad alto livello, i Persistent Volumes (PV) sono il modo utilizzato per mappare lo storage esterno sul cluster, le Persistent Volume Claims (PVC) sono come i biglietti che autorizzano le applicazioni (Pod) a utilizzare un PV.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Daemons set
 
 Sono utili quando è necessaria una replica di un particolare Pod in esecuzione su ogni nodo del cluster. Alcuni esempi includono i Pod di monitoraggio e la registrazione dei Pod.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Jobs and Cronjobs
 
 Sono utili quando è necessario eseguire un determinato numero di un particolare Pod e bisogna garantire che andranno a buon fine.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Spazio dei nomi
 
@@ -5573,7 +5575,7 @@ Un cluster virtuale (un singolo cluster fisico può eseguire più cluster virtua
 
 Per vedere in piccolo il funzionamento di Kubernetes si può utilizzare Minicube. Minicube è uno strumento che semplifica l’esecuzione di Kubernetes in locale, è un cluster con un singolo nodo all’interno di una Virtual Machine.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Cluster initialization
 
@@ -5595,7 +5597,7 @@ Launch Dashboard
 $ minikube dashboard
 ```
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## FaaS
 
@@ -5603,7 +5605,7 @@ Così come l’internet wireless ha dei cavi da qualche parte, le architetture s
 
 In un’applicazione serverless, il supporto lavora a callback. Il programmatore non deve gestire con degli strumenti il deployment delle applicazioni. Il programmatore carica l’applicazione su una piattaforma e non deve fare altro. Non esiste in sè per sè un server ma c'è una piattaforma. In questo senso è simile a map-reduce poiché il programmatore implementa unicamente le funzioni di map e reduce. La parte di risorse è gestita in automatico dalla piattaforma. Tutto il focus è sulla business logic e non sulla gestione o sull’approvvigionamento dell’infrastruttura, non vi è alcun costo relativo al controllo attivo di risorse e alla scalabilità.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Serverless come Baas+FaaS
 
@@ -5615,7 +5617,7 @@ Back-end as a Service (BaaS) significa esternalizzazione tutti i servizi di sist
 
 FaaS che consente di dichiarare la logica applicativa, funziona a eventi, la funzione si attiva all’arrivo di un evento da gestire e computare, restituisce un risultato e infine la funzione scompare. Le funzioni possono avere stato se questo è mantenuto dal back-end, oppure se questo viene mantenuto lato client, ma non è mai mantenuto all’interno della FaaS. Le funzioni FaaS, infatti, sono stateless eseguono in ambienti effimeri e con una semantica-event driven. FaaS scala automaticamente e con grana fine.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Architettura
 
@@ -5629,7 +5631,7 @@ Le risorse cloud oggi non sono più unicamente disponibili in un punto geografic
 
 Tra le piatatforme emergenti open-source per FaaS vi sono OpenFaaS, OpenWhisk, Fission e Knative.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### OpenWhisk
 
@@ -5645,7 +5647,7 @@ Le caratteristiche principali sono:
 
 Da notare come nelle nuove piattaforme si utilizzino sempre gli stessi modelli architetturali e strumenti già ben noti nel cloud.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ### Knative
 
@@ -5663,7 +5665,7 @@ Dal punto di vista del disaccoppiamento dei servizi, i servizi vengono eseguiti 
 
 Dal punto di viste delle performance, queste piattaforme al di fuori degli eventi non lavorano benissimo, c’è variabilità estrema nei tempi di valutazione della stessa FaaS anche sulla stessa piattaforma in questo senso.
 
-<a href="#indice">Torna all'indice</a>
+[Torna all'indice](#indice)
 
 ## Confronto tra Tecnologie
 
