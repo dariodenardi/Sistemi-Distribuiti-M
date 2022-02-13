@@ -337,16 +337,16 @@ Ci sono diversi approcci per effettuare il deployment:
 Le architetture si sono evolute sempre di più verso architetture a più livelli perchè l'obiettivo è quello di separare logicamente le funzionalità in modo da ridurre la complessità degli strati:
 
 - **Single-Tier**: c'è un singolo super calcolatore a cui sono connessi i clienti perchè quest'ultimi non hanno abbastanza risorse per fare elaborazione. I clienti (o meglio terminali) inviano solo le richieste al mainfraime il quale le elabora e restituisce al cliente la risposta. È la soluzione adottata negli anni '50.
-![Single Tier-Light](./img/img5-light.png#gh-light-mode-only)
-![Single Tier-Dark](./img/img5-dark.png#gh-dark-mode-only)
+<img src="./img/img5-light.png#gh-light-mode-only" alt="Single Tier">
+<img class="dark-mode" src="./img/img5-dark.png#gh-dark-mode-only" alt="Single Tier">
     - **Vantaggi**:
         - Nessuna gestione client-side.
         - Consistenza dei dati perchè tutti i dati sono solo sul calcolatore.
     - **Svantaggi**: no scalabilità.
 
 - **Two-Tier**: i clienti interagiscono con il DB, inviano query SQL e ricevono dati raw (dati _grezzi_ cioè i dati come vengono presi dal DB così vengono inviati). La logica di presentazione, di business e di processamento del modello dei dati si trova tutta nell’applicazione cliente. Per questo motivo il cliente viene detto _fat_.
-![Two Tier-Light](./img/img6-light.png#gh-light-mode-only)
-![Two Tier-Dark](./img/img6-dark.png#gh-dark-mode-only)
+<img src="./img/img6-light.png#gh-light-mode-only" alt="Two Tier">
+<img class="dark-mode" src="./img/img6-dark.png#gh-dark-mode-only" alt="Two Tier">
     - **Vantaggi**: indipendenza dallo specifico DB (rispetto a single-tier).
     - **Svantaggi**:
         - Difficoltà di aggiornamento, maintenance e riutilizzo di codice perchè tutto si trova installato sul lato cliente.
@@ -355,18 +355,18 @@ Le architetture si sono evolute sempre di più verso architetture a più livelli
 
 - **Three-Tier**: ci sono diversi modelli:
     - **Three Tier (basato su RPC)**: il cliente, detto _thin client_, ospita solo la logica di presentazione. La logica di business e di processamento dei dati sono delegati ad un livello intermedio. La logica di accesso ai dati è contenuta nel terzo livello rappresentato dal database. Il middle tier si occupa di tutti i servi di sistema (gestione della concorrenza, multithreading, transazioni, sicurezza, persistenza etc).
-    ![Three Tier RPC-Light](./img/img8-light.png#gh-light-mode-only)
-    ![Three Tier RPC-Dark](./img/img8-dark.png#gh-dark-mode-only)
+    <img src="./img/img8-light.png#gh-light-mode-only" alt="Three Tier">
+    <img class="dark-mode" src="./img/img8-dark.png#gh-dark-mode-only" alt="Three Tier">
         - **Vantaggi**: logica di business modificabile in modo più flessibile.
         - **Svantaggi**: accoppiamento stretto fra clienti e middle-tier server. Ad esempio, il cliente deve conoscere IP fisico del server.
     - **Three Tier (basato su Remote Object)**:
-    ![Three Tier RMI-Light](./img/img9-light.png#gh-light-mode-only)
-    ![Three Tier RMI-Dark](./img/img9-dark.png#gh-dark-mode-only)
+    <img src="./img/img9-light.png#gh-light-mode-only" alt="Three Tier RMI">
+    <img class="dark-mode" src="./img/img9-dark.png#gh-dark-mode-only" alt="Three Tier RMI">
         - **Vantaggi**: meno accoppiato del modello RPC.
         - **Svantaggi**: gli stessi di quello basato su RPC.
     - **Three Tier (Web Server)**: si ha un browser per il livello presentazione mentre la logica di business è gestita tramite tecnologie come CGI, Servlet/JSP, ASP etc.
-    ![Three Tier Web-Light](./img/img7-light.png#gh-light-mode-only)
-    ![Three Tier Web-Dark](./img/img7-dark.png#gh-dark-mode-only)
+    <img src="./img/img7-light.png#gh-light-mode-only" alt="Three Tier Web">
+    <img class="dark-mode" src="./img/img7-dark.png#gh-dark-mode-only" alt="Three Tier Web">
         - **Vantaggi**:
             - Cliente disponibile ovunque.
             - Nessun problema di aggiornamento del software sul client.
@@ -380,8 +380,8 @@ Il trend attuale si sposta verso un mondo multi tier che disaccoppia sempre di p
 
 Sono modelli che si basano sull'uso di un container/engine/middleware che forniscono automaticamente molte delle funzioni per supportare il servizio applicativo verso l’utente togliendo l'onere al programmatore. Ad esempio, la gestione della concorrenza.
 
-![Container-Light](./img/img4-light.png#gh-light-mode-only)
-![Container-Dark](./img/img4-dark.png#gh-dark-mode-only)
+<img src="./img/img4-light.png#gh-light-mode-only" alt="Container">
+<img class="dark-mode" src="./img/img4-dark.png-only#gh-dark-mode" alt="Container">
 
 L’idea che sta dietro al modello a contenimento è quella in cui i client non interagiscono direttamente con il componente di interesse ma che passino prima attraverso il container/engine/middleware che in qualche modo facilità le operazioni di sistema. Il container al suo interno ospiterà il componente.
 
@@ -410,9 +410,9 @@ Le soluzioni attuali come scritto anche in precedenza, si spostano verso questo 
 - **N-tier**: il middle-tier viene spacchettato in due parti:
     - **Server-side presentation**: si occupa della logica di presentazione, fa uso delle JSP e/o delle Servlet.
     - **Server-side business logic**: si occupa della logica applicativa, cioè al suo interno ci sono i componenti.
-
-![Multi Tier-Light](./img/img10-light.png#gh-light-mode-only)
-![Multi Tier-Dark](./img/img10-dark.png#gh-dark-mode-only)
+    
+<img src="./img/img10-light.png#gh-light-mode-only" alt="Multi Tier">
+<img class="dark-mode" src="./img/img10-dark.png#gh-dark-mode-only" alt="Multi Tier">
 
 Una delle tecnologie che fa uso di componenti è EJB. Nei `Capitoli 2` e `Capitolo 5` verrà approfondita.
 
@@ -430,8 +430,8 @@ Sebbene gli EJB portino lato server tutti i benefici del modello a componenti, s
 
 I componenti EJB possono essere utilizzati in diverse architetture.
 
-![Multi Tier EJB (1)-Light](./img/img34-light.png#gh-light-mode-only)
-![Multi Tier EJB (1)-Dark](./img/img34-dark.png#gh-dark-mode-only)
+<img src="./img/img34-light.png#gh-light-mode-only" alt="Multi Tier EJB (1)">
+<img class="dark-mode" src="./img/img34-dark.png#gh-dark-mode-only" alt="Multi Tier EJB (1)">
 
 Le architetture possibili sono:
 
@@ -439,8 +439,8 @@ Le architetture possibili sono:
 - **Modello 3-tier**: il client comunica tramite HTML con il server web che comunica a sua volta direttamente con il database oppure, delle applicazioni stand-alone EJB che comunicano direttamente con l’EJB server e in ultima istanza con il database.
 - **Modello 4-tier**: il client comunica tramite HTML con una parte di presentazione web basata su JSP e Servlet, con il componente EJB e il database con le connessioni al database.
 
-![Multi Tier EJB (2)-Light](./img/img11-light.png#gh-light-mode-only)
-![Multi Tier EJB (2)-Dark](./img/img11-dark.png#gh-dark-mode-only)
+<img src="./img/img11-light.png#gh-light-mode-only" alt="Multi Tier EJB (2)">
+<img class="dark-mode" src="./img/img11-dark.png#gh-dark-mode-only" alt="Multi Tier EJB (2)">
 
 La figura precedente può essere rappresentata, più nel dettaglio, nel seguente modo: ci sono i vari container, i componenti che vivono all’interno di quel container, le parti di supporto cioè il _run-time environment_ al cui interno ci sono tutte le API standardizzate per gestire per esempio la parte di naming, di transazionalità, di messaggistica, di accesso ai database etc. Invece, le frecce rappresentano i protocolli per gestire le interazioni (HTTP, RMI).
 
@@ -471,8 +471,8 @@ Sul'EJB Container non si troveranno solo le istanze che il programmatore ha scri
 - **Oggetto EJB Home**: implementa l’interfaccia `EJBHome`. È un proxy che intercetta la chiamata del cliente (la prima volta) e decide quale istanza logica gli deve restituire (una già creata, nuova etc).
 - **Oggetto EJB Object**: implementa l’interfaccia `EJBObject`. È un proxy che ha la stessa interfaccia del componente EJB creato dallo sviluppatore. Quando si invoca un metodo, si chiama l'EJB Object che invoca poi a sua volta il metodo del componente scritto dal programmatore.
 
-![Esempio Funzionamento EJB-Light](./img/img54-light.png#gh-light-mode-only)
-![Esempio Funzionamento EJB-Dark](./img/img54-dark.png#gh-dark-mode-only)
+<img src="./img/img54-light.png#gh-light-mode-only" alt="Esempio Funzionamento EJB">
+<img class="dark-mode" src="./img/img54-dark.png#gh-dark-mode-only" alt="Esempio Funzionamento EJB">
 
 Ad esempio, si consideri un'applicazione riguardante una banca dove un utente può solo prelevare e depositare soldi:
 
@@ -535,9 +535,9 @@ I componenti possono essere classificati in due categorie:
         - **Bean Managed Persistence (BMP)**.
 - **Asincroni**: l'utente non si blocca e non aspetta la risposta. Esiste un solo tipo di componente che fa parte di questa categoria:
     - **Message Driven Bean**.
-
-![Componenti EJB2-Light](./img/img33-light.png#gh-light-mode-only)
-![Componenti EJB2-Dark](./img/img33-dark.png#gh-dark-mode-only)
+    
+<img src="./img/img33-light.png#gh-light-mode-only" alt="Componenti EJB2">
+<img class="dark-mode" src="./img/img33-dark.png#gh-dark-mode-only" alt="Componenti EJB2">
 
 [Torna all'indice](#indice)
 
@@ -589,8 +589,8 @@ Questo Bean verrà approfondito nel `Capitolo 7`.
 
 L’immagine seguente mostra come i clienti interagiscono con i Bean e come i Bean stessi interagiscono tra di loro:
 
-![Interazioni tra Bean-Light](./img/img35-light.png#gh-light-mode-only)
-![Interazioni tra Bean-Dark](./img/img35-dark.png#gh-dark-mode-only)
+<img src="./img/img35-light.png#gh-light-mode-only" alt="Interazioni tra Bean">
+<img class="dark-mode" src="./img/img35-dark.png#gh-dark-mode-only" alt="Interazioni tra Bean">
 
 Il cliente interagisce con i Session Bean che realizzano la logica di business della sessione (con stato/senza stato). Se fosse necessario persistere uno stato i Session Bean possono interagire con gli Entity Bean.
 
@@ -606,18 +606,18 @@ Il file di deployment fornisce istruzioni al container su come gestire e control
 
 Il ciclo di sviluppo di un’applicazione enterprise parte dalla creazione dei Bean da parte del _Component Developer_ che si può occupare anche di scrivere il deployment descriptor (o lo farà un'altra figura professionale dedicata) che in maniera dichiarativa istruirà il container sui comportamenti da assumere rispetto a tutte quelle funzionalità viste in precedenza (sicurezza, concorrenza, scalabilità etc). Il _Component Developer_ rilascia, quindi, moduli EJB. I moduli, provvenienti anche da applicazioni diverse, posso essere assemblati insieme dall’_Application Assembler_ che rilascia un’applicazione EJB a cui il _Deployer_ aggiunge il deployment descriptor e poi effettua il deploy in un container EJB.
 
-![Ciclo di sviluppo-Light](./img/img36-light.png#gh-light-mode-only)
-![Ciclo di sviluppo-Dark](./img/img36-dark.png#gh-dark-mode-only)
+<img src="./img/img36-light.png#gh-light-mode-only" alt="Ciclo di sviluppo">
+<img class="dark-mode" src="./img/img36-dark.png#gh-dark-mode-only" alt="Ciclo di sviluppo">
 
 L'architettura e lo standard consentono di velocizzare lo sviluppo di applicazioni: è possibile assemblare applicazioni utilizzando e facendo coesistere moduli sviluppati da _vendor_ diversi. Ad esempio:
 
-![Applicazione 1-Light](./img/img37-light.png#gh-light-mode-only)
-![Applicazione 1-Dark](./img/img37-dark.png#gh-dark-mode-only)
+<img src="./img/img37-light.png#gh-light-mode-only" alt="Applicazione 1">
+<img class="dark-mode" src="./img/img37-dark.png#gh-dark-mode-only" alt="Applicazione 1">
 
 Si supponga di avere un produttore di software `A` (vendor A) specializzato nella modellazione e creazione di componenti busta paga che quindi sviluppa il componente `Payroll`, un secondo produttore di software `B` sviluppa altri componenti `Self Service` ed `Employee`, può utilizzare il modulo sviluppato dal vendor `A` per assemblare un’applicazione in cui il modulo `Payroll` sviluppato da `A` coesista con i moduli sviluppati dal vendor `B`.
 
-![Applicazione 2-Light](./img/img38-light.png#gh-light-mode-only)
-![Applicazione 2-Dark](./img/img38-dark.png#gh-dark-mode-only)
+<img src="./img/img38-light.png#gh-light-mode-only" alt="Applicazione 2">
+<img class="dark-mode" src="./img/img38-dark.png#gh-dark-mode-only" alt="Applicazione 2">
 
 [Torna all'indice](#indice)
 
@@ -666,8 +666,8 @@ Dal lato cliente, vengono invocati i metodi di oggetti che si trovano su nodi di
 
 RMI è utilizzato per la comunicazione fra cliente e server EJB. Quindi, l'utente non otterrà l'oggetto EJB Home dal sistema di nomi ma lo stub di EJB Home. Stesso discorso vale per l'EJB Object. In generale, le operazioni RMI sono costose perchè bisogna effettuare la serializzazione/deserializzazione dei parametri, aprire, trasferire e chiudere una connessione etc.
 
-![RMI IIOP-Light](./img/img2-light.png#gh-light-mode-only)
-![RMI IIOP-Dark](./img/img2-dark.png#gh-dark-mode-only)
+<img src="./img/img2-light.png#gh-light-mode-only" alt="RMI IIOP">
+<img class="dark-mode" src="./img/img2-dark.png#gh-dark-mode-only" alt="RMI IIOP">
 
 I passaggi sono i seguenti:
 
@@ -992,8 +992,8 @@ Esempi di sistemi di nomi:
 È una famiglia di sistemi di nomi. Questo sistema viene usato quando un cliente non conosce l'ambiente (piccole dimensioni) per cui viene inviata una richiesta in broadcast in modo da trovare i dispositivi che sono presenti nella rete.
 Questo servizio gestisce una piccola quantità di nomi e il numero di scritture nella tabella è molto alto proprio perchè la ricerca avviene in broadcast.
 
-![Servizio di Discovery-Light](./img/img46-light.png#gh-light-mode-only)
-![Servizio di Discovery-Dark](./img/img46-dark.png#gh-dark-mode-only)
+<img src="./img/img46-light.png#gh-light-mode-only" alt="Servizio di Discovery">
+<img class="dark-mode" src="./img/img46-dark.png#gh-dark-mode-only" alt="Servizio di Discovery">
 
 Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
@@ -1003,8 +1003,8 @@ Ad esempio, il Bluetooth usa un protocollo di Discovery.
 
 È una famiglia di sistemi di nomi in cui oltre al nome logico vengono memorizzate una serie di attributi (simili ai record di un DB). Gli attributi devono essere accessibili efficientemente in lettura e scalare molto bene su numeri grandi.
 
-![Servizio di Directory-Light](./img/img45-light.png#gh-light-mode-only)
-![Servizio di Directory-Dark](./img/img45-dark.png#gh-dark-mode-only)
+<img src="./img/img45-light.png#gh-light-mode-only" alt="Servizio di Directory">
+<img class="dark-mode" src="./img/img45-dark.png#gh-dark-mode-only" alt="Servizio di Directory">
 
 Ad esempio, il protocollo LDAP consente di accedere ai laboratori di UNIBO, X.500.
 
@@ -1023,8 +1023,8 @@ A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta �
 
 JNDI è un'interfaccia standard che consente di accedere in modo uniforme a servizi di naming già esistenti. Dunque, non è un servizio di nomi ma un'**interfaccia**!
 
-![JNDI-Light](./img/img3-light.png#gh-light-mode-only)
-![JNDI-Dark](./img/img3-dark.png#gh-dark-mode-only)
+<img src="./img/img3-light.png#gh-light-mode-only" alt="JNDI">
+<img class="dark-mode" src="./img/img3-dark.png#gh-dark-mode-only" alt="JNDI">
 
 In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice che viene scritto lato client perchè basta solo modificare la parte in cui si specifica quale servizio di nomi si sta usando.
 
@@ -1487,8 +1487,8 @@ richiesta cliente.
 - **Ready state**: già associato con una richiesta EJB e pronto a
 rispondere ad una invocazione di metodo.
 
-![Resource Pooling-Light](./img/img55-light.png#gh-light-mode-only)
-![Resource Pooling-Dark](./img/img55-dark.png#gh-dark-mode-only)
+<img src="./img/img55-light.png#gh-light-mode-only" alt="Resource Pooling">
+<img class="dark-mode" src="./img/img55-dark.png#gh-dark-mode-only" alt="Resource Pooling">
 
 Quando arriva una richiesta i passaggi che vengono eseguiti sono i seguenti:
 
@@ -1516,8 +1516,8 @@ Nella specifica J2EE, non è richiesto che la classe di uno stateful Session Bea
 Dipendenza dall’implementazione dello specifico vendor e attenzione al
 trattamento dei transient...
 
-![Activation-Light](./img/img56-light.png#gh-light-mode-only)
-![Activation-Dark](./img/img56-dark.png#gh-dark-mode-only)
+<img src="./img/img56-light.png#gh-light-mode-only" alt="Activation">
+<img class="dark-mode" src="./img/img56-dark.png#gh-dark-mode-only" alt="Activation">
 
 Non si può permettere di manterere k istanze occupate senza far niente. Per superare questo problema si cerca di liberare lo stato salvandolo:
 
@@ -1613,23 +1613,23 @@ Per rendere più flessibili le transazioni gestite dal container si usa l'annota
 Di seguito viene riportata una rappresentazione grafica per fissare meglio i concetti:
 
 - `REQUIRED`:
-![Required-Light](./img/img59-light.png#gh-light-mode-only)
-![Required-Dark](./img/img59-dark.png#gh-dark-mode-only)
+<img src="./img/img59-light.png#gh-light-mode-only" alt="Required">
+<img class="dark-mode" src="./img/img59-dark.png#gh-dark-mode-only" alt="Required">
 - `REQUIRES_NEW`:
-![Requires New-Light](./img/img60-light.png#gh-light-mode-only)
-![Requires New-Dark](./img/img60-dark.png#gh-dark-mode-only)
+<img src="./img/img60-light.png#gh-light-mode-only" alt="Requires New">
+<img class="dark-mode" src="./img/img60-dark.png#gh-dark-mode-only" alt="Requires New">
 - `MANDATORY`:
-![Mandatory-Light](./img/img61-light.png#gh-light-mode-only)
-![Mandatory-Dark](./img/img61-dark.png#gh-dark-mode-only)
+<img src="./img/img61-light.png#gh-light-mode-only" alt="Mandatory">
+<img class="dark-mode" src="./img/img61-dark.png#gh-dark-mode-only" alt="Mandatory">
 - `NOT_SUPPORTED`:
-![Not Supported-Light](./img/img57-light.png#gh-light-mode-only)
-![Not Supported-Dark](./img/img57-dark.png#gh-dark-mode-only)
+<img src="./img/img57-light.png#gh-light-mode-only" alt="Not Supported">
+<img class="dark-mode" src="./img/img57-dark.png#gh-dark-mode-only" alt="Not Supported">
 - `SUPPORTS`:
-![Supports-Light](./img/img58-light.png#gh-light-mode-only)
-![Supports-Dark](./img/img58-dark.png#gh-dark-mode-only)
+<img src="./img/img58-light.png#gh-light-mode-only" alt="Supports">
+<img class="dark-mode" src="./img/img58-dark.png#gh-dark-mode-only" alt="Supports">
 - `NEVER`:
-![Never-Light](./img/img62-light.png#gh-light-mode-only)
-![Never-Dark](./img/img62-dark.png#gh-dark-mode-only)
+<img src="./img/img62-light.png#gh-light-mode-only" alt="Never">
+<img class="dark-mode" src="./img/img62-dark.png#gh-dark-mode-only" alt="Never">
 
 Se una transazione fallisce bisogna effettuare il `rollback` della transazione. Può essere scatenata da due cause:
 
@@ -1717,8 +1717,8 @@ Il container EJB è anche responsabile nello svolgere azioni di controllo dell�
 
 Il container EJB basa le sue decisioni di sicurezza sui concetti di realm, utenti, gruppi e ruoli.
 
-![Sicurezza EJB-Light](./img/img48-light.png#gh-light-mode-only)
-![Sicurezza EJB-Dark](./img/img48-dark.png#gh-dark-mode-only)
+<img src="./img/img48-light.png#gh-light-mode-only" alt="Sicurezza EJB">
+<img class="dark-mode" src="./img/img48-dark.png#gh-dark-mode-only" alt="Sicurezza EJB">
 
 Il realm è una collezione di utenti di una singola applicazione (o di un loro insieme), controllati dalla stessa policy di autenticazione.
 Possono o meno essere parte dello stesso gruppo. Ad esempio, accesso tramite username e password, firma digitale etc.
@@ -2163,8 +2163,8 @@ Di solito, quando l'applicazione è semplice e si ha un solo DB si usa un solo E
 
 Le Entity vivono all’interno di contesti di persistenza e ciascuna di esse può avere quattro diversi stati:
 
-![Ciclo di Vita Entity-Light](./img/img25-light.png#gh-light-mode-only)
-![Ciclo di Vita Entity-Dark](./img/img25-dark.png#gh-dark-mode-only)
+<img src="./img/img25-light.png#gh-light-mode-only" alt="Ciclo di Vita Entity">
+<img class="dark-mode" src="./img/img25-dark.png#gh-dark-mode-only" alt="Ciclo di Vita Entity">
 
 - **New/transient entity** istanze non hanno ancora identità di persistenza e non sono ancora associate ad uno specifico contesto di persistenza.
 - **Managed entity**: istanze con identità di persistenza e associate con un contesto di persistenza.
@@ -2370,8 +2370,8 @@ Hibernate ha l’obiettivo di realizzare la persistenza di oggetti POJO passando
 
 L’architettura di Hibernate permette di astrarre dalle API JDBC/JTA sottostanti. Il livello di applicazione può essere trasparente a questi dettagli:
 
-![Architettura Hibernate-Light](./img/img67-light.png#gh-light-mode-only)
-![Architettura Hibernate-Dark](./img/img67-dark.png#gh-dark-mode-only)
+<img src="./img/img67-light.png#gh-light-mode-only" alt="Architettura Hibernate">
+<img class="dark-mode" src="./img/img67-dark.png#gh-dark-mode-only" alt="Architettura Hibernate">
 
 [Torna all'indice](#indice)
 
@@ -2411,8 +2411,8 @@ Gli oggetti transient o detached hanno istanze non legate alla sessione. Modific
 
 In generale, la cache migliora la performance dei sistemi e si accede al database solo se lo stato necessario non è presente in cache. In Hibernate esistono due livelli di cache: uno associata alla `Session` e uno associata alla `SessionFactory`. Le cache di primo livello è usata da Hibernate all’interno dei confini di una singola transazione principalmente al fine di ridurre il numero di query SQL generate all’interno di una transazione. Ad esempio, se un oggetto è modificato diverse volte all’interno della medesima transazione, Hibernate genera un unico statement SQL UPDATE alla fine della transazione, con tutte le modifiche. Invece, la cache di secondo livello, mantiene dati a livello di `SessionFactory`, utilizzabili da diverse transazioni.
 
-![Caching Hibernate-Light](./img/img70-light.png#gh-light-mode-only)
-![Caching Hibernate-Dark](./img/img70-dark.png#gh-dark-mode-only)
+<img src="./img/img70-light.png#gh-light-mode-only" alt="Caching Hibernate">
+<img class="dark-mode" src="./img/img70-dark.png#gh-dark-mode-only" alt="Caching Hibernate">
 
 Dalla `SessionFactory` si crea un oggetto `Session`. Un primo componente `C1` si crea il proprio oggetto `Session` e lavora sulla cacha di primo livello `L1_1`. La `Session` fa una find di un dato del DB. La cache all'inizio è vuota. Il layer di persistenza prende il dato dal DB e carica in cache l'oggetto `O1`. Non viene fatta una copia solo nella cache di primo livello, ma viene fatta una copia anche nella cache di secondo livello. Un secondo componente `C2` crea dalla stessa `SessionFactory` un nuovo oggetto `Session` e lavora sulla cache di primo livello `L1_2`. Il secondo componente non trova l'oggetto `O1` nella propria cache di primo livello `C1` ma lo trova nella cache di secondo livello `L2` e se lo porta nella propria cache di primo livello una copia di `O1` senza andare su DB.
 
@@ -2532,8 +2532,8 @@ I MOM poi possono supportare altre funzionalità come la qualità dei canali, tr
 
 La comunicazione avviene tra due sole entità. Questo modello viene utilizzato quando il produttore vuole contattare solo il proprio consumatore. Ci possono essere produttori multipli, ovviamente, ma il messaggio verrà ricevuto solo da un destinatario. La destinazione di un messaggio da parte del produttore è una coda con nome named queue. Le code sono FIFO (per lo stesso livello di priorità) oppure i produttori inviano messaggi a named queue specificando un livello di priorità desiderato. Questo ovviamente introduce attese ma consente la priorità. Possono essere anche organizzate a tuple (argomenti) o guardando il payload dei messaggi con l’utilizzo di filtri per smistare i messaggi.
 
-![Point-to-Point-Light](./img/img12-light.png#gh-light-mode-only)
-![Point-to-Point-Dark](./img/img12-dark.png#gh-dark-mode-only)
+<img src="./img/img12-light.png#gh-light-mode-only" alt="Point-to-Point">
+<img class="dark-mode" src="./img/img12-dark.png#gh-dark-mode-only" alt="Point-to-Point">
 
 Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con molte disconnessioni che appaiano e scompaiono, nel servizio, ovvero quando vi è la necessità di disaccoppiare molto, il MOM si comporta come proxy che mantiene i messaggi e in un caso, se si ipotizza la disconnessione dei destinatari, si dovrebbe avere persistenza dei messaggi.
 
@@ -2543,8 +2543,8 @@ Ad esempio, questo modello serve per far parlare dei dispositivi mobili, con mol
 
 Il modello publish/subscriber è un modello 1-N dove il messaggio viene consumato n volte. Un produttore invia un messaggio a una coda che si chiama named topic mentre il consumatore deve dire al MOM che è interessato a quella comunicazione. I produttori pubblicano sul topic, mentre i consumatori si _abbonano_ al topic. Sono possibili diverse configurazioni del MOM per cui si può ipotizzare che se non c'è persistenza, i messaggi che sono stati inviati quando un consumatore non era presente vengono persi.
 
-![Publish/Subscriber-Light](./img/img13-light.png#gh-light-mode-only)
-![Publish/Subscriber-Dark](./img/img13-dark.png#gh-dark-mode-only)
+<img src="./img/img13-light.png#gh-light-mode-only" alt="Publish/Subscriber">
+<img class="dark-mode" src="./img/img13-dark.png#gh-dark-mode-only" alt="Publish/Subscriber">
 
 Ad esempio, questo modello si usa per creare un'applicazione di bacheca per richieste di lavoro.
 
@@ -2566,11 +2566,11 @@ I MOM moderni supportano la transazionalità di messaggi. È possibile distingue
 Lo scope della transazionalità è di due tipi:
 
 - scope client-to-messaging system in cui le proprietà di transazionalità riguardano l’interazione fra ogni cliente e il sistema di messaging:
-![Client-to-Messaging System-Light](./img/img49-light.png#gh-light-mode-only)
-![Client-to-Messaging System-Dark](./img/img49-dark.png#gh-dark-mode-only)
+<img src="./img/img49-light.png#gh-light-mode-only" alt="Client-to-Messaging System">
+<img class="dark-mode" src="./img/img49-dark.png#gh-dark-mode-only" alt="Client-to-Messaging System">
 - scope client-to-client dove le proprietà di transazionalità riguardano l’insieme delle applicazioni produttore consumatore per quel gruppo di messaggi:
-![Client-to-Client-Light](./img/img50-light.png#gh-light-mode-only)
-![Client-to-Client-Dark](./img/img50-dark.png#gh-dark-mode-only)
+<img src="./img/img50-light.png#gh-light-mode-only" alt="Client-to-Client">
+<img class="dark-mode" src="./img/img50-dark.png#gh-dark-mode-only" alt="Client-to-Client">
 
 La seconda opzione è molto complessa e non viene garantita da molti MOM. Inoltre, il sistema di messaging può essere distribuito a sua volta. I sistemi di messaging possono realizzare un'infrastruttura in cui i messaggi sono scambiati fra server nel distribuito ma questo complica la transazionalità.
 
@@ -2592,13 +2592,13 @@ La sicurezza e la sua gestione è dipendente dal vendor del sistema di messaging
 
 JMS è un insieme di interfacce Java che specificano come un cliente JMS possa accedere alle funzionalità di un sistema di messaging generico.
 
-![JMS Architettura (1)-Light](./img/img51-light.png#gh-light-mode-only)
-![JMS Architettura (1)-Dark](./img/img51-dark.png#gh-dark-mode-only)
+<img src="./img/img51-light.png#gh-light-mode-only" alt="JMS Architettura (1)">
+<img class="dark-mode" src="./img/img51-dark.png#gh-dark-mode-only" alt="JMS Architettura (1)">
 
 JMS è parte della piattaforma J2EE, ma non necessita di EJB container per essere usato, è solo fortemente integrato. Gli obiettivi sono uguali a quelli di JNDI cioè non dipendere da un vendor specifico. Più nello specifico l'architettura è formata dalle entità che vengono mostrate in figura:
 
-![JMS Architettura (2)-Light](./img/img52-light.png#gh-light-mode-only)
-![JMS Architettura (2)-Dark](./img/img52-dark.png#gh-dark-mode-only)
+<img src="./img/img52-light.png#gh-light-mode-only" alt="JMS Architettura (2)">
+<img class="dark-mode" src="./img/img52-dark.png#gh-dark-mode-only" alt="JMS Architettura (2)">
 
 Le entità in gioco sono:
 
@@ -2633,8 +2633,8 @@ Un messaggio JMS è formato da tre parti:
 - Proprietà.
 - Body (payload).
 
-![Messaggio-Light](./img/img53-light.png#gh-light-mode-only)
-![Messaggio-Dark](./img/img53-dark.png#gh-dark-mode-only)
+<img src="./img/img53-light.png#gh-light-mode-only" alt="JMS Messaggio">
+<img class="dark-mode" src="./img/img53-dark.png#gh-dark-mode-only" alt="JMS Messaggio">
 
 L'header è utilizzato per l’identificazione del messaggio e il suo routing, include la destination e la modalità di consegna (persistente, non persistente), timestamp, priorità, campo ReplyTo che serve al ricevente per rispondere.
 
@@ -2658,8 +2658,8 @@ Queste sono interfacce locali per interrogare i payload cioè funzionano sul nod
 
 L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una queue (non di un ricevitore di messaggi). Le interfacce figlie sono `Queue` e `Topic`.
 
-![Interfaccia Destination-Light](./img/img14-light.png#gh-light-mode-only)
-![Interfaccia Destination-Dark](./img/img14-dark.png#gh-dark-mode-only)
+<img src="./img/img14-light.png#gh-light-mode-only" alt="Interfaccia Destination">
+<img class="dark-mode" src="./img/img14-dark.png#gh-dark-mode-only" alt="Interfaccia Destination">
 
 [Torna all'indice](#indice)
 
@@ -2667,8 +2667,8 @@ L’interfaccia `Destination` rappresenta l’astrazione di un topic o di una qu
 
 L’interfaccia `ConnectionFactory` serve per creare una connessione provider-specific verso il server JMS. È simile al gestore di driver `java.sql.DriverManager` in JDBC. Le interfacce figlie sono `QueueConnectionFactory` e `TopicConnectionFactory`.
 
-![Interfaccia ConnectionFactory-Light](./img/img15-light.png#gh-light-mode-only)
-![Interfaccia ConnectionFactory-Dark](./img/img15-dark.png#gh-dark-mode-only)
+<img src="./img/img15-light.png#gh-light-mode-only" alt="Interfaccia ConnectionFactory">
+<img class="dark-mode" src="./img/img15-dark.png#gh-dark-mode-only" alt="Interfaccia ConnectionFactory">
 
 [Torna all'indice](#indice)
 
@@ -2676,8 +2676,8 @@ L’interfaccia `ConnectionFactory` serve per creare una connessione provider-sp
 
 L'interfaccia `Connection` è un’astrazione che rappresenta un singolo canale di comunicazione verso il provider JMS. La connessione viene creata da un oggetto `ConnectionFactory`.
 
-![Interfaccia Connection-Light](./img/img16-light.png#gh-light-mode-only)
-![Interfaccia Connection-Dark](./img/img16-dark.png#gh-dark-mode-only)
+<img src="./img/img16-light.png#gh-light-mode-only" alt="Interfaccia Connection">
+<img class="dark-mode" src="./img/img16-dark.png#gh-dark-mode-only" alt="Interfaccia Connection">
 
 La connessione dovrebbe essere chiusa quando si è terminato di utilizzare la risorsa.
 
@@ -2687,8 +2687,8 @@ La connessione dovrebbe essere chiusa quando si è terminato di utilizzare la ri
 
 L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connessi al JMS provider attraverso una `Connection`, tutte le operazioni si svolgono nel contesto di una sessione attiva, ogni sessione è single-threaded, ovvero ogni operazione di invio e ricezione di messaggio avviene in modo serializzato. Le sessioni, quindi, realizzano un contesto _limitato_ con la possibilità di definire proprietà transazionali. Nel caso di invio di due messaggi si ha la garanzia che il primo messaggio venga accodato nella coda prima del secondo messaggio.
 
-![Interfaccia Session-Light](./img/img17-light.png#gh-light-mode-only)
-![Interfaccia Session-Dark](./img/img17-dark.png#gh-dark-mode-only)
+<img src="./img/img17-light.png#gh-light-mode-only" alt="Interfaccia Session">
+<img class="dark-mode" src="./img/img17-dark.png#gh-dark-mode-only" alt="Interfaccia Session">
 
 [Torna all'indice](#indice)
 
@@ -2696,16 +2696,16 @@ L’interfaccia `Session` è creata da un oggetto `Connection`. Una volta connes
 
 Per inviare un messaggio verso una `Destination`, il cliente deve richiedere esplicitamente all’oggetto `Session` di creare un oggetto `MessageProducer`. Analogamente per l’interfaccia `MessageConsumer` i clienti che vogliono ricevere messaggi creano un oggetto `MessageConsumer` (collegato ad un oggetto `Destination`) attraverso `Session`.
 
-![Interfaccia Message Producer-Light](./img/img18-light.png#gh-light-mode-only)
-![Interfaccia Message Producer-Dark](./img/img18-dark.png#gh-dark-mode-only)
+<img src="./img/img18-light.png#gh-light-mode-only" alt="Interfaccia Message Producer">
+<img class="dark-mode" src="./img/img18-dark.png#gh-dark-mode-only" alt="Interfaccia Message Producer">
 
 Vi sono due modalità di ricezione dei messaggi:
 
 - **Modalità blocking**: solito metodo `receive()` bloccante.
 - **Modalità non blocking**: il cliente registra un oggetto `MessageListener`, quando un messaggio è disponibile, il provider JMS richiama il metodo `onMessage()` di `MessageListener` (callback).
 
-![Interfaccia Message Consumer-Light](./img/img19-light.png#gh-light-mode-only)
-![Interfaccia Message Consumer-Dark](./img/img19-dark.png#gh-dark-mode-only)
+<img src="./img/img19-light.png#gh-light-mode-only" alt="Interfaccia Message Consumer">
+<img class="dark-mode" src="./img/img19-dark.png#gh-dark-mode-only" alt="Interfaccia Message Consumer">
 
 [Torna all'indice](#indice)
 
@@ -2918,8 +2918,8 @@ I selettori sono filtri la cui logica di filtraggio è specificabile con stringe
 
 I MDB prelevati da un poll di istanze quando il messaggio viene ricevuto. Vi è un JMS provider che invia i messaggi alle istanze di MDB che si sono registrati per la ricezione. Il tutto è asincrono con l’idea che ci sia un produttore che immette i messaggi in una queue o in un topic con una semantica uno a molti. A questo punto, il messaggio da qui arriva a un listener che lo recapita al MDB con metodo di callback. A questo punto vi è un applicazione con un EJB client che interagisce con una parte di business dell’applicazione stessa un Business Logic Bean (un Session Bean con dietro Entity Bean per esempio), che va a interagire con con il DB, il bean in questione può poi persistere dei dati su DB oppure diventare lui stesso un altro produttore verso un'altra destinazione JMS.
 
-![JMS in EJB-Light](./img/img22-light.png#gh-light-mode-only)
-![JMS in EJB-Dark](./img/img22-dark.png#gh-dark-mode-only)
+<img src="./img/img22-light.png#gh-light-mode-only" alt="JMS in EJB">
+<img class="dark-mode" src="./img/img22-dark.png#gh-dark-mode-only" alt="JMS in EJB">
 
 L’applicazione può per parti lavorare in modo sincrono e per altre lavorare in modo asincrono sfruttando le potenzialità di JMS.
 
@@ -2970,8 +2970,8 @@ WSDL è suddiviso in due parti:
 
 Nell’architettura SOA non importa quale è la tecnologia utilizzata ma si possono esporre più modi di comunicazione.
 
-![WSDL-Light](./img/img23-light.png#gh-light-mode-only)
-![WSDL-Dark](./img/img23-dark.png#gh-dark-mode-only)
+<img src="./img/img23-light.png#gh-light-mode-only" alt="WSDL">
+<img class="dark-mode" src="./img/img23-dark.png#gh-dark-mode-only" alt="WSDL">
 
 [Torna all'indice](#indice)
 
@@ -2981,8 +2981,8 @@ L’integrazione è un grosso problema: solo il 10% delle applicazioni è integr
 
 L’Enterprise Application Integration si occupa dell’integrazione di queste applicazioni, costruendo intorno a queste applicazioni degli strumenti che le integrano.
 
-![EAI-Light](./img/img63-light.png#gh-light-mode-only)
-![EAI-Dark](./img/img63-dark.png#gh-dark-mode-only)
+<img src="./img/img63-light.png#gh-light-mode-only" alt="EAI">
+<img class="dark-mode" src="./img/img63-dark.png#gh-dark-mode-only" alt="EAI">
 
 Enterprise Application Integration si basa su un approccio formato da tre tipi di operazioni: extract, transform and load. Si passa, quindi, per processi batch tra un'app e un’altra. I dati vengono trasmessi con FTP, poi li si trasforma in un formato utile per la seconda app e infine vengono passati di alla seconda app di nuovo con FTP. Questo è il funzionamneto di molti servizi bancari.
 
@@ -2996,8 +2996,8 @@ La soluzione è avere dei broker e dei orchestration engine come facilitatori de
 
 Hub and spoke è un’architettura a stella, in cui l’hub è il nodo centrale e le applicazioni hanno un adapter a un formato comune garantito dal message broker. Una central automation engine cioè un motore che consuma i messaggi, guarda dentro i messaggi e facendo routing intelligente tra le applicazioni li manda dove devono arrivare. Inoltre, vi sono tutti i servizi di sistema, tra cui persistenza e transazioni.
 
-![Hub-and-Spoke-Light](./img/img64-light.png#gh-light-mode-only)
-![Hub-and-Spoke-Dark](./img/img64-dark.png#gh-dark-mode-only)
+<img src="./img/img64-light.png#gh-light-mode-only" alt="Hub-and-Spoke">
+<img class="dark-mode" src="./img/img64-dark.png#gh-dark-mode-only" alt="Hub-and-Spoke">
 
 I pro dell’architettura a stella sono la facilità di gestione (centralizzata). Il principale contro è che l’hub è punto critico di centralizzazione. Inoltre, questa architettura ha una ridotta scalabilità.
 
@@ -3007,8 +3007,8 @@ I pro dell’architettura a stella sono la facilità di gestione (centralizzata)
 
 L’altra architettura di riferimento è quella a bus dove l’automation engine risiede con l’applicazione e non c'è il collo di bottiglia dell’hub dell’architettura a stella. Il servizio a bus è punto a punto.
 
-![Bus di Interconnessione-Light](./img/img65-light.png#gh-light-mode-only)
-![Bus di Interconnessione-Dark](./img/img65-dark.png#gh-dark-mode-only)
+<img src="./img/img65-light.png#gh-light-mode-only" alt="Bus di Interconnessione">
+<img class="dark-mode" src="./img/img65-dark.png#gh-dark-mode-only" alt="Bus di Interconnessione">
 
 I pro dell’architettura a bus sono la maggiore scalabilità (architettura meno centralizzata) mentre il contro è la maggiore difficoltà di gestione.
 
@@ -3034,13 +3034,13 @@ La comunicazione tra componenti all’interno del bus **non** è diretta ma medi
 
 Il funzionamento dello scambio di messaggi è il seguente:
 
-![Scambio di messaggi JBI (1)-Light](./img/img24-light.png#gh-light-mode-only)
-![Scambio di messaggi JBI (1)-Dark](./img/img24-dark.png#gh-dark-mode-only)
+<img src="./img/img24-light.png#gh-light-mode-only" alt="Scambio di messaggi JBI (1)">
+<img class="dark-mode" src="./img/img24-dark.png#gh-dark-mode-only" alt="Scambio di messaggi JBI (1)">
 
 Per rispondere a ciascuna richiesta, JBI è in grado di capire quale sia il provider migliore per il componente `B`. A quel punto, `B` accetta il messaggio e continua l’interazione. Da notare come `A` non conosce `B` ma si è solo registrato a JBI. Quindi, i componenti SOA e il modello a scambio di messaggi è basato su un elevato grado di disaccoppiamento tra componenti con la possibilità di operare su messaggi (trasformazioni) in modo trasparente.
 
-![Scambio di messaggi JBI (2)-Light](./img/img66-light.png#gh-light-mode-only)
-![Scambio di messaggi JBI (2)-Dark](./img/img66-dark.png#gh-dark-mode-only)
+<img src="./img/img66-light.png#gh-light-mode-only" alt="Scambio di messaggi JBI (2)">
+<img class="dark-mode" src="./img/img66-dark.png#gh-dark-mode-only" alt="Scambio di messaggi JBI (2)">
 
 JBI supporta quattro possibili pattern di scambio messaggi:
 
@@ -3298,8 +3298,8 @@ Spring non è una soluzione _all-or-nothing_ cioè si prende solo quello di cui 
 
 Il Core è un container leggero basato sull’Inversion of Control, una parte che di questo è il collante che consente l’interazione tra le varie parti dell’architettura Spring. JEE si occupa della gestione di tutti i servizi enterpise. Il Web Tier contiene tutti i framework web che possono essere integrati con il core. DAO e ORM sono la parte rivolta verso il backend dati che riguarda la parte di persistenza tra mondo oggetti e relazionale sia la parte di gestione di transazione tutto realizzato anche grazie all’utilizzo di AOP che si pone come intermediario tra il Core, DAO e ORM.
 
-![Architettura Spring-Light](./img/img39-light.png#gh-light-mode-only)
-![Architettura Spring-Dark](./img/img39-dark.png#gh-dark-mode-only)
+<img src="./img/img39-light.png#gh-light-mode-only" alt="Architettura Spring">
+<img class="dark-mode" src="./img/img39-dark.png#gh-dark-mode-only" alt="Architettura Spring">
 
 Si può sempre pensare di specializzare il framework e utilizzare le parti che ci servono, quindi si possono creare diversi scenari Spring in base alle esigenze di progettazione.
 
@@ -3989,8 +3989,8 @@ Una transazione è un’unità logica di elaborazione che, nel caso generale, si
 
 Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti e in questo caso si riduce il tempo di risposta.
 
-![Seriale vs Concorrente-Light](./img/img68-light.png#gh-light-mode-only)
-![Seriale vs Concorrente-Dark](./img/img68-dark.png#gh-dark-mode-only)
+<img src="./img/img68-light.png#gh-light-mode-only" alt="Seriale vs Concorrente">
+<img class="dark-mode" src="./img/img68-dark.png#gh-dark-mode-only" alt="Seriale vs Concorrente">
 
 Eseguire più transazioni concorrentemente è necessario per garantire buone prestazioni: si sfrutta il fatto che, mentre una transazione è in attesa del completamento di una operazione di I/O, un’altra può utilizzare la CPU.
 
@@ -4007,8 +4007,8 @@ La concorrenza però va gestita, se le varie transazioni interferiscono tra di l
 
 Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
 
-![Lost Update-Light](./img/img41-light.png#gh-light-mode-only)
-![Lost Update-Dark](./img/img41-dark.png#gh-dark-mode-only)
+<img src="./img/img41-light.png#gh-light-mode-only" alt="Lost Update">
+<img class="dark-mode" src="./img/img41-dark.png#gh-dark-mode-only" alt="Lost Update">
 
 [Torna all'indice](#indice)
 
@@ -4016,8 +4016,8 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 
 In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
 
-![Dirty Read-Light](./img/img42-light.png#gh-light-mode-only)
-![Dirty Read-Dark](./img/img42-dark.png#gh-dark-mode-only)
+<img src="./img/img42-light.png#gh-light-mode-only" alt="Dirty Read">
+<img class="dark-mode" src="./img/img42-dark.png#gh-dark-mode-only" alt="Dirty Read">
 
 [Torna all'indice](#indice)
 
@@ -4025,8 +4025,8 @@ In questo caso il problema è che una transazione legge un dato che non c’è: 
 
 Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
 
-![Unrepeatble Read-Light](./img/img69-light.png#gh-light-mode-only)
-![Unrepeatble Read-Dark](./img/img69-dark.png#gh-dark-mode-only)
+<img src="./img/img69-light.png#gh-light-mode-only" alt="Unrepeatble Read">
+<img class="dark-mode" src="./img/img69-dark.png#gh-dark-mode-only" alt="Unrepeatble Read">
 
 Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
 
