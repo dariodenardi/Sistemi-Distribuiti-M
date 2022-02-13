@@ -87,7 +87,8 @@ body {
 }
 
 em {
-    font-weight: bold;
+  color: #4472c4;
+  font-weight: bold;
 }
 
 details {
@@ -100,6 +101,7 @@ summary {
 
 a {
   background-color: initial;
+  font-weight: bold;
 }
 
 a:active,
