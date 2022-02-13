@@ -19,7 +19,7 @@ jobs:
           output_dir: pdf
           table_of_contents: false
           build_html: false
-          extend_default_theme: false
+          extend_default_theme: true
           theme: styles/theme.css
           highlight_theme: styles/highlight.css
       - name: Update PDF
