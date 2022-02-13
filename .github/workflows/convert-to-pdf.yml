@@ -21,6 +21,7 @@ jobs:
           build_html: false
           extend_default_theme: false
           theme: styles/theme.css
+          highlight_theme: styles/highlight.css
       - name: Update PDF
         run: |
           if [[ "$(git status --porcelain)" != "" ]]; then
