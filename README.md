@@ -15,7 +15,7 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     
 Questa dispensa ha lo scopo di facilitare lo studio e il superamento dell'esame. Raccoglie tutti gli argomenti trattati (e mal spiegati) con gli appunti presi a lezione
     
-Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il repository GitHub e apri un issue o una pull request tramite fork. Ogni contributo è ben accetto 🙂
+Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il repository GitHub e apri un issue o una pull request tramite fork. Ogni contributo è ben accetto :)
 </div>
 
 <!-- INDICE -->
