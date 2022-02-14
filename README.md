@@ -11,7 +11,11 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
 [![Dark/Light Mode](https://img.shields.io/badge/Compatible-Dark%26Light%20Mode-1f425f.svg)](https://github.com/settings/appearance)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
     
-È possibile scaricare anche la versione pdf che si trova su nella cartella pdf della repo
+**È possibile scaricare anche la versione pdf che si trova nella cartella pdf della repo**
+    
+Questa dispensa ha lo scopo di facilitare lo studio e il superamento dell'esame. Raccoglie tutti gli argomenti trattati (e mal spiegati) con gli appunti presi a lezione
+    
+Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il repository GitHub e apri un issue o una pull request tramite fork. Ogni contributo è ben accetto 🙂
 </div>
 
 <!-- INDICE -->
@@ -57,15 +61,15 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
 - [Servizio di nomi](#sistemi-di-nomi)
     - [Sistemi di Discovery](#sistemi-di-discovery)
     - [Sistemi di Directory](#sistemi-di-directory)
-    - [Directory vs DB](#directory-vs-db)
+        - [Directory vs DB](#directory-vs-db)
     - [Java Naming Directory Interface (JNDI)](#java-naming-directory-interface-jndi)
     - [Interfaccia Context](#interfaccia-context)
     - [Interfaccia DirContext](#interfaccia-dircontext)
     - [Uso di JNDI](#uso-di-jndi)
     - [Memorizzare i dati in un servizio nomi](#memorizzare-i-dati-in-un-servizio-nomi)
-    - [Serializzazione](#serializzazione)
-    - [Riferimento](#riferimento)
-    - [Attributi](#attributi)
+        - [Serializzazione](#serializzazione)
+        - [Riferimento](#riferimento)
+        - [Attributi](#attributi)
     - [Configurazione di JNDI](#configurazione-di-jndi)
 - [EJB 3.X](#ejb-3x)
     - [Annotazioni e Descrittori di Deployment](#annotazioni-e-descrittori-di-deployment)
@@ -75,16 +79,16 @@ Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come r
     - [Dependency Injection](#dependency-injection)
     - [Interoperabilità tra EJB 3.X e EJB 2.X](#interoperabilità-tra-ejb-3x-e-ejb-2x)
     - [Servizi di sistema](#servizi-di-sistema)
-    - [Pooling e concorrenza](#pooling-e-concorrenza)
-        - [Resource Pooling](#resource-pooling)
-        - [Activation](#activation)
-    - [Transazionalità](#transazionalità)
-        - [Container-Managed Transaction](#container-managed-transaction)
-        - [Bean-Managed Transaction](#bean-managed-transaction)
-    - [Gestione delle connessioni a risorse](#gestione-delle-connessioni-a-risorse)
-    - [Persistenza](#persistenza)
-    - [Messaggistica](#messaggistica)
-    - [Sicurezza](#sicurezza)
+        - [Pooling e concorrenza](#pooling-e-concorrenza)
+            - [Resource Pooling](#resource-pooling)
+            - [Activation](#activation)
+        - [Transazionalità](#transazionalità)
+            - [Container-Managed Transaction](#container-managed-transaction)
+            - [Bean-Managed Transaction](#bean-managed-transaction)
+        - [Gestione delle connessioni a risorse](#gestione-delle-connessioni-a-risorse)
+        - [Persistenza](#persistenza)
+        - [Messaggistica](#messaggistica)
+        - [Sicurezza](#sicurezza)
     - [Intercettori](#intercettori)
 - [JPA](#jpa)
     - [Object/Relational Mapping (ORM)](#objectrelational-mapping-orm)
@@ -1010,7 +1014,7 @@ Ad esempio, il protocollo LDAP consente di accedere ai laboratori di UNIBO, X.50
 
 [Torna all'indice](#indice)
 
-### Directory vs DB
+#### Directory vs DB
 
 A questo punto, ci si può chiedere se le Directory sono dei DB ma la risposta è no:
 
@@ -1162,7 +1166,7 @@ La specifica JNDI non impone ai naming service provider la semantica dell’oper
 
 [Torna all'indice](#indice)
 
-### Serializzazione
+#### Serializzazione
 
 La semantica serialized data (serializzazione) la si usa per salvare tutto il contenuto dell’oggetto. Quando si effettua l'operazione di `lookup` si recupera il contenuto dell’oggetto per copia.
 
@@ -1170,13 +1174,13 @@ Tuttavia, non sempre una risorsa può essere serializabile. Ad esempio, database
 
 [Torna all'indice](#indice)
 
-### Riferimento
+#### Riferimento
 
 In altri casi, quello che viene salvato è solo il riferimento ad un oggetto. Quando il cliente fa la `lookup` viene restituito il riferimento a quella risorsa. Spesso, questo è l’unico comportamento supportabile dal sistema di nomi.
 
 [Torna all'indice](#indice)
 
-### Attributi
+#### Attributi
 
 Non tutti i linguaggi di programmazione conoscono il concetto di oggetto. Per questo motivo, utilizzare la semantica per attributi consente eliminare il mismatch tra linguaggi differenti perchè il programma userebbe una collezione di attributi.
 
@@ -1466,7 +1470,7 @@ I servizi di sistema che sono messi a disposizione dell'EJB come visto nel `Capi
 
 [Torna all'indice](#indice)
 
-### Pooling e concorrenza
+#### Pooling e concorrenza
 
 La concorrenza viene gestita in modi diversi in base se il componente ha stato oppure no:
 
@@ -1475,7 +1479,7 @@ La concorrenza viene gestita in modi diversi in base se il componente ha stato o
 
 [Torna all'indice](#indice)
 
-#### Resource Pooling
+##### Resource Pooling
 
 L'idea di base è di evitare di mantenere un'istanza separata di ogni componente EJB per ogni cliente perchè le richieste potrebbero non essere servite tutte dato che non si possono creare istanze illimitate.
 
@@ -1505,7 +1509,7 @@ Questa politica di gestione si applica anche ai Message-Driven Bean: l'unica dif
 
 [Torna all'indice](#indice)
 
-#### Activation
+##### Activation
 
 La gestione avviene in due fasi:
 
@@ -1530,7 +1534,7 @@ UserTransaction etc).
 
 [Torna all'indice](#indice)
 
-### Transazionalità
+#### Transazionalità
 
 Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: o termina correttamente (`commit`) oppure no (`rollback`).
 
@@ -1538,7 +1542,7 @@ Le transazioni possono essere gestite dal container (Container-Managed Transacti
 
 [Torna all'indice](#indice)
 
-#### Container-Managed Transaction
+##### Container-Managed Transaction
 
 Le transazioni gestite dal container sono:
 
@@ -1670,7 +1674,7 @@ public class TravelAgentBean implements TravelAgentRemote {
 
 [Torna all'indice](#indice)
 
-#### Bean-Managed Transaction
+##### Bean-Managed Transaction
 
 La gestione delle transazioni è a carico dele programmatore, la complessità è molto maggiore ma anche la flessibilità. Un esempio di codice è riportato di seguito:
 
@@ -1696,7 +1700,7 @@ public class PayrollBean implements Payroll {
 
 [Torna all'indice](#indice)
 
-### Gestione delle connessioni a risorse
+#### Gestione delle connessioni a risorse
 
 Un componente può avere bisogno di utilizzare altri componenti e risorse come database e sistemi di messaging. In JEE, il ritrovamento delle risorse desiderate è basato su un sistema di nomi ad alta portabilità come JNDI. Se un componente usa l'injection, sarà il container a utilizzare JNDI per ritrovare la risorsa desiderata e non il componente stesso com’era prima di EJB 3.X.
 
@@ -1704,19 +1708,19 @@ In particolare, relativamente a risorse a database si usa la connection pooling:
 
 [Torna all'indice](#indice)
 
-### Persistenza
+#### Persistenza
 
 Questo Bean verrà approfondito nel `Capitolo 6`.
 
 [Torna all'indice](#indice)
 
-### Messaggistica
+#### Messaggistica
 
 Questo Bean verrà approfondito nel `Capitolo 7`.
 
 [Torna all'indice](#indice)
 
-### Sicurezza
+#### Sicurezza
 
 Il container EJB è anche responsabile nello svolgere azioni di controllo dell’accesso sui metodi del Bean cioè verifica se il cliente ha il diritto di invocare una determinata operazione remota.
 
