@@ -8,8 +8,7 @@ Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_
 
 Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come realizzarle
 
-<img class="dark-mode" href="https://github.com/settings/appearance" src="https://img.shields.io/badge/Compatible-Dark%26Light%20Mode-1f425f.svg" alt="Badge Dark/Light Mode">
-<img href="http://creativecommons.org/publicdomain/zero/1.0/" src="https://img.shields.io/badge/License-CC0%201.0-blue.svg" alt="Badge License: CC0-1.0">
+<img class="dark-mode" href="https://github.com/settings/appearance" src="https://img.shields.io/badge/Compatible-Dark%26Light%20Mode-1f425f.svg" alt="Badge Dark/Light Mode"> <img href="http://creativecommons.org/publicdomain/zero/1.0/" src="https://img.shields.io/badge/License-CC0%201.0-blue.svg" alt="Badge License: CC0-1.0">
 
 **È possibile scaricare anche la versione pdf che si trova nella cartella pdf della repo**
     
