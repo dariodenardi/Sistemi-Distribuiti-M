@@ -2,15 +2,15 @@
 
 # Sistemi Distribuiti M - 2021/2022
 
-Corso tenuto dal _Prof. Foschini_
+Corso tenuto dal <i>Prof. Foschini</i>
 
-Appunti scritti da _Dario De Nardi_, _Sofia Montebugnoli_ 
+Appunti scritti da <i>Dario De Nardi</i>, <i>Sofia Montebugnoli</i> 
 
-Si ringrazia _Enrico Valastro_ per aver fornito molte immagini e spiegato come realizzarle
-
+Si ringrazia <i>Enrico Valastro</i> per aver fornito molte immagini e spiegato come realizzarle
+</br></br>
 <img class="dark-mode" href="https://github.com/settings/appearance" src="https://img.shields.io/badge/Compatible-Dark%26Light%20Mode-1f425f.svg" alt="Badge Dark/Light Mode">
 <img href="http://creativecommons.org/publicdomain/zero/1.0/" src="https://img.shields.io/badge/License-CC0%201.0-blue.svg" alt="Badge License: CC0-1.0">
-
+</br></br>
 <b>È possibile scaricare anche la versione pdf che si trova nella cartella pdf della repo</b>
     
 Questa dispensa ha lo scopo di facilitare lo studio e il superamento dell'esame. Raccoglie tutti gli argomenti trattati (e mal spiegati) con gli appunti presi a lezione
