@@ -663,8 +663,9 @@ import java.rmi.*;
 
 public interface Interest extends EJBObject {
 
-    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno  specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal (double principal, double interestPerTerm, int terms) throws RemoteException;
+    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
+    // specifico tasso di interesse (percentuale per term)
+    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms) throws RemoteException;
 }
 ```
 
@@ -727,8 +728,9 @@ import java.rmi.*;
 
 public interface InterestLocal extends EJBLocalObject {
 
-    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno  specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal (double principal, double interestPerTerm, int terms);
+    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
+    // specifico tasso di interesse (percentuale per term)
+    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms);
 
 }
 ```
@@ -1133,13 +1135,15 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
     ```java
     Hashtable hashtableEnvironment = new Hashtable();
-    hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+    hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, 
+                            "com.sun.jndi.ldap.LdapCtxFactory");
     ```
 
 - Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider. Ad esempio, per LDAP, l'URL che identifica il servizio, context radice, nome e password per connessione:
 
     ```java
-    hashtableEnvironment.put(Context.PROVIDER_URL, "ldap://localhost:389/dc=etcee,dc=com");
+    hashtableEnvironment.put(Context.PROVIDER_URL, 
+                            "ldap://localhost:389/dc=etcee,dc=com");
     hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
     hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
     ```
@@ -1370,7 +1374,7 @@ metodo o campo.
 - `type`: tipo (Java language type) della risorsa. È determinato da:
     - **Livello di campo**: tipo del campo che l’annotazione `@Resource` sta decorando.
     - **Livello di metodo**: tipo della proprietà del componente che l’annotazione `@Resource` sta decorando.
-- `authenticationType`: solo per risorse di tipo connection factory. Può avere valore CONTAINER (default) o APPLICATION.
+- `authenticationType`: solo per risorse di tipo connection factory. Può avere valore `CONTAINER` (default) o `APPLICATION`.
 - `shareable`: possibilità di condividere la risorsa. Usato solo per risorse che sono istanze di ORB o connection factory.
 - `mappedName`: nome non portabile e implementation-specific a cui
 associare la risorsa description. Usato tipicamente per riferire la risorsa al di fuori dell’application server.
@@ -2867,7 +2871,7 @@ In produzione si può avere una semantica bloccante per la `send()`. Il client m
 Nell’invio dei messaggi vi sono due diversi modi di gestire la persistenza che si differenziano per la modalità di consegna. La modalità persistent richiede la persistenza quindi il provider ha la responsabilità di non perdere il messaggio e questo grazie allo storage è possibile. Il non persistent non dà garanzie rispetto al fault ma non ha problemi relativi al collo di bottiglia generato dallo storage quindi è possibile sostenere un high rate nell’invio con migliori performance. La modalità di consegna si imposta con il metodo `setDeliveryMode()` dell’interfaccia `MessageProducer`:
 
 ```java
-\\ metodo dell’interfaccia MessageProducer
+// metodo dell’interfaccia MessageProducer
 producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 ```
 
@@ -3219,13 +3223,16 @@ main (int argc, char *argv[])
 {
     CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
 
-    // Get the NameService reference...
-    CORBA::Object_var o = ns->resolve_str (“myHelloHome");HelloHome_var hh = HelloHome::_narrow (o.in ());HelloWorld_var hw = hh->create ();
+    // Get the NameService reference
+    CORBA::Object_var o = ns->resolve_str (“myHelloHome");HelloHome_var hh = HelloHome::_narrow (o.in ());
+    HelloWorld_var hw = hh->create ();
 
     // Get all facets & receptacles
-    Components::FacetDescriptions_var fd = hw->get_all_facets (); Components::ReceptacleDescriptions_var rd = hw->get_all_receptacles ();
+    Components::FacetDescriptions_var fd = hw->get_all_facets ();
+    Components::ReceptacleDescriptions_var rd = hw->get_all_receptacles ();
 
-    // Get a named facet with a name "Farewell" CORBA::Object_var fobj = hw->provide ("Farewell");
+    // Get a named facet with a name "Farewell"
+    // CORBA::Object_var fobj = hw->provide ("Farewell");
 
     // Can invoke sayGoodbye() operation on Farewell after
     // narrowing to the Goodbye interface.
@@ -3388,7 +3395,7 @@ Un esempio di dependency injection è presente anche in EJB 3.0 attraverso le an
 
 La dependency injection può essere effettuate a livello di costruttore, in cui le dipendenze sono fornite attraverso i costruttori dei componenti:
 
-```
+```java
 public class ConstructorInjection {
 
     private Dependency dep;
@@ -3401,7 +3408,7 @@ public class ConstructorInjection {
 
 Tuttavia, la dependency injection è possibile anche a livello di metodi `setter` in cui le dipendenze sono fornite attraverso i metodi di configurazione (metodi `setter` in stile JavaBean) dei componenti. Questa modalità è più frequentemente utilizzata nella comunità degli sviluppatori:
 
-```
+```java
 public class SetterInjection {
 
     private Dependency dep;
@@ -3418,7 +3425,7 @@ public class SetterInjection {
 
 L’oggetto `BeanFactory` è responsabile della gestione dei Bean che usano Spring e delle loro dipendenze. Ogni applicazione interagisce con la dependency injection di Spring (IoC container) tramite l'interfaccia `BeanFactory`. L'oggetto `BeanFactory` viene creato dall’applicazione tipicamente nella forma di `XmlBeanFactory`. Questo oggetto `BeanFactory` legge un file di configurazione XML e si occupa di fare l’injection, detto anche wiring della configurazione. `XmlBeanFactory` è l'estensione di `DefaultListableBeanFactory` per leggere definizioni di Bean da un documento XML. La XML `BeanFactory` legge la configurazione da un file e attraverso il metodo `getBean()` è possibile specificare il nome del Bean e crearlo ottenendo l'istanza logica. Le informazioni sono invece contenute tutte nel file XML:
 
-```
+```java
 public class XmlConfigWithBeanFactory { 
     public static void main(String[] args) { 
         XmlBeanFactory factory = new XmlBeanFactory(new FileSystemResource("beans.xml")); 
@@ -3429,7 +3436,7 @@ public class XmlConfigWithBeanFactory {
 
 Il componente che si usa che sfrutta la dependecy injection deve essere scritto in modo simile al seguente:
 
-```
+```java
 public class ConfigurableMessageProvider implements MessageProvider { 
     
     private String message;
@@ -3447,7 +3454,7 @@ public class ConfigurableMessageProvider implements MessageProvider {
 
 In questo caso la dependency injection è iniettata a livello di costruttore e nel file XML deve essere scritto nel seguente modo:
 
-```
+```xml
 <beans>
     <bean id="provider" class="ConfigurableMessageProvider">
         <constructor-arg>
@@ -3477,7 +3484,7 @@ Tutti questi tipi possono essere usati sia per injection sui costruttori che sui
 
 Un esempio, di injection di valori semplici è il seguente:
 
-```
+```xml
 <beans>
     <bean id="injectSimple" class="InjectSimple">
         <property name="name">
@@ -3501,7 +3508,7 @@ Il Bean con nome logico `injectSimple` la cui classe è `InjectSimple` presenta 
 
 L’injection di un Bean della stessa Factory è usata quando è necessario fare injection di un Bean all’interno di un altro Bean (target bean). Si Usa il tag `ref` all'interno del tag `property` o `constructor-arg` del target bean:
 
-```
+```xml
 <beans>
     <bean id="injectRef" class="InjectRef">
         <property name="oracle">
@@ -3525,7 +3532,7 @@ Il ritrovamento dei Bean avviene attraverso il naming dei componenti Spring che 
 
 Tramite una serie di esempi, si vede come la `BeanFactory` può essere realizzata. Si parte dal seguente esempio:
 
-```
+```java
 public class HelloWorld {
 
     public static void main(String[] args) {
@@ -3539,7 +3546,7 @@ Un programma come questo, si porta dietro alcuni problemi: se vi è la necessit�
 
 Adesso, tramite alcune operazioni si disaccoppia l’implementazione della logica del message provider (il messaggio da stampare) rispetto al resto del codice tramite la creazione di una classe separata:
 
-```
+```java
 public class HelloWorldMessageProvider {
 
     public String getMessage() {
@@ -3551,7 +3558,7 @@ public class HelloWorldMessageProvider {
 
 Si disaccoppia anche l’implementazione della logica di message rendering (chi stampa il messaggio) dal resto del codice:
 
-```
+```java
 public class StandardOutMessageRenderer {
 
     private HelloWorldMessageProvider messageProvider = null;
@@ -3579,7 +3586,7 @@ La logica di message rendering è data all’oggetto `HelloWorldMessageProvider`
 
 Mettendo insieme le due classi appena spiegati il main si scrive nel seguente modo:
 
-```
+```java
 public class HelloWorldDecoupled {
 
     public static void main(String[] args) {
@@ -3593,14 +3600,14 @@ public class HelloWorldDecoupled {
 
 Ma ci sono ancora dei problemi aperti, in particolare, le Implementazioni specifiche di `MessageRenderer` e di `MessageProvider` sono hard-coded nella logica applicativa, per rendere il tutto ancora più disaccoppiato si fa uso di interfacce:
 
-```
+```java
 public interface MessageProvider {
     
     public String getMessage();
 }
 ```
 
-```
+```java
 public class HelloWorldMessageProvider implements MessageProvider {
     
     public String getMessage() {
@@ -3609,7 +3616,7 @@ public class HelloWorldMessageProvider implements MessageProvider {
 }
 ```
 
-```
+```java
 public interface MessageRenderer {
 
     public void render();
@@ -3618,7 +3625,7 @@ public interface MessageRenderer {
 }
 ```
 
-```
+```java
 public class StandardOutMessageRenderer implements MessageRenderer {
     // MessageProvider è una interfaccia Java ora 
     private MessageProvider messageProvider = null; 
@@ -3643,7 +3650,7 @@ public class StandardOutMessageRenderer implements MessageRenderer {
 
 Scompare la dipendenza dalla classe, anche se dietro le quinte si dovrà andare a creare le opportune classi, ora però non vi è più dipendenza da quelle classi. Rimane la responsabilità del `main` di effettuare la dependency injection:
 
-```
+```java
 public class HelloWorldDecoupled {
 
     public static void main(String[] args) {
@@ -3660,7 +3667,7 @@ Ora è possibile modificare la logica di message rendering senza alcun impatto s
 
 Vi sono ancora dei problemi ovvero l’uso di differenti implementazioni delle interfacce `MessageRenderer` o `MessageProvider` necessita comunque di una modifica (limitata) del codice della logica di business del `main`. Per risolvere bisogna creare una semplice classe factory che legga i nomi delle classi desiderate per le implementazioni delle interfacce da un file (property file) e le istanzi a runtime, facendo le veci dell’applicazione:
 
-```
+```java
 public class MessageSupportFactory {
 
     private static MessageSupportFactory instance = null;
@@ -3705,7 +3712,7 @@ public class MessageSupportFactory {
 
 Il `main` diventa:
 
-```
+```java
 public class HelloWorldDecoupledWithFactory {
 
     public static void main(String[] args) {
@@ -3732,7 +3739,7 @@ Ora le implementazioni di `MessageProvider` e `MessageRenderer` possono essere m
 
 HelloWord usando Spring:
 
-```
+```java
 public class HelloWorldSpring {
 
     public static void main(String[] args) throws Exception {
@@ -3777,7 +3784,7 @@ renderer.messageProvider(ref)=provider
 provider.class=HelloWorldMessageProvider
 ```
 
-```
+```java
 public class HelloWorldSpringWithDI {
 
     public static void main(String[] args) throws Exception {
@@ -3808,7 +3815,7 @@ Il metodo `main()` deve semplicemente ottenere il Bean `MessageRenderer` e richi
 
 Più usualmente, le dipendenze dei bean sono specificate tramite un file XML:
 
-```
+```xml
 <beans>
     <bean id="renderer" class="StandardOutMessageRenderer">
         <property name="messageProvider">
@@ -3821,7 +3828,7 @@ Più usualmente, le dipendenze dei bean sono specificate tramite un file XML:
 
 Di seguito viene riportato il codice rielaborato dopo l’aggiunta dei riferimenti nell'XML:
 
-```
+```java
 public class HelloWorldSpringWithDIXMLFile {
 
     public static void main(String[] args) throws Exception {
@@ -3841,7 +3848,7 @@ La factory viene creata attraverso il fileXML.
 
 Se si volesse usare la dependency Injection in Spring con un costruttore per `MessageProvider`:
 
-```
+```xml
 <beans>
     <bean id="renderer" class="StandardOutMessageRenderer">
         <property name="messageProvider">
@@ -3858,7 +3865,7 @@ Se si volesse usare la dependency Injection in Spring con un costruttore per `Me
 
 A livello di codice il `ConfigurableMessageProvider` esporrà un campo nel costruttore che consentirà di modificare il messaggio, il renderer continuerà a usare il provider. Il `ConfigurableMessageProvider` sarà una delle possibili implementazioni del `MessageProvider`, a differenza della precedente ha la stringa configurabile e non embedded.
 
-```
+```java
 public class ConfigurableMessageProvider implements MessageProvider {
 
     private String message;
@@ -3885,7 +3892,7 @@ La possibilità di semplice Dependency Injection tramite costruttori o metodi se
 
 La classe `MessageWriter` scrive `World`. L'obiettivo è quello di stampare prima la parola `Hello` e alla fine `!`:
 
-```
+```java
 public class MessageWriter implements IMessageWriter {
 
     public void writeMessage() {
@@ -3899,7 +3906,7 @@ Si ha bisogno di un around advice per inserire prima e dopo `World`, le parole `
 
 Gli advice sono scritti in Java (nessun linguaggio AOP-specific). I pointcut tipicamente specificati in file XML di configurazione. Spring supporta solo joinpoint a livello di metodo (ad esempio, impossibile associare advice alla modifica di un campo di un oggetto). Con l’idea di definire come decorator queste parti di codice, dal punto di vista dell’esecuzione questi lavorano come intercettori che consentono di cambiare il codice:
 
-```
+```java
 public class MessageDecorator implements MethodInterceptor {
 
     public Object invoke(MethodInvocation invocation) throws Throwable {
@@ -3913,7 +3920,7 @@ public class MessageDecorator implements MethodInterceptor {
 
 I pointcut lavorano come intercettori e consentono se adeguatamente settati di cambiare la logica applicativa. Si usa la classe `ProxyFactory` per creare il proxy dell’oggetto target, anche modalità più di base, tramite uso di possibilità predeterminate e file XML, senza istanziare uno specifico proxy per AOP:
 
-```
+```java
 public static void main(String[] args) {
 
     MessageWriter target = new MessageWriter();
@@ -3940,7 +3947,7 @@ Guarda caso, anche in Spring si possono definire intercettori, ma questa volta i
 
 L'intercettore Spring può eseguire immediatamente prima o dopo l’invocazione della richiesta corrispondente. Implementa l’interfaccia `MethodInterceptor` o estende `HandlerInterceptorAdaptor`:
 
-```
+```java
 public class MyService {
 
     public void doSomething() {
@@ -3952,7 +3959,7 @@ public class MyService {
 }
 ```
 
-```
+```java
 public class ServiceMethodInterceptor implements MethodInterceptor {
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -3971,7 +3978,7 @@ public class ServiceMethodInterceptor implements MethodInterceptor {
 
 Nel file di configurazione si definiscono i componenti, l’intercettore e quali sono i vari target e nei vari target si definiscono gli intercettori da utilizzare:
 
-```
+```xml
 <beans>
     <bean id="myService" class="com.test.MyService"></bean>
     <bean id="interceptor" class="com.test.ServiceMethodInterceptor"></bean>
@@ -4122,7 +4129,7 @@ Per accedere ad alcune funzionalità avanzate di Spring, non è sufficiente l’
 
 Per aggiungere l’`ApplicationContext` e collegarlo alla gestione del ciclo di vita del Bean, bisogna prendere l’interfaccia `ApplicationContextAware`, implementarla in modo da poter aggiungere il metodo di interfaccia `setApplicationContext()` che verrà automaticamente invocato alla creazione del Bean stesso che riceverà così un riferimento al contesto su cui poter effettuare invocazioni:
 
-```
+```java
 public class Publisher implements ApplicationContextAware {
 
     private ApplicationContext ctx; 
@@ -4143,7 +4150,7 @@ La gestione degli eventi in `ApplicationContext` è realizzata tramite la classe
 
 Ad esempio, qui si mostra la configurazione in `ApplicationContext.xml `del comportamento "ad ogni ricezione di un'email da un indirizzo in black list, invia un email di notifica a "spam@list.org":
 
-```
+```xml
 <bean id="emailer" class="example.EmailBean">
     <property name="blackList">
         <list>
@@ -4160,7 +4167,7 @@ Ad esempio, qui si mostra la configurazione in `ApplicationContext.xml `del comp
 
 La classe Bean che pubblica eventi tramite l’oggetto `ApplicationContext`:
 
-```
+```java
 public class EmailBean implements ApplicationContextAware {
 
     private List blackList;
@@ -4185,7 +4192,7 @@ public class EmailBean implements ApplicationContextAware {
 
 La classe `Notifier` riceve le notifiche degli eventi generati:
 
-```
+```java
 public class BlackListNotifier implement ApplicationListener {
 
     private String notificationAddress;
@@ -4647,7 +4654,7 @@ public class Main {
 }
 ```
 
-Esempio con uso di Notification:
+Esempio con uso di `Notification`:
 
 ```java
 package com.example.mbeans;
@@ -5196,7 +5203,7 @@ Con Node.js si può lavorare a moduli. Questi moduli realizzano funzionalità e 
 
 Il modulo più usato è HTTP. Il modulo viene caricato tramite la `require`:
 
-```
+```javascript
 // carica il modulo http per creare un http server
 var http=require('http');
 // configura HTTP server per rispondere con Hello World
@@ -5226,7 +5233,7 @@ NPM è un package manager di grande successo e in forte crescita, che semplifica
 
 Il modulo di gestione dei file si chiama FS. Una volta caricato il modulo con la `require` si può effettuare la `read`, questo scatena la lettura e si passa la funzione che dovrà essere scatenata e per leggere il file. Notare che in Node.js il primo parametro è sempre quello di errore il secondo è il contenuto del file. Il file deve essere piccolo perché altrimenti l’operazione di console diventerebbe troppo lunga e bloccherebbe l’event loop.
 
-```
+```javascript
 var fs = require("fs");
 // modulo fs richiesto oggetto fs fa da wrapper a chiamate bloccanti sui file
 // read() a livello SO è sincrona bloccante mentre
@@ -5250,7 +5257,7 @@ Node.js contiene moduli che producono/consumano flussi di dati (stream), questo 
 
 Per la lettura nel caso di stream si lavora con file di grandi dimensioni. Si crea un read stream e si lavora ad evento sul quale possiamo registrare un listener che viene invocato all’arrivo di ciascun chunk di file:
 
-```
+```javascript
 var readableStreamEvent = fs.createReadStream("bigFile"); 
 readableStreamEvent.on('data', function (chunkBuffer) { console.log('got chunk of', chunkBuffer.length, 'bytes'); }); 
 //operazione eseguita ogni volta che arriva un chunck di dati
@@ -5270,7 +5277,7 @@ Listener è la funzione da chiamare quando l'evento associato viene lanciato, me
 
 Per quanto riguarda la scrittura è possibile creare uno stream output. Quando viene terminata l’operazione di scrittura viene emesso l’evento di fine end. Una volta invocata l’operazione di scrittura sarà anche emesso un evento di fine della scrittura che può essere recuperato e aggiunto al log-file per capire se la scrittura è andata a buon fine:
 
-```
+```javascript
 var writableStreamEvent = fs.createWriteStream('outputFile’);
 writableStreamEvent.on('finish', function () {
     console.log('file has been written!');
@@ -5286,14 +5293,14 @@ writableStreamEvent.end();
 
 Esiste un modulo di rete Node.js, chiamato Net, che fa da wrapper per le chiamate di rete di SO, include anche funzionalità di alto livello, come:
 
-```
+```javascript
 var net = require('net’); 
 net.createServer(processTCPconnection).listen(4000); 
 ```
 
 Crea una socket per una connessione TCP, fa binding del server su una porta (4000 in questo caso) e si mette in stato di listen per connessioni, per ogni connessione TCP, invoca la funzione `processTCPconnection`:
 
-```
+```javascript
 // lista di client connessi
 var clients = [];
 function processTCPconnection(socket) {
@@ -5331,7 +5338,7 @@ La funzione `processTCPConnection` aggiunge la lista di clienti connessi alla so
 
 Express.js è il framework più utilizzato oggi per lo sviluppo di applicazioni Web su Node.js, molto flessibile e con ottime performance e consente di utilizzare diverse opzioni e motori di templating. Mette a disposizione eseguibili per rapida generazione di applicazioni ed è ispirato e basato sul precedente `Sinatra`:
 
-```
+```javascript
 var express=require('express’);
 var app=express();
 app.get('/', function(req,res) {res.send('Hello World!’); }); 
