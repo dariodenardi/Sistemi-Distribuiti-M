@@ -56,17 +56,17 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Sintassi](#sintassi)
     - [Categorie di annotazioni](#categorie-di-annotazioni)
     - [Annotazioni personalizzate](#annotazioni-personalizzate)
-    - [Limiti delle annotazioni personalizzate](#limiti-delle-annotazioni-personalizzate)
+        - [Limiti delle annotazioni personalizzate](#limiti-delle-annotazioni-personalizzate)
     - [Meta-annotazioni](#meta-annotazioni)
-    - [Politiche di retention](#politiche-di-retention)
+        - [Politiche di retention](#politiche-di-retention)
     - [Perchè usarle](#perchè-usarle)
 - [Servizio di nomi](#sistemi-di-nomi)
     - [Sistemi di Discovery](#sistemi-di-discovery)
     - [Sistemi di Directory](#sistemi-di-directory)
         - [Directory vs DB](#directory-vs-db)
     - [Java Naming Directory Interface (JNDI)](#java-naming-directory-interface-jndi)
-    - [Interfaccia Context](#interfaccia-context)
-    - [Interfaccia DirContext](#interfaccia-dircontext)
+        - [Interfaccia Context](#interfaccia-context)
+        - [Interfaccia DirContext](#interfaccia-dircontext)
     - [Uso di JNDI](#uso-di-jndi)
     - [Memorizzare i dati in un servizio nomi](#memorizzare-i-dati-in-un-servizio-nomi)
         - [Serializzazione](#serializzazione)
@@ -665,7 +665,9 @@ public interface Interest extends EJBObject {
 
     // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
     // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms) throws RemoteException;
+    public double getInterestOnPrincipal(double principal, 
+                                         double interestPerTerm, 
+                                         int terms) throws RemoteException;
 }
 ```
 
@@ -730,7 +732,9 @@ public interface InterestLocal extends EJBLocalObject {
 
     // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
     // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms);
+    public double getInterestOnPrincipal(double principal, 
+                                         double interestPerTerm, 
+                                         int terms);
 
 }
 ```
@@ -760,7 +764,7 @@ public class InterestClient {
         // stub per l’oggetto EJBHome) via JNDI
         InitialContext initialContext = new InitialContext();
         Object o = initialContext.lookup("Interest");
-        InterestHome interestHome = (InterestHome) PortableRemoteObject.narrow (o, InterestHome.class);
+        InterestHome interestHome = (InterestHome) PortableRemoteObject.narrow(o, InterestHome.class);
 
         // passo 2: creare un oggetto EJBObject remoto (in realtà
         // uno stub all’oggetto EJBObject remoto
@@ -919,7 +923,7 @@ Questa annotazione fa parte della categoria delle annotazioni personalizzate e p
 
 [Torna all'indice](#indice)
 
-### Limiti delle annotazioni personalizzate
+#### Limiti delle annotazioni personalizzate
 
 - **Non** si possono avere relazioni di estensione (extends) fra tipi di annotazioni.
 - I tipi di ritorno degli eventuali metodi di una annotazioni devono essere: tipi primitivi, String, Class, enum, tipi di annotation o array dei tipi appena elencati.
@@ -963,7 +967,7 @@ Sono annotazioni che si specificano sulle annotazioni che vengono create. Le met
 
 [Torna all'indice](#indice)
 
-### Politiche di retention
+#### Politiche di retention
 
 I valori che possono essere specificati nell'annotazione `@Retention` sono:
 
@@ -1038,7 +1042,7 @@ In questo modo, si può cambiare servizio di nomi senza preoccuparsi del codice 
 
 [Torna all'indice](#indice)
 
-### Interfaccia Context
+#### Interfaccia Context
 
 `Context` è l'interfaccia che contiene metodi per aggiungere, cancellare, cercare, ridenominare oggetti di un sistema di nomi. Invece, l'implementazione di `Context` è `InitialContext`. I metodi che si trovano nell'interfaccia sono i seguenti:
 
@@ -1080,7 +1084,7 @@ Non a caso, in EJB 2.X prima di trovare un componente sul servizio di nomi, biso
 
 [Torna all'indice](#indice)
 
-### Interfaccia DirContext
+#### Interfaccia DirContext
 
 Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare `Context` perchè per come è fatto questo naming service manca la parte relativa agli attributi.
 `DirContext` è la sottoclasse di `Context` ed estende le funzionalità standard di naming con altre relative a attributi e ricerche su entry di directory. I metodi che si trovano nell'interfaccia sono i seguenti:
@@ -2003,7 +2007,7 @@ public final class LineItemKey implements Serializable {
     }
 
     public int hashCode() {
-        return ((orderId==null?0:orderId.hashCode())^((int) itemId));
+        return ((orderId==null? 0 : orderId.hashCode())^((int) itemId));
     }
 
     public String toString() {
@@ -4000,10 +4004,10 @@ Nel file di configurazione si definiscono i componenti, l’intercettore e quali
 
 Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability):
 
-- Atomicity si basa sul principio del _tutto o niente_ cioè o viene eseguita tutta correttamente oppure no.
-- Isolation richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni.
-- Consistency è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
-- Durability: le operazioni della transazioni devono persistere nel tempo.
+- **Atomicity** si basa sul principio del _tutto o niente_ cioè o viene eseguita tutta correttamente oppure no.
+- **Isolation** richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni.
+- **Consistency** è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
+- **Durability** le operazioni della transazioni devono persistere nel tempo.
 
 Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti e in questo caso si riduce il tempo di risposta.
 
@@ -4023,7 +4027,7 @@ La concorrenza però va gestita, se le varie transazioni interferiscono tra di l
 
 #### Lost Update
 
-Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché T2 legge il valore di X prima che T1 (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
+Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché `T2` legge il valore di X prima che `T1` (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
 
 <img src="./img/img41-light.png#gh-light-mode-only" alt="Lost Update">
 <img class="dark-mode" src="./img/img41-dark.png#gh-dark-mode-only" alt="Lost Update">
@@ -4032,7 +4036,7 @@ Il seguente schedule mostra un caso tipico di lost update, in cui per comodità 
 
 #### Dirty Read
 
-In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da T2 si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa T2) e si presenterebbero anche se T1 non abortisse.
+In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da `T2` si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa `T2`) e si presenterebbero anche se `T1` non abortisse.
 
 <img src="./img/img42-light.png#gh-light-mode-only" alt="Dirty Read">
 <img class="dark-mode" src="./img/img42-dark.png#gh-dark-mode-only" alt="Dirty Read">
@@ -4046,13 +4050,13 @@ Ora il problema è che una transazione legge due volte un dato e trova valori di
 <img src="./img/img69-light.png#gh-light-mode-only" alt="Unrepeatble Read">
 <img class="dark-mode" src="./img/img69-dark.png#gh-dark-mode-only" alt="Unrepeatble Read">
 
-Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio T1 somma l’importo di 2 conti correnti mentre T2 esegue un trasferimento di fondi dall’uno all’altro (T1 potrebbe quindi riportare un totale errato).
+Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio `T1` somma l’importo di 2 conti correnti mentre `T2` esegue un trasferimento di fondi dall’uno all’altro (`T1` potrebbe quindi riportare un totale errato).
 
 [Torna all'indice](#indice)
 
 #### Phantom Row
 
-Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla t4 è un _phantom_, in quanto T1 non la vede.
+Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla `T4` è un _phantom_, in quanto `T1` non la vede.
 
 ![single tier](./img/img43.png)
 
@@ -4112,10 +4116,10 @@ Anche in EJB esiste la stessa risoluzione delle dipendenze attraverso JNDI.
 
 Il dependecy checking è utilizzabile per controllare l’esistenza di dipendenze non risolte senza ricevere spiacevoli sorprese quando è già fatto il deployment di un Bean all’interno di un container Spring. È utile per tutte le proprietà che non hanno valori configurati all’interno della definizione del Bean, per i quali anche l’autowiring non ha prodotto alcun setting. Questa è una caratteristica utile quando ci si vuole assicurare che tutte le proprietà (o tutte le proprietà di un determinato tipo) siano state configurate correttamente su un Bean. Vi sono diverse modalità possibili e configurabili:
 
-- none: nessun check;
-- simple: dependency checking effettuato solo per tipi primitivi e collection;
-- object: dependency checking effettuato solo per altri bean associati all’interno della stessa factory cioè quando è presente il tag ref local (collaborator);
-- all: dependency checking effettuato per collaborator, tipi primitivi e collection.
+- **none**: nessun check;
+- **simple**: dependency checking effettuato solo per tipi primitivi e collection;
+- **object**: dependency checking effettuato solo per altri bean associati all’interno della stessa factory cioè quando è presente il tag ref local (collaborator);
+- **all**: dependency checking effettuato per collaborator, tipi primitivi e collection.
 
 [Torna all'indice](#indice)
 
@@ -4228,6 +4232,8 @@ Il contesto nel quale si è inserita la specifica Java è quella del monitoraggi
 
 I componenti software conformi alla specifica JMX vengono chiamati MBean ovvero Managed Bean. Questi MBean sono gestiti attraverso un agente che svolge il ruolo di registry, offre alle applicazioni di management (clienti di tale agente) un modo di effettuare query, interrogare i Bean e modificare i bean gestiti. L’utilizzo dell’agente consente di non avere collegamenti diretti tra componenti MBean e cliente (di management), quindi, l’agente in un certo senso rende trasparenti gli MBean. In questo modo il cliente può demandare all’agente intermedio alcune funzionalità di management e questo porta a un’ottimizzazione perché questi Managed Bean sono più locali rispetto all’agente che non rispetto al cliente che magari deve comunicare attraverso internet.
 
+[Torna all'indice](#indice)
+
 ### Architettura
 
 JMX realizza e sfrutta, ancora una volta, il ben noto
@@ -4240,6 +4246,8 @@ JMX è organizzato secondo un’architettura a tre livelli:
 - I componenti gestiti appartengono al livello Instrumentation.
 - Il livello agente è costituito dal registro per gli MBean (MBeanServer) e da alcuni servizi standard addizionali questo perché non c’è mai un collegamento diretto tra cliente ed MBean.
 - Il livello dei servizi distribuiti è costituito da adattatori e connettori (adaptor e connector), necessari per supportare l’accesso remoto al livello agente, verso web-server o altre interazioni.
+
+[Torna all'indice](#indice)
 
 ### Livello instrumentation
 
@@ -4259,6 +4267,8 @@ JMX definisce quattro tipi di componenti MBean:
 
 Il supporto ai primi tre tipi di MBean è mandatory a partire dalla specifica JMX 1.0, si ricorda che JMX è una specifica, con diverse implementazioni possibili, come quella di Sun o IBM Tivoli.
 
+[Torna all'indice](#indice)
+
 ### Livello Agente
 
 Il livello di agente è costituito da un server MBean e da un insieme di servizi di agente basati sul livello di instrumentation. Vi sono quattro servizi di agente definiti nella specifica JMX: M-Let, Timer, Monitoring e Relation. Inoltre, il livello agente introduce il concetto di naming per gli oggetti, nomi che il lato cliente può utilizzare come riferimento indiretto alle risorse gestite.
@@ -4268,6 +4278,8 @@ Il livello di agente è costituito da un server MBean e da un insieme di servizi
 Il server MBean è uno dei componenti chiave dell’architettura di management, esso opera come un canale di comunicazione che smista e delega tutte le invocazioni fra applicazioni di management e risorse gestite. Espone metodi per la creazione ed effettuazione di query, per invocare operazioni e per manipolare attributi su MBean. Il tipo di implementazione dei componenti MBean (Standard, Dynamic, Model, etc) è totalmente trasparente alle applicazioni client-side di gestione, l’Mbean Server nascondendo tale implementazione semplifica anche le cose lato client.
 
 MBeanServer è un oggetto locale alla JVM dei componenti gestiti e non offre particolare supporto alla connessione remota. Per questo servono connettori JMX o adattatori di protocollo per accettare chiamate provenienti dall’esterno della JVM. Questi componenti (connettori/adattatori) sono spesso essi stessi degli MBean, registrati sull’agente, e forniscono una pluralità di differenti forme di connettività.
+
+[Torna all'indice](#indice)
 
 ### Livello servizi distribuiti
 
@@ -4281,6 +4293,8 @@ I connettori JMX sono strutturati in due componenti:
 Gli adattatori di protocollo sono implementati solo lato server MBean, questi possono adattare operazioni server MBean del mondo JMX per interagire con protocolli preesistenti, o anche verso diversi modelli di informazioni, come SNMP Management Information Base, permettendo ad app di management legacy o a strumenti non-Java di interoperare con JMX.
 
 La specifica JMX Remote API definisce come si possa fare l’advertising e trovare agenti JMX usando infrastrutture di discovery e lookup esistenti, la specifica **non** definisce un ulteriore servizio di discovery e lookup, ma la tecnologia JMX offre una soluzione standard per l’esportazione delle API di JMX instrumentation verso applicazioni remote, basata su RMI. Inoltre, JMX Remote API definisce un protocollo opzionale, non-mandatory e più efficiente, basato direttamente su socket TCP, chiamato JMX Messaging Protocol (JMXMP) per garantire la massima interoperabilità.
+
+[Torna all'indice](#indice)
 
 ### Standard MBean
 
@@ -4307,6 +4321,8 @@ public class Student extends User {
 }
 ```
 
+[Torna all'indice](#indice)
+
 ### Registrazione MBean su Server
 
 Per registrare un manageable object come un MBean è necessario creare prima `ObjectName`. Il riferimento all’agente può essere ottenuto da una lista di implementazioni disponibili di MBeanServer o creandolo da zero:
@@ -4325,6 +4341,8 @@ server.registerMBean(new User(), username);
 
 La registrazione di MBean consiste semplicemente nell’associare il manageable object con il suo nome di oggetto, una volta trovato l’MBean server.
 
+[Torna all'indice](#indice)
+
 ### Invocazione servizi di gestione
 
 L’applicazione di management riferisce MBean passando un riferimento a object name all’agente, per ogni operazione invocata:
@@ -4339,7 +4357,9 @@ Object result = server.invoke(
     null); // void signature
 ```
 
-Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tutto questo nascondendo le operazioni al cliente
+Server MBean cerca il riferimento Java corrispondente a MBean nel suo repository interno e invoca l’operazione corrispondente (o la modifica dell’attributo) su MBean, tutto questo nascondendo le operazioni al cliente.
+
+[Torna all'indice](#indice)
 
 ### Meccanismo di notifica
 
@@ -4360,6 +4380,8 @@ public interface NotificationBroadcaster {
 ```
 
 Poiché l’implementazione di broadcaster MBean può diventare anche piuttosto complessa, è messa a disposizione una classe `NotificationBroadcasterSupport` che implementa l’interfaccia `NotificationBroadcaster`. In questo modo i propri broadcaster MBean possono: estendere tale classe per ereditare quella implementazione dei metodi di broadcasting oppure delegare a questa classe il supporto alla gestione delle registrazioni e all’invocazione delle notifiche. Il meccanismo di notifica è generico e adatto a qualsiasi tipo di notifica user-defined. Comunque, JMX definisce la specifica classe `AttributeChangeNotification` per MBean che vogliano inviare notifiche sul cambiamento dei loro attributi di management, l’idea di questa classe è facilitare la creazione di aventi di notifica per il cambio degli attributi.
+
+[Torna all'indice](#indice)
 
 ### Dynamic MBean
 
@@ -4419,6 +4441,8 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
 
 Prima di fare la chiamata al metodo `invoke`, `MBeanInfo()` e va a leggere i metadati che corrispondono all'operazione. Se c'è un match con la richiesta, si può procedere ad eseguirla altrimenti no. I controlli vengono eseguiti tramite esplorazione dei metadati contenuti dentro a `MBeanInfo()` e vanno scritti dal programmatore.
 
+[Torna all'indice](#indice)
+
 ### ModelMBean
 
 Model MBean sono estensioni di MBean dinamici, essi forniscono un template generico per creare un’implementazione di gestione per risorse esistenti, separare l’implementazione di management dall’implementazione della risorsa, ed estendere metadata di gestione per fornire informazioni addizionali e proprietà behavioral per la gestione di queste funzionalità trasversali: come proprietà di caching, proprietà di sicurezza, proprietà di transazionalità, proprietà di persistenza. Tutte le implementazioni di JMX MBean server devono fornire almeno una implementazione dell’interfaccia `ModelMBean` tramite la classe `RequiredModelMBean`.
@@ -4454,6 +4478,8 @@ public interface Descriptor extends Serializable, Cloneable
 }
 ```
 
+[Torna all'indice](#indice)
+
 ### Servizi Standard a Livello di Agente
 
 La specifica JMX definisce quattro servizi distinti a livello di agente che devono essere disponibili su ogni implementazione conforme alla specifica:
@@ -4462,6 +4488,8 @@ La specifica JMX definisce quattro servizi distinti a livello di agente che devo
 - **Timer Service** è uno scheduler che si occupa dell’invio di notifiche agli altri MBean.
 - **Monitoring Service** è un MBean che svolge il ruolo di osservatore per gli attributi di management degli altri bean e che notifica le modifiche avvenute.
 - **Relation Service** permette di creare associazioni fra MBean e mantiene la loro consistenza.
+
+[Torna all'indice](#indice)
 
 ### Servizio di M-let
 
@@ -4478,7 +4506,6 @@ Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono 
 </MLET>
 ```
 
-
 Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e prevede che in una rete locale ci sia un MBean Server che abbia servizi `A`, `B` e `C` a livello agente. Senza M-let, bisognerebbe installare i nodi tutti i servizi `A`, `B` e `C` ma grazie a M-let si può velocizzare il processo. Un possibile file potrebbe essere:
 
 ```xml
@@ -4486,6 +4513,8 @@ Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e
     ARCHIVE=“MyComponents.jar,acme .jar”
 </MLET>
 ```
+
+[Torna all'indice](#indice)
 
 ### Servizio di Timer
 
@@ -4520,6 +4549,8 @@ server.addNotificationListener(timer, this, null, null);
 
 Questo è analogo al servizio di Cron in Unix/Linux o a Task Scheduler Service su Windows NT. Per impostare il tutto è possibile recuperare il servizio di timer quindi una volta registrato presso il server si può richiedere l’avvio del timer.
 
+[Torna all'indice](#indice)
+
 ### Servizio di Monitoring
 
 Un insieme di MBean che possono essere utilizzati per effettuare il monitoring degli attributi di risorse gestite. Gli attributi sono variabili di stato che vengono risposte tramite interfaccia di management perchè ci sono metodi `getter` e `setter` che possono andarli a modificarli. Le notifiche dei monitor differiscono dalle usuali notifiche di modifica di attributi perché si possono introdurre threshold (soglia) e periodi di granularità.
@@ -4536,9 +4567,13 @@ Vi sono tre implementazioni differenti:
 
 Da come si può notare nella figura, la notifica non viene mai inviata quando si supera il valore soglia ma c'è sempre un pò di latenza perchè si va a vedere il valore dell'attributo ogni tot secondi dato che ciò introduce un costo (periodo di granularità). Un altro problema è qunado ci sono attributi _rumorosi_, è impensabile ad ogni variazione di segnarla al listener, per questo si cercano di fare monitoring con delle isteresi di tempo o di confidenza sugli attributi. Gli eventi sono sollevati solo quando vi sono variazioni significative. Le notifiche partono o dopo un periodo di tempo o al superamento di una certa soglia. Queste threshold servono per evitare un overhead del sistema di monitoraggio, deve occupare il 10% del carico del sistema, così si vogliono evitare effetti di schizofrenia nelle azioni di gestioni dipendenti dal monitoraggio.
 
+[Torna all'indice](#indice)
+
 ### Servizio di Relation
 
 Permette di definire relazioni fra altri MBean e di reagire a modifiche (per esempio nel caso di dipendenze). Ad esempio, `Mbean A` deve essere presente se e solo se è presente `MBean B`. Le notifiche sono emesse modifica nelle istanze di relazione (creazione, aggiornamento, rimozione di una di queste relazioni etc). Ad esempio, se `MBean A`, se è registrato, deve avere per forza avere sullo stesso MBean Server anche `MBean B` e viceversa. Se c'è la de-registrazione di uno dei due viene lanciata una notifica.
+
+[Torna all'indice](#indice)
 
 ### JMX remote API
 
@@ -4570,6 +4605,8 @@ Per effettuare operazioni remote su MBean, un server per connettori RMI è a dis
 L'unico connettore da specifica JMX è quello RMI. Si possono utilizzare anche altri connettori che non sono scritti da specifica come JMXMP (ad esempio per disporre di un livello di sicurezza maggiore tramite meccanismo SSL).
 
 Per quanto riguarda gli adattatori di protocollo, sebbene non siano definiti da specifica, non esistono particolari implementazioni diffuse. Un adattatore di protocollo è un pezzettino software che sta solo lato MBean Server ed è in grado di ricevere richieste in un protocollo che non è conforme con JMX, e di tradurle nelle chiamate corrispondenti del MBean Server.
+
+[Torna all'indice](#indice)
 
 ### Esempio utilizzo degli MBean
 
@@ -4606,8 +4643,10 @@ public class Hello implements HelloMBean {
         return x + y;
     }
 
-    /* metodo getter per l’attributo Name. Spesso gli attributi sono utilizzati per fornire indicatori di monitoraggio come uptime o utilizzo di memoria. Spesso sono read-only. In questo caso l’attributo è una stringa */
-
+    /* metodo getter per l’attributo Name. 
+     * Spesso gli attributi sono utilizzati per fornire indicatori di monitoraggio 
+     * come uptime o utilizzo di memoria. Spesso sono read-only. 
+     * In questo caso l’attributo è una stringa */
     public String getName() {
         return this.name;
     }
@@ -4618,7 +4657,10 @@ public class Hello implements HelloMBean {
         return this.cacheSize;
     }
 
-    /* perché synchronized? Mantenere uno stato consistente per evitare modifiche concorrenti. No notifiche concorrenti, non ci sono container che si occupano della sincronizzazione quindi serve sychronized, prima non necessario con i container si occupano internamente della sincronizzazione */
+    /* perché synchronized? Mantenere uno stato consistente per evitare modifiche concorrenti. 
+     * No notifiche concorrenti, non ci sono container che si occupano della sincronizzazione 
+     * quindi serve sychronized, prima non necessario con i container si occupano 
+     * internamente della sincronizzazione */
     public synchronized void setCacheSize(int size) {
         this.cacheSize = size;
         System.out.println("Cache size now " + this.cacheSize);
@@ -4682,12 +4724,15 @@ public class Hello extends NotificationBroadcasterSupport implements HelloMBean 
         int oldSize = this.cacheSize;
         this.cacheSize = size;
         
-        /* In applicazioni reali il cambiamento di un attributo di solito produce effetti di gestione. Ad esempio, cambiamento di dimensione della cache può generare eliminazione o allocazione di entry */
+        /* In applicazioni reali il cambiamento di un attributo di solito produce effetti di gestione. 
+         * Ad esempio, cambiamento di dimensione della cache può generare eliminazione o allocazione di entry */
         System.out.println("Cache size now " + this.cacheSize);
-        /* Per costruire una notifica che descrive il cambiamento avvenuto: "source" è ObjectName di MBean che emette la notifica (MBean server sostituisce "this" con il nome dell’oggetto);
+        /* Per costruire una notifica che descrive il cambiamento avvenuto: "source" è ObjectName di MBean 
+         * che emette la notifica (MBean server sostituisce "this" con il nome dell’oggetto);
         mantenuto un numero di sequenza */
         Notification n = new AttributeChangeNotification( this, sequenceNumber++, System.currentTimeMillis(), "CacheSize changed", "CacheSize", "int", oldSize, this.cacheSize);
-        /* Invio della notifica usando il metodo sendNotification() ereditato dalla superclasse */sendNotification(n);
+        /* Invio della notifica usando il metodo sendNotification() ereditato dalla superclasse */
+        sendNotification(n);
     }
 
     ...
@@ -4711,6 +4756,8 @@ public class Hello extends NotificationBroadcasterSupport implements HelloMBean 
 }
 ```
 
+[Torna all'indice](#indice)
+
 ### JMX con JBoss/Wildfly
 
 L'applicazione server JBoss/Wildfly è stata progettata considerando JMX come nucleo di base. JBoss/Wildfly è costituito da numerosi moduli (application server non-monolitico) ed è vista come un componente MBean che si affaccia su JMX e che può essere monitorato, controllato e gestito usando delle chiamate all'MBean Server. Si può, quindi, attivare/disattivare un modulo sull'interfaccia MBean Server, si può configurare ogni modulo agganciandolo ad un'implementazione diversa del servizio medesimo. Ad esempio, un modulo JMS si può agganciare all'implementazione di JMX 1.0 piuttosto che JMX 2.0. Si può fare l’embedding di differenti container nell’application server, anche a runtime (ad es. servlet container come Tomcat, Jetty, etc).
@@ -4718,6 +4765,8 @@ L'applicazione server JBoss/Wildfly è stata progettata considerando JMX come nu
 ![single tier](./img/img76.png)
 
 Da un punto di vista logico, c'è un MBean Server che fa da bus a cui sono agganciati i vari moduli che hanno un'interfaccia MBean.
+
+[Torna all'indice](#indice)
 
 ## JBoss/WildFly Clustering
 
@@ -4745,6 +4794,8 @@ run.bat -c all
 ```
 
 In questo modo vengono abilite tutte le librerie necessarie al clustering, come `JGroups.jar` per il multicast di gruppo affidabile, `jbosscache.jar` per la cache distribuita etc.
+
+[Torna all'indice](#indice)
 
 ### JGroups
 
@@ -4802,6 +4853,8 @@ up_thread="false"/>
 
 Il clustering lavora a livello software, la failure detection è tra gli application server. In high avaiability per cambiare versione a volte si uccidono webserver e quando questo accade il clustering lo replica con una versione già aggiornata.
 
+[Torna all'indice](#indice)
+
 ### HA Partition
 
 High Avaiability (HA) Partition è un servizio general-purpose di alta disponibilità (High Availability) costruita utilzzando JGroups, utilizzato per diversi compiti in JBoss AS Clustering. Fornisce un supporto per molti servizi di clustering come smart proxy lato cliente, il farming e HA-JNDI.
@@ -4837,6 +4890,8 @@ Si ipotizzi di avere un Session Bean che deve fare una lookup sul servizio di no
 
 La fault tollerant viene garantita nel seguente modo: si ipotizzi che il grado di replicazione sia due. Questo vuol dire che un nome sarà presente in due tabelle JNDI. Se il nome è presente nel `Nodo 1` e `Nodo 2` e il `Nodo 1` va down, allora il nome, dato che è presente solo su un nodo, verrà replicato anche sul `Nodo 3`.
 
+[Torna all'indice](#indice)
+
 ### Load-Balancing
 
 Vi sono due tipi di configurazione per la comunicazione client-to-cluster: 
@@ -4847,9 +4902,13 @@ Il fat client è una sorta di grande stub RMI detto HA-RMI, che contiene al suo 
 - **JBoss thin client**: tutto è gestito lato server utilizzando un proxy locale e la logica di load-balancing + failover è lasciata allo sviluppatore che può adottare soluzioni hardware o software già esistenti come Apache mod_jk oppure Apache mod_cluster. I clienti principalmente sono clienti Web che accedono trasparentemente attraverso Apache mod_jk/mod_cluster.
 ![single tier](./img/img125-light.png)
 
+[Torna all'indice](#indice)
+
 ### JBoss Cache
 
 JBoss Cache è un framework per il supporto a cache distribuita, che può essere utilizzato anche in altri ambienti AS. Essa realizza il caching di oggetti Java acceduti frequentemente per motivi di performance. In JBoss, fornisce servizi di caching per sessioni HTTP, per stati di session bean EJB 3.X, per Entity EJB 3.X. Ogni servizio di cache è definito in un Mbean separato con il suo canale JGroups. JBoss Cache è cluster-aware: lo stato è mantenuto consistente fra i vari nodi nel cluster, per questo vi è tolleranza ai guasti in caso di server crash, con necessità di invalidazione e/o aggiornamento dello stato nella cache.
+
+[Torna all'indice](#indice)
 
 ### Infinispan
 
@@ -4872,6 +4931,8 @@ Anche nelle cache come nei DB, vi sono diversi livelli di isolation e locking de
 - READ_COMMITTED possibili non repeatable read ma maggiori performance.
 - Optimistic locking e verifiche a posteriori in fase di commit.
 
+[Torna all'indice](#indice)
+
 ### Replicazione Stato HTTP
 
 La replicazione dello stato HTTP di sessione è gestita da JBoss, la configurazione all di JBoss include session state replication. Occorre configurare session state replication in modo opportuno. Lo stato di sessione HTTP viene replicato automaticamente su tutti i nodi del cluster.
@@ -4880,11 +4941,15 @@ In alternativa, per applicazioni Web è possibile configurare il cluster in moda
 
 Il modulo di JBoss che si occupa di gestire lo stato di sessione (non solo HTTP) è JBoss Cache/Infinispan.
 
+[Torna all'indice](#indice)
+
 ### Replicazione Stato EJB
 
 Per Stateless Session Bean, data la mancanza di stato, le chiamate possono essere bilanciate su ogni nodo del cluster, si guadagna molto in scalabilità in questo caso. Nel caso di Stateful Session Bean, lo stato replicato e sincronizzato sul cluster, quindi ad ogni modifica sullo stato di uno di questi bean, entra in azione Session State replication di JBoss Cache o di Infinispan, questo ovvamente ha un costo. Dipende dalla strategia di Cache adottata (locale, replicazione e distribuzione). Per gli Entity Bean, non si prevede il supporto al clustering perchè non sono interrogabili da remoto dai clienti e quindi non prevista abilitazione clustering. Si può decidere di replicare solo la cache di secondo livello Hibernate con Infinispan. Infine, per i Message Driven Bean, la gestione è uguale ai Stateless Session Bean. Si usa HornetQ che è un supporto MOM creato da JBoss.
 
 Il modulo di JBoss che si occupa di gestire lo stato di sessione (non solo EJB) è JBoss Cache/Infinispan.
+
+[Torna all'indice](#indice)
 
 ### Clustering di Componenti EJB
 
@@ -4897,6 +4962,8 @@ Nel migliore dei casi, è sufficiente uso di una annotazione specifica e proprie
 - Message Driven Bean le politiche di load balancing sono RoundRobin, Random, Custom (tramite implementazione interfaccia ConnectionLoadBalancingPolicy).
 - Entity Bean non hanno problemi perché sono gestiti internamente quindi non possono essere gestiti dallo smart proxy lato client.
 
+[Torna all'indice](#indice)
+
 ### Configurazione di JBoss/WildFly
 
 Le opzioni di configurazione di JBoss/WildFly ovvero dell’application server:
@@ -4905,6 +4972,8 @@ Le opzioni di configurazione di JBoss/WildFly ovvero dell’application server:
 - La configurazione `standalone-full.xml` fornisce il supporto per tutti subsystem eccetto high availability (HA)Supporto di Java EE Full-Profile e tutte funzionalità server. - La configurazione `standalone-ha.xml` include tutti i subsystem di default più l’aggiunta mod_cluster per il supporto al thin client e JGroups per standalone server, così che possa partecipare in un cluster high-availability. Questo è il profilo di default per funzionalità di clustering.
 - La configurazione `standalone-full-ha.xml` include supporto per ogni subsystem, inclusi quelli richiesti per high availability (HA).
 - La configurazione `standalone-load-balancer.xml` configura automaticamente l’uso di proxy front-end Undertow (Web server) per lavorare da load balancer. Undertow si connetterà ai nodi server veri e propri usando le sue richieste built-in per clienti e proxy protocolli supportati: HTTP, AJP, HTTP2, H2C (clear text HTTP2).
+
+[Torna all'indice](#indice)
 
 ## Big Data
 
@@ -4978,6 +5047,8 @@ Probabilmente il padre storico di impatto industriale è il progetto Apache Hado
 - **Hadoop Distributed File System (HDFS)**: file system distribuito.
 - **MapReduce**: framework per processing distribuito di grandi insiemi di
 dati su cluster.
+
+[Torna all'indice](#indice)
 
 #### Hadoop Distributed File System (HDFS)
 
@@ -5124,7 +5195,7 @@ Nelle applicazioni event-driven vi è un solo processo che fa fetching di eventi
 
 Per gestire una richiesta a un server web, nel multithread si ha l’invocazione di una read request letta dalla socket, poi si processa la richiesta e si manda una risposta `sendReply`, che rappresenta l’operazione di scrittura:
 
-```
+```java
 request = readRequest(socket);
 reply = processRequest(request);
 sendReply(socket, reply);
@@ -5132,7 +5203,7 @@ sendReply(socket, reply);
 
 La prima operazione bloccante è la `readRequest` su cui si blocca il thread in attesa, il blocco è sulla `read` a livello di sistema. Sull’operazione di lettura il processo si sospende e quindi avviene il context switching.
 
-```
+```java
 startRequest(socket);
 listen("requestAvail", processRequest);
 listen("processDone", sendReplyToSock);
@@ -5140,7 +5211,7 @@ listen("processDone", sendReplyToSock);
 
 La prima invocazione del modello a eventi è una `startRequest` sulla socket, quindi, la lettura è gestita ad evento, si vuole iniziare la ricezione di una richiesta da un potenziale cliente. La parte successiva è un metodo di callback che si vuole attivare quando la richiesta è disponibile. Il modello lavora a callback e il sistema chiama quando l’evento si verifica. Quando la richiesta è arrivata inizia il processamento. Per questo motivo si passa a una programmazione funzionale. In modo simile si ha una `listen` che aspetta la callback dell’evento di processing terminato ovvero `processDone`. Infatti, anche la write viene gestita ad evento. In questa implementazione non c’è context swithing, ma vi è un event loop che consuma le operazioni richieste e le va ad eseguire utilizzando le callback, una volta eseguita passerà alla successiva.
 
-```
+```javascript
 readRequest(socket, function(request) {
     processRequest(request,
         function (reply) {
@@ -5159,7 +5230,7 @@ Sullo stack vengono caricate le funzioni che si vogliono eseguire, per esempio v
 
 L’event loop è costituito da un `while` infinito che effettua la `pop()` (estrae dallo stack l'evento) e la `call()` all’arrivo di una richiesta:
 
-```
+```javascript
 while(true) {
     if (!eventQueue.notEmpty()) {
         eventQueue.pop().call();
