@@ -46,8 +46,8 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Deployment](#deployment-1)
     - [Ciclo di sviluppo](#ciclo-di-sviluppo)
     - [Interfacce EJBHome ed EJBObject](#interfacce-ejbhome-ed-ejbobject)
-    - [Invocazione remota](#invocazione-remota)
-    - [Invocazione locale](#invocazione-locale)
+        - [Invocazione remota](#invocazione-remota)
+        - [Invocazione locale](#invocazione-locale)
     - [Cliente](#cliente)
     - [Deployment di un'applicazione](#deployment-di-unapplicazione)
     - [Problemi riscontrati](#problemi-riscontrati)
@@ -67,7 +67,7 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Java Naming Directory Interface (JNDI)](#java-naming-directory-interface-jndi)
         - [Interfaccia Context](#interfaccia-context)
         - [Interfaccia DirContext](#interfaccia-dircontext)
-    - [Uso di JNDI](#uso-di-jndi)
+    - [Esempio utilizzo di JNDI](#esempio-utilizzo-di-jndi)
     - [Memorizzare i dati in un servizio nomi](#memorizzare-i-dati-in-un-servizio-nomi)
         - [Serializzazione](#serializzazione)
         - [Riferimento](#riferimento)
@@ -84,6 +84,12 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
         - [Pooling e concorrenza](#pooling-e-concorrenza)
             - [Resource Pooling](#resource-pooling)
             - [Activation](#activation)
+        - [Transazioni verso DB](#transazioni-verso-db)
+            - [Lost Update](#lost-update)
+            - [Dirty Read](#dirty-read)
+            - [Unrepeatble Read](#unrepeatble-read)
+            - [Phantom Row](#phantom-row)
+            - [Livelli di Isolamenti](#livelli-di-isolamenti)
         - [Transazionalità](#transazionalità)
             - [Container-Managed Transaction](#container-managed-transaction)
             - [Bean-Managed Transaction](#bean-managed-transaction)
@@ -104,7 +110,7 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Gestione a runtime di Entity](#gestione-a-runtime-di-entity)
         - [Container-managed EntityManager](#container-managed-entity-manager)
         - [Application-managed EntityManager](#application-managed-entity-manager)
-    - [Entity Manager singoli vs multipli](#entity-manager-singoli-vs-multipli)
+        - [Entity Manager singoli vs multipli](#entity-manager-singoli-vs-multipli)
     - [Ciclo di Vita](#ciclo-di-vita)
     - [Unità di Persistenza](#unità-di-persistenza)
     - [Creazione di Query](#creazione-di-query)
@@ -134,7 +140,7 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Interfaccia Session](#interfaccia-session-1)
     - [Interfacce Message Consumer e Message Producer](#interfacce-message-consumer-e-message-producer)
     - [Riassunto API JMS](#riassunto-api-jms)
-    - [Uso di JMS](#uso-di-jms)
+    - [Esempio utilizzo di JMS](#esempio-utilizzo-di-jms)
     - [Affidabilità dei messaggi](#affidabilità-dei-messaggi)
     - [ACK](#ack)
     - [Priorità](#priorità)
@@ -186,12 +192,6 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
         - [Considerazioni sulla dependency injection](#considerazioni-sulla-dependency-injection)
     - [HelloWorld con AOP](#helloworld-con-aop)
     - [Intercettori](#intercettori-1)
-    - [Transazioni verso DB](#transazioni-verso-db)
-        - [Lost Update](#lost-update)
-        - [Dirty Read](#dirty-read)
-        - [Unrepeatble Read](#unrepeatble-read)
-        - [Phantom Row](#phantom-row)
-        - [Livelli di Isolamenti](#livelli-di-isolamenti)
     - [Transazionalità](#transazionalità)
     - [Pooling e concorrenza](#pooling-e-concorrenza-1)
     - [Autowiring](#autowiring)
@@ -200,9 +200,9 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
 - [JMX](#jmx)
     - [Java Management Extensions (JMX)](#java-management-extensions-jmx)
     - [Architettura](#architettura-2)
-    - [Livello instrumentation](#livello-instrumentation)
-    - [Livello Agente](#livello-agente)
-    - [Livello servizi distribuiti](#livello-servizi-distribuiti)
+        - [Livello instrumentation](#livello-instrumentation)
+        - [Livello Agente](#livello-agente)
+        - [Livello servizi distribuiti](#livello-servizi-distribuiti)
     - [Standard MBean](#standard-mbean)
     - [Registrazione MBean su Server](#registrazione-mbean-su-server)
     - [Invocazione servizi di gestione](#invocazione-servizi-di-gestione)
@@ -210,10 +210,10 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Dynamic MBean](#dynamic-mbean)
     - [ModelMBean](#modelmbean)
     - [Servizi Standard a Livello di Agente](#servizi-standard-a-livello-di-agente)
-    - [Servizio di M-let](#servizio-di-m-let)
-    - [Servizio di Timer](#servizio-di-timer)
-    - [Servizio di Monitoring](#servizio-di-monitoring)
-    - [Servizio di Relation](#servizio-di-relation)
+        - [Servizio di M-let](#servizio-di-m-let)
+        - [Servizio di Timer](#servizio-di-timer)
+        - [Servizio di Monitoring](#servizio-di-monitoring)
+        - [Servizio di Relation](#servizio-di-relation)
     - [JMX remote API](#jmx-remote-api)
     - [Esempio utilizzo degli MBean](#esempio-utilizzo-degli-mbean)
     - [JMX con JBoss/Wildfly](#jmx-con-jbosswildfly)
@@ -224,8 +224,8 @@ Se ritieni di poter migliorare la guida o se hai trovato un errore, visita il re
     - [Load-Balancing](#load-balancing)
     - [JBoss Cache](#jboss-cache)
     - [Infinispan](#infinispan)
-    - [Replicazione Stato HTTP](#replicazione-stato-http)
-    - [Replicazione Stato EJB](#replicazione-stato-ejb)
+        - [Replicazione Stato HTTP](#replicazione-stato-http)
+        - [Replicazione Stato EJB](#replicazione-stato-ejb)
     - [Clustering di Componenti EJB](#clustering-di-componenti-ejb)
     - [Configurazione di JBoss/WildFly](#configurazione-di-jbosswildfly)
 - [Big Data](#big-data)
@@ -638,7 +638,7 @@ Le interfacce possono essere remote o locali a seconda se la comunicazione del c
 
 [Torna all'indice](#indice)
 
-### Invocazione remota
+#### Invocazione remota
 
 Per prima cosa bisogna implementare le interfacce `EJBHome` e `EJBObject`. Di seguito viene riportato un esempio di come si dovrebbe scrivere queste interfacce:
 
@@ -700,11 +700,14 @@ In realtà, la comunicazione avviene con RMI basato su IIOP e IIOP è un protoco
 
 [Torna all'indice](#indice)
 
-### Invocazione locale
+#### Invocazione locale
 
 Per prima cosa bisogna ricordarsi di implementare le interfacce `EJBLocalHome` e `EJBLocalObject`. Le interfacce locali, si usano quando il cliente esegue sulla stessa JVM del componente EJB di interesse (e del suo container). Ad esempio, quando lo sviluppatore deve testare il codice. Non avrebbe senso pagare i costi di overhead sulla stessa macchina. In questo caso il passaggio dei parametri può avvenire tramite riferimento proprio perchè ci si trova sullo stesso nodo.
 
 Inoltre, c'è un altro possibile uso delle interfacce locali. Un Session Bean può svolgere a sua volta il ruolo di _cliente locale_ verso altri Bean in modo da non pagare ulteriori costi di overhead.
+
+<img src="./img/img131-light.png#gh-light-mode-only" alt="Pattern Facade">
+<img class="dark-mode" src="./img/img131-dark.png#gh-dark-mode-only" alt="Pattern Facade">
 
 Questa possibilità è stata introdotta a partire da EJB 2.0 anche se alcune implementazioni avevano già adottato delle ottimizzazioni senza che fossero inserite ufficialmente nello standard.
 
@@ -732,8 +735,8 @@ public interface InterestLocal extends EJBLocalObject {
 
     // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
     // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal, 
-                                         double interestPerTerm, 
+    public double getInterestOnPrincipal(double principal,
+                                         double interestPerTerm,
                                          int terms);
 
 }
@@ -1133,7 +1136,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 [Torna all'indice](#indice)
 
-### Uso di JNDI
+### Esempio utilizzo di JNDI
 
 - Per prima cosa, serve scegliere un naming service provider. Ad esempio, OpenLDAP o un’altra implementazione di LDAP. Dopo, bisogna aggiungere il nome del provider all’insieme di proprietà di ambiente in un oggetto `Hashtable`:
 
@@ -1544,9 +1547,84 @@ UserTransaction etc).
 
 [Torna all'indice](#indice)
 
-#### Transazionalità
+#### Transazioni verso DB
 
-Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà che una transazione deve rispettare sono quelle ACID (Atomicity, Consistency, Isolation e Durability) quindi la transazione è un'unità indivisibile di processamento: o termina correttamente (`commit`) oppure no (`rollback`).
+Questo paragrafo non fa parte del programma, è stato trattato a lezione come ripasso per meglio comprendere i paragrafi successivi.
+
+Una transazione è un insieme di operazioni logiche (query) a cui corrispondono operazioni fisiche di lettura e scrittura sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability):
+
+- **Atomicity** si basa sul principio del _tutto o niente_ cioè o viene eseguita tutta correttamente oppure no.
+- **Isolation** richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni.
+- **Consistency** è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
+- **Durability** le operazioni della transazioni devono persistere nel tempo.
+
+Dati questi vincoli, quindi, la transazione è un'unità indivisibile di processamento: o termina correttamente (`commit`) oppure no (`rollback`).
+
+Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti e in questo caso si riduce il tempo di risposta.
+
+<img src="./img/img68-light.png#gh-light-mode-only" alt="Seriale vs Concorrente">
+<img class="dark-mode" src="./img/img68-dark.png#gh-dark-mode-only" alt="Seriale vs Concorrente">
+
+Eseguire più transazioni concorrentemente è necessario per garantire buone prestazioni: si sfrutta il fatto che, mentre una transazione è in attesa del completamento di una operazione di I/O, un’altra può utilizzare la CPU.
+
+La concorrenza però va gestita, se le varie transazioni interferiscono tra di loro possiamo avere problemi in lettura e in scrittura. Infatti, ci sono quattro problemi principali quando si eseguono le transazioni in modo concorrente:
+
+- **Lost Update**: due persone entrano sulla stessa riga e con la perdita di stato, per esempio entrambe comprano l’ultimo biglietto rimasto.
+- **Dirty Read**: qualora si voglia acquistare un biglietto per una certa data questa data è cambiata nel frattempo. 
+- **Unrepeatable read**: letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
+- **Phantom row**: nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero.
+
+[Torna all'indice](#indice)
+
+#### Lost Update
+
+Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato `X` e si mostra come varia il valore di `X` nel DB. Il problema nasce perché `T2` legge il valore di `X` prima che `T1` (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
+
+<img src="./img/img41-light.png#gh-light-mode-only" alt="Lost Update">
+<img class="dark-mode" src="./img/img41-dark.png#gh-dark-mode-only" alt="Lost Update">
+
+[Torna all'indice](#indice)
+
+#### Dirty Read
+
+In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da `T2` si basa su un valore di `X` _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa `T2`) e si presenterebbero anche se `T1` non abortisse.
+
+<img src="./img/img42-light.png#gh-light-mode-only" alt="Dirty Read">
+<img class="dark-mode" src="./img/img42-dark.png#gh-dark-mode-only" alt="Dirty Read">
+
+[Torna all'indice](#indice)
+
+#### Unrepeatble Read
+
+Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
+
+<img src="./img/img69-light.png#gh-light-mode-only" alt="Unrepeatble Read">
+<img class="dark-mode" src="./img/img69-dark.png#gh-dark-mode-only" alt="Unrepeatble Read">
+
+Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio `T1` somma l’importo di due conti correnti mentre `T2` esegue un trasferimento di fondi dall’uno all’altro (`T1` potrebbe quindi riportare un totale errato).
+
+[Torna all'indice](#indice)
+
+#### Phantom Row
+
+Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla `T4` è un _phantom_, in quanto `T1` non la vede.
+
+![single tier](./img/img43.png)
+
+[Torna all'indice](#indice)
+
+#### Livelli di Isolamenti
+
+Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce quattro livelli di isolamento, che sono serializable, repeatable read, read committed, uncommitted read:
+
+- `ISOLATION_READ_UNCOMMITTED`: possono accadere letture sporche (dirty read), non ripetibili e fantasma (phantom read).
+- `ISOLATION_READ_COMMITTED`: letture sporche rese impossibili, possibilità di accadimento di letture non ripetibili e fantasma.
+- `ISOLATION_REPEATABLE_READ`: possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili.
+- `ISOLATION_SERIALIZABLE`: tutte le possibilità spiacevoli sopra elencate per la lettura sono rese impossibili. Viene garantita le proprietà ACID.
+
+[Torna all'indice](#indice)
+
+#### Transazionalità
 
 Le transazioni possono essere gestite dal container (Container-Managed Transaction) o manualmente dal programmatore (Bean-Managed Transaction).
 
@@ -2172,7 +2250,7 @@ EntityManager em = emf.createEntityManager();
 
 [Torna all'indice](#indice)
 
-### Entity Manager singoli vs multipli
+#### Entity Manager singoli vs multipli
 
 Di solito, quando l'applicazione è semplice e si ha un solo DB si usa un solo Entity Manager. Invece, se l'applicazione è più complessa si usano molte Entity che fanno parte di DB diversi e di conseguenza servono più Entity Manager. Tuttavia, è possibile che ci siano Entity Manager multipli verso lo stesso DB per gestire tabelle diverse e di conseguenza avere diversi contesti di persitenza per gestirli in modo diverso e separare i contesti e le diverse transazioni collegate.
 
@@ -2632,13 +2710,13 @@ Le entità in gioco sono:
 
 Nella comunicazione point-to-point i messaggi in una queue possono essere:
 
-- Persistenti;
-- Non persistenti.
+- persistenti;
+- non persistenti.
 
 Nella comunicazione pub/sub, i messaggi possono essere:
 
-- Non durevoli: sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza.
-- Durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
+- non durevoli: sono disponibili solo durante l’intervallo di tempo in cui il ricevente è attivo. Se il ricevente non è connesso, la semantica consente la perdita di ogni messaggio prodotto in sua assenza;
+- durevoli, invece, sono mantenuti dal sistema, che fa le veci dei riceventi non connessi al tempo della produzione dei messaggi, il ricevente non perde mai messaggi quando disconnesso.
 
 [Torna all'indice](#indice)
 
@@ -2736,7 +2814,7 @@ Le API JMS possono essere riassunte nella seguente figura:
 
 [Torna all'indice](#indice)
 
-### Uso di JMS
+### Esempio utilizzo di JMS
 
 I passi per costruire una'aplicazione JMS sono:
 
@@ -4000,79 +4078,6 @@ Nel file di configurazione si definiscono i componenti, l’intercettore e quali
 
 [Torna all'indice](#indice)
 
-### Transazioni verso DB
-
-Una transazione è un’unità logica di elaborazione che, nel caso generale, si compone di molte operazioni fisiche elementari che agiscono sul DB. Le proprietà di cui deve godere una transazione si riassumono nell’acronimo ACID (Atomicity, Consistency, Isolation, Durability):
-
-- **Atomicity** si basa sul principio del _tutto o niente_ cioè o viene eseguita tutta correttamente oppure no.
-- **Isolation** richiede che venga correttamente gestita l’esecuzione concorrente delle transazioni.
-- **Consistency** è garantita dal DBMS verificando che le transazioni rispettino i vincoli definiti a livello di schema del DB.
-- **Durability** le operazioni della transazioni devono persistere nel tempo.
-
-Date due transazioni queste possono essere: seriali e quindi la somma del tempo di esecuzione delle due transazioni è il tempo totale di esecuzione, oppure concorrenti e in questo caso si riduce il tempo di risposta.
-
-<img src="./img/img68-light.png#gh-light-mode-only" alt="Seriale vs Concorrente">
-<img class="dark-mode" src="./img/img68-dark.png#gh-dark-mode-only" alt="Seriale vs Concorrente">
-
-Eseguire più transazioni concorrentemente è necessario per garantire buone prestazioni: si sfrutta il fatto che, mentre una transazione è in attesa del completamento di una operazione di I/O, un’altra può utilizzare la CPU.
-
-La concorrenza però va gestita, se le varie transazioni interferiscono tra di loro possiamo avere problemi in lettura e in scrittura. Infatti, ci sono quattro problemi principali quando si eseguono le transazioni in modo concorrente:
-
-- **Lost Update**: due persone entrano sulla stessa riga e con la perdita di stato, per esempio entrambe comprano l’ultimo biglietto rimasto.
-- **Dirty Read**: qualora si voglia acquistare un biglietto per una certa data questa data è cambiata nel frattempo. 
-- **Unrepeatable read**: letto il prezzo di un biglietto dopo qualche minuto il prezzo cambia.
-- **Phantom row**: nel caso in cui si vogliano comprare i biglietti di due tappe nel momento il cui si va a verificare l’acquisto le tappe sono cambiate di numero.
-
-[Torna all'indice](#indice)
-
-#### Lost Update
-
-Il seguente schedule mostra un caso tipico di lost update, in cui per comodità si evidenziano anche le operazioni che modificano il valore del dato X e si mostra come varia il valore di X nel DB. Il problema nasce perché `T2` legge il valore di X prima che `T1` (che lo ha già letto) lo modifichi (entrambe vedono l’ultimo biglietto disponibile).
-
-<img src="./img/img41-light.png#gh-light-mode-only" alt="Lost Update">
-<img class="dark-mode" src="./img/img41-dark.png#gh-dark-mode-only" alt="Lost Update">
-
-[Torna all'indice](#indice)
-
-#### Dirty Read
-
-In questo caso il problema è che una transazione legge un dato che non c’è: quanto svolto da `T2` si basa su un valore di X _intermedio_, e quindi non stabile (la data definitiva non è il 15/07/10). Le conseguenze sono impredicibili (dipende cosa fa `T2`) e si presenterebbero anche se `T1` non abortisse.
-
-<img src="./img/img42-light.png#gh-light-mode-only" alt="Dirty Read">
-<img class="dark-mode" src="./img/img42-dark.png#gh-dark-mode-only" alt="Dirty Read">
-
-[Torna all'indice](#indice)
-
-#### Unrepeatble Read
-
-Ora il problema è che una transazione legge due volte un dato e trova valori diversi (il prezzo nel frattempo è aumentato):
-
-<img src="./img/img69-light.png#gh-light-mode-only" alt="Unrepeatble Read">
-<img class="dark-mode" src="./img/img69-dark.png#gh-dark-mode-only" alt="Unrepeatble Read">
-
-Anche in questo caso si possono avere gravi conseguenze. Lo stesso problema si presenta per transazioni di _analisi_. Ad esempio `T1` somma l’importo di 2 conti correnti mentre `T2` esegue un trasferimento di fondi dall’uno all’altro (`T1` potrebbe quindi riportare un totale errato).
-
-[Torna all'indice](#indice)
-
-#### Phantom Row
-
-Questo caso si può presentare quando vengono inserite o cancellate tuple che un’altra transazione dovrebbe logicamente considerare. Nell’esempio la tupla `T4` è un _phantom_, in quanto `T1` non la vede.
-
-![single tier](./img/img43.png)
-
-[Torna all'indice](#indice)
-
-#### Livelli di Isolamenti
-
-Scegliere di operare a un livello di isolamento in cui si possono presentare dei problemi ha il vantaggio di aumentare il grado di concorrenza raggiungibile, e quindi di migliorare le prestazioni. Lo standard SQL definisce 4 livelli di isolamento, che sono serializable, repeatable read, read committed, uncommitted read:
-
-- `ISOLATION_READ_UNCOMMITTED`: possono accadere letture sporche (dirty read), non ripetibili e fantasma (phantom read).
-- `ISOLATION_READ_COMMITTED`: letture sporche rese impossibili, possibilità di accadimento di letture non ripetibili e fantasma.
-- `ISOLATION_REPEATABLE_READ`: possibilità delle sole letture fantasma, dirty e non-repeatable rese non possibili.
-- `ISOLATION_SERIALIZABLE`: tutte le possibilità spiacevoli sopra elencate per la lettura sono rese impossibili. Viene garantita le proprietà ACID.
-
-[Torna all'indice](#indice)
-
 ### Transazionalità
 
 Con scarsa sorpresa in Spring, si chiama transazione locale, una transazione specifica per una singola risorsa transazionale, ad esempio un'unica risorsa di un database, mentre si chiama transazione globale, una transazione gestita dal container, questa può includere risorse  multiple e distribuite. Il programmatore può specificare in modo dichiarativo che un metodo di Bean deve avere proprietà transazionali. Anche l’implementazione delle transazioni è basata su AOP, infatti avviene l’intercettazione di chiamate a metodi per la gestione transazioni. Nessuna necessità di modificare la logica di business, né al cambio della transazionalità desiderata né al cambio del provider di transazionalità.
@@ -4249,7 +4254,7 @@ JMX è organizzato secondo un’architettura a tre livelli:
 
 [Torna all'indice](#indice)
 
-### Livello instrumentation
+#### Livello instrumentation
 
 Il livello instrumentation definisce come creare risorse gestibili tramite JMX (MBeans), ovvero oggetti che offrono metodi per interagire attraverso dei metodi per:
 
@@ -4269,7 +4274,7 @@ Il supporto ai primi tre tipi di MBean è mandatory a partire dalla specifica JM
 
 [Torna all'indice](#indice)
 
-### Livello Agente
+#### Livello Agente
 
 Il livello di agente è costituito da un server MBean e da un insieme di servizi di agente basati sul livello di instrumentation. Vi sono quattro servizi di agente definiti nella specifica JMX: M-Let, Timer, Monitoring e Relation. Inoltre, il livello agente introduce il concetto di naming per gli oggetti, nomi che il lato cliente può utilizzare come riferimento indiretto alle risorse gestite.
 
@@ -4281,7 +4286,7 @@ MBeanServer è un oggetto locale alla JVM dei componenti gestiti e non offre par
 
 [Torna all'indice](#indice)
 
-### Livello servizi distribuiti
+#### Livello servizi distribuiti
 
 I connettori JMX sono strutturati in due componenti:
 
@@ -4491,7 +4496,7 @@ La specifica JMX definisce quattro servizi distinti a livello di agente che devo
 
 [Torna all'indice](#indice)
 
-### Servizio di M-let
+#### Servizio di M-let
 
 Gestisce il loading dinamico di nuove classi Java dal server MBean, che possono trovarsi su macchina locale o su macchina remota, con l’idea di spostare delle configurazioni di una applicazione verso un server remoto. Come ogni altro standard MBean, l’interfaccia `MLetMBean` espone le operazioni di management considerate rilevanti per il servizio, come `addURL()` e `getMBeansFromURL()`. All’URL specificato da `addURL()` si trovano i file di testo M-Let che descrivono i componenti MBean tramite MLET tag. Sposta la configurazione da macchina locale a macchina remota.
 
@@ -4516,7 +4521,7 @@ Ad esempio, si vuole fare un'installazione JMX in diversi uffici di un'azienda e
 
 [Torna all'indice](#indice)
 
-### Servizio di Timer
+#### Servizio di Timer
 
 Il servizio di Timer è basato sul meccanismo di notifica di JMX. TimerMBean è un broadcaster MBean in grado di emettere eventi, per ricevere notifiche dal timer il consumatore deve implementare l’interfaccia `NotificationListener` e registrarsi:
 
@@ -4551,7 +4556,7 @@ Questo è analogo al servizio di Cron in Unix/Linux o a Task Scheduler Service s
 
 [Torna all'indice](#indice)
 
-### Servizio di Monitoring
+#### Servizio di Monitoring
 
 Un insieme di MBean che possono essere utilizzati per effettuare il monitoring degli attributi di risorse gestite. Gli attributi sono variabili di stato che vengono risposte tramite interfaccia di management perchè ci sono metodi `getter` e `setter` che possono andarli a modificarli. Le notifiche dei monitor differiscono dalle usuali notifiche di modifica di attributi perché si possono introdurre threshold (soglia) e periodi di granularità.
 
@@ -4569,7 +4574,7 @@ Da come si può notare nella figura, la notifica non viene mai inviata quando si
 
 [Torna all'indice](#indice)
 
-### Servizio di Relation
+#### Servizio di Relation
 
 Permette di definire relazioni fra altri MBean e di reagire a modifiche (per esempio nel caso di dipendenze). Ad esempio, `Mbean A` deve essere presente se e solo se è presente `MBean B`. Le notifiche sono emesse modifica nelle istanze di relazione (creazione, aggiornamento, rimozione di una di queste relazioni etc). Ad esempio, se `MBean A`, se è registrato, deve avere per forza avere sullo stesso MBean Server anche `MBean B` e viceversa. Se c'è la de-registrazione di uno dei due viene lanciata una notifica.
 
@@ -4933,7 +4938,7 @@ Anche nelle cache come nei DB, vi sono diversi livelli di isolation e locking de
 
 [Torna all'indice](#indice)
 
-### Replicazione Stato HTTP
+#### Replicazione Stato HTTP
 
 La replicazione dello stato HTTP di sessione è gestita da JBoss, la configurazione all di JBoss include session state replication. Occorre configurare session state replication in modo opportuno. Lo stato di sessione HTTP viene replicato automaticamente su tutti i nodi del cluster.
 
@@ -4943,7 +4948,7 @@ Il modulo di JBoss che si occupa di gestire lo stato di sessione (non solo HTTP)
 
 [Torna all'indice](#indice)
 
-### Replicazione Stato EJB
+#### Replicazione Stato EJB
 
 Per Stateless Session Bean, data la mancanza di stato, le chiamate possono essere bilanciate su ogni nodo del cluster, si guadagna molto in scalabilità in questo caso. Nel caso di Stateful Session Bean, lo stato replicato e sincronizzato sul cluster, quindi ad ogni modifica sullo stato di uno di questi bean, entra in azione Session State replication di JBoss Cache o di Infinispan, questo ovvamente ha un costo. Dipende dalla strategia di Cache adottata (locale, replicazione e distribuzione). Per gli Entity Bean, non si prevede il supporto al clustering perchè non sono interrogabili da remoto dai clienti e quindi non prevista abilitazione clustering. Si può decidere di replicare solo la cache di secondo livello Hibernate con Infinispan. Infine, per i Message Driven Bean, la gestione è uguale ai Stateless Session Bean. Si usa HornetQ che è un supporto MOM creato da JBoss.
 
