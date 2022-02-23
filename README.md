@@ -663,9 +663,10 @@ import java.rmi.*;
 
 public interface Interest extends EJBObject {
 
-    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
-    // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms) throws RemoteException;
+    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno specifico
+    // tasso di interesse (percentuale per term)
+    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms) 
+                                        throws RemoteException;
 }
 ```
 
@@ -731,8 +732,8 @@ import java.rmi.*;
 
 public interface InterestLocal extends EJBLocalObject {
 
-    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
-    // specifico tasso di interesse (percentuale per term)
+    // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno specifico
+    // tasso di interesse (percentuale per term)
     public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms);
 
 }
@@ -992,7 +993,7 @@ Un servizio di naming è un sistema che consente di associare ad un nome logico 
 
 Esempi di sistemi di nomi:
 
-- **DNS**: a un nome logico come `https://www.google.com` corrisponde l'IP fisico del server.
+- **DNS**: a un nome logico come `www.google.com` corrisponde l'IP fisico del server.
 - **RMI Registry (RMI)**: al nome logico corrisponde lo stub associato.
 - **Portmapper (RPC)**: fornendo il numero di programma viene restituito versione, protocollo e porta.
 
@@ -2075,7 +2076,8 @@ public final class LineItemKey implements Serializable {
         }
         
         LineItemKey other = (LineItemKey) otherOb;
-        return ((orderId==null ? other.orderId==null : orderId.equals(other.orderId)) && (itemId == other.itemId));
+        return ((orderId==null ? other.orderId==null : orderId.equals(other.orderId)) 
+               && (itemId == other.itemId));
     }
 
     public int hashCode() {
@@ -3300,16 +3302,16 @@ main (int argc, char *argv[])
     CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
 
     // Get the NameService reference
-    CORBA::Object_var o = ns->resolve_str ("myHelloHome");
-    HelloHome_var hh = HelloHome::_narrow (o.in ());
-    HelloWorld_var hw = hh->create ();
+    CORBA::Object_var o = ns->resolve_str("myHelloHome");
+    HelloHome_var hh = HelloHome::_narrow(o.in ());
+    HelloWorld_var hw = hh->create();
 
     // Get all facets & receptacles
-    Components::FacetDescriptions_var fd = hw->get_all_facets ();
-    Components::ReceptacleDescriptions_var rd = hw->get_all_receptacles ();
+    Components::FacetDescriptions_var fd = hw->get_all_facets();
+    Components::ReceptacleDescriptions_var rd = hw->get_all_receptacles();
 
     // Get a named facet with a name "Farewell"
-    // CORBA::Object_var fobj = hw->provide ("Farewell");
+    // CORBA::Object_var fobj = hw->provide("Farewell");
 
     // Can invoke sayGoodbye() operation on Farewell after
     // narrowing to the Goodbye interface.
@@ -3643,7 +3645,7 @@ public class StandardOutMessageRenderer {
     public void render() {
         if (messageProvider == null) {
             throw new RuntimeException("You must set the property messageProvider of class:" + 
-                                       StandardOutMessageRenderer.class. getName());
+                                       StandardOutMessageRenderer.class.getName());
         }
 
         System.out.println(messageProvider.getMessage());
@@ -3711,7 +3713,7 @@ public class StandardOutMessageRenderer implements MessageRenderer {
     public void render() {
         if (messageProvider == null) {
             throw new RuntimeException("You must set the property messageProvider of class:" + 
-                                       StandardOutMessageRenderer.class. getName()); 
+                                       StandardOutMessageRenderer.class.getName()); 
         }
 
         System.out.println(messageProvider.getMessage());
@@ -4148,13 +4150,15 @@ public class Publisher implements ApplicationContextAware {
 }
 ```
 
-La gestione degli eventi in `ApplicationContext` è realizzata tramite la classe `ApplicationEvent` e l’interfaccia `ApplicationListener` che consente la ricezione degli eventi. Se un Bean implementa l’interfaccia `ApplicationListener` deve fare la sottoscrizione ad un `ApplicationContext` ac1. Quel Bean viene notificato ogni volta che un `ApplicationEvent` viene pubblicato in ac1. In poche parole, si tratta del design pattern `Observer`. Ci sono tre tipologie di eventi built-in:
+La gestione degli eventi in `ApplicationContext` è realizzata tramite la classe `ApplicationEvent` e l’interfaccia `ApplicationListener`. Se un Bean implementa l’interfaccia `ApplicationListener`, deve sottoscriversi ad un `ApplicationContext` in modo tale che il Bean viene notificato ogni volta che un `ApplicationEvent` viene pubblicato su `ApplicationContext`. In poche parole, si tratta del design pattern `Observer`.
+
+Ci sono tre tipologie di eventi built-in:
 
 - `ContextRefreshEvent` che consente l’inizializzazione o refresh di `ApplicationContext`.
 - `ContextClosedEvent` per la chiusura di un `ApplicationContext`.
 - `RequestHandleEvent` evento specifico per il Web, significa che una richiesta HTTP è stata appena servita.
 
-Ad esempio, qui si mostra la configurazione in `ApplicationContext.xml `del comportamento "ad ogni ricezione di un'email da un indirizzo in black list, invia un email di notifica a "spam@list.org":
+Ad esempio, qui si mostra la configurazione in `ApplicationContext.xml` del comportamento "ad ogni ricezione di un'email da un indirizzo in black list, invia un email di notifica a spam@list.org":
 
 ```xml
 <bean id="emailer" class="example.EmailBean">
@@ -4287,8 +4291,8 @@ MBeanServer è un oggetto locale alla JVM dei componenti gestiti e non offre par
 
 I connettori JMX sono strutturati in due componenti:
 
-- Lato server, l’agente registra un server per le connessioni capace di ricevere invocazioni remote di metodo.
-- Lato cliente, si può utilizzare una vista remota del server MBean per invocare operazioni su di esso.
+- **Lato server**, l’agente registra un server per le connessioni capace di ricevere invocazioni remote di metodo.
+- **Lato cliente**, si può utilizzare una vista remota del server MBean per invocare operazioni su di esso.
 
 ![single tier](./img/img73.png)
 
@@ -4399,13 +4403,14 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
     // Attributi
     final static String ID = "id";
     private long id = System.currentTimeMillis();
-    public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException, ReflectionException {
+    public Object getAttribute(String attribute) throws ... {
+
         if (attribute.equals(ID))
             return new Long(id);
             throw new AttributeNotFoundException("Missing attribute " + attribute);
     }
     
-    // Operazioni
+    // operazioni
     final static String PRINT = "printInfo";
 
     public String printInfo() {
@@ -4428,15 +4433,23 @@ public class DynamicUser extends NotificationBroadcasterSupport implements Dynam
         String classname = getClass().getName();
         String description = "Sono un MBean dinamico";
 
-        MBeanAttributeInfo id = new MBeanAttributeInfo(ID,long.class.getName(), "id", READABLE, !WRITABLE, !IS_GETTERFORM);
+        MBeanAttributeInfo id = new MBeanAttributeInfo(ID,long.class.getName(), 
+                                                       "id", 
+                                                       READABLE, 
+                                                       !WRITABLE, 
+                                                       !IS_GETTERFORM);
         MBeanConstructorInfo defcon = new MBeanConstructorInfo("Default", "Creates", null);
-        MBeanOperationInfo print = new MBeanOperationInfo(PRINT, "Prints info", null, String.class.getName(), MBeanOperationInfo.INFO);
+        MBeanOperationInfo print = new MBeanOperationInfo(PRINT, 
+                                                          "Prints info", 
+                                                          null, 
+                                                          String.class.getName(), 
+                                                          MBeanOperationInfo.INFO);
 
         return new MBeanInfo(classname,description, 
-        new MBeanAttributeInfo[] { id }, 
-        new MBeanConstructorInfo[] { defcon }, 
-        new MBeanOperationInfo[] { print }, 
-        null);
+                             new MBeanAttributeInfo[] { id }, 
+                             new MBeanConstructorInfo[] { defcon }, 
+                             new MBeanOperationInfo[] { print }, 
+                             null);
     }
 }
 ```
@@ -4534,16 +4547,17 @@ server.invoke(timer,"start", null, null);
 Date date = new Date(System.currentTimeMillis() + Timer.ONE_SECOND * 5);
 
 server.invoke(timer, // MBean
-"addNotification", // metodo
-new Object[] { // args
-    "timer.notification", // tipo
-    "Schedule notification", // messaggio
-    null,  // user data
-    date}, // time
-new String[] { String.class.getName(),
-    String.class.getName(),
-    Object.class.getName(), // signature
-    Date.class.getName()} );
+              "addNotification", // metodo
+              new Object[] { // args
+                             "timer.notification", // tipo
+                             "Schedule notification", // messaggio
+                             null,  // user data
+                             date}, // time
+              new String[] { String.class.getName(),
+                             String.class.getName(),
+                             Object.class.getName(), // signature
+                             Date.class.getName()} 
+              );
 
 // registra il listener MBean
 server.addNotificationListener(timer, this, null, null);
@@ -4584,7 +4598,7 @@ Dall’architettura iniziale ci si ricorda che c’è una parte client e server 
 ```java
 // lato cliente
 
-JMXServiceURL url = new JMXServiceURL(service:jmx:rmi:///jndi/rmi://" + "localhost:9999/server");
+JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + "localhost:9999/server");
 
 JMXConnector jmxc = JMXConnector-Factory.connect(url, null);
 
@@ -4647,8 +4661,7 @@ public class Hello implements HelloMBean {
 
     /* metodo getter per l’attributo Name. 
      * Spesso gli attributi sono utilizzati per fornire indicatori di monitoraggio 
-     * come uptime o utilizzo di memoria. Spesso sono read-only. 
-     * In questo caso l’attributo è una stringa */
+     * come uptime o utilizzo di memoria. Spesso sono read-only. In questo caso l’attributo è una stringa */
     public String getName() {
         return this.name;
     }
@@ -4727,13 +4740,21 @@ public class Hello extends NotificationBroadcasterSupport implements HelloMBean 
         this.cacheSize = size;
         
         /* In applicazioni reali il cambiamento di un attributo di solito produce effetti di gestione. 
-         * Ad esempio, cambiamento di dimensione della cache può generare eliminazione o allocazione di entry */
+         * Ad esempio, cambiamento di dimensione della cache può generare eliminazione o 
+         * allocazione di entry */
         System.out.println("Cache size now " + this.cacheSize);
         /* Per costruire una notifica che descrive il cambiamento avvenuto: "source" è ObjectName di MBean 
          * che emette la notifica (MBean server sostituisce "this" con il nome dell’oggetto);
-        mantenuto un numero di sequenza */
-        Notification n = new AttributeChangeNotification( this, sequenceNumber++, System.currentTimeMillis(), "CacheSize changed", "CacheSize", "int", oldSize, this.cacheSize);
-        /* Invio della notifica usando il metodo sendNotification() ereditato dalla superclasse */
+         * mantenuto un numero di sequenza */
+        Notification n = new AttributeChangeNotification(this, 
+                                                         sequenceNumber++, 
+                                                         System.currentTimeMillis(), 
+                                                         "CacheSize changed", 
+                                                         "CacheSize", 
+                                                         "int", 
+                                                         oldSize, 
+                                                         this.cacheSize);
+        // Invio della notifica usando il metodo sendNotification() ereditato dalla superclasse
         sendNotification(n);
     }
 
@@ -4808,7 +4829,7 @@ JGroups è lo strumento indispensabile che consente la comunicazione multicast i
 
 Un cluster logico (o partizione) JBoss non è altro che l'insieme dei nodi fisici che hanno attiva un'istanza del server JBoss che sta in ascolto sullo stesso indirizzo multicast e porta degli altri nodi (condividono la stessa configurazione JGroups). Se c'è un cluster fisico a sei nodi, si possono messere tutti i sei nodi in un cluster logico JBoss oppure prendere quattro nodi e metterli in un cluster logico e gli altri due in un altro cluster logico. Si potrebbe anche far partecipare uno stesso nodo fisico a più cluster logici. Molto importante è l’attenzione nella fase di mapping del deployment, per esempio per garantire high avaibility non si può fare il deployment di tutti i nodi logici sulla stessa macchina fisica perchè ciò non garantirebbe in caso di fault della macchina fisica la qualità di high avaibility.
 
-La configurazione della comunicazione in JGroups avviene con il file `cluster-service.xml` nella directory `/deploy`. Esso descrive la configurazione per la partizione di default del cluster. Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’attributo `PartitionConfig` di MBean `ClusterPartition` descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast:
+La configurazione della comunicazione in JGroups avviene con il file `cluster-service.xml` nella directory `deploy`. Esso descrive la configurazione per la partizione di default del cluster. Le configurazioni JGroups sono attributi innestati di servizi MBean del cluster. L’attributo `PartitionConfig` di MBean `ClusterPartition` descrive e configura lo stack di protocolli JGroups, la configurazione di default usa UDP con IP multicast:
 
 ```xml
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
@@ -4824,25 +4845,26 @@ tos="8"
 
 ...
 
-<! -- ping per scoprire i membri che appartengono al cluster-->
+<!-- ping per scoprire i membri che appartengono al cluster -->
 <PING timeout="2000"
 down_thread="false" up_thread="false"
 num_initial_members="3"/>
 
 ...
 
-<! -- per fondere gruppi già scoperti -->
+<!-- per fondere gruppi già scoperti -->
 <MERGE2 max_interval="100000"
 down_thread="false" up_thread="false"
 min_interval="20000"/>
 
 ...
 
-<! -- timeout per failure detection -->
+<!-- timeout per failure detection -->
 <FD timeout="10000" max_tries="5"
 down_thread="false" up_thread="false" shun="true"/>
 
-<! -- questo protocollo verifica se un membro sospetto è realmente morto eseguendo nuovamente il ping di quel membro. -->
+<!-- questo protocollo verifica se un membro sospetto è realmente morto eseguendo nuovamente 
+il ping di quel membro. -->
 <VERIFY_SUSPECT timeout="1500" down_thread="false"
 up_thread="false"/>
 
@@ -4867,13 +4889,13 @@ Esempio di configurazione HA Partition:
 <mbean code="org.jboss.ha.framework.server.ClusterPartition"
 name="jboss:service=DefaultPartition">
     <attribute name="PartitionName">${jboss.partition.name:DefaultPartition}</attribute>
-    <! – Indirizzo usato per determinare il nome del nodo -->
+    <!–- indirizzo usato per determinare il nome del nodo -->
     <attribute name="NodeAddress">${jboss.bind.address}</attribute>
-    <! -- deadlock detection abilitata o no -->
+    <!-- deadlock detection abilitata o no -->
     <attribute name="DeadlockDetection">False</attribute>
-    <! -- Max time (in ms) di attesa per il completamento del trasferimento di stato -->
+    <!-- Max time (in ms) di attesa per il completamento del trasferimento di stato -->
     <attribute name="StateTransferTimeout">30000</attribute>
-    <! -- configurazione protocolli JGroups -->
+    <!-- configurazione protocolli JGroups -->
     <attribute name="PartitionConfig">...</attribute>
 </mbean>
 ```
@@ -5332,7 +5354,9 @@ Per la lettura nel caso di stream si lavora con file di grandi dimensioni. Si cr
 
 ```javascript
 var readableStreamEvent = fs.createReadStream("bigFile"); 
-readableStreamEvent.on('data', function (chunkBuffer) { console.log('got chunk of', chunkBuffer.length, 'bytes'); }); 
+readableStreamEvent.on('data', function (chunkBuffer) { 
+    console.log('got chunk of', chunkBuffer.length, 'bytes'); 
+}); 
 //operazione eseguita ogni volta che arriva un chunck di dati
 
 readableStreamEvent.on('end', function() { 
@@ -5665,28 +5689,6 @@ Sono utili quando è necessario eseguire un determinato numero di un particolare
 Un cluster virtuale (un singolo cluster fisico può eseguire più cluster virtuali) destinato ad ambienti con molti utenti si diffonde in più team o progetti, per isolare i problemi. Inoltre, a uno spazio dei nomi può essere assegnata una quota di risorse per evitare di consumare più delle risorse complessive  presenti nel cluster fisico.
 
 Per vedere in piccolo il funzionamento di Kubernetes si può utilizzare Minicube. Minicube è uno strumento che semplifica l’esecuzione di Kubernetes in locale, è un cluster con un singolo nodo all’interno di una Virtual Machine.
-
-[Torna all'indice](#indice)
-
-### Cluster initialization
-
-```
-$ minikube start 
-$ kubectl cluster-info
-Kubernetes master is running at https://192.168.99.100:8443 CoreDNS is running at https://192.168.99.100:8443/api/v1/namespaces/kubesystem/services/kube-dns:dns/proxy 
-```
-
-```
-$ kubectl get nodes
-NAME STATUS ROLES AGE VERSION
-minikube Ready master 40d v.1.10.0
-```
-
-Launch Dashboard
-
-```
-$ minikube dashboard
-```
 
 [Torna all'indice](#indice)
 
