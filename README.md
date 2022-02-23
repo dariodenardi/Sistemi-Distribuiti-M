@@ -665,9 +665,7 @@ public interface Interest extends EJBObject {
 
     // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
     // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal, 
-                                         double interestPerTerm, 
-                                         int terms) throws RemoteException;
+    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms) throws RemoteException;
 }
 ```
 
@@ -735,9 +733,7 @@ public interface InterestLocal extends EJBLocalObject {
 
     // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
     // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal, 
-                                         double interestPerTerm, 
-                                         int terms);
+    public double getInterestOnPrincipal(double principal, double interestPerTerm, int terms);
 
 }
 ```
@@ -761,9 +757,7 @@ Per interagire con un componente EJB il cliente deve:
 ```java
 public class InterestClient {
 
-    public static void main (String[] args) throws CreateException, 
-                                                   RemoteException, 
-                                                   NamingException {
+    public static void main (String[] args) throws CreateException, RemoteException, NamingException {
     
         // passo 1: ottenere un’istanza di EJBHome (in realtà un oggetto
         // stub per l’oggetto EJBHome) via JNDI
@@ -784,13 +778,9 @@ public class InterestClient {
         System.out.println ("Terms = " + terms);
 
         // passo 3: invocazione metodi di business
-        System.out.println("Interest = $" + 
-                           interest.getInterestOnPrincipal(principal, rate, terms)
-                           );
+        System.out.println("Interest = $" + interest.getInterestOnPrincipal(principal, rate, terms));
     
-        System.out.println("Total = $" +
-                           interest.getTotalRepayment(principal, rate, terms)
-                           );
+        System.out.println("Total = $" + interest.getTotalRepayment(principal, rate, terms));
 
         // passo 4: clean up
         interest.remove();
@@ -1148,17 +1138,13 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
     ```java
     Hashtable hashtableEnvironment = new Hashtable();
-    hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, 
-                            "com.sun.jndi.ldap.LdapCtxFactory"
-                            );
+    hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
     ```
 
 - Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider. Ad esempio, per LDAP, l'URL che identifica il servizio, context radice, nome e password per connessione:
 
     ```java
-    hashtableEnvironment.put(Context.PROVIDER_URL, 
-                            "ldap://localhost:389/dc=etcee,dc=com"
-                            );
+    hashtableEnvironment.put(Context.PROVIDER_URL, "ldap://localhost:389/dc=etcee,dc=com");
     hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
     hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
     ```
@@ -2391,8 +2377,8 @@ statiche, ovvero definite a livello di annotazione tramite `@NamedQuery` ma non 
     ...
 
     customers = em.createNamedQuery("findAllCustomersWithName")
-    .setParameter("custName", "Smith")
-    .getResultList();
+                  .setParameter("custName", "Smith")
+                  .getResultList();
 ```
 
 I valori in entrambi i casi sono dinamici cioè dipendono dai valori che le variabili assumono.
@@ -3314,7 +3300,8 @@ main (int argc, char *argv[])
     CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
 
     // Get the NameService reference
-    CORBA::Object_var o = ns->resolve_str (“myHelloHome");HelloHome_var hh = HelloHome::_narrow (o.in ());
+    CORBA::Object_var o = ns->resolve_str ("myHelloHome");
+    HelloHome_var hh = HelloHome::_narrow (o.in ());
     HelloWorld_var hw = hh->create ();
 
     // Get all facets & receptacles
