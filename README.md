@@ -735,8 +735,8 @@ public interface InterestLocal extends EJBLocalObject {
 
     // Calcola l’interesse da pagarsi ad un dato proprietario, ad uno
     // specifico tasso di interesse (percentuale per term)
-    public double getInterestOnPrincipal(double principal,
-                                         double interestPerTerm,
+    public double getInterestOnPrincipal(double principal, 
+                                         double interestPerTerm, 
                                          int terms);
 
 }
@@ -761,7 +761,9 @@ Per interagire con un componente EJB il cliente deve:
 ```java
 public class InterestClient {
 
-    public static void main (String[] args) throws CreateException, RemoteException, NamingException {
+    public static void main (String[] args) throws CreateException, 
+                                                   RemoteException, 
+                                                   NamingException {
     
         // passo 1: ottenere un’istanza di EJBHome (in realtà un oggetto
         // stub per l’oggetto EJBHome) via JNDI
@@ -782,9 +784,13 @@ public class InterestClient {
         System.out.println ("Terms = " + terms);
 
         // passo 3: invocazione metodi di business
-        System.out.println("Interest = $" + interest.getInterestOnPrincipal(principal, rate, terms));
+        System.out.println("Interest = $" + 
+                           interest.getInterestOnPrincipal(principal, rate, terms)
+                           );
     
-        System.out.println("Total = $" + interest.getTotalRepayment(principal, rate, terms));
+        System.out.println("Total = $" +
+                           interest.getTotalRepayment(principal, rate, terms)
+                           );
 
         // passo 4: clean up
         interest.remove();
@@ -889,8 +895,8 @@ public String toString() {
 
 Le annotazioni si possono classificare nel seguente modo:
 
-- **Marker annotation**: non hanno membri. Ad esempio: `@Override`.
-- **Single-value annotation**: hanno un solo membro. Ad esempio: `@SuppressWarnings("unchecked")`.
+- **Marker annotation**: non hanno membri. Ad esempio `@Override`.
+- **Single-value annotation**: hanno un solo membro. Ad esempio `@SuppressWarnings("unchecked")`.
 - **Full annotation**: l'annotazione è formata da più di un membro.
 - **Custom annotation**: i programmatori possono crearsi le proprie annotazioni.
 
@@ -1143,14 +1149,16 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
     ```java
     Hashtable hashtableEnvironment = new Hashtable();
     hashtableEnvironment.put(Context.INITIAL_CONTEXT_FACTORY, 
-                            "com.sun.jndi.ldap.LdapCtxFactory");
+                            "com.sun.jndi.ldap.LdapCtxFactory"
+                            );
     ```
 
 - Dopo, bisogna aggiungere ogni informazioni addizionale necessaria al naming provider. Ad esempio, per LDAP, l'URL che identifica il servizio, context radice, nome e password per connessione:
 
     ```java
     hashtableEnvironment.put(Context.PROVIDER_URL, 
-                            "ldap://localhost:389/dc=etcee,dc=com");
+                            "ldap://localhost:389/dc=etcee,dc=com"
+                            );
     hashtableEnvironment.put(Context.SECURITY_PRINCIPAL, "name");
     hashtableEnvironment.put(Context.SECURITY_CREDENTIALS, "password");
     ```
@@ -1173,9 +1181,9 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 
 La specifica JNDI non impone ai naming service provider la semantica dell’operazione di memorizzazione di un binding: questo dipende dal servizio di nomi specifico che si sta utilizzando. Per memorizzare le risorse un servizio di nomi può usare le seguenti semantiche:
 
-- Serializzazione.
-- Riferimento.
-- Attributi.
+- serializzazione;
+- riferimento;
+- attributi.
 
 [Torna all'indice](#indice)
 
@@ -1295,6 +1303,7 @@ Si noti la differenza di codice rispetto a EJB 2.X:
 
 ```java
 public class PayrollBean implements javax.ejb.SessionBean {
+
     SessionContext cxt;
         
     public void setSessionContext(SessionContext cxt) {
@@ -1324,9 +1333,11 @@ Per quanto riguarda il Message Driven Bean, si deve implementare lo stesso l'int
 ```java
 @MessageDriven
 public class PayrollMDB implements javax.jms.MessageListener {
+
     public void onMessage(Message msg) {
         ...
     }
+
 }
 ```
 
@@ -1529,9 +1540,7 @@ La gestione avviene in due fasi:
 - **Passivation**: disassociazione fra l'istanza stateful bean e suo oggetto EJB, con salvataggio dell’istanza su memoria (serializzazione). Il processo è del tutto trasparente al cliente.
 - **Activation**: recupero dalla memoria (deserializzazione) dello stato dell’istanza e riassociazione con oggetto EJB.
 
-Nella specifica J2EE, non è richiesto che la classe di uno stateful Session Bean sia serializzabile. Quindi?
-Dipendenza dall’implementazione dello specifico vendor e attenzione al
-trattamento dei transient...
+Nella specifica J2EE, non è richiesto che la classe di uno stateful Session Bean sia serializzabile. Quindi? Dipendenza dall’implementazione dello specifico vendor e attenzione al trattamento dei transient...
 
 <img src="./img/img56-light.png#gh-light-mode-only" alt="Activation">
 <img class="dark-mode" src="./img/img56-dark.png#gh-dark-mode-only" alt="Activation">
@@ -1541,8 +1550,7 @@ Non si può permettere di manterere k istanze occupate senza far niente. Per sup
 - Prima parte uguale come nel resource pooling. Quando viene restituito il risultato l'istanza non può essere resa libera perchè c'è lo stato del cliente. In Java, basta prendere l'oggetto che rappresenta lo stato, lo si serializza e si salva (passivation).
 - A questo punto, quando il cliente fa in seguito di nuovo la richiesta basta recuperare lo stato salvato (activation). Non è detto che si debba usare la stessa istanza fisica.
 
-In queste due fasi si possono associare anche metodi di callback sui cambi di stato nel ciclo di vita di un Session Bean di tipo stateful. Ad esempio, l’annotation `@javax.ejb.PostActivate` associa l’invocazione del metodo a cui si applica immediatamente dopo l’attivazione di un’istanza.
-Similmente, `@javax.ejb.PrePassivate` viene attivata prima dell’azione di passivation. Ad esempio, vengono utilizzati spesso per la chiusura/apertura di connessioni a risorse per gestione più efficiente (a default vengono mantenuti e serializzati nello stato solo i riferimenti remoti ad altri bean, a SessionContext, al servizio EntityManager e all’oggetto
+In queste due fasi si possono associare anche metodi di callback sui cambi di stato nel ciclo di vita di un Session Bean di tipo stateful. Ad esempio, l’annotation `@javax.ejb.PostActivate` associa l’invocazione del metodo a cui si applica immediatamente dopo l’attivazione di un’istanza. Similmente, `@javax.ejb.PrePassivate` viene attivata prima dell’azione di passivation. Ad esempio, vengono utilizzati spesso per la chiusura/apertura di connessioni a risorse per gestione più efficiente (a default vengono mantenuti e serializzati nello stato solo i riferimenti remoti ad altri bean, a SessionContext, al servizio EntityManager e all’oggetto
 UserTransaction etc).
 
 [Torna all'indice](#indice)
@@ -2726,9 +2734,9 @@ JMS definisce i formati dei messaggi. I messaggi sono una modalità di comunicaz
 
 Un messaggio JMS è formato da tre parti:
 
-- Header.
-- Proprietà.
-- Body (payload).
+- header;
+- proprietà;
+- body (payload).
 
 <img src="./img/img53-light.png#gh-light-mode-only" alt="JMS Messaggio">
 <img class="dark-mode" src="./img/img53-dark.png#gh-dark-mode-only" alt="JMS Messaggio">
@@ -2818,8 +2826,8 @@ Le API JMS possono essere riassunte nella seguente figura:
 
 I passi per costruire una'aplicazione JMS sono:
 
-- Sviluppare un JMS Sender.
-- Sviluppare un JMS Receiver.
+- sviluppare un JMS Sender;
+- sviluppare un JMS Receiver.
 
 I passaggi per costruire un JMS Sender sono:
 
@@ -3647,7 +3655,8 @@ public class StandardOutMessageRenderer {
 
     public void render() {
         if (messageProvider == null) {
-            throw new RuntimeException("You must set the property messageProvider of class:" + StandardOutMessageRenderer.class. getName());
+            throw new RuntimeException("You must set the property messageProvider of class:" + 
+                                       StandardOutMessageRenderer.class. getName());
         }
 
         System.out.println(messageProvider.getMessage());
@@ -3714,7 +3723,8 @@ public class StandardOutMessageRenderer implements MessageRenderer {
 
     public void render() {
         if (messageProvider == null) {
-            throw new RuntimeException( "You must set the property messageProvider of class:" + StandardOutMessageRenderer.class. getName()); 
+            throw new RuntimeException("You must set the property messageProvider of class:" + 
+                                       StandardOutMessageRenderer.class. getName()); 
         }
 
         System.out.println(messageProvider.getMessage());
