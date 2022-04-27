@@ -1116,7 +1116,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 - `getAttributes`: restituisce gli attributi specificati nell’array fornito:
 
     ```java
-    Attributes getAttributes(String stringName, String [] rgstringAttributeNames)
+    Attributes getAttributes(String stringName, String[] rgstringAttributeNames)
     ```
 
 - `modifyAttributes`: modifica gli attributi associati all’entry specificata. Viene effettuata la stessa operazione su diversi attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
@@ -1128,7 +1128,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 - `modifyAttributes`: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
     ```
-    void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
+    void modifyAttributes(String stringName, ModificationItem[] rgmodificationitem)
     ```
 
 [Torna all'indice](#indice)
