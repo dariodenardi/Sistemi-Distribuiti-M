@@ -1129,7 +1129,7 @@ Per quanto riguarda i servizi di nomi di tipo Directory, non è possibile usare 
 - `modifyAttributes`: modifica gli attributi associati all’entry specificata. vengono effettuate una serie di operazioni su uno o più attributi. Operazioni consentite: `ADD_ATTRIBUTE`, `REPLACE_ATTRIBUTE` e `REMOVE_ATTRIBUTE`:
 
     ```
-    void modifyAttributes(String stringName, ModificationItem [] rgmodificationitem)
+    void modifyAttributes(String stringName, ModificationItem[] rgmodificationitem)
     ```
 
 [Torna all'indice](#indice)
